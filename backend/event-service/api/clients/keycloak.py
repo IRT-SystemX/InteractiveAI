@@ -1,9 +1,9 @@
 import requests
-
+from settings import GATEWAY_SERVICE
 
 class KeycloakClient:
     def __init__(self) -> None:
-        self.base_url = "http://localhost:2002"
+        self.base_url = GATEWAY_SERVICE
 
     def login(self):
         url = f"{self.base_url}/auth/token"
@@ -14,5 +14,6 @@ class KeycloakClient:
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
+        response.raise_for_status()
 
         return response.json()

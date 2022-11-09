@@ -1,20 +1,16 @@
 import requests
 import json
-
-url = "http://localhost:2102/cards"
-
-
-
+from settings import CARDS_PUBLICATION_SERVICE
 
 class CardPubClient:
     def __init__(self) -> None:
-        self.base_url = "http://localhost:2102"
+        self.base_url = CARDS_PUBLICATION_SERVICE
 
     def create_card(self, token, id, severity, timestamp_date, description):
         url = f"{self.base_url}/cards"
         payload = json.dumps({
             "publisher": "publisher_test",
-            "processVersion": "2",
+            "processVersion": "1",
             "process": "eventProcess",
             "processInstanceId": id,
             "state": "messageState",
@@ -24,13 +20,12 @@ class CardPubClient:
             "severity": severity,
             "startDate": timestamp_date,
             "summary": {
-                "key": description
+                "key": "eventProcess.summary",
+                "parameters" : {"summary": description}
             },
             "title": {
-                "key": "New event"
-            },
-            "data": {
-                "message": "High cogntive charge detected"
+                "key": "eventProcess.title",
+                "parameters" : {"title": "New event"}
             }
         })
         headers = {
@@ -39,5 +34,4 @@ class CardPubClient:
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
-
-        print(response.text)
+        response.raise_for_status()
