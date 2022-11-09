@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "bd42a48b-87da-4cac-bcee-23da94a9e2c0",
+		"name": "Event-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"description\": \"this is a description\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"date\": \"2022-11-07T15:23:53.595Z\",\r\n    \"description\": \"s\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 08 Nov 2022 15:21:36 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "185"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"criticality\": \"ROUTINE\",\n    \"date\": \"2022-11-07T15:23:53.595000+00:00\",\n    \"description\": \"s\",\n    \"id_event\": \"3\",\n    \"metadata\": {\n        \"event_type\": \"KPI\",\n        \"flux\": 456,\n        \"line\": 123,\n        \"zone\": \"Est\"\n    },\n    \"use_case\": \"RTE\"\n}"
+				}
+			]
+		},
+		{
+			"name": "event",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"criticality\": \"ND\",\r\n    \"date\": \"2022-11-07T15:23:53.595Z\",\r\n    \"description\": \"s\",\r\n    \"id_event\": \"123\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
