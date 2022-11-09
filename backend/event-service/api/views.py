@@ -2,7 +2,7 @@ import logging
 from datetime import datetime
 from apiflask import APIBlueprint, abort
 from flask.views import MethodView
-
+import uuid
 from .schemas import EventIn, EventOut
 from .clients.keycloak import KeycloakClient
 from .clients.cards_publication import CardPubClient
@@ -58,7 +58,7 @@ class Events(MethodView):
     def post(self, data):
         """Add an event"""
         logging.info(data)
-        event_id = len(events)
+        event_id = uuid.uuid4()
         data["id_event"] = str(event_id)
         # TODO: this authenetication should be removed once this service is integrated into the same gateway as operatorFabric
         keycloak_client = KeycloakClient()

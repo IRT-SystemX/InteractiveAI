@@ -31,7 +31,7 @@ class MetadataDAFW(Metadata):
 class EventIn(Schema):
     use_case = String(required=True, validate=OneOf(
         ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
-    description = String(required=True, validate=Length(0, 1))
+    description = String(required=True, validate=Length(1, 255))
     date = DateTime(format="iso")
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
