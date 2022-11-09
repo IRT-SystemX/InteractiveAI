@@ -1,0 +1,63 @@
+from apiflask import Schema
+from apiflask.fields import DateTime, Dict, Integer, String
+from apiflask.validators import Length, OneOf
+from marshmallow import ValidationError, validates_schema
+
+
+class Metadata(Schema):
+    pass
+
+
+class MetadataRTE(Metadata):
+    event_type = String(required=True, validate=OneOf(
+        ['KPI', 'anticipation', 'agent', 'consignation']))
+    zone = String(required=True, validate=OneOf(['Est', 'Ouest', 'Center']))
+    line = Integer()
+    flux = Integer()
+
+
+class MetadataSNCF(Metadata):
+    pass
+
+
+class MetadataOrange(Metadata):
+    pass
+
+
+class MetadataDAFW(Metadata):
+    pass
+
+
+class EventIn(Schema):
+    use_case = String(required=True, validate=OneOf(
+        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+    description = String(required=True, validate=Length(0, 1))
+    date = DateTime(format="iso")
+    criticality = String(required=True, validate=OneOf(
+        ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
+    metadata = Dict()
+
+    @validates_schema
+    def validate_metadata(self, data, **kwargs):
+        use_case = data.get("use_case")
+        metadata = data.get("metadata")
+        if use_case == "RTE":
+            MetadataRTE().load(metadata)
+        elif use_case == "SNCF":
+            MetadataSNCF().load(metadata)
+        elif use_case == "ORANGE":
+            MetadataOrange().load(metadata)
+        elif use_case == "DA/FW":
+            MetadataDAFW().load(metadata)
+        else:
+            raise ValidationError("Invalid use case")
+
+
+class EventOut(Schema):
+    id = Integer()
+    id_event = String()
+    use_case = String()
+    description = String()
+    date = DateTime(format="iso")
+    criticality = String()
+    metadata = Dict()
