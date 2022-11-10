@@ -2,11 +2,12 @@ import requests
 import json
 from settings import CARDS_PUBLICATION_SERVICE
 
+
 class CardPubClient:
     def __init__(self) -> None:
         self.base_url = CARDS_PUBLICATION_SERVICE
 
-    def create_card(self, token, id, severity, timestamp_date, title, description):
+    def create_card(self, token, id, severity, timestamp_date, title, description, metadata):
         url = f"{self.base_url}/cards"
         payload = json.dumps({
             "publisher": "publisher_test",
@@ -21,11 +22,14 @@ class CardPubClient:
             "startDate": timestamp_date,
             "summary": {
                 "key": "eventProcess.summary",
-                "parameters" : {"summary": description}
+                "parameters": {"summary": description}
             },
             "title": {
                 "key": "eventProcess.title",
-                "parameters" : {"title": title}
+                "parameters": {"title": title}
+            },
+            "data": {
+                "metadata": metadata
             }
         })
         headers = {

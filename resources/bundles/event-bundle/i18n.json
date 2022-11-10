@@ -1,6 +1,7 @@
 {
 	"eventProcess":{
 		"title":"{{title}}",
-		"summary":"{{summary}}"
+		"summary":"{{summary}}",
+        "metadata": "{{metadata}}"
 	}
 }
