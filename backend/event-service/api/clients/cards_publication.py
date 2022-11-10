@@ -6,7 +6,7 @@ class CardPubClient:
     def __init__(self) -> None:
         self.base_url = CARDS_PUBLICATION_SERVICE
 
-    def create_card(self, token, id, severity, timestamp_date, description):
+    def create_card(self, token, id, severity, timestamp_date, title, description):
         url = f"{self.base_url}/cards"
         payload = json.dumps({
             "publisher": "publisher_test",
@@ -25,7 +25,7 @@ class CardPubClient:
             },
             "title": {
                 "key": "eventProcess.title",
-                "parameters" : {"title": "New event"}
+                "parameters" : {"title": title}
             }
         })
         headers = {

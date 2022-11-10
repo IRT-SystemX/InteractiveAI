@@ -70,7 +70,7 @@ class Events(MethodView):
         timestamp_date = int(round((date).timestamp()*1000))
 
         card_pub_client.create_card(
-            login_response.get("access_token"), data["id_event"], severity, timestamp_date, data["description"])
+            login_response.get("access_token"), data["id_event"], severity, timestamp_date, data["title"], data["description"])
 
         events.append(data)
         return events[-1]
