@@ -2,12 +2,10 @@
 
 FROM python:3.11.0-slim
 
-WORKDIR python-docker
-
-COPY requirements.txt requirements.txt
+RUN mkdir /code
+COPY . /code/
+WORKDIR /code
 
 RUN pip3 install -r requirements.txt
-
-COPY . .
 
 CMD ["./entrypoint.sh"]

@@ -1,5 +1,4 @@
 #!/bin/bash
-export CARDS_PUBLICATION_SERVICE="http://172.18.91.224:2102"
-export GATEWAY_SERVICE="http://172.18.91.224:2002"
-source ../../cab_venv/Scripts/activate
+# export CARDS_PUBLICATION_SERVICE="http://cards-publication:8080"
+# export GATEWAY_SERVICE="http://web-ui:80"
 python -m flask run --host=0.0.0.0 --reload

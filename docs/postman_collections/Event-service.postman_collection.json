@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bd42a48b-87da-4cac-bcee-23da94a9e2c0",
+		"_postman_id": "346612c1-52fe-4c4f-9db1-eec5054d538a",
 		"name": "Event-service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"description\": \"this is a description\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"this is a title\",\r\n    \"description\": \"this is a description\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
