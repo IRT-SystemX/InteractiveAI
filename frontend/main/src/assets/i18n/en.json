@@ -1,0 +1,525 @@
+{
+  "shared": {
+    "severity": {
+      "alarm": "Alarm",
+      "action": "Action",
+      "compliant": "Compliant",
+      "information": "Information"
+    },
+    "typeOfState": {
+      "typeOfState" : "PROCESS STATUS",
+      "FINISHED": "FINISHED",
+      "INPROGRESS": "IN PROGRESS",
+      "CANCELED": "CANCELED"
+    },
+    "filters": {
+      "processGroup": "SERVICE",
+      "process": "PROCESS",
+      "state": "STATE",
+      "tags": "TAGS",
+      "selectProcessGroupText": "Select a Service",
+      "selectProcessText": "Select a Process",
+      "selectStateText": "Select a State",
+      "selectTagText": "Select a Tag",
+      "publishDateFrom": "PUBLISH FROM",
+      "publishDateTo": "PUBLISH TO",
+      "activeFrom": "ACTIVE FROM",
+      "activeTo": "ACTIVE TO",
+      "invalidPublishStartDate": "'Publish from' date is invalid.",
+      "invalidPublishEndDate": "'Publish to' date is invalid.",
+      "invalidActiveStartDate": "'Active from' date is invalid.",
+      "invalidActiveEndDate": "'Active to' date is invalid.",
+      "publishEndDateBeforeStartDate" : "'Publish to' date must be after 'Publish from' date.",
+      "activeEndDateBeforeStartDate" : "'Active to' date must be after 'Active from' date."
+    },
+    "result": {
+      "severity": "SEVERITY",
+      "timeOfAction": "TIME OF ACTION",
+      "title": "TITLE",
+      "summary": "SUMMARY",
+      "state": "STATE",
+      "description": "STATE DESCRIPTION",
+      "sender": "ACTOR",
+      "process" : "PROCESS",
+      "processGroup": "SERVICE",
+      "representative": "REPRESENTATIVE",
+      "publishDate" : "PUBLICATION DATE",
+      "businessPeriod" : "BUSINESS PERIOD",
+      "time": "TIME",
+      "answer": "ANSWER",
+      "emitter": "EMITTER",
+      "entitiesResponses": "ANSWERS",
+      "requiredResponses": "REQUIRED ANSWERS"
+    },
+    "exportInProgress": "Export in progress",
+    "loadingInProgress": "Loading in progress",
+    "requestInProgress": "Request in progress...",
+    "deleteInProgress": "Delete in progress...",
+    "logoutInProgress": "Logout in progress...",
+    "noResult": "Your search did not match any result.",
+    "exportToExcel": "Export data",
+    "resultsNumber":"Results number",
+    "noProcessStateAvailable": "No process/state available",
+    "endDateBeforeStartDate": "End date must be after start date.",
+    "featureNotConfigured": "Feature not configured",
+    "confirmSettings": "CONFIRM SETTINGS",
+    "cardEmitter": "EMITTER",
+    "entity": "ENTITY",
+    "goToAdminMode": "Go to admin mode",
+    "adminMode": "Admin mode",
+    "adminModeHelp": "Show all cards",
+    "popup": {
+      "title": "CONFIRMATION",
+      "areYouSure": "You have made some changes. Are you sure you want to save them ?"
+    },
+    "error": {
+      "impossibleToSaveSettings": "Impossible to save settings for technical reasons",
+      "incorrectSubmission": "Incorrect submission",
+      "technicalError" : "Technical error"
+    }
+  },
+  "global":{
+    "connectionLost":"Connection lost",
+    "tryToReconnect":"Try to reconnect ...",
+    "activateSoundText":"Sound not activated, click to activate",
+    "activateSoundButton":"Activate sound",
+    "sessionExpiredText":"Your session has expired.",
+    "disconnected": "You are disconnected.",
+    "disconnectedByNewUser": "You have been disconnected because another user logged in using this account.",
+    "disconnectByAppLoadedInAnotherTab": "You have been disconnected because another tab of this browser was used to log in using this URL."
+  },
+  "menu": {
+    "feed": "Card Feed",
+    "calendar": "Calendar",
+    "archives": "Archives",
+    "logging": "Logging",
+    "admin": "Administration",
+    "monitoring": "Monitoring",
+    "logout": "Logout",
+    "changePassword": "Change password",
+    "settings": "Settings",
+    "feedConfiguration": "Notification configuration",
+    "about": "About",
+    "usercard": "Card Creation",
+    "switchToNightMode": "Night mode",
+    "switchToDayMode": "Day mode",
+    "realTimeUsers": "Real time users",
+    "externalDevicesConfiguration": "External devices configuration",
+    "activityArea": "Activity area"
+  },
+  "timeline": {
+    "hideTimeline" : "Hide Timeline",
+    "showTimeline" : "Show Timeline",
+    "businessPeriod": "Business period",
+    "buttonTitle": {
+      "TR": "Real Time",
+      "J": "Day",
+      "7D": "7 Days",
+      "W": "Week",
+      "M": "Month",
+      "Y": "Year"
+    },
+    "lockTooltip": "The visibility domain is currently locked : it will not move as time goes by.",
+    "unlockTooltip": "The visibility domain is currently unlocked : it will shift as time goes by."
+  },
+  "multiFilter": {
+    "searchPlaceholderText": "Search",
+    "selectAllText": "Select All",
+    "unSelectAllText": "UnSelect All",
+    "filterSelectAllText": "Select all filtered results",
+    "filterUnSelectAllText": "UnSelect all filtered results",
+    "noDataLabel": "No Data Available"
+  },
+  "multiSelect": {
+    "searchPlaceholderText": "Search..." ,
+    "clearButtonText" : "Clear",
+    "noSearchResultsText" : "No results",
+    "noOptionsText" :""
+  },
+  "feed": {
+    "filters": {
+      "title": "Filters",
+      "reset": "Reset",
+      "time": {
+        "titleIfFilterBasedOnPublishDate": "Receipt date",
+        "titleIfFilterBasedOnBusinessDate": "Business period",
+        "start.label": "START",
+        "end.label": "END",
+        "active.label": "Active"
+      },
+      "type": {
+        "title": "Type"
+      },
+      "showCardsWithResponse": {
+        "label": "Cards with response from my entity"
+      },
+      "ack": {
+        "title": "Acknowledgement",
+        "acknowledged": {
+          "label": "Acknowledged"
+        },
+        "notacknowledged": {
+          "label": "Not acknowledged"
+        },
+        "all": {
+          "label": "All"
+        }
+      },
+      "applyFiltersToTimeLine" : {
+        "label" : "Apply filters to timeline"
+      }
+    },
+    "sort": {
+      "title": "Sort by",
+      "severity": "Criticality then reception date",
+      "publish": "Reception date",
+      "unread": "Unread then reception date",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "tips": {
+      "acknowledged": "Acknowledged",
+      "lttd": "Time remaining to decide",
+      "hasAResponseFromYourEntity" : "Your entity has already responded.",
+      "loadingInProgress": "Card loading in progress",
+      "seeGroupedCards": "Open this card to see grouped cards"
+    },
+    "acknowledgeAllCards": {
+      "label": "Acknowledge all cards",
+      "popup": {
+        "title": "CONFIRMATION",
+        "doYouReallyWant": "This will ack all visible cards of your feed, please confirm."
+      }
+    },
+    "lttdFinished": "Finished",
+    "responsesClosed": "Response closed",
+    "received": "Received :",
+    "deleted": "Deleted or updated :",
+    "addressedTo": "Addressed to :",
+    "at": "at",
+    "from" : "from",
+    "moreCards": "cards more",
+    "lastResponse": "Last response :",
+    "cardLoadingInProgress":"Loading card...",
+    "cardNotFound": "The card you are looking for was not found."
+  },
+  "login": {
+    "reset": "Reset",
+    "login": "Login",
+    "password": "Password",
+    "confirmationBecauseAccountIsAreadyUsed":"The account {{login}} is already being used by at least another user. Do you still want to log in ? \n\n By clicking OK, you will disconnect anyone using this account.",
+    "confirmationBecauseAppAlreadyLoadedInAnotherTab":"The URL {{url}} is already being used in this browser, do you still want to log in ?\n\n By clicking OK, you will disconnect the other tabs of this browser using this URL.",
+    "submit": {
+      "password": "Sign In",
+      "code": "Sign in using {{name}}"
+    },
+    "error": {
+      "authenticate": "Wrong login or password",
+      "code": "Wrong authentication code",
+      "unavailable": "Authentication service is currently unavailable",
+      "unexpected": "An unexpected error was detected during login: {{error}}",
+      "disconnected": "You have been disconnected.",
+      "token": {
+        "invalid": "Invalid token stored.",
+        "expiration": "The stored token has expired."
+      }
+    }
+  },
+  "about": {
+    "title": "ABOUT"
+  },
+  "settings": {
+    "title": "SETTINGS",
+    "description": "DESCRIPTION",
+    "locale": "LANGUAGE",
+    "playSoundLabel": "PLAY SOUNDS FOR CARDS WITH SEVERITY",
+    "playSoundForAlarm": "Alarm",
+    "playSoundForAction": "Action",
+    "playSoundForCompliant": "Compliant",
+    "playSoundForInformation": "Information",
+    "replayEnabled": "Sound replay enabled",
+    "playSoundOnExternalDevice": "Play sound on external device",
+    "replayInterval": "INTERVAL BETWEEN SOUND REPLAYS (SECONDS)",
+    "remoteLoggingEnabled": "Remote logging enabled"
+  },
+  "archive": {
+    "cardLoadingInProgress":"Loading card  ...",
+    "tooManyRows": "Too many cards , not all cards visible.",
+    "collapsibleUpdates": "Collapsible updates"
+  },
+  "monitoring": {
+    "hideFilters" : "Hide Filters",
+    "showFilters" : "Show Filters",
+    "noSelection" : "NA",
+    "moreRows": "rows more",
+    "filters": {
+      "typeOfState" : {
+        "selectTypeOfStateText" : "Select a Process status"
+      }
+    },
+    "seeDetails": "SEE DETAILS"
+  },
+  "button": {
+    "ok": "OK",
+    "cancel": "CANCEL",
+    "reset": "RESET",
+    "delete": "Delete",
+    "edit": "Edit",
+    "yes": "YES",
+    "search" : "SEARCH"
+  },
+  "activityArea": {
+    "title": "ACTIVITY AREA",
+    "titleOnLogin": "CHOOSE YOUR ACTIVITY AREA",
+    "savingInProgress": "Saving in progress..."
+  },
+  "feedConfiguration": {
+    "title": "NOTIFICATION CONFIGURATION",
+    "information": "INFORMATION",
+    "youAreUnsubscribedFrom": "You are unsubscribed from one or more notifications for which unsubscribing is now prohibited.\n\nNotification(s) concerned :\n",
+    "youWillBeSubscribedAgain": "\n\nBy clicking OK, you will be subscribed to these notifications again."
+  },
+  "userCard": {
+    "title": "CREATE A NEW CARD ",
+    "editTitle" : "EDIT A NEW CARD",
+    "error": {
+      "notAvailable": "You are not allowed to send card.",
+      "userHasNoEntityThatCanSendCard" : "You are not a member of any entity that can send cards.",
+      "templateError": "Technical error : invalid template",
+      "impossibleToSendCard": "Impossible to send card for technical reasons",
+      "lttdBeforeStartDate": "Limit date for response must be after start date.",
+      "lttdAfterEndDate": "Limit date for response must be before end date."
+    },
+    "filters": {
+      "severity": "SEVERITY",
+      "startDate":  "START DATE",
+      "endDate":  "END DATE",
+      "lttd": "LIMIT DATE FOR RESPONSE",
+      "recipients": "RECIPIENTS"
+    },
+    "prepareCard": "SEE BEFORE SENDING",
+    "confirmSending": "Send the following card?",
+    "accept": "SEND",
+    "refuse": "CANCEL",
+    "processInstanceId": "Id",
+    "state": "State",
+    "recipients": "RECIPIENTS:",
+    "youAreTheOnlyRecipient": "You are the only recipient of this card.",
+    "feedPreview": "FEED PREVIEW:",
+    "contentPreview": "CONTENT PREVIEW:",
+    "send-another-one": "SEND ANOTHER CARD",
+    "cardSendWithNoError": "Your card is published.",
+    "deleteCard": {
+      "title" : "CONFIRMATION",
+      "doYouReallyWant": "Do you really want to delete this card ?",
+      "cardDeletedWithNoError": "Card deleted",
+      "error": {
+        "impossibleToDeleteCard": "Impossible to delete card for technical reasons"
+      }
+    },
+    "sendingCardInProgress": "Sending card in progress..."
+  },
+  "response": {
+    "btnValidate": "VALIDATE ANSWER",
+    "btnUnlock": "MODIFY ANSWER",
+    "error": {
+      "submit": "The answer could not be sent.",
+      "form": "The form is not correctly filled.",
+      "ack": "Unable to change acknowledgement of this card for an error of remote system"
+    },
+    "submitSuccess": "Your answer is confirmed. Thank you!",
+    "answers": "Answers",
+    "answered": "Answered",
+    "unanswered": "Not answered yet",
+    "status": "Process Status",
+    "chooseEntitiesForResponse": "Choose the entities you are responding for :",
+    "entitiesChoice": "Entities choice"
+  },
+  "cardAcknowledgment": {
+    "button": {
+      "ack": "ACKNOWLEDGE",
+      "ackAndClose": "ACKNOWLEDGE AND CLOSE",
+      "unack": "CANCEL ACKNOWLEDGMENT"
+    },
+    "acknowledged": "Acknowledged"
+  },
+  "admin": {
+    "input": {
+      "group": {
+        "id": "ID",
+        "name": "NAME",
+        "description": "DESCRIPTION",
+        "perimeters" : "PERIMETERS",
+        "users": "USERS",
+        "realtime": "REAL TIME",
+        "type": "TYPE",
+        "true": "YES",
+        "false": "NO",
+        "confirmDelete": "Do you really want to delete group",
+        "add": "ADD NEW GROUP"
+      },
+      "entity": {
+        "id": "ID",
+        "name": "NAME",
+        "parents": "PARENT ENTITIES",
+        "description": "DESCRIPTION",
+        "labels": "LABELS",
+        "users": "USERS",
+        "entityAllowedToSendCard": "CARD SENDING ALLOWED",
+        "confirmDelete": "Do you really want to delete entity",
+        "add": "ADD NEW ENTITY",
+        "true": "YES",
+        "false": "NO",
+        "addLabel": "Add label"
+      },
+      "perimeter": {
+        "id": "ID",
+        "process": "PROCESS",
+        "stateRights": "STATE RIGHTS",
+        "state": "STATE",
+        "right": "RIGHT",
+        "filteringNotificationAllowed": "FILTERING NOTIFICATION\nALLOWED",
+        "confirmDelete": "Do you really want to delete perimeter",
+        "add":"ADD NEW PERIMETER"
+      },
+      "user": {
+        "login": "LOGIN",
+        "lastName": "LAST NAME",
+        "firstName": "FIRST NAME",
+        "groups": "GROUPS",
+        "entities": "ENTITIES",
+        "authorizedIPAddresses": "AUTHORIZED IP ADDRESSES",
+        "confirmDelete": "Do you really want to delete user",
+        "add": "ADD NEW USER"
+      },
+      "selectGroupText": "Select a Group",
+      "selectEntityText": "Select an Entity",
+      "selectPerimeterText": "Select a Perimeter",
+      "selectProcessText": "Select a Process",
+      "selectStateText": "Select a State",
+      "selectRightText": "Select a Right",
+      "selectGroupTypeText": "Select a Type",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "SAVE CHANGES",
+      "close": "CLOSE",
+      "cancel": "CANCEL",
+      "confirm": "Please confirm...",
+      "login": {
+        "required": "Login is required.",
+        "minLength": "Login should be minimum 2 characters.",
+        "pattern": "Login should only contain the following characters: lowercase letters, _, -, . or digits.",
+        "alreadyExisting": "Login already existing."
+      },
+      "firstName": {
+        "required": "First name is required."
+      },
+      "lastName": {
+        "required": "Last name is required."
+      },
+      "id": {
+        "required": "Id is required.",
+        "minLength": "Id should be minimum 2 characters.",
+        "pattern": "Id should only contain the following characters: letters, _, - or digits.",
+        "label":"ID",
+        "alreadyExisting": "Id already existing."
+      },
+      "name": {
+        "required": "Name is required.",
+        "label":"NAME"
+      },
+      "description": "DESCRIPTION",
+      "lines": "lines per page"
+    },
+    "tabs": {
+      "users": "Users Management",
+      "groups": "Groups Management",
+      "entities": "Entities Management",
+      "perimeters": "Perimeters Management"
+    }
+  },
+  "processGroup": {
+    "defaultLabel": "--"
+  },
+  "ag-grid": {
+    "loadingOoo": "Loading...",
+    "noRowsToShow": "No Rows To Show",
+    "filterOoo": "Filter...",
+    "equals": "Equals",
+    "notEqual": "Not equal",
+    "contains": "Contains",
+    "notContains": "Not contains",
+    "startsWith": "Starts with",
+    "endsWith": "Ends with",
+    "andCondition": "AND",
+    "orCondition": "OR",
+    "to": "to",
+    "of": "of",
+    "page": "Page",
+    "blank": "Blank",
+    "notBlank": "Not blank"
+  },
+  "realTimeUsers": {
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "selectScreenText": "Select a screen",
+    "realTimeScreen": "REAL TIME SCREEN"
+  },
+  "externalDevicesConfiguration": {
+    "input": {
+      "selectUserText": "Select user",
+      "selectDeviceText": "Select device",
+      "add": "ADD NEW USER DEVICE CONFIGURATION",
+      "edit": "EDIT USER DEVICE CONFIGURATION",
+      "confirm": "Please confirm",
+      "confirmDelete": "Do you really want to delete device configuration for user",
+      "allUsersConfigured": "All users devices are already configured.",
+      "loadingExternalDevices": "Loading external devices..."
+    },
+    "tabs": {
+      "users": "Users Configuration",
+      "devices": "External Devices"
+    },
+    "error": {
+      "errorWhenEnablingDevice": "An error occured when trying to enable this device. Please try again later.",
+      "errorWhenDisablingDevice": "An error occured when trying to disable this device. Please try again later."
+    },
+    "userLogin": "USER LOGIN",
+    "externalDeviceIds": "DEVICES",
+    "id": "DEVICES",
+    "isEnabled": "IS ENABLED",
+    "edit": "EDIT",
+    "delete": "DELETE"
+  },
+  "datePicker": {
+    "monday": "Mo",
+    "tuesday" : "Tu", 
+    "wednesday" : "We", 
+    "thursday": "Th", 
+    "friday": "Fr", 
+    "saturday": "Sa",  
+    "sunday": "Su",
+    "january": "Jan", 
+    "february": "Feb",
+    "march": "Mar", 
+    "april": "Apr", 
+    "may": "May", 
+    "june": "Jun", 
+    "july": "Jul", 
+    "august": "Aug", 
+    "september": "Sep", 
+    "october": "Oct", 
+    "november": "Nov", 
+    "december": "Dec",
+    "week": "Week",
+    "placeholder": "YYYY-MM-DD"
+  },
+  "reloadRequired" : {
+    "message": "Application reload required. To reload please click ",
+    "linkText": "here"
+  },
+  "errors" : {
+    "notFound" : "Resource not found",
+    "notAllowed" : "Action not allowed"
+  } 
+}

@@ -186,3 +186,6 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
+frontend/main/.angular/*
+frontend/main/node_modules
+node_modules

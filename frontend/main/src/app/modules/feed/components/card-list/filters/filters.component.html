@@ -1,0 +1,27 @@
+<!-- Copyright (c) 2018-2022, RTE (http://www.rte-france.com)              -->
+<!-- See AUTHORS.txt                                                       -->
+<!-- This Source Code Form is subject to the terms of the Mozilla Public   -->
+<!-- License, v. 2.0. If a copy of the MPL was not distributed with this   -->
+<!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.              -->
+<!-- SPDX-License-Identifier: MPL-2.0                                      -->
+<!-- This file is part of the OperatorFabric project.                      -->
+
+
+<div class="opfab-feedbar opfab-form-lighter" style="margin-top: 50px;">
+        <div style="width:180px;display:flex;">
+            <of-feed-filter [hideTimerTags]="hideTimerTags" [defaultAcknowledgmentFilter]="defaultAcknowledgmentFilter" [hideResponseFilter]="hideResponseFilter" [hideApplyFiltersToTimeLineChoice]="hideApplyFiltersToTimeLineChoice"></of-feed-filter>
+            <of-feed-sort [defaultSorting]="defaultSorting"></of-feed-sort>
+        </div>
+        <div style="width:100%">
+        </div>
+        <div  *ngIf="loadingInProgress" class="opfab-loading-spinner">
+            <ng-template #tipLoadingInProgress>
+                <span translate>feed.tips.loadingInProgress</span>
+            </ng-template>
+            <div [ngbPopover]="tipLoadingInProgress" popoverClass="opfab-popover" container="body"
+            triggers="mouseenter:mouseleave">
+            <em  class="fas fa-spinner fa-spin opfab-slow-spinner"  ></em>
+            </div>
+
+         </div>
+</div>

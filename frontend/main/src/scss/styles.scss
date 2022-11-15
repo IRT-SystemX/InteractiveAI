@@ -1,0 +1,631 @@
+/* Copyright (c) 2020, RTEi (http://www.rte-international.com)
+ * Copyright (c) 2021-2022, RTE (http://www.rte-france.com)
+ * See AUTHORS.txt
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ * This file is part of the OperatorFabric project.
+ */
+
+/* You can add global styles to this file, and also import other style files */
+
+@import 'variables';
+
+/* import bootstrap*/
+@import '../../node_modules/bootstrap/scss/bootstrap.scss';
+
+@import '../../node_modules/ag-grid-community/dist/styles/ag-grid.css';
+@import '../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css';
+@import '../../node_modules/ag-grid-community/dist/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss';
+@import '../../node_modules/ngx-chips/core/styles/core/_core.scss';
+
+@each $color, $value in $theme-colors {
+    .brand-bg-#{$color} {
+        background-color: $value;
+        padding: 5px;
+        border-radius: 5px;
+    }
+}
+
+body {
+    color: $light;
+    padding: 80px 0px 30px 0px;
+    margin: 0px;
+    background-color: $dark;
+    height: 100vh;
+    font-family: var(--opfab-font-family);
+    font-size: 13px;
+
+    // scroll styling for firefox only
+    scrollbar-color: var(--opfab-scrollbar-bar-bgcolor-firefox) var(--opfab-scrollbar-bgcolor-firefox);
+}
+
+// Colors for state types
+.opfab-typeOfState-INPROGRESS {
+    color: #ff6600;
+}
+.opfab-typeOfState-FINISHED {
+    color: green;
+}
+.opfab-typeOfState-CANCELED {
+    color: red;
+}
+
+// CUSTOM SCROLLBAR STYLE
+// for chromium based browser
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background: var(--opfab-scrollbar-bgcolor);
+    border: solid 1px var(--opfab-scrollbar-border-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--opfab-scrollbar-bar-bgcolor);
+    border-radius: 8px;
+    border: solid 1px var(--opfab-scrollbar-bar-border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--opfab-scrollbar-bar-bgcolor);
+    border-radius: 8px;
+    border: solid 1px var(--opfab-scrollbar-bar-border-color);
+}
+
+// END CUSTOM SCROLLBAR STYLE
+
+// CUSTOM SPINNER
+
+.opfab-slow-spinner {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+// Spinner when loading cards or table of cards
+// the spinner is in the center of the screen
+
+.opfab-card-loading-spinner {
+    font-size: 68px;
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    text-align: center;
+    background-color: var(--opfab-bgcolor);
+    color: var(--opfab-text-color);
+}
+
+// END OF CUSTOM SPINNER
+
+// EXPORT ICON
+.opfab-icon-export-data {
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    margin-right: 10px;
+    margin-top: 10px;
+    background: var(--opfab-text-color);
+    mask: url(../assets/images/icons/export-data.svg);
+}
+
+
+// INPUT FIELD STYLE
+
+.opfab-input,
+.form-control {
+    box-sizing: border-box;
+    position: relative;
+    color: var(--opfab-input-text-color);
+    border: 1px solid var(--opfab-form-border-color);
+    border-radius: 3px;
+    font-size: 13px;
+    height: 46px;
+    outline: none;
+    background-color: var(--opfab-bgcolor-darker);
+}
+
+
+// HOUR INPUT FIELD STYLE
+::-webkit-calendar-picker-indicator {
+    filter: invert(50%); // sets the time picker in gray on google chrome
+}
+
+// TIME INPUT IN DATE TIME PICKER
+.ngb-tp-input-container .form-control {
+    padding: 0px;
+    background-color: var(--opfab-bgcolor-darker);
+    color: var(--opfab-text-color-stronger);
+}
+
+.ngb-tp {
+    width: 80px;
+}
+
+// use in date time filter when time is disabled
+.form-control:disabled {
+    background-color: var(--opfab-bgcolor-darker);
+    color: #606267;
+}
+
+// For time picker
+.btn-link {
+    font-size: 13px;
+    color: var(--opfab-input-text-color);
+}
+
+// ngx-type_ahead conf
+
+.opfab-input-type-ahead {
+    box-sizing: border-box;
+    position: relative;
+    color: var(--opfab-input-text-color);
+    border: 1px solid var(--opfab-form-border-color);
+    border-radius: 3px;
+    font-size: 13px;
+    outline: none;
+    min-height: 46px;
+    background-color: var(--opfab-bgcolor-darker);
+}
+
+.opfab-input-type-ahead > input {
+    background-color: var(--opfab-bgcolor-darker);
+    color: var(--opfab-input-text-color);
+    padding: 10px;
+    height: 42px;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -webkit-autofill: none;
+
+    // Firefox : to avoid browser styling when auto-filling input field (example password)
+    // see https://stackoverflow.com/questions/55228377/remove-new-firefox-autofill-color
+    filter: none;
+}
+
+.opfab-input-type-ahead > type-ahead {
+    padding: 10px;
+    width: 100%;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.opfab-input-type-ahead > label {
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    font-size: 11px;
+    margin-top: -10px;
+    left: 10;
+    color: var(--opfab-form-label-text-color);
+    background-color: var(--opfab-bgcolor-darker);
+}
+
+type-ahead > input {
+    background-color: var(--opfab-bgcolor-darker);
+    color: var(--opfab-input-text-color);
+}
+
+type-ahead > .badge-primary {
+    background-color: var(--opfab-bgcolor);
+    font-size: 13px;
+    font-weight: lighter;
+    margin-right: 5px;
+    color: var(--opfab-input-text-color);
+}
+// end type-ahead  conf
+
+
+// Class to use when background form is lighter
+
+.opfab-form-lighter {
+    .form-control,
+    .form-control:disabled,
+    .opfab-input-type-ahead,
+    .opfab-input-type-ahead > input,
+    .opfab-input-type-ahead label,
+    type-ahead > input {
+        background-color: var(--opfab-bgcolor);
+    }
+    type-ahead > .badge-primary {
+        background-color: var(--opfab-bgcolor-darker);
+    }
+}
+
+// Pagination component config
+ngb-pagination {
+    .page-link {
+        background-color: var(--opfab-bgcolor-darker);
+        color: var(--opfab-text-color-stronger);
+        border: 0px;
+    }
+    .page-item.active .page-link {
+        background-color: var(--opfab-pagination-active-page-background);
+        color: var(--opfab-bgcolor-darker);
+    }
+
+    .page-item :hover {
+        background-color: var(--opfab-button-disable-bgcolor);
+        color: var(--opfab-text-color-stronger);
+    }
+
+    .page-link:focus {
+        box-shadow: none;
+    }
+
+    .page-item.disabled .page-link {
+        background-color: var(--opfab-bgcolor-darker);
+        color: var(--opfab-pagination-disabled-link);
+    }
+}
+
+.archives-page .form-control {
+    border-radius: 5px;
+    padding: 5px;
+}
+select.form-control[multiple] {
+    height: calc(1.5em + 0.75rem + 2px);
+}
+.ngb-tp-spacer {
+    width: 0.3em !important;
+}
+.ngb-tp-input-container button {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+.pagination {
+    margin-top: 5px;
+}
+
+// Override color for today in calendar
+.alert-info {
+    background-color: var(--opfab-bgcolor);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.mat-select-panel {
+    background-color: var(--opfab-bgcolor);
+}
+
+// ngbModal configuration
+.modal-fullscreen {
+    max-width: 100vw * 0.9;
+    margin-left: 100vw * 0.05;
+    max-height: calc(100% - 35px);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    transition: 0s !important;
+}
+
+.modal-usercard {
+    max-width: 1300px;
+}
+
+.modal-body {
+    background-color: var(--opfab-bgcolor);
+    color: var(--opfab-textcolor);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.modal-header {
+    background-color: var(--opfab-bgcolor);
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--opfab-color-darker);
+}
+
+.opfab-close-modal-icon {
+    color: var(--opfab-navbar-color);
+    margin-left: 5px;
+    margin-right: 5px;
+    letter-spacing: 0.54px;
+    line-height: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    &:hover,
+    &:focus {
+        color: var(--opfab-navbar-color-hover);
+    }
+}
+
+// Specific configuration for modal in administration interface
+.cdk-overlay-container,
+.cdk-overlay-pane {
+    z-index: 9999 !important;
+}
+
+// Global colors
+
+.opfab-colors {
+    background-color: var(--opfab-bgcolor);
+    color: var(--opfab-text-color);
+}
+
+.opfab-color-danger {
+    color: red;
+}
+
+.opfab-color-warning {
+    color: #ff6600;
+}
+.opfab-color-success {
+    color: green;
+}
+
+.opfab-timeline-bgcolor {
+    background-color: var(--opfab-timeline-bgcolor);
+}
+
+.opfab-popover {
+    background-color: var(--opfab-popover-bgcolor);
+    color: var(--opfab-text-color);
+    .popover-header {
+        color: var(--opfab-text-color);
+        background-color: var(--opfab-popover-bgcolor);
+        border-bottom: 1px solid var(--opfab-text-color);
+    }
+    .popover-body {
+        color: var(--opfab-text-color);
+        margin-top: -10px;
+        margin-bottom: -10px;
+    }
+    .arrow::after {
+        border-right-color: var(--opfab-popover-bgcolor);
+    }
+}
+
+.opfab-popover-left-menu {
+    background-color: var(--opfab-popover-bgcolor);
+    color: var(--opfab-text-color);
+    min-width: 330px !important;
+    padding-right: 0px;
+    .popover-header {
+        color: var(--opfab-text-color);
+        background-color: var(--opfab-popover-bgcolor);
+        border-bottom: 1px solid var(--opfab-text-color);
+    }
+    .popover-body {
+        color: var(--opfab-text-color);
+    }
+    .arrow::after {
+        border-right-color: var(--opfab-popover-bgcolor);
+    }
+}
+
+.opfab-popover-no-arrow {
+    background-color: var(--opfab-popover-bgcolor);
+    color: var(--opfab-text-color);
+    .popover-header {
+        color: var(--opfab-text-color);
+        background-color: var(--opfab-popover-bgcolor);
+        border-bottom: 1px solid var(--opfab-text-color);
+    }
+    .popover-body {
+        color: var(--opfab-text-color);
+    }
+
+    .arrow {
+        display: none;
+    }
+    .arrow::after {
+        border-bottom: 0px;
+    }
+}
+
+// OpFab customization of the alpine theme for ag-grid
+// It allows the colors to match the ones from the OpFab global style and to respond to the night/day mode
+.opfab-ag-grid-theme {
+    @include ag-theme-alpine(
+        (
+            background-color: var(--opfab-bgcolor),
+            header-background-color: var(--opfab-bgcolor-darker),
+            odd-row-background-color: var(--opfab-bgcolor-darker),
+            modal-overlay-background-color: var(--opfab-bgcolor),
+            data-color: var(--opfab-text-color),
+            header-foreground-color: var(--opfab-text-color),
+            secondary-foreground-color: var(--opfab-text-color),
+            input-disabled-background-color: var(--opfab-button-disable-bgcolor),
+            input-disabled-border-color: var(--opfab-button-disable-bgcolor),
+            header-column-resize-handle-color: var(--opfab-table-border-color),
+            borders: false,
+            header-height: 70
+        )
+    );
+
+    // This is done to reduce min-height (150px by default) in order to remove empty space when there is 1 line or 2
+    // The height of a line is 42 (40 + 1*2 padding)
+    .ag-layout-auto-height {
+        .ag-center-cols-clipper,
+        .ag-center-cols-container,
+        .ag-body-viewport {
+            min-height: 42px;
+        }
+    }
+
+    color: var(--opfab-text-color);
+
+    .ag-root-wrapper {
+        border-bottom: 1px solid var(--opfab-table-border-color);
+    }
+
+    .ag-theme-alpine {
+        color: var(--opfab-text-color);
+    }
+
+    .ag-menu {
+        background: var(--opfab-bgcolor-darker);
+    }
+
+    .ag-header-row {
+        border-top: 1px solid var(--opfab-table-border-color);
+        border-bottom: 1px solid var(--opfab-table-border-color);
+    }
+
+    .ag-row {
+        border: 0px;
+    }
+
+    .ag-row:hover {
+        border: 2px solid #2268ff;
+    }
+
+    .opfab-ag-header-with-no-padding {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .ag-cell-label-container, .ag-header-cell-comp-wrapper {
+        height: 100%;
+        width: 100%;
+    }
+
+    .action-cell-delete-admin {
+        display: none;
+    }
+
+    .action-cell-column-header {
+        display: none;
+    }
+
+    .opfab-sev-alarm {
+        background-color: $sev-alarm;
+        font-size: 0px;
+        padding-right: 0px;
+    }
+    .opfab-sev-action {
+        background-color: $sev-action;
+        font-size: 0px;
+        padding-right: 0px;
+    }
+    .opfab-sev-compliant {
+        background-color: $sev-compliant;
+        font-size: 0px;
+        padding-right: 0px;
+    }
+    .opfab-sev-information {
+        background-color: $sev-information;
+        font-size: 0px;
+        padding-right: 0px;
+    }
+
+    .ag-cell-wrap-text {
+        word-break: normal;
+    }
+
+    .ag-header-cell-sortable {
+        cursor: default;
+        .ag-header-cell-label {
+            cursor: pointer;
+        }
+    }
+
+    .ag-header-cell-menu-button {
+        cursor: pointer;
+    }
+}
+
+.opfab-monitoring-ag-grid-row {
+    cursor: pointer;
+}
+
+.ag-popup {
+    @extend .opfab-ag-grid-theme;
+}
+
+// OpFab customization of the default theme for ngx-chips component
+// It allows the colors to match the ones from the OpFab global style and to respond to the night/day mode
+
+tag-input {
+    .ng2-tag-input.opfab-theme {
+        @include tag-input-theme(
+            (
+                container-border-bottom: none,
+                container-border-bottom-focused: none,
+                box-shadow: none
+            )
+        );
+
+        tag {
+            @include tag-theme(
+                (
+                    background: #2784ff,
+                    background-focused: #2784ff,
+                    background-active: #2784ff,
+                    background-hover: #2784ff,
+                    color: #fff,
+                    color-hover: #fff,
+                    border-radius: 2px,
+                    box-shadow: none,
+                    margin: 0.3rem 0.1rem 0.3rem 0.8rem,
+                    height: 26px,
+                    line-height: 26px,
+                    font-family: var(--opfab-font-family)
+                )
+            );
+
+            delete-icon {
+                @include icon-theme(
+                    (
+                        fill: #fff,
+                        fill-focus: #fff,
+                        transition: all 0.35s
+                    )
+                );
+                svg {
+                    transform: translate(0px, -4px) scale(0.8);
+                }
+            }
+        }
+
+        input {
+            @include tag-theme(
+                (
+                    background: var(--opfab-bgcolor),
+                    background-focused: var(--opfab-bgcolor),
+                    background-active: var(--opfab-bgcolor),
+                    background-hover: var(--opfab-bgcolor),
+                    color: var(--opfab-color),
+                    color-hover: var(--opfab-color)
+                )
+            );
+        }
+    }
+}
+
+.opfab-link {
+    display: block;
+    color: var(--opfab-navbar-color);
+    text-align: center;
+    text-decoration: underline;
+    span {
+        cursor: pointer;
+    }
+
+    &:hover,
+    &:focus {
+        color: var(--opfab-navbar-color-hover);
+        text-decoration: none;
+    }
+}
+
+.opfab-icon-help {
+    display: inline-block;
+    height: 13px;
+    width: 13px;
+    margin-bottom: -2px;
+    margin-right: 10px;
+    border-width: 0px;
+    background: var(--opfab-navbar-color-hover);
+    mask: url(../assets/images/icons/help.svg);
+}
