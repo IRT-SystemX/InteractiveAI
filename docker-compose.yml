@@ -1,23 +1,38 @@
-version: '3.5'
+version: "3.5"
 services:
-    cabevent:
-        image: cab/cabevent
-        build:
-          context: backend/event-service
-          dockerfile: Dockerfile
-        restart: unless-stopped
-        environment: 
-            - CARDS_PUBLICATION_SERVICE=http://cards-publication:8080
-            - GATEWAY_SERVICE=http://web-ui:80
+  cabevent:
+    image: cab/cabevent
+    build:
+      context: backend/event-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - CARDS_PUBLICATION_SERVICE=http://cards-publication:8080
+      - GATEWAY_SERVICE=http://web-ui:80
 
-        command: sh -c "./entrypoint.sh"
-        
-        ports:
-            - 5000:5000
-        volumes:
-            - ./backend/event-service:/code
-        networks:
-            - docker_default
+    command: sh -c "./entrypoint.sh"
+
+    ports:
+      - 5000:5000
+    volumes:
+      - ./backend/event-service:/code
+    networks:
+      - docker_default
+  cabcontext:
+    image: cab/cabcontext
+    build:
+      context: backend/context-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+    command: sh -c "./entrypoint.sh"
+
+    ports:
+      - 5100:5000
+    volumes:
+      - ./backend/context-service:/code
+    networks:
+      - docker_default
 networks:
   docker_default:
     external: true
