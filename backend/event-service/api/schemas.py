@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, Integer, String
+from apiflask.fields import DateTime, Dict, Integer, String, Float
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -12,8 +12,8 @@ class MetadataRTE(Metadata):
     event_type = String(required=True, validate=OneOf(
         ['KPI', 'anticipation', 'agent', 'consignation']))
     zone = String(required=True, validate=OneOf(['Est', 'Ouest', 'Center']))
-    line = Integer()
-    flux = Integer()
+    line = String()
+    flux = Float()
 
 
 class MetadataSNCF(Metadata):
