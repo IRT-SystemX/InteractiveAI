@@ -67,6 +67,7 @@ class Events(MethodView):
         card_pub_client = CardPubClient()
         severity = severity_map[data.get("criticality")]
         date = data.get("date", datetime.now())
+        data["date"] = date
         timestamp_date = int(round((date).timestamp()*1000))
 
         card_pub_client.create_card(login_response.get("access_token"),
