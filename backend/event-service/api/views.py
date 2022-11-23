@@ -6,6 +6,7 @@ import uuid
 from .schemas import EventIn, EventOut
 from .clients.keycloak import KeycloakClient
 from .clients.cards_publication import CardPubClient
+from .clients.historic import HistoricClient
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
 
 events = []
@@ -68,6 +69,9 @@ class Events(MethodView):
         severity = severity_map[data.get("criticality")]
         date = data.get("date", datetime.now())
         timestamp_date = int(round((date).timestamp()*1000))
+        data["date"] = timestamp_date
+        logging.error(data)
+        
 
         card_pub_client.create_card(login_response.get("access_token"),
                                     data["id_event"],
@@ -76,6 +80,10 @@ class Events(MethodView):
                                     data["title"],
                                     data["description"],
                                     data["metadata"])
+        historic_client = HistoricClient()
+        data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+        historic_client.create_trace(data)
+        data["date"] = date
 
         events.append(data)
         return events[-1]

@@ -9,6 +9,7 @@ services:
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication:8080
       - GATEWAY_SERVICE=http://web-ui:80
+      - HISTORIC_SERVICE=http://cabhistoric:5000
 
     command: sh -c "./entrypoint.sh"
 
@@ -18,6 +19,7 @@ services:
       - ./backend/event-service:/code
     networks:
       - docker_default
+
   cabcontext:
     image: cab/cabcontext
     build:
@@ -33,6 +35,42 @@ services:
       - ./backend/context-service:/code
     networks:
       - docker_default
+  cabhistoric:
+    container_name: cabhistoric
+    image: cab/cabhistoric
+    build:
+      context: backend/historic-service
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres:5432/postgres_dev
+    restart: unless-stopped
+
+    command: sh -c "./entrypoint.sh"
+
+    ports:
+      - 5200:5000
+    volumes:
+      - ./backend/historic-service:/code
+    networks:
+      - docker_default
+    depends_on:
+      - db_postgres
+  db_postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres_dev
+    networks:
+      - docker_default
 networks:
   docker_default:
     external: true
+
+volumes:
+  postgres_data:
