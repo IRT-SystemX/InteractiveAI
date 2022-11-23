@@ -46,12 +46,19 @@ These two parameters are place in this file as the style should have a title par
 </style>
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+  function closeHome(){
+    document.getElementById("homescreen").style = "display:none";
+    document.getElementByClassName("body").style = "display:block";
+    document.getElementById("of_timeline").style = "z-index:3";
+  }
+  </script>
 
 
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
 </head>
-<body class="opfab-colors">
+<body class="opfab-colors" style="max-height:730px">
   <of-root></of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

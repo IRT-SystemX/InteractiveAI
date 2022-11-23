@@ -21,10 +21,6 @@ export class OpfabTitleCasePipe implements PipeTransform {
     }
 
     transform(title: string): string {
-        if (this.titleToUppercase) {
-            return title.toUpperCase();
-        } else {
             return title;
-        }
     }
 }

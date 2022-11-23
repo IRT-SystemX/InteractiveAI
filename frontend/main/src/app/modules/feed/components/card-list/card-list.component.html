@@ -7,16 +7,16 @@
 <!-- This file is part of the OperatorFabric project.                      -->
 
 <div id="container-cl" style="display:flex">
-<div class="opfab-feed-horizontal-bar" id="ctx_div"><img src="assets\images\ctx.png"></div>
-<div class="container-fluid feed-content" style="margin-top: 70px;">
+<div id="ctx_div"><img style="width: 710px;height:615px" src="assets\images\ctx.png"></div>
+<div class="container-fluid feed-content" style="margin-top: 10px; position:relative">
   <div>
     <of-filters></of-filters>
   </div>
 
 
-  <div class="opfab-feed-horizontal-bar"> </div>
+  <div style="height:25px"> </div>
 
-  <div id="opfab-card-list" class="opfab-card-list">
+  <div id="opfab-card-list" class="opfab-card-list" style="width:96%">
     <div class="row" *ngFor="let currentLightCard of lightCards">
       <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
         <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||

@@ -8,15 +8,6 @@
  */
 
 
-function basic(){
-    document.getElementById("of_timeline").style.position = "fixed";
-    document.getElementById("of_timeline").style.bottom = "0";
-    document.getElementById("opfab-card-list").style.width = document.getElementById("opfab-card-list").offsetWidth*2+"px";
-    document.getElementById("opfab-div-card-template").style.marginLeft = document.getElementById("ctx_div").offsetWidth + "px";
-    document.getElementById("opfab-card-detail-footer").style.marginLeft = document.getElementById("ctx_div").offsetWidth + "px";
-}
-setTimeout(basic,5000);
-
 const opfabStyle = {
 
     rootRulesNumber : null,
@@ -82,7 +73,7 @@ const opfabStyle = {
         --opfab-card-detail-border-color : #dddddd;
         --opfab-navbar-color: black;
         --opfab-navbar-color-hover:black;
-        --opfab-navbar-color-active:black;
+        --opfab-navbar-color-active:#0d6efd;
         --opfab-navbar-toggler-icon: url("data:image/svg+xml, %3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         --opfab-navbar-toggler-border-color: rgba(0,0,0,.1) ;
         --opfab-navbar-info-block-color: rgba(0,0,0,.9);

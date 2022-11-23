@@ -14,6 +14,10 @@ import {LogOption, OpfabLoggerService} from '@ofServices/logs/opfab-logger.servi
 import {UserService} from '@ofServices/user.service';
 import {TryToLogOutAction} from '@ofStore/actions/authentication.actions';
 import {ApplicationLoadingStep} from '../application-loading-step';
+import {ApplicationLoadingComponent} from '../application-loading.component';
+import $ from "jquery";
+import { cardsSubscriptionInitialState } from '@ofStore/states/cards-subscription.state';
+
 
 @Component({
     selector: 'of-account-already-used',
@@ -51,6 +55,26 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
                 this.sendEventAccountAlreadyInUseCheckDone();
             }
         });
+    }
+
+    public setCardsSeverity(){
+        var cards = $(".card");
+        for(var card = 0; card<cards.length;card++){
+            cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
+            cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté ");
+            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine");
+            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine");
+            if ( cards[card].classList.contains("light-card-detail-selected") ){
+                console.log("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+            }
+        }
+    }
+
+    public displayLoader(): void {
+        setTimeout(() => {
+            this.setCardsSeverity();
+        }, 5000);
     }
 
     public loginEvenIfAccountIsAlreadyUsed(): void {

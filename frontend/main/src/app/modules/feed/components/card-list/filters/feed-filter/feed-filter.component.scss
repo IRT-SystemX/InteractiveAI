@@ -36,6 +36,9 @@
     background-color: $sev-alarm;
 }
 
+#opfab-navbar-menu-menu1{
+    font-size: 23px;
+}
 .label-sev-action::before {
     content: '';
     display: inline-block;
@@ -68,13 +71,12 @@
 
 .opfab-icon-filter {
     display: inline-block;
-    height: 32px;
-    width: 32px;
+    height: 25px;
+    width: 25px;
     margin-top: 5px;
     margin-right: 10px;
     border-width: 0px;
-    background: var(--opfab-navbar-color-hover);
-    mask: url(../../../../../../../assets/images/icons/filter.svg);
+    background-image: url(../../../../../../../assets/images/icons/filter.png);
 }
 
 .opfab-icon-filter-active {
@@ -89,7 +91,7 @@
 }
 
 .opfab-icon-filter:hover {
-    background: var(--opfab-feedbar-icon-hover-color);
+    box-shadow: var(--opfab-card-shadow);
 }
 
 .opfab-icon-bg-color {

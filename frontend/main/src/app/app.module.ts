@@ -42,6 +42,7 @@ import {ReloadRequiredComponent} from './modules/core/reload-required/reload-req
 import {ServiceWorkerModule, SwRegistrationOptions} from '@angular/service-worker';
 import {Utilities} from './common/utilities';
 import { SpinnerModule } from './modules/share/spinner/spinner.module';
+import $ from "jquery";
 
 @NgModule({
     imports: [

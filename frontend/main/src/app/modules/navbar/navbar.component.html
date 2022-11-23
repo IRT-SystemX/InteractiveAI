@@ -6,9 +6,26 @@
 <!-- SPDX-License-Identifier: MPL-2.0                                      -->
 <!-- This file is part of the OperatorFabric project.                      -->
 
+<div class="fixed-top" id="homescreen" style="width: 1920PX;
+  height: 950px;
+  background-color: white;
+  z-index: 2;
+  padding-bottom: 162px;
+  border: solid;
+  text-align: center;"
+ >
+  <div style="height:67px;background-color:#00A7DE;color:white"><b style="font: normal normal 600 30px/40px Segoe UI;">Assistant CAB</b></div>
+    <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage supervision</b></div>
+    <img class="choose-uc-img" src="assets\images\Bouton orange nominal.png">
+    <a href="#"> <img class="choose-uc-img" src="assets\images\bouton RTE nominal.png"  onclick="closeHome()"> </a>
+    <img class="choose-uc-img" src="assets\images\bouton SNCF nominal.png">
+    
+    <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage pilotage d'aéronef</b></div>
+    <img class="choose-uc-img" src="assets\images\bouton DA nominal.png" style="float: left;margin-left: 230px;">
 
+  </div>
 
-<nav class="navbar navbar-expand-lg fixed-top  opfab-navbar">
+<nav class="navbar navbar-expand-lg fixed-top opfab-navbar" style="z-index:1">
   <a class="navbar-brand">
     <div *ngIf="this.customLogo; else opFabLogo">
       <of-custom-logo [base64]="customLogo"  [height]="height" [width]="width"></of-custom-logo>
@@ -24,7 +41,7 @@
   <ng-container *ngTemplateOutlet="menuCollapsedContent"></ng-container>
   </div>
   <div class="collapse navbar-collapse " id="opfab-navbarContent" [ngbCollapse]="navbarCollapsed">
-    <ul class="navbar-nav mr-auto ">
+    <ul class="navbar-nav mr-auto " style="font-size:23px">
       <!-- Links to OperatorFabric pages as defined in app-rooting.module.ts (e.g. Card Feed, Archive) -->
       <li class="nav-item" *ngFor="let link of navigationRoutes, let i = index"
         [class.active]="link.path === currentPath[1]">

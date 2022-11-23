@@ -16,17 +16,16 @@
 
 .opfab-icon-sort {
     display: inline-block;
-    height: 32px;
-    width: 32px;
+    height: 29px;
+    width: 25px;
     margin-top: 5px;
     margin-right: 5px;
     border-width: 0px;
-    background: var(--opfab-navbar-color-hover);
-    mask: url(../../../../../../../assets/images/icons/sort.svg);
+    background-image: url(../../../../../../../assets/images/icons/notification.png);
 }
 
 .opfab-icon-sort:hover {
-    background: var(--opfab-feedbar-icon-hover-color);
+    box-shadow: var(--opfab-card-shadow);
 }
 
 .opfab-icon-bg-color {

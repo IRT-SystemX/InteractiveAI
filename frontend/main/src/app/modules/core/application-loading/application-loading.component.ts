@@ -196,6 +196,7 @@ export class ApplicationLoadingComponent implements OnInit {
     private checkIfAccountIsAlreadyUsed(): void {
         this.loadingInProgress = false;
         this.accountAlreadyUsedComponent.execute();
+        this.accountAlreadyUsedComponent.displayLoader();
         this.accountAlreadyUsedComponent.isFinishedWithoutError().subscribe(() => {
             this.loadingInProgress = true;
             this.loadAllConfigurations();

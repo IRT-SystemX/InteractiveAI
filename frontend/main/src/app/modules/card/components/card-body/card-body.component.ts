@@ -28,6 +28,7 @@ import {DisplayContext} from '@ofModel/templateGateway.model';
 import {LightCardsStoreService} from '@ofServices/lightcards/lightcards-store.service';
 import {CardComponent} from '../../card.component';
 import {OpfabLoggerService} from '@ofServices/logs/opfab-logger.service';
+import $ from "jquery";
 
 declare const templateGateway: any;
 
@@ -305,6 +306,7 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
     private startRegularlyCheckLttd() {
         this.regularlyLttdCheckActive = true;
         this.regularlyCheckLttd();
+        this.setSelectedCardColor();
     }
 
     private regularlyCheckLttd() {
@@ -313,6 +315,16 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
                 this.lttdExpiredIsTrue = true;
                 templateGateway.setLttdExpired(true);
             } else setTimeout(() => this.regularlyCheckLttd(), 500);
+        }
+    }
+
+    private setSelectedCardColor(){
+        var cards = $(".card");
+        for(var card = 0; card<cards.length;card++){
+            if ( cards[card].classList.contains("light-card-detail-selected") ){
+                var severity = $(cards[card]).attr("severity");
+                $(cards[card]).addClass("light-card-detail-selected-" + severity)
+            }
         }
     }
 

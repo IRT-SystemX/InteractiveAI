@@ -36,6 +36,7 @@ import {FilterService} from '@ofServices/lightcards/filter.service';
 import {LogOption, OpfabLoggerService} from './logs/opfab-logger.service';
 import packageInfo from '../../../package.json';
 import {SoundNotificationService} from './sound-notification.service';
+import $ from "jquery";
 
 @Injectable({
     providedIn: 'root'
@@ -117,6 +118,21 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
+                            var cards = $(".card");
+                            setTimeout(() => {
+                                cards = $(".card");
+                                console.log(cards[0].innerHTML)
+                                cards[0].innerHTML = cards[0].innerHTML.replace("action","Sureté");
+                                cards[0].innerHTML = cards[0].innerHTML.replace("alarm","Sureté");
+                                cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
+                                cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
+                                    // if ( cards[card].classList.contains("light-card-detail-selected") ){
+                                    //     $(cards[card]).addClass("light-card-detail-selected-" + "{{lightCard.severity.toString()|lowercase}}")
+                                    // }
+                                // }
+                            }, 3000);
+
+
                             if (operation.card.id === this.selectedCardId)
                                 this.store.dispatch(new LoadCardAction({id: operation.card.id}));
                             break;

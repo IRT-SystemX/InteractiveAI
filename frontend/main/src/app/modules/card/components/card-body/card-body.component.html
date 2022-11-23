@@ -8,7 +8,9 @@
 
 <div [class.opfab-card-detail-fullscreen]="fullscreen || isSmallscreen()">
   <div style="display: block;  margin-top:10px;">
-    <ul class="nav nav-tabs opfab-line-undertab">
+    <ul class="nav nav-tabs opfab-line-undertab" id="opfab-line-undertab" style="width:45%;margin-left: 800px;">
+      <div style="font-size:18px;color:grey"><b>Assistance à l'opérateur</b></div>
+
       <li class="nav-item opfab-tab opfab-menu-item-left" data-toggle="tab">
         <span class="opfab-tab" id="opfab-card-title">{{card.titleTranslated | opfabTitleCase}}</span>
       </li>
@@ -36,11 +38,10 @@
       </li>
     </ul>
 
-    <div>
+    <div id="tomarge">
       <div>
         <!-- padding is necessary to see box shadow-->
-
-        <div *ngIf='showDetailCardHeader' class="opfab-card-response-header">
+        <div *ngIf='showDetailCardHeader' id="opfab-card-response-header" class="opfab-card-response-header">
           <of-card-header [card]="this.card" [childCards]="this.childCards" [cardState]="this.cardState"
             [lttdExpiredIsTrue]="this.lttdExpiredIsTrue"> </of-card-header>
         </div>
@@ -57,10 +58,9 @@
           <div id='opfab-card-detail-footer'>
 
             <div style="text-align: left;margin-top: 5px" *ngIf="displayCardAcknowledgedFooter()"
-              class="opfab-card-response-header">
+              class="opfab-card-response-header" id="">
               <of-card-acks-footer style="display:flex" [card]="this.card"></of-card-acks-footer>
             </div>
-
             <div style="display: flex">
               <of-card-footer-text [card]="this.card" [childCards]="this.childCards"> </of-card-footer-text>
 
@@ -81,3 +81,6 @@
   </div>
 
 </div>
+
+
+

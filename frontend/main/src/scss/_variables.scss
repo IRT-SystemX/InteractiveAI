@@ -11,8 +11,11 @@
  */
 
 $sev-alarm: red !default;
-$sev-action: #fd9312 !default;
+$sev-action: #C0791B !default;
 $sev-compliant: #00bb03 !default;
-$sev-information: #1074ad !default;
+$sev-information: #00bb03 !default;
 $less-dark: #525854 !default;
 
+.choose-uc-img:hover{
+  background-image: url("../assets/images/bouton DA nominal.png");
+}

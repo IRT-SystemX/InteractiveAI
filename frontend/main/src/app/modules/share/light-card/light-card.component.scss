@@ -11,12 +11,33 @@
 
 .light-card-detail {
     color: var(--opfab-lightcard-detail-textcolor);
-    margin-right: 20px;
 }
 
 .light-card-detail-selected {
-    background-color: var(--opfab-lightcard-detail-selected-bgcolor);
-    margin-left: 20px;
+    transition: margin 0.3s;
+    color:white;
+}
+
+.light-card-detail-selected-alarm {
+    background-color: $sev-alarm;
+    margin-right: 0px;
+    transition: margin 0.3s;
+}
+
+.light-card-detail-selected-action {
+    background-color: $sev-action;
+    margin-right: 0px;
+    transition: margin 0.3s;
+}
+
+.light-card-detail-selected-compliant {
+    background-color: $sev-compliant;
+    margin-right: 0px;
+    transition: margin 0.3s;
+}
+
+.light-card-detail-selected-information {
+    background-color: $sev-information;
     margin-right: 0px;
     transition: margin 0.3s;
 }
@@ -31,9 +52,23 @@
     font-weight: bold;
 }
 
-.card {
+.light-card-border-alarm{
+    border: 1px solid $sev-alarm;
+}
+.light-card-border-action{
+    border: 1px solid $sev-action;
+}
+.light-card-border-compliant{
+    border: 1px solid $sev-compliant;
+}
+.light-card-border-information{
+    border: 1px solid $sev-information;
+}
+
+.card:hover {
     word-break: break-all;
     box-shadow: var(--opfab-card-shadow);
+    background-color: #D1D1D1;
 }
 
 .card-title {
@@ -55,6 +90,9 @@
     margin-right: 18px;
 }
 
+.card-severity{
+    text-align: right;
+}
 .opfab-bg-sev-alarm {
     background-color: $sev-alarm;
 }
