@@ -68,6 +68,19 @@ services:
       - POSTGRES_DB=postgres_dev
     networks:
       - docker_default
+
+  angular-ui:
+    build:
+      context: ./frontend/main
+      # context: ./web-ui/src/docker/main
+      dockerfile: Dockerfile
+    ports:
+    - "3200:80"
+    volumes:
+      - "./ui-config:/usr/share/nginx/html/opfab"
+      - "./nginx-cors-permissive.conf:/etc/nginx/conf.d/default.conf"
+    networks:
+      - docker_default
 networks:
   docker_default:
     external: true
