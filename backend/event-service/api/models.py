@@ -11,3 +11,4 @@ class EventModel(db.Model):
     date = db.Column(db.DateTime)
     criticality = db.Column(db.String(10))
     data = db.Column(db.PickleType)
+    is_active = db.Column(db.Boolean, default=True)
