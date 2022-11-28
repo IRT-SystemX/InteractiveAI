@@ -3,6 +3,7 @@ from apiflask.fields import DateTime, Dict, String
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
+
 class Event(Schema):
     id_event = String()
     use_case = String(required=True, validate=OneOf(
@@ -12,13 +13,16 @@ class Event(Schema):
     date = DateTime(format="iso")
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
-    metadata = Dict()
+    data = Dict()
+
 
 class Solution(Schema):
     pass
 
+
 class Actions(Schema):
     pass
+
 
 class AskForHelp(Schema):
     id_event = String()

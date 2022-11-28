@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, Integer, String, Float
+from apiflask.fields import DateTime, Dict, Float, Integer, String
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -36,12 +36,12 @@ class EventIn(Schema):
     date = DateTime(format="iso")
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
-    metadata = Dict()
+    data = Dict()
 
     @validates_schema
     def validate_metadata(self, data, **kwargs):
         use_case = data.get("use_case")
-        metadata = data.get("metadata")
+        metadata = data.get("data")
         if use_case == "RTE":
             MetadataRTE().load(metadata)
         elif use_case == "SNCF":
@@ -61,4 +61,4 @@ class EventOut(Schema):
     description = String()
     date = DateTime(format="iso")
     criticality = String()
-    metadata = Dict()
+    data = Dict()

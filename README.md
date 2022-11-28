@@ -1,13 +1,11 @@
 # CAB Assistant Platform
 
-# Build and run event service
-```
-docker build -t event-service .
-```
+# Build and run
 
 ```
-docker run -p 5000:5000 event-service
+docker-compose up
 ```
+
 
 # Docs
 A postman collection is under docs/postman_collections, and you can always check the openapi through the URL http://localhost:5000/docs
