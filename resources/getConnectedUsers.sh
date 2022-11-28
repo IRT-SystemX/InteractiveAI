@@ -16,5 +16,5 @@ then
 fi
 
 source ./getToken.sh "admin" $url
-curl $url:2002/cards/connections -H "Authorization:Bearer $token"
+curl $url:3200/cards/connections -H "Authorization:Bearer $token"
 echo ""

@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"this is a title\",\r\n    \"description\": \"this is a description\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"this is a title for event db test\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": \"1_2_3\",\r\n        \"flux\": 456.35\r\n    },\r\n    \"use_case\": \"RTE\",\r\n    \"is_active\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,12 +20,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events",
+					"raw": "http://{{ENV_ENDPOINT_EVENT}}/api/v1/events",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{ENV_ENDPOINT_EVENT}}"
 					],
-					"port": "5000",
 					"path": [
 						"api",
 						"v1",
@@ -102,7 +101,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"criticality\": \"ND\",\r\n    \"date\": \"2022-11-07T15:23:53.595Z\",\r\n    \"description\": \"s\",\r\n    \"id_event\": \"123\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,12 +109,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events",
+					"raw": "http://{{ENV_ENDPOINT_EVENT}}/api/v1/events",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{ENV_ENDPOINT_EVENT}}"
 					],
-					"port": "5000",
 					"path": [
 						"api",
 						"v1",

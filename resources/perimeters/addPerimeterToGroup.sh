@@ -23,5 +23,5 @@ then
 else
     source ../getToken.sh "admin" $url
     echo "Add perimeter $1 to group $2"
-    curl -X PATCH $url:2002/users/groups/$2/perimeters -H "Content-type:application/json" -H "Authorization:Bearer $token" --data "[\"$1\"]"
+    curl -X PATCH $url:3200/users/groups/$2/perimeters -H "Content-type:application/json" -H "Authorization:Bearer $token" --data "[\"$1\"]"
 fi

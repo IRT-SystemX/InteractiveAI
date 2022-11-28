@@ -11,10 +11,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5100/api/v1/contexts",
+					"raw": "http://192.168.208.57:5100/api/v1/contexts",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"208",
+						"57"
 					],
 					"port": "5100",
 					"path": [
@@ -41,10 +44,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5100/api/v1/contexts",
+					"raw": "http://192.168.208.57:5100/api/v1/contexts",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"208",
+						"57"
 					],
 					"port": "5100",
 					"path": [

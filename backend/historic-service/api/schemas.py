@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, String
+from apiflask.fields import DateTime, Dict, String, Boolean
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -14,7 +14,7 @@ class Event(Schema):
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
-
+    is_active = Boolean()
 
 class Solution(Schema):
     pass

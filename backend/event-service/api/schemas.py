@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, Float, Integer, String
+from apiflask.fields import DateTime, Dict, Float, Integer, String, Boolean
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -11,7 +11,7 @@ class Metadata(Schema):
 class MetadataRTE(Metadata):
     event_type = String(required=True, validate=OneOf(
         ['KPI', 'anticipation', 'agent', 'consignation']))
-    zone = String(required=True, validate=OneOf(['Est', 'Ouest', 'Center']))
+    zone = String(validate=OneOf(['Est', 'Ouest', 'Centre']))
     line = String()
     flux = Float()
 
@@ -37,6 +37,7 @@ class EventIn(Schema):
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
+    is_active = Boolean()
 
     @validates_schema
     def validate_metadata(self, data, **kwargs):
@@ -62,3 +63,4 @@ class EventOut(Schema):
     date = DateTime(format="iso")
     criticality = String()
     data = Dict()
+    is_active = Boolean()
