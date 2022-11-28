@@ -1,15 +1,17 @@
-import logging
-from datetime import datetime
-from apiflask import APIBlueprint, abort
-from flask.views import MethodView
 import uuid
-from .schemas import EventIn, EventOut
-from .clients.keycloak import KeycloakClient
+from datetime import datetime
+
+from apiflask import APIBlueprint
+from flask.views import MethodView
+
 from .clients.cards_publication import CardPubClient
 from .clients.historic import HistoricClient
+from .clients.keycloak import KeycloakClient
+from .models import EventModel, db
+from .schemas import EventIn, EventOut
+
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
 
-events = []
 
 severity_map = {
     "ND": "ND",
@@ -26,39 +28,17 @@ class HealthCheck(MethodView):
         return
 
 
-class Event(MethodView):
-
-    @api_bp.output(EventOut)
-    def get(self, event_id):
-        """Get a event"""
-        if event_id > len(events) - 1:
-            abort(404)
-        return events[event_id]
-
-    @api_bp.input(EventIn(partial=True))
-    @api_bp.output(EventOut)
-    def patch(self, event_id, data):
-        """Update a event"""
-        if event_id > len(events) - 1:
-            abort(404)
-        for attr, value in data.items():
-            events[event_id][attr] = value
-        return events[event_id]
-
-
 class Events(MethodView):
 
     @api_bp.output(EventOut(many=True))
     def get(self):
         """Get all events"""
-        print(events)
-        return events
+        return EventModel.query.all()
 
     @api_bp.input(EventIn)
     @api_bp.output(EventOut, status_code=201)
     def post(self, data):
         """Add an event"""
-        logging.info(data)
         event_id = uuid.uuid4()
         data["id_event"] = str(event_id)
         # TODO: this authenetication should be removed once this service is integrated into the same gateway as operatorFabric
@@ -70,8 +50,6 @@ class Events(MethodView):
         date = data.get("date", datetime.now())
         timestamp_date = int(round((date).timestamp()*1000))
         data["date"] = timestamp_date
-        logging.error(data)
-        
 
         card_pub_client.create_card(login_response.get("access_token"),
                                     data["id_event"],
@@ -79,16 +57,18 @@ class Events(MethodView):
                                     timestamp_date,
                                     data["title"],
                                     data["description"],
-                                    data["metadata"])
+                                    data["data"])
         historic_client = HistoricClient()
         data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
         historic_client.create_trace(data)
         data["date"] = date
 
-        events.append(data)
-        return events[-1]
+        # Save event to database
+        event = EventModel(**data)
+        db.session.add(event)
+        db.session.commit()
+        return event
 
 
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
-api_bp.add_url_rule("/events/<int:event_id>", view_func=Event.as_view("event"))
 api_bp.add_url_rule("/events", view_func=Events.as_view("events"))
