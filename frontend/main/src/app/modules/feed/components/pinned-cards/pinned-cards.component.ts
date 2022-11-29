@@ -55,7 +55,6 @@ export class PinnedCardsComponent implements OnInit, OnDestroy, OnChanges {
         this.pinnedCards = [];
 
         this.lightCardsStoreService.getLightCards().subscribe((cards) => this.setPinnedCards(cards));
-
         timer(10000, 10000)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((t) => this.checkPinnedCardsEndDate());
@@ -90,11 +89,15 @@ export class PinnedCardsComponent implements OnInit, OnDestroy, OnChanges {
         return cards
             .filter((card) => {
                 const processDefinition = this.processesService.getProcess(card.process);
-                return (
-                    processDefinition.extractState(card).automaticPinWhenAcknowledged &&
-                    card.hasBeenAcknowledged &&
-                    (!card.endDate || card.endDate > Date.now())
-                );
+                try {
+                    return (
+                        processDefinition.extractState(card).automaticPinWhenAcknowledged &&
+                        card.hasBeenAcknowledged &&
+                        (!card.endDate || card.endDate > Date.now())
+                    );
+                } catch (error) {
+                    return null;
+                }
             })
             .sort((a, b) => Utilities.compareObj(a.publishDate, b.publishDate));
     }

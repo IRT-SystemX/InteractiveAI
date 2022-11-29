@@ -86,7 +86,6 @@ export class ApplicationLoadingComponent implements OnInit {
             next: (config) => {
                 if (!!config) {
                     this.logger.info(`Configuration loaded (web-ui.json)`);
-                    this.setTitleInBrowser();
                     this.loadTranslation(config);
                     this.loadEnvironmentName();
                 }

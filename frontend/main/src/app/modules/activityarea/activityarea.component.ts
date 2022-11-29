@@ -111,7 +111,7 @@ export class ActivityareaComponent implements OnInit, OnDestroy {
             this.isScreenLoaded = true;
             this.refresh();
         });
-    }
+    } 
 
     refresh() {
         this.userService.loadConnectedUsers().subscribe((connectedUsers) => {

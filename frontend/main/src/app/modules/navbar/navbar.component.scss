@@ -9,9 +9,8 @@
 
 .opfab-navbar {
     padding-left: 20px;
-    background-color: var(--opfab-bgcolor);
+    background-color:#E7E7E7;
     font-size: 16px;
-    top: 5px;
 
     .navbar-nav {
         .nav-link {
@@ -213,6 +212,7 @@
 }
 
 .opfab-sticky-menu {
+    display:none;
     position: absolute;
     top: 3px;
     right: 0;

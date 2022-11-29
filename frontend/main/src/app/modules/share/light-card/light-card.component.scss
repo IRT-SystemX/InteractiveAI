@@ -11,6 +11,7 @@
 
 .light-card-detail {
     color: var(--opfab-lightcard-detail-textcolor);
+    min-height:70px;
 }
 
 .light-card-detail-selected {
@@ -43,13 +44,11 @@
 }
 
 .light-card-detail-unselected {
-    background-color: var(--opfab-lightcard-detail-bgcolor);
     cursor: pointer;
 }
 
 .light-card-detail-unread {
     color: var(--opfab-lightcard-detail-unread-textcolor);
-    font-weight: bold;
 }
 
 .light-card-border-alarm{

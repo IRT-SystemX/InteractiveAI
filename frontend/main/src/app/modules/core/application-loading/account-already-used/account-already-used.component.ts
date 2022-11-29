@@ -36,7 +36,7 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
         private store: Store,
         private userService: UserService,
         private modalService: NgbModal,
-        private logger: OpfabLoggerService
+        private logger: OpfabLoggerService  
     ) {
         super();
     }
@@ -61,11 +61,11 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
         var cards = $(".card");
         for(var card = 0; card<cards.length;card++){
             cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
-            cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté ");
-            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine");
-            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine");
+            cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
+            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
+            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
             if ( cards[card].classList.contains("light-card-detail-selected") ){
-                console.log("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));
                 $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
             }
         }

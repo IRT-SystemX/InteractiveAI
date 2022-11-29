@@ -26,6 +26,7 @@ import {TypeOfStateEnum} from '@ofModel/processes.model';
 import {SoundNotificationService} from '@ofServices/sound-notification.service';
 import {DateTimeFormatterService} from '@ofServices/date-time-formatter.service';
 import {MapService} from '@ofServices/map.service';
+import $, { get } from "jquery";
 
 @Component({
     selector: 'of-light-card',
@@ -149,6 +150,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
     }
 
     public select($event) {
+        var cards = $(".card");
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();
@@ -159,7 +161,15 @@ export class LightCardComponent implements OnInit, OnDestroy {
         }
         if (this.displayContext != DisplayContext.PREVIEW)
             this.router.navigate(['/' + this.currentPath, 'cards', this.lightCard.id]);
-    }
+            if($("#opfab-feed-list-card-title")[0].innerHTML == "Alerte de sûreté" 
+            && $(cards[0]).hasClass("light-card-detail-selected")){
+                console.log($("#opfab-feed-list-card-title")[0].innerHTML)
+                $.get( "http://localhost:5100/api/v1/contexts", function( data ) {
+                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].metadata.topology)
+                   $(".opfab-card-response-header").hide();
+                  });
+                }
+        }
 
     get i18nPrefix(): string {
         return this._i18nPrefix;

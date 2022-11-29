@@ -7,7 +7,16 @@
 <!-- This file is part of the OperatorFabric project.                      -->
 
 <div id="container-cl" style="display:flex">
-<div id="ctx_div"><img style="width: 710px;height:615px" src="assets\images\ctx.png"></div>
+<div id="ctx_div" class="ctx"><b>Contexte</b>
+  <div style="background-color: #E7E7E7; max-width: 15%; position:absolute">
+    <input type="checkbox" class="cbox" value="flux">
+    <label>Flux</label><br>
+    <input type="checkbox" class="cbox" value="tension">
+    <label>Tension</label><br>
+    <input type="checkbox" class="cbox" value="parade">
+    <label>Parade</label>
+  </div>
+  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png"></div>
 <div class="container-fluid feed-content" style="margin-top: 10px; position:relative">
   <div>
     <of-filters></of-filters>
@@ -36,6 +45,8 @@
 
 </div>
 </div>
+<div class="bar"></div>
+<div class="bar bar2"></div>
 
 
 

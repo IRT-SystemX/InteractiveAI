@@ -162,7 +162,7 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
         this.isResponseLocked = false;
         templateGateway.unlockAnswer();
     }
-
+    
     ngOnChanges(changes: SimpleChanges): void {
         if (!!changes.card || !!changes.cardState) {
             if (this.cardState.response != null && this.cardState.response !== undefined) {

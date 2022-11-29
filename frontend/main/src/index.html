@@ -12,7 +12,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-  <title>OperatorFabric Edited Mode</title>
+  <title>Assistant CAB v1</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,9 +49,19 @@ These two parameters are place in this file as the style should have a title par
   <script>
   function closeHome(){
     document.getElementById("homescreen").style = "display:none";
-    document.getElementByClassName("body").style = "display:block";
-    document.getElementById("of_timeline").style = "z-index:3";
   }
+  
+  setInterval(() => {
+        refreshCtx();
+    }, 60000);
+
+    function refreshCtx() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "GET", "http://localhost:5100/api/v1/contexts", false ); // false for synchronous request
+      xmlHttp.send( null );
+      var response  = JSON.parse(xmlHttp.responseText)[0].metadata.topology;
+      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+    };
   </script>
 
 

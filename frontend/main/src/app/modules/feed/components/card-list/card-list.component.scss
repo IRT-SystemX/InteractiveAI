@@ -52,3 +52,29 @@
 .modal-body {
     font-size: 16px;
 }
+
+input[type=checkbox]:checked + label {
+    color: rgb(89,145,145);
+    font-style: normal;
+} 
+
+.ctx{
+    font-size:18px;
+    color:grey;
+}
+
+.cbox{
+    font-size: 16px;
+}
+
+.bar{
+    border-left: 2px solid lightgrey;
+    height: 700px;
+    position: absolute;
+    margin-left: 700px;
+    top: 0;
+}
+
+.bar2{
+    margin-left: 1120px;
+}

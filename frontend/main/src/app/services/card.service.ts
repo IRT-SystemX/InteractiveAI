@@ -104,12 +104,14 @@ export class CardService {
     }
 
     public initCardSubscription() {
+        var cards;
         this.getCardSubscription()
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe({
                 next: (operation) => {
                     switch (operation.type) {
                         case CardOperationType.ADD:
+                            cards = $(".card");
                             this.logger.info(
                                 'CardService - Receive card to add id=' +
                                     operation.card.id +
@@ -118,18 +120,12 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
-                            var cards = $(".card");
                             setTimeout(() => {
                                 cards = $(".card");
-                                console.log(cards[0].innerHTML)
                                 cards[0].innerHTML = cards[0].innerHTML.replace("action","Sureté");
                                 cards[0].innerHTML = cards[0].innerHTML.replace("alarm","Sureté");
                                 cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
                                 cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
-                                    // if ( cards[card].classList.contains("light-card-detail-selected") ){
-                                    //     $(cards[card]).addClass("light-card-detail-selected-" + "{{lightCard.severity.toString()|lowercase}}")
-                                    // }
-                                // }
                             }, 3000);
 
 
