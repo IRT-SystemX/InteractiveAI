@@ -37,7 +37,11 @@ class ContextManager:
             if value is not None:
                 context_list.append(value)
         return context_list
-    def get_context_with_date(self, date):
+
+    def get_contexts_with_date(self, date):
         context = ContextModel.query.filter_by(date=date).all()
         return context
-    
+
+    def get_context_with_date(self, date):
+        context = ContextModel.query.filter_by(date=date).first()
+        return context
