@@ -1,6 +1,6 @@
 from apiflask import APIBlueprint
 from flask.views import MethodView
-
+from flask import request
 from .schemas import ContextIn, ContextOut
 from .context_manager import ContextManager
 
@@ -18,6 +18,10 @@ class Contexts(MethodView):
     @api_bp.output(ContextOut(many=True))
     def get(self):
         """Get all contexts"""
+        date_query_param = request.args.get('date')
+        if date_query_param:
+            return context_manager.get_context_with_date(date_query_param)
+        
         return context_manager.get_context()
 
     @api_bp.input(ContextIn)
