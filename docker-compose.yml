@@ -1,5 +1,22 @@
 version: "3.5"
 services:
+
+  cabcontext:
+    image: cab/cabcontext
+    build:
+      context: backend/context-service
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
+    restart: unless-stopped
+    command: sh -c "./entrypoint.sh"
+    ports:
+      - 5100:5000
+    volumes:
+      - ./backend/context-service:/code
+    networks:
+      - docker_default
+  
   cabevent:
     image: cab/cabevent
     build:
@@ -21,20 +38,6 @@ services:
     depends_on:
       - db_postgres_event
 
-  cabcontext:
-    image: cab/cabcontext
-    build:
-      context: backend/context-service
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    command: sh -c "./entrypoint.sh"
-    ports:
-      - 5100:5000
-    volumes:
-      - ./backend/context-service:/code
-    networks:
-      - docker_default
-
   cabhistoric:
     container_name: cabhistoric
     image: cab/cabhistoric
@@ -54,18 +57,18 @@ services:
     depends_on:
       - db_postgres_historic
 
-  db_postgres_historic:
-    container_name: db_postgres_historic
+  db_postgres_context:
+    container_name: db_postgres_context
     image: postgres:latest
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=cab-historic
+      - POSTGRES_DB=cab-context
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
-      - postgres_historic_data:/var/lib/postgresql/data/
+      - postgres_context_data:/var/lib/postgresql/data/
     networks:
       - docker_default
 
@@ -81,6 +84,21 @@ services:
       - "5432:5432"
     volumes:
       - postgres_event_data:/var/lib/postgresql/data/
+    networks:
+      - docker_default
+
+  db_postgres_historic:
+    container_name: db_postgres_historic
+    image: postgres:latest
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cab-historic
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_historic_data:/var/lib/postgresql/data/
     networks:
       - docker_default
 
@@ -116,6 +134,7 @@ networks:
     external: true
 
 volumes:
-  postgres_historic_data:
+  postgres_context_data:
   postgres_event_data:
+  postgres_historic_data:
   pgadmin:
