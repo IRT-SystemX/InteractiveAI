@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from .models import ContextModel, db
 
@@ -11,6 +12,7 @@ class ContextManager:
                         "DA/FW": None}
 
     def set_context(self, validated_data):
+        validated_data["date"] = validated_data.get("date", datetime.now())
         use_case = validated_data.get("use_case")
 
         if use_case == "RTE":
@@ -35,3 +37,7 @@ class ContextManager:
             if value is not None:
                 context_list.append(value)
         return context_list
+    def get_context_with_date(self, date):
+        context = ContextModel.query.filter_by(date=date).all()
+        return context
+    
