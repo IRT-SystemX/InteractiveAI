@@ -629,3 +629,15 @@ tag-input {
     background: var(--opfab-navbar-color-hover);
     mask: url(../assets/images/icons/help.svg);
 }
+
+.choose-uc-img:hover{
+    background-image: url("../assets/images/bouton DA nominal.png");
+  }
+#opfab-card-icon{
+    filter:brightness;
+}
+
+label:hover{
+    font-weight: bold;
+    color: var(--bs-blue);
+}

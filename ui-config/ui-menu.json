@@ -7,23 +7,23 @@
     },
     {
       "id": "archives",
-      "visible": true
+      "visible": false
     },
     {
       "id": "monitoring",
-      "visible": true
+      "visible": false
     },
     {
       "id": "logging",
-      "visible": true
+      "visible": false
     },
     {
       "id": "usercard",
-      "visible": true
+      "visible": false
     },
     {
       "id": "calendar",
-      "visible": true
+      "visible": false
     },
     {
       "id": "admin",
@@ -82,32 +82,6 @@
       ]
     },
     {
-      "id": "menu2",
-      "label": "title.multi",
-      "entries": [
-        {
-          "id": "uid_test_1",
-          "url": "https://opfab.github.io/",
-          "label": "entry.entry1",
-          "linkType": "BOTH",
-          "showOnlyForGroups": ["ReadOnly","Planner"]
-        },
-        {
-          "id": "uid_test_2",
-          "url": "https://www.wikipedia.org/",
-          "label": "entry.entry2",
-          "linkType": "BOTH",
-          "showOnlyForGroups": ["Dispatcher"]
-        },
-        {
-          "id": "uid_test_3",
-          "url": "http://localhost:3200/external/appExample/",
-          "label": "entry.entry3",
-          "linkType": "BOTH"
-        }
-      ]
-    },
-    {
       "id": "adminmenu",
       "label": "title.admin",
       "entries": [
@@ -130,17 +104,7 @@
             "single": "First menu"
           },
           "entry": {
-            "single": "Single menu entry"
-          }
-        },
-        "menu2": {
-          "title": {
-            "multi": "Second menu"
-          },
-          "entry": {
-            "entry1": "First menu entry",
-            "entry2": "Second menu entry",
-            "entry3": "External application"
+            "single": "SUPERVISION"
           }
         },
         "adminmenu": {
@@ -161,17 +125,7 @@
             "single": "Premier menu"
           },
           "entry": {
-            "single": "Unique élément"
-          }
-        },
-        "menu2": {
-          "title": {
-            "multi": "Deuxième menu"
-          },
-          "entry": {
-            "entry1": "Premier élément",
-            "entry2": "Deuxième élément",
-            "entry3": "Application externe"
+            "single": "SUPERVISION"
           }
         },
         "adminmenu": {

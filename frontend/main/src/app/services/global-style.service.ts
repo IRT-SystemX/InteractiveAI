@@ -36,7 +36,7 @@ export class GlobalStyleService {
                 break;
             }
             case 'NIGHT': {
-                opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
+                opfabStyle.setCss(opfabStyle.DAY_STYLE);
                 break;
             }
             default:

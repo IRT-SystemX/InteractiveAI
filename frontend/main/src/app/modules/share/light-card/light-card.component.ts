@@ -164,7 +164,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             if($("#opfab-feed-list-card-title")[0].innerHTML == "Alerte de sûreté" 
             && $(cards[0]).hasClass("light-card-detail-selected")){
                 console.log($("#opfab-feed-list-card-title")[0].innerHTML)
-                $.get( "http://localhost:5100/api/v1/contexts", function( data ) {
+                $.get( "http://192.168.208.57:5100/api/v1/contexts", function( data ) {
                    $("#ctxImg").attr("src","data:image/png;base64,"+data[0].metadata.topology)
                    $(".opfab-card-response-header").hide();
                   });
