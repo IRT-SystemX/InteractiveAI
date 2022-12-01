@@ -9,7 +9,7 @@ from .clients.historic import HistoricClient
 from .clients.keycloak import KeycloakClient
 from .models import EventModel, db
 from .schemas import EventIn, EventOut
-
+from .utils import get_event_id
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
 
 
@@ -39,12 +39,15 @@ class Events(MethodView):
     @api_bp.output(EventOut, status_code=201)
     def post(self, data):
         """Add an event"""
-        event_id = uuid.uuid4()
+        use_case = data["use_case"]
+        input_line = data["data"]["line"]
+        event_id = get_event_id(input_line, use_case)
         data["id_event"] = str(event_id)
         # TODO: this authenetication should be removed once this service is integrated into the same gateway as operatorFabric
+        # login
         keycloak_client = KeycloakClient()
         login_response = keycloak_client.login()
-
+        # Create a new card (notification)
         card_pub_client = CardPubClient()
         severity = severity_map[data.get("criticality")]
         date = data.get("date", datetime.now())
@@ -58,6 +61,7 @@ class Events(MethodView):
                                     data["title"],
                                     data["description"],
                                     data["data"])
+        # Trace in histric service
         historic_client = HistoricClient()
         data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
         historic_client.create_trace(data)
@@ -65,7 +69,7 @@ class Events(MethodView):
 
         # Save event to database
         event = EventModel(**data)
-        db.session.add(event)
+        db.session.merge(event)
         db.session.commit()
         return event
 
