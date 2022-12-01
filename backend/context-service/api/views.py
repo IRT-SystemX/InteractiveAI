@@ -12,6 +12,12 @@ class HealthCheck(MethodView):
     def get(self):
         return
 
+class Context(MethodView):
+
+    @api_bp.output(ContextOut)
+    def get(self, date):
+        """Get a context"""
+        return context_manager.get_context_with_date(date)
 
 class Contexts(MethodView):
 
@@ -20,7 +26,7 @@ class Contexts(MethodView):
         """Get all contexts"""
         date_query_param = request.args.get('date')
         if date_query_param:
-            return context_manager.get_context_with_date(date_query_param)
+            return context_manager.get_contexts_with_date(date_query_param)
         
         return context_manager.get_context()
 
@@ -32,4 +38,5 @@ class Contexts(MethodView):
 
 
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
+api_bp.add_url_rule('/context/<string:date>', view_func=Context.as_view('context'))
 api_bp.add_url_rule("/contexts", view_func=Contexts.as_view("contexts"))
