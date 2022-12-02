@@ -11,42 +11,46 @@
   background-color: white;
   z-index: 2;
   padding-bottom: 162px;
-  text-align: center;"
- >
-  <div style="height:67px;background-color:#00A7DE;color:white"><b style="font: normal normal 600 30px/40px Segoe UI;">Assistant CAB</b></div>
-    <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage supervision</b></div>
-    <img class="choose-uc-img" src="assets\images\Bouton orange nominal.png">
-    <a href="#"> <img class="choose-uc-img" src="assets\images\bouton RTE nominal.png"  onclick="closeHome()"> </a>
-    <img class="choose-uc-img" src="assets\images\bouton SNCF nominal.png">
-    
-    <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage pilotage d'aéronef</b></div>
-    <img class="choose-uc-img" src="assets\images\bouton DA nominal.png" style="float: left;margin-left: 230px;">
+  text-align: center;">
+  <div style="height:67px;background-color:#00A7DE;color:white"><b
+      style="font: normal normal 600 30px/40px Segoe UI;">Assistant CAB</b></div>
+  <div style="height:30px"></div>
+  <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage supervision</b></div>
+  <div style="height:20px"></div>
+  <img class="choose-uc-img" style="margin-right: 50px;" src="assets\images\Bouton orange nominal.png">
+  <a href="#"> <img class="choose-uc-img" src="assets\images\bouton RTE nominal.png" onclick="closeHome()"> </a>
+  <img class="choose-uc-img" style="margin-left: 50px;" src="assets\images\bouton SNCF nominal.png">
+  <div style="height:100px"></div>
+  <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage pilotage d'aéronef</b></div>
+  <div style="height:20px"></div>
+  <img class="choose-uc-img" style="margin-left: 50px;" src="assets\images\bouton DA nominal.png"
+    style="float: left;margin-left: 205px;">
 
-  </div>
+</div>
 
 <nav class="navbar navbar-expand-lg fixed-top opfab-navbar" style="z-index:1">
   <a class="navbar-brand">
     <div *ngIf="this.customLogo;">
-      <of-custom-logo [base64]="customLogo"  [height]="height" [width]="width"></of-custom-logo>
+      <of-custom-logo [base64]="customLogo" [height]="height" [width]="width"></of-custom-logo>
     </div>
   </a>
 
-<div class="navbar-toggler opfab-navbar" style="flex-grow: 1;border: 0; flex-basis: 0" id="opfab-navbarCollapsed" >
-  <ng-container *ngTemplateOutlet="menuCollapsedContent"></ng-container>
+  <div class="navbar-toggler opfab-navbar" style="flex-grow: 1;border: 0; flex-basis: 0" id="opfab-navbarCollapsed">
+    <ng-container *ngTemplateOutlet="menuCollapsedContent"></ng-container>
   </div>
   <div class="collapse navbar-collapse " id="opfab-navbarContent" [ngbCollapse]="navbarCollapsed">
     <ul class="navbar-nav mr-auto " style="font-size:23px">
       <!-- Links to OperatorFabric pages as defined in app-rooting.module.ts (e.g. Card Feed, Archive) -->
       <li class="nav-item" *ngFor="let link of navigationRoutes, let i = index"
         [class.active]="link.path === currentPath[1]">
-        <a id="opfab-navbar-menu-{{link.path}}" class="nav-link" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
-          (click)="activeLinkIndex = i" translate>{{'menu.'+link.path}}</a>
+        <a id="opfab-navbar-menu-{{link.path}}" class="nav-link" [routerLink]="link.path" routerLinkActive
+          #rla="routerLinkActive" (click)="activeLinkIndex = i" translate>{{'menu.'+link.path}}</a>
       </li>
       <!-- Links from menus declared in businessconfig-party bundles-->
       <li *ngFor="let tMenu of (businessconfigMenus|async); let index = index;" class="nav-item"
         [class.dropdown]="tMenu.entries.length>1" [class.businessconfig-dropdown]="tMenu.entries.length>1">
         <!-- Dropdown menu if at least 2 entries-->
-        <a id="opfab-navbar-menu-dropdown-{{tMenu.id}}" class="nav-link"  [attr.aria-expanded]="expandedMenu[index]"
+        <a id="opfab-navbar-menu-dropdown-{{tMenu.id}}" class="nav-link" [attr.aria-expanded]="expandedMenu[index]"
           (click)="toggleMenu(index)" *ngIf="tMenu.entries.length>1" translate
           href="javascript:void(0)">{{tMenu.id}}.{{tMenu.label}}</a>
         <div class="dropdown-menu  dropdown-menu-left " *ngIf="tMenu.entries.length>1"
@@ -63,17 +67,20 @@
     </ul>
 
     <ul class="navbar-nav navbar-right opfab-sticky-menu">
-      <li id="opfab-newcard-menu" style="display:flex;margin-top: 12px;cursor:pointer;margin-right:20px" (click)="openCardCreation()" *ngIf="(displayCreateUserCard)">
+      <li id="opfab-newcard-menu" style="display:flex;margin-top: 12px;cursor:pointer;margin-right:20px"
+        (click)="openCardCreation()" *ngIf="(displayCreateUserCard)">
         <span class="opfab-menu-icon-newcard"></span>
-     </li>
+      </li>
 
-      <li id="opfab-calendar-menu" style="display:flex;margin-top: 12px;cursor:pointer;" [routerLink]="'calendar'" routerLinkActive #rla="routerLinkActive" *ngIf="(displayCalendar)">
-        <a  href="javascript:void(0)" [class.active]="(currentPath.includes('calendar'))" class="opfab-menu-icon-calendar"></a>
-     </li>
+      <li id="opfab-calendar-menu" style="display:flex;margin-top: 12px;cursor:pointer;" [routerLink]="'calendar'"
+        routerLinkActive #rla="routerLinkActive" *ngIf="(displayCalendar)">
+        <a href="javascript:void(0)" [class.active]="(currentPath.includes('calendar'))"
+          class="opfab-menu-icon-calendar"></a>
+      </li>
 
-      <li >
-        <a class="nav-link" id="opfab-navbar-drop-user-menu" 
-          [ngbPopover]="menuContent" container="body"  popoverClass="opfab-popover-left-menu" href="javascript:void(0)">
+      <li>
+        <a class="nav-link" id="opfab-navbar-drop-user-menu" [ngbPopover]="menuContent" container="body"
+          popoverClass="opfab-popover-left-menu" href="javascript:void(0)">
           <of-info></of-info>
         </a>
 
@@ -81,7 +88,7 @@
       </li>
     </ul>
 
-    <div *ngIf="displayEnvironmentName" 
+    <div *ngIf="displayEnvironmentName"
       style=" position: absolute;right:0;width:80px;height:87px;overflow: hidden;margin-top: -30px;margin-bottom:-20px;">
       <!-- <div [style.background-color]="environmentColor" 
           style="font-size:10px;transform:rotate(45deg);color:white;
@@ -98,43 +105,48 @@
   <div>
     <ul class="navbar-nav mr-auto " style="flex-direction: row; float:left;">
       <li class="nav-item" [class.active]="'feed' === currentPath[1]">
-        <a id="opfab-navbar-menu-feed-collapsed" class="nav-link" routerLink="/feed"  routerLinkActive #rla="routerLinkActive"
-          translate>{{'menu.feed'}}</a>
+        <a id="opfab-navbar-menu-feed-collapsed" class="nav-link" routerLink="/feed" routerLinkActive
+          #rla="routerLinkActive" translate>{{'menu.feed'}}</a>
       </li>
     </ul>
-    <ul class="navbar-nav mr-auto " style="flex-direction: row; float:right;margin-top: 10px; margin-right: 0px !important;">
+    <ul class="navbar-nav mr-auto "
+      style="flex-direction: row; float:right;margin-top: 10px; margin-right: 0px !important;">
 
       <li class="nav-item">
-        <a id="opfab-navbar-right-menu-settings-collapsed" *ngIf="(displaySettings)" class="opfab-right-menu-link" routerLink="/settings"  routerLinkActive #rla="routerLinkActive">
+        <a id="opfab-navbar-right-menu-settings-collapsed" *ngIf="(displaySettings)" class="opfab-right-menu-link"
+          routerLink="/settings" routerLinkActive #rla="routerLinkActive">
           <div class="opfab-menu-icon opfab-menu-icon-parameters"></div>
         </a>
       </li>
 
       <li class="nav-item" *ngIf="(displayFeedConfiguration)">
-        <a  id="opfab-navbar-right-menu-feedconfiguration-collapsed" class="opfab-right-menu-link" routerLink="/feedconfiguration"  routerLinkActive
-          #rla="routerLinkActive">
+        <a id="opfab-navbar-right-menu-feedconfiguration-collapsed" class="opfab-right-menu-link"
+          routerLink="/feedconfiguration" routerLinkActive #rla="routerLinkActive">
           <div class="opfab-menu-icon opfab-menu-icon-notification"></div>
         </a>
       </li>
 
       <li class="nav-item" *ngIf="(nightDayMode)">
-        <a id="opfab-navbar-right-menu-night-mode-collapsed" *ngIf="(!(getNightMode()|async))" class="opfab-right-menu-link" (click)='switchToNightMode()'>
+        <a id="opfab-navbar-right-menu-night-mode-collapsed" *ngIf="(!(getNightMode()|async))"
+          class="opfab-right-menu-link" (click)='switchToNightMode()'>
           <div class="opfab-menu-icon opfab-menu-icon-dark-light"></div>
         </a>
-        <a id="opfab-navbar-right-menu-day-mode-collapsed"  *ngIf="(getNightMode()|async)" class="opfab-right-menu-link"  (click)='switchToDayMode()'>
+        <a id="opfab-navbar-right-menu-day-mode-collapsed" *ngIf="(getNightMode()|async)" class="opfab-right-menu-link"
+          (click)='switchToDayMode()'>
           <div class="opfab-menu-icon opfab-menu-icon-dark-light"></div>
         </a>
       </li>
-      
+
       <li class="nav-item" *ngIf="(displayLogOut)">
         <form>
-          <a id="opfab-navbar-right-menu-logout-collapsed"  class="opfab-right-menu-link" (click)="logOut()" href="javascript:void(0)">
+          <a id="opfab-navbar-right-menu-logout-collapsed" class="opfab-right-menu-link" (click)="logOut()"
+            href="javascript:void(0)">
             <div class="opfab-menu-icon opfab-menu-icon-logout"></div>
           </a>
         </form>
       </li>
     </ul>
-  
+
   </div>
 </ng-template>
 
@@ -143,76 +155,84 @@
 
   <div class="opfab-right-menu">
     <div class="opfab-right-menu-item" *ngIf="(displayAdmin)">
-      <a id="opfab-navbar-right-menu-admin" class="opfab-right-menu-link"  routerLink="/admin" routerLinkActive #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-admin" class="opfab-right-menu-link" routerLink="/admin" routerLinkActive
+        #rla="routerLinkActive">
         <div class="opfab-menu-icon opfab-menu-icon-admin"></div>
         <div translate>menu.admin</div>
       </a>
     </div>
     <div class="opfab-right-menu-item" *ngIf="(displayExternalDevicesConfiguration)">
-      <a id="opfab-navbar-right-menu-externaldevicesconfiguration" class="opfab-right-menu-link"  routerLink="/externaldevicesconfiguration" routerLinkActive #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-externaldevicesconfiguration" class="opfab-right-menu-link"
+        routerLink="/externaldevicesconfiguration" routerLinkActive #rla="routerLinkActive">
         <em class="fa-solid fa-volume-high"></em>
         <div translate>menu.externalDevicesConfiguration</div>
       </a>
     </div>
     <div class="opfab-right-menu-item" *ngIf="(displayRealTimeUsers)">
-      <a id="opfab-navbar-right-menu-realtimeusers" class="opfab-right-menu-link"  routerLink="/realtimeusers" routerLinkActive #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-realtimeusers" class="opfab-right-menu-link" routerLink="/realtimeusers"
+        routerLinkActive #rla="routerLinkActive">
         <em class="fa-regular fa-clock"></em>
         <div translate>menu.realTimeUsers</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item">
-      <a id="opfab-navbar-right-menu-settings" *ngIf="(displaySettings)" class="opfab-right-menu-link" routerLink="/settings"  routerLinkActive #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-settings" *ngIf="(displaySettings)" class="opfab-right-menu-link"
+        routerLink="/settings" routerLinkActive #rla="routerLinkActive">
         <div class="opfab-menu-icon opfab-menu-icon-parameters"></div>
         <div translate>menu.settings</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item" *ngIf="(displayActivityArea)">
-      <a  id="opfab-navbar-right-menu-activityarea" class="opfab-right-menu-link" routerLink="/activityarea"  routerLinkActive
-          #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-activityarea" class="opfab-right-menu-link" routerLink="/activityarea"
+        routerLinkActive #rla="routerLinkActive">
         <em class="fa-solid fa-user-cog" id="opfab-menu-icon-activityarea"></em>
         <div translate>menu.activityArea</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item" *ngIf="(displayFeedConfiguration)">
-      <a  id="opfab-navbar-right-menu-feedconfiguration" class="opfab-right-menu-link" routerLink="/feedconfiguration"  routerLinkActive
-        #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-feedconfiguration" class="opfab-right-menu-link" routerLink="/feedconfiguration"
+        routerLinkActive #rla="routerLinkActive">
         <div class="opfab-menu-icon opfab-menu-icon-notification" id="opfab-menu-icon-notification"></div>
         <div translate>menu.feedConfiguration</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item">
-      <a id="opfab-navbar-right-menu-about" *ngIf="(displayAbout)" class="opfab-right-menu-link" (click)="showAbout()"  href="javascript:void(0)">
+      <a id="opfab-navbar-right-menu-about" *ngIf="(displayAbout)" class="opfab-right-menu-link" (click)="showAbout()"
+        href="javascript:void(0)">
         <div class="opfab-menu-icon opfab-menu-icon-about"></div>
         <div translate>menu.about</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item" *ngIf="(nightDayMode)">
-      <a id="opfab-navbar-right-menu-night-mode" *ngIf="(!(getNightMode()|async))" class="opfab-right-menu-link" (click)='switchToNightMode()'>
+      <a id="opfab-navbar-right-menu-night-mode" *ngIf="(!(getNightMode()|async))" class="opfab-right-menu-link"
+        (click)='switchToNightMode()'>
         <div class="opfab-menu-icon opfab-menu-icon-dark-light"></div>
         <div translate>menu.switchToNightMode</div>
       </a>
-      <a id="opfab-navbar-right-menu-day-mode"  *ngIf="(getNightMode()|async)" class="opfab-right-menu-link"  (click)='switchToDayMode()'>
+      <a id="opfab-navbar-right-menu-day-mode" *ngIf="(getNightMode()|async)" class="opfab-right-menu-link"
+        (click)='switchToDayMode()'>
         <div class="opfab-menu-icon opfab-menu-icon-dark-light"></div>
         <div translate>menu.switchToDayMode</div>
       </a>
     </div>
 
     <div class="opfab-right-menu-item">
-      <a  id="opfab-navbar-right-menu-change-password" *ngIf="(displayChangePassword)" class="opfab-right-menu-link"
-          routerLink="/changepassword" routerLinkActive #rla="routerLinkActive">
+      <a id="opfab-navbar-right-menu-change-password" *ngIf="(displayChangePassword)" class="opfab-right-menu-link"
+        routerLink="/changepassword" routerLinkActive #rla="routerLinkActive">
         <div class="opfab-menu-icon opfab-menu-icon-change-password" id="opfab-menu-icon-change-password"></div>
         <div translate>menu.changePassword</div>
       </a>
     </div>
-    
+
     <div class="opfab-right-menu-item" style="padding-top: 20px; padding-bottom: 20px" *ngIf="(displayLogOut)">
       <form>
-        <a id="opfab-navbar-right-menu-logout"  class="opfab-right-menu-link" (click)="logOut()" href="javascript:void(0)">
+        <a id="opfab-navbar-right-menu-logout" class="opfab-right-menu-link" (click)="logOut()"
+          href="javascript:void(0)">
           <div class="opfab-menu-icon opfab-menu-icon-logout"></div>
           <div translate>menu.logout</div>
         </a>
@@ -224,37 +244,41 @@
 
 <ng-template #userCard let-modal>
   <div class="modal-header">
-      <div translate > userCard.title </div>
-      <div id="opfab-usercard-close"  class="opfab-close-modal-icon" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true" >&times;</span>
-      </div>
+    <div translate> userCard.title </div>
+    <div id="opfab-usercard-close" class="opfab-close-modal-icon" aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </div>
   </div>
   <div class="modal-body">
-      <div>
-          <of-usercard [userCardModal]="modal"> </of-usercard>
-      </div>
+    <div>
+      <of-usercard [userCardModal]="modal"> </of-usercard>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #about let-modal>
   <div id="opfab-about-dialog">
     <div class="modal-header" id="opfab-about-dialog-header">
-        <div class="opfab-about-title" translate > about.title </div>
-        <div id="opfab-about-close"  class="opfab-close-modal-icon" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true" >&times;</span>
-        </div>
+      <div class="opfab-about-title" translate> about.title </div>
+      <div id="opfab-about-close" class="opfab-close-modal-icon" aria-label="Close"
+        (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </div>
     </div>
     <div class="modal-body text-center" id="opfab-about-dialog-body">
       <a class="opfab-about-brand" style="margin-right: 0">
         <div *ngIf="this.customLogo;">
-          <of-custom-logo [base64]="customLogo" [limitSize]="limitSize" [height]="height" [width]="width"></of-custom-logo>
+          <of-custom-logo [base64]="customLogo" [limitSize]="limitSize" [height]="height" [width]="width">
+          </of-custom-logo>
         </div>
       </a>
       <div>
         <of-about> </of-about>
       </div>
       <div>
-        <button id="opfab-about-btn-close" type="button" class="opfab-btn" aria-label="Close" (click)="modal.dismiss('Ok')">
+        <button id="opfab-about-btn-close" type="button" class="opfab-btn" aria-label="Close"
+          (click)="modal.dismiss('Ok')">
           <span translate>button.ok</span>
         </button>
       </div>
@@ -262,7 +286,5 @@
   </div>
 </ng-template>
 
-<of-spinner *ngIf="logoutInProgress"
-            [seeInModal]="true"
-            loadingText="shared.logoutInProgress">
+<of-spinner *ngIf="logoutInProgress" [seeInModal]="true" loadingText="shared.logoutInProgress">
 </of-spinner>

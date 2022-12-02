@@ -150,7 +150,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
     }
 
     public select($event) {
-        var cards = $(".card");
+        var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();
@@ -161,15 +161,38 @@ export class LightCardComponent implements OnInit, OnDestroy {
         }
         if (this.displayContext != DisplayContext.PREVIEW)
             this.router.navigate(['/' + this.currentPath, 'cards', this.lightCard.id]);
-            if($("#opfab-feed-list-card-title")[0].innerHTML == "Alerte de sûreté" 
-            && $(cards[0]).hasClass("light-card-detail-selected")){
-                console.log($("#opfab-feed-list-card-title")[0].innerHTML)
-                $.get( "http://192.168.208.57:5100/api/v1/contexts", function( data ) {
-                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].metadata.topology)
+
+            if(card.includes("Anticipation") || card.includes("Alerte")  ){
+                document.getElementById('opfab-div-card-template-security').style.display = "block";
+                $("#opfab-div-card-template-op").hide()
+                $("#opfab-div-card-template-alarm").hide()
+                $("#opfab-div-card-template").hide()
+                $("#opfab-div-card-template-noparades").hide()
+
+                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
                    $(".opfab-card-response-header").hide();
                   });
-                }
+                }else if(card.includes("de ligne") || card.includes("Routine")) {
+                    $("#opfab-div-card-template").hide()
+                    $("#opfab-div-card-template-op").show()
+                    $("#opfab-div-card-template-security").hide()
+                    $("#opfab-div-card-template-alarm").hide()
+                    $("#opfab-div-card-template-noparades").hide()
+                }else if(card.includes("Risque sur aléa") && card.includes("44_48_133")){
+                    $("#opfab-div-card-template-alarm").show()
+                    $("#opfab-div-card-template").hide()
+                    $("#opfab-div-card-template-op").hide()
+                    $("#opfab-div-card-template-security").hide()
+                    $("#opfab-div-card-template-noparades").hide()
+                }else if(card.includes("Risque sur aléa") && card.includes("54_58_154")){
+                    $("#opfab-div-card-template-security").hide()
+                    $("#opfab-div-card-template-op").hide()
+                    $("#opfab-div-card-template-alarm").hide()
+                    $("#opfab-div-card-template-noparades").show()
+                    }
         }
+
 
     get i18nPrefix(): string {
         return this._i18nPrefix;

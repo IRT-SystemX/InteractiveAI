@@ -58,9 +58,9 @@ These two parameters are place in this file as the style should have a title par
 
     function refreshCtx() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open( "GET", "http://192.168.208.57:5100/api/v1/contexts", false ); // false for synchronous request
+      xmlHttp.open( "GET", "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), false ); // false for synchronous request
       xmlHttp.send( null );
-      var response  = JSON.parse(xmlHttp.responseText)[0].metadata.topology;
+      var response  = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;
     };
   </script>

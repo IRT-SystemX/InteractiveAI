@@ -65,8 +65,8 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
     private userEntityIdToUseForResponse = '';
     private userMemberOfAnEntityRequiredToRespondAndAllowedToSendCards = false;
     private unsubscribe$: Subject<void> = new Subject<void>();
-
     public user: User;
+    public cardAlreadyClicked = false;
 
     constructor(
         private businessconfigService: ProcessesService,
@@ -319,6 +319,10 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     private setSelectedCardColor(){
+        if (!this.cardAlreadyClicked){
+            $(".light-card-detail-selected").click();
+            this.cardAlreadyClicked = true;
+        }
         var cards = $(".card");
         for(var card = 0; card<cards.length;card++){
             if ( cards[card].classList.contains("light-card-detail-selected") ){

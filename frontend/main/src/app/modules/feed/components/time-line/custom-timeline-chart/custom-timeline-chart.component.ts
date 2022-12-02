@@ -502,7 +502,7 @@ export class CustomTimelineChartComponent extends BaseChartComponent implements 
                 case 'ACTION':
                     return '#FD9313'; // orange
                 case 'COMPLIANT':
-                    return '#00BB03'; // green
+                    return '#599191'; // green
                 case 'INFORMATION':
                     return '#1074AD'; // blue
                 default:

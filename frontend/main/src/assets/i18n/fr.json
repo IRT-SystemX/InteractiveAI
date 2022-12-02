@@ -89,7 +89,7 @@
     "disconnectByAppLoadedInAnotherTab": "Vous avez été déconnecté car un autre onglet de ce navigateur a été utilisé pour se connecter à cette URL."
   },
   "menu": {
-    "feed": "HYPERVISION",
+    "feed": "Hypervision",
     "calendar" : "Calendrier",
     "archives": "Archives",
     "logging": "Logging",

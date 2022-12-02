@@ -76,13 +76,18 @@ export class PinnedCardsComponent implements OnInit, OnDestroy, OnChanges {
     private setVisiblePinnedCards() {
         this.visiblePinnedCards = [];
         this.hiddenPinnedCards = [];
-        if (this.pinnedCards.length > this.maxVisiblePinnedCards) {
-            this.visiblePinnedCards = this.pinnedCards.slice(0, this.maxVisiblePinnedCards);
-            this.hiddenPinnedCards = this.pinnedCards.slice(this.maxVisiblePinnedCards);
-            if (this.hiddenPinnedCards.length > this.maxHiddenPinnedCards) {
-                this.hiddenPinnedCards = this.hiddenPinnedCards.slice(0, this.maxHiddenPinnedCards);
-            }
-        } else this.visiblePinnedCards = this.pinnedCards;
+        try {
+            if (this.pinnedCards.length > this.maxVisiblePinnedCards) {
+                this.visiblePinnedCards = this.pinnedCards.slice(0, this.maxVisiblePinnedCards);
+                this.hiddenPinnedCards = this.pinnedCards.slice(this.maxVisiblePinnedCards);
+                if (this.hiddenPinnedCards.length > this.maxHiddenPinnedCards) {
+                    this.hiddenPinnedCards = this.hiddenPinnedCards.slice(0, this.maxHiddenPinnedCards);
+                }
+            } else this.visiblePinnedCards = this.pinnedCards;
+        } catch (error) {
+            console.warn("No pinned cards.")
+        }
+
     }
 
     private getPinnedCards(cards: LightCard[]) {
