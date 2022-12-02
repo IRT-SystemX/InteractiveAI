@@ -55,6 +55,9 @@ export class CardService {
     private firstSubscriptionInitDone = false;
     public initSubscription = new Subject<void>();
     private unsubscribe$: Subject<void> = new Subject<void>();
+    public cardAlreadySet = false;
+    public cardCount = 0;
+
 
     private startOfAlreadyLoadedPeriod: number;
     private endOfAlreadyLoadedPeriod: number;
@@ -104,6 +107,7 @@ export class CardService {
     }
 
     public initCardSubscription() {
+       
         var cards;
         this.getCardSubscription()
             .pipe(takeUntil(this.unsubscribe$))
@@ -120,14 +124,17 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
-                            setTimeout(() => {
-                                cards = $(".card");
-                                cards[0].innerHTML = cards[0].innerHTML.replace("action","Sureté");
-                                cards[0].innerHTML = cards[0].innerHTML.replace("alarm","Sureté");
-                                cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
-                                cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
-                            }, 3000);
-
+                            // if (!this.cardAlreadySet || this.cardCount >2){
+                                setTimeout(() => {
+                                    cards = $(".card");
+                                    cards[0].innerHTML = cards[0].innerHTML.replace("action","Sureté");
+                                    cards[0].innerHTML = cards[0].innerHTML.replace("alarm","Sureté");
+                                    cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
+                                    cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
+                                }, 3000);
+                                // this.cardAlreadySet = true;
+                                // this.cardCount++;
+                            // }
 
                             if (operation.card.id === this.selectedCardId)
                                 this.store.dispatch(new LoadCardAction({id: operation.card.id}));

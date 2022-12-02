@@ -148,7 +148,52 @@ export class LightCardComponent implements OnInit, OnDestroy {
     handleDate(timeStamp: number): string {
         return this.dateTimeFormatter.getFormattedDateAndTimeFromEpochDate(timeStamp);
     }
+    public getCardTitle(){
+            if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")){
+                $("#opfab-div-card-template-security").hide()
+                $("#opfab-div-card-template-op").hide()
+                $("#opfab-div-card-template-alarm").show()
+                $("#opfab-div-card-template").hide()
+                $("#opfab-div-card-template-noparades").hide()
+                $("#opfab-div-card-template-agent").hide()
+                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
+                   $(".opfab-card-response-header").hide();
+                  });
+            }else if(document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")){
+                $("#opfab-div-card-template-security").show()
+                $("#opfab-div-card-template-op").hide()
+                $("#opfab-div-card-template-alarm").hide()
+                $("#opfab-div-card-template-noparades").hide()
+                $("#opfab-div-card-template-agent").hide()
+                }
+            else if(document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")){
+                $("#opfab-div-card-template-agent").show()
+                $("#opfab-div-card-template-security").hide()
+                $("#opfab-div-card-template-op").hide()
+                $("#opfab-div-card-template-alarm").hide()
+                $("#opfab-div-card-template-noparades").hide()
+            }else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") 
+            && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")){
+                $("#opfab-div-card-template-security").hide()
+                $("#opfab-div-card-template-op").hide()
+                $("#opfab-div-card-template-alarm").hide()
+                $("#opfab-div-card-template").hide()
+                $("#opfab-div-card-template-noparades").show()
+                $("#opfab-div-card-template-agent").hide()
+                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
+                   $(".opfab-card-response-header").hide();
+                  });
+            }else if(document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne")  || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+                        $("#opfab-div-card-template").hide()
+                        $("#opfab-div-card-template-op").show()
+                        $("#opfab-div-card-template-security").hide()
+                        $("#opfab-div-card-template-alarm").hide()
+                        $("#opfab-div-card-template-noparades").hide()
+            }
 
+    }
     public select($event) {
         var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
@@ -161,36 +206,38 @@ export class LightCardComponent implements OnInit, OnDestroy {
         }
         if (this.displayContext != DisplayContext.PREVIEW)
             this.router.navigate(['/' + this.currentPath, 'cards', this.lightCard.id]);
+            setTimeout(() => {
+                this.getCardTitle()
+            }, 1000);
+            // if(card.includes("Surcharge")){
+            //     $("#opfab-div-card-template-security").hide()
+            //     $("#opfab-div-card-template-op").hide()
+            //     $("#opfab-div-card-template-alarm").show()
+            //     $("#opfab-div-card-template").hide()
+            //     $("#opfab-div-card-template-noparades").hide()
 
-            if(card.includes("Anticipation") || card.includes("Alerte")  ){
-                document.getElementById('opfab-div-card-template-security').style.display = "block";
-                $("#opfab-div-card-template-op").hide()
-                $("#opfab-div-card-template-alarm").hide()
-                $("#opfab-div-card-template").hide()
-                $("#opfab-div-card-template-noparades").hide()
+            //     $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+            //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
+            //        $(".opfab-card-response-header").hide();
+            //       });
+            //     }else if(card.includes("Routine")) {
+            //         $("#opfab-div-card-template").hide()
+            //         $("#opfab-div-card-template-op").show()
+            //         $("#opfab-div-card-template-security").hide()
+            //         $("#opfab-div-card-template-alarm").hide()
+            //         $("#opfab-div-card-template-noparades").hide()
+            //     }else if(card.includes("Risque sur aléa")){
+            //         $("#opfab-div-card-template-security").show()
+            //         $("#opfab-div-card-template-op").hide()
+            //         $("#opfab-div-card-template-alarm").hide()
+            //         $("#opfab-div-card-template-noparades").hide()
+            //         }else if (card.includes("Surcharge de ligne") && card.includes("54_58_154")){
+            //             $("#opfab-div-card-template-noparades").show()
+            //             $("#opfab-div-card-template-security").hide()
+            //             $("#opfab-div-card-template-op").hide()
+            //             $("#opfab-div-card-template-alarm").hide()
 
-                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
-                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-                   $(".opfab-card-response-header").hide();
-                  });
-                }else if(card.includes("de ligne") || card.includes("Routine")) {
-                    $("#opfab-div-card-template").hide()
-                    $("#opfab-div-card-template-op").show()
-                    $("#opfab-div-card-template-security").hide()
-                    $("#opfab-div-card-template-alarm").hide()
-                    $("#opfab-div-card-template-noparades").hide()
-                }else if(card.includes("Risque sur aléa") && card.includes("44_48_133")){
-                    $("#opfab-div-card-template-alarm").show()
-                    $("#opfab-div-card-template").hide()
-                    $("#opfab-div-card-template-op").hide()
-                    $("#opfab-div-card-template-security").hide()
-                    $("#opfab-div-card-template-noparades").hide()
-                }else if(card.includes("Risque sur aléa") && card.includes("54_58_154")){
-                    $("#opfab-div-card-template-security").hide()
-                    $("#opfab-div-card-template-op").hide()
-                    $("#opfab-div-card-template-alarm").hide()
-                    $("#opfab-div-card-template-noparades").show()
-                    }
+            //         }
         }
 
 
