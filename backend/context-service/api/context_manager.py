@@ -1,3 +1,7 @@
+import uuid
+from datetime import datetime
+
+from .models import ContextModel, db
 
 
 class ContextManager:
@@ -8,18 +12,24 @@ class ContextManager:
                         "DA/FW": None}
 
     def set_context(self, validated_data):
+        validated_data["date"] = validated_data.get("date", datetime.now())
         use_case = validated_data.get("use_case")
-        
+
         if use_case == "RTE":
             self.context["RTE"] = validated_data
-            return self.context["RTE"]
+            # return self.context["RTE"]
         elif use_case == "SNCF":
             pass
         elif use_case == "ORANGE":
             pass
         elif use_case == "DA/FW":
             pass
-         
+        # save context to db
+        validated_data["id_context"] = str(uuid.uuid4())
+        context = ContextModel(**validated_data)
+        db.session.add(context)
+        db.session.commit()
+        return context
 
     def get_context(self):
         context_list = []
@@ -27,3 +37,11 @@ class ContextManager:
             if value is not None:
                 context_list.append(value)
         return context_list
+
+    def get_contexts_with_date(self, date):
+        context = ContextModel.query.filter_by(date=date).all()
+        return context
+
+    def get_context_with_date(self, date):
+        context = ContextModel.query.filter_by(date=date).first()
+        return context
