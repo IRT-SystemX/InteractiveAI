@@ -17,6 +17,10 @@
 .light-card-detail-selected {
     transition: margin 0.3s;
     color:white;
+    #opfab-card-icon{
+        filter: drop-shadow(1px 0px 4px white);
+    }
+    
 }
 
 .light-card-detail-selected-alarm {
@@ -73,6 +77,7 @@
 
 .card-title {
     font-size: 15px;
+    font-weight: bold;
 }
 
 .card-subtitle {

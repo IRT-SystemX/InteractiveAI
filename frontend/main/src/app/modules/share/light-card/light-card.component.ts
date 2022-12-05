@@ -7,25 +7,25 @@
  * This file is part of the OperatorFabric project.
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {LightCard} from '@ofModel/light-card.model';
-import {Router} from '@angular/router';
-import {selectCurrentUrl} from '@ofStore/selectors/router.selectors';
-import {Store} from '@ngrx/store';
-import {AppState} from '@ofStore/index';
-import {takeUntil} from 'rxjs/operators';
-import {Observable, Subject} from 'rxjs';
-import {ConfigService} from '@ofServices/config.service';
-import {AppService, PageType} from '@ofServices/app.service';
-import {EntitiesService} from '@ofServices/entities.service';
-import {ProcessesService} from '@ofServices/processes.service';
-import {UserPreferencesService} from '@ofServices/user-preference.service';
-import {DisplayContext} from '@ofModel/templateGateway.model';
-import {GroupedCardsService} from '@ofServices/grouped-cards.service';
-import {TypeOfStateEnum} from '@ofModel/processes.model';
-import {SoundNotificationService} from '@ofServices/sound-notification.service';
-import {DateTimeFormatterService} from '@ofServices/date-time-formatter.service';
-import {MapService} from '@ofServices/map.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { LightCard } from '@ofModel/light-card.model';
+import { Router } from '@angular/router';
+import { selectCurrentUrl } from '@ofStore/selectors/router.selectors';
+import { Store } from '@ngrx/store';
+import { AppState } from '@ofStore/index';
+import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { ConfigService } from '@ofServices/config.service';
+import { AppService, PageType } from '@ofServices/app.service';
+import { EntitiesService } from '@ofServices/entities.service';
+import { ProcessesService } from '@ofServices/processes.service';
+import { UserPreferencesService } from '@ofServices/user-preference.service';
+import { DisplayContext } from '@ofModel/templateGateway.model';
+import { GroupedCardsService } from '@ofServices/grouped-cards.service';
+import { TypeOfStateEnum } from '@ofModel/processes.model';
+import { SoundNotificationService } from '@ofServices/sound-notification.service';
+import { DateTimeFormatterService } from '@ofServices/date-time-formatter.service';
+import { MapService } from '@ofServices/map.service';
 import $, { get } from "jquery";
 
 @Component({
@@ -69,7 +69,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         private groupedCardsService: GroupedCardsService,
         private soundNotificationService: SoundNotificationService,
         private mapService: MapService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this._i18nPrefix = `${this.lightCard.process}.${this.lightCard.processVersion}.`;
@@ -88,8 +88,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
         this.computeGroupedCardsIcon();
         this.hasGeoLocation =
             this.lightCard.wktGeometry === undefined ||
-            this.lightCard.wktGeometry == null ||
-            this.lightCard.wktGeometry.length <= 0
+                this.lightCard.wktGeometry == null ||
+                this.lightCard.wktGeometry.length <= 0
                 ? false
                 : true;
         this.isGeoMapEnabled = this.configService.getConfigValue('feed.geomap.enableMap', false);
@@ -148,50 +148,63 @@ export class LightCardComponent implements OnInit, OnDestroy {
     handleDate(timeStamp: number): string {
         return this.dateTimeFormatter.getFormattedDateAndTimeFromEpochDate(timeStamp);
     }
-    public getCardTitle(){
-            if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")){
-                $("#opfab-div-card-template-security").hide()
-                $("#opfab-div-card-template-op").hide()
-                $("#opfab-div-card-template-alarm").show()
-                $("#opfab-div-card-template").hide()
-                $("#opfab-div-card-template-noparades").hide()
-                $("#opfab-div-card-template-agent").hide()
-                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
-                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-                   $(".opfab-card-response-header").hide();
-                  });
-            }else if(document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")){
-                $("#opfab-div-card-template-security").show()
-                $("#opfab-div-card-template-op").hide()
-                $("#opfab-div-card-template-alarm").hide()
-                $("#opfab-div-card-template-noparades").hide()
-                $("#opfab-div-card-template-agent").hide()
-                }
-            else if(document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")){
-                $("#opfab-div-card-template-agent").show()
-                $("#opfab-div-card-template-security").hide()
-                $("#opfab-div-card-template-op").hide()
-                $("#opfab-div-card-template-alarm").hide()
-                $("#opfab-div-card-template-noparades").hide()
-            }else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") 
-            && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")){
-                $("#opfab-div-card-template-security").hide()
-                $("#opfab-div-card-template-op").hide()
-                $("#opfab-div-card-template-alarm").hide()
-                $("#opfab-div-card-template").hide()
-                $("#opfab-div-card-template-noparades").show()
-                $("#opfab-div-card-template-agent").hide()
-                $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
-                   $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-                   $(".opfab-card-response-header").hide();
-                  });
-            }else if(document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne")  || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
-                        $("#opfab-div-card-template").hide()
-                        $("#opfab-div-card-template-op").show()
-                        $("#opfab-div-card-template-security").hide()
-                        $("#opfab-div-card-template-alarm").hide()
-                        $("#opfab-div-card-template-noparades").hide()
-            }
+    public getCardTitle() {
+        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-op").hide()
+            $("#opfab-div-card-template-alarm").show()
+            $("#opfab-div-card-template").hide()
+            $("#opfab-div-card-template-noparades").hide()
+            $("#opfab-div-card-template-agent").hide()
+            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
+            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+            $("#opfab-div-card-template-security").show()
+            $("#opfab-div-card-template-op").hide()
+            $("#opfab-div-card-template-alarm").hide()
+            $("#opfab-div-card-template-noparades").hide()
+            $("#opfab-div-card-template-agent").hide()
+        }
+        else if (document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")) {
+            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+            $("#opfab-div-card-template-agent").show()
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-op").hide()
+            $("#opfab-div-card-template-alarm").hide()
+            $("#opfab-div-card-template-noparades").hide()
+        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
+            && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-op").hide()
+            $("#opfab-div-card-template-alarm").hide()
+            $("#opfab-div-card-template").hide()
+            $("#opfab-div-card-template-noparades").show()
+            $("#opfab-div-card-template-agent").hide()
+            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+            $("#opfab-div-card-template").hide()
+            $("#opfab-div-card-template-op").show()
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-alarm").hide()
+            $("#opfab-div-card-template-noparades").hide()
+            $("#opfab-div-card-template-agent").hide()
+        }
 
     }
     public select($event) {
@@ -206,39 +219,39 @@ export class LightCardComponent implements OnInit, OnDestroy {
         }
         if (this.displayContext != DisplayContext.PREVIEW)
             this.router.navigate(['/' + this.currentPath, 'cards', this.lightCard.id]);
-            setTimeout(() => {
-                this.getCardTitle()
-            }, 1000);
-            // if(card.includes("Surcharge")){
-            //     $("#opfab-div-card-template-security").hide()
-            //     $("#opfab-div-card-template-op").hide()
-            //     $("#opfab-div-card-template-alarm").show()
-            //     $("#opfab-div-card-template").hide()
-            //     $("#opfab-div-card-template-noparades").hide()
+        setTimeout(() => {
+            this.getCardTitle()
+        }, 1000);
+        // if(card.includes("Surcharge")){
+        //     $("#opfab-div-card-template-security").hide()
+        //     $("#opfab-div-card-template-op").hide()
+        //     $("#opfab-div-card-template-alarm").show()
+        //     $("#opfab-div-card-template").hide()
+        //     $("#opfab-div-card-template-noparades").hide()
 
-            //     $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
-            //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-            //        $(".opfab-card-response-header").hide();
-            //       });
-            //     }else if(card.includes("Routine")) {
-            //         $("#opfab-div-card-template").hide()
-            //         $("#opfab-div-card-template-op").show()
-            //         $("#opfab-div-card-template-security").hide()
-            //         $("#opfab-div-card-template-alarm").hide()
-            //         $("#opfab-div-card-template-noparades").hide()
-            //     }else if(card.includes("Risque sur aléa")){
-            //         $("#opfab-div-card-template-security").show()
-            //         $("#opfab-div-card-template-op").hide()
-            //         $("#opfab-div-card-template-alarm").hide()
-            //         $("#opfab-div-card-template-noparades").hide()
-            //         }else if (card.includes("Surcharge de ligne") && card.includes("54_58_154")){
-            //             $("#opfab-div-card-template-noparades").show()
-            //             $("#opfab-div-card-template-security").hide()
-            //             $("#opfab-div-card-template-op").hide()
-            //             $("#opfab-div-card-template-alarm").hide()
+        //     $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+        //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
+        //        $(".opfab-card-response-header").hide();
+        //       });
+        //     }else if(card.includes("Routine")) {
+        //         $("#opfab-div-card-template").hide()
+        //         $("#opfab-div-card-template-op").show()
+        //         $("#opfab-div-card-template-security").hide()
+        //         $("#opfab-div-card-template-alarm").hide()
+        //         $("#opfab-div-card-template-noparades").hide()
+        //     }else if(card.includes("Risque sur aléa")){
+        //         $("#opfab-div-card-template-security").show()
+        //         $("#opfab-div-card-template-op").hide()
+        //         $("#opfab-div-card-template-alarm").hide()
+        //         $("#opfab-div-card-template-noparades").hide()
+        //         }else if (card.includes("Surcharge de ligne") && card.includes("54_58_154")){
+        //             $("#opfab-div-card-template-noparades").show()
+        //             $("#opfab-div-card-template-security").hide()
+        //             $("#opfab-div-card-template-op").hide()
+        //             $("#opfab-div-card-template-alarm").hide()
 
-            //         }
-        }
+        //         }
+    }
 
 
     get i18nPrefix(): string {

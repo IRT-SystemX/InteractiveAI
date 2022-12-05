@@ -69,7 +69,7 @@ export class CardListComponent implements AfterViewChecked, OnInit {
         const rect = this.domCardListElement.getBoundingClientRect();
         let height = window.innerHeight - rect.top - 30;
         if (this.hideAckAllCardsFeature) height = window.innerHeight - rect.top - 10;
-        this.domCardListElement.style.maxHeight = "600px";
+        this.domCardListElement.style.maxHeight = "560px";
     }
 
     acknowledgeAllVisibleCardsInTheFeed() {
