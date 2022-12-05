@@ -40,7 +40,7 @@ class Events(MethodView):
     def post(self, data):
         """Add an event"""
         use_case = data["use_case"]
-        input_line = data["data"]["line"]
+        input_line = data["data"].get("line")
         event_id = get_event_id(input_line, use_case)
         data["id_event"] = str(event_id)
         # TODO: this authenetication should be removed once this service is integrated into the same gateway as operatorFabric
