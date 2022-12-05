@@ -50,6 +50,7 @@ These two parameters are place in this file as the style should have a title par
   function closeHome(){
     document.getElementById("homescreen").style = "display:none";
     opfabStyle.setCss(opfabStyle.DAY_STYLE);
+    document.getElementById("assistOpTitle").hidden = false;
   }
   
   setInterval(() => {
@@ -88,6 +89,8 @@ These two parameters are place in this file as the style should have a title par
   <meta name="theme-color" content="#1976d2">
 </head>
 <body class="opfab-colors" style="max-height:730px">
+  <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden>
+    <b>Assistance à l'opérateur</b></div>
   <of-root></of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

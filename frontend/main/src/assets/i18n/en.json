@@ -89,7 +89,7 @@
     "disconnectByAppLoadedInAnotherTab": "You have been disconnected because another tab of this browser was used to log in using this URL."
   },
   "menu": {
-    "feed": "HYPERVISION",
+    "feed": "Hypervision",
     "calendar": "Calendar",
     "archives": "Archives",
     "logging": "Logging",

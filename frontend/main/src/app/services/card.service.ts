@@ -132,8 +132,17 @@ export class CardService {
                                     cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
                                     cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
                                 }, 3000);
-                                // this.cardAlreadySet = true;
-                                // this.cardCount++;
+                                var cards = $(".card");
+                                // for(var card = 0; card<cards.length;card++){
+                                //     cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
+                                //     cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
+                                //     cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
+                                //     cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
+                                //     if ( cards[card].classList.contains("light-card-detail-selected") ){
+                                //         console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                                //         $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                                //     }
+                                // }
                             // }
 
                             if (operation.card.id === this.selectedCardId)
