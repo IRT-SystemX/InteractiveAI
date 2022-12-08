@@ -1,0 +1,97 @@
+<!-- Copyright (c) 2018-2022, RTE (http://www.rte-france.com)              -->
+<!-- See AUTHORS.txt                                                       -->
+<!-- This Source Code Form is subject to the terms of the Mozilla Public   -->
+<!-- License, v. 2.0. If a copy of the MPL was not distributed with this   -->
+<!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.              -->
+<!-- SPDX-License-Identifier: MPL-2.0                                      -->
+<!-- This file is part of the OperatorFabric project.                      -->
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+  <title>Assistant CAB v1</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style title="opfabRootStyle">
+
+
+/** 
+Style parameters is define using css variables --params
+
+Just two variables are set here , the complete style is set by the navbar.component.ts using global-style.service.ts.
+
+This two values are used when navbar is not yet loaded
+
+These two parameters are place in this file as the style should have a title parameter (it 's not possible to give a name for the style in the angular.json file). 
+
+*/
+
+
+:root {
+  --opfab-bgcolor: #262f3d;
+  --opfab-bgcolor-darker: #262f3d;
+  --opfab-text-color: white;
+  --opfab-input-text-color: white;
+  --opfab-form-border-color:  #606267;
+  --opfab-form-label-text-color: #bababa;
+}
+
+
+
+</style>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+  function closeHome(){
+    document.getElementById("homescreen").style = "display:none";
+    opfabStyle.setCss(opfabStyle.DAY_STYLE);
+    document.getElementById("assistOpTitle").hidden = false;
+  }
+  
+  setInterval(() => {
+        setCardsSeverity();
+    }, 10000);
+  setInterval(() => {
+        refreshCtx();
+    }, 30000);
+    
+
+    function setCardsSeverity(){
+        var cards = document.getElementsByClassName("card");
+        for(var card = 0; card<cards.length;card++){
+            cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
+            cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
+            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
+            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
+            // if ( cards[card].classList.contains("light-card-detail-selected") ){
+                console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + cards[card].getAttribute("severity"));
+                // document.getElementsByClassName("opfab-feed-list-card-severity")[0].style.color = "green"
+                cards[card].style.color = "$sev"+cards[card].getAttribute("severity");
+            // }
+        }
+    }
+    function refreshCtx() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "GET", "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), false ); // false for synchronous request
+      xmlHttp.send( null );
+      var response  = JSON.parse(xmlHttp.responseText)[0].data.topology;
+      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+    };
+  </script>
+
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+</head>
+<body class="opfab-colors" style="max-height:730px">
+  <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden>
+    <b>Assistance à l'opérateur</b></div>
+  <of-root></of-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+</html>

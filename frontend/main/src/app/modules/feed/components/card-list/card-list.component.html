@@ -1,0 +1,66 @@
+<!-- Copyright (c) 2018-2020, RTE (http://www.rte-france.com)              -->
+<!-- See AUTHORS.txt                                                       -->
+<!-- This Source Code Form is subject to the terms of the Mozilla Public   -->
+<!-- License, v. 2.0. If a copy of the MPL was not distributed with this   -->
+<!-- file, You can obtain one at http://mozilla.org/MPL/2.0/.              -->
+<!-- SPDX-License-Identifier: MPL-2.0                                      -->
+<!-- This file is part of the OperatorFabric project.                      -->
+
+<div id="container-cl" style="display:flex">
+<div id="ctx_div" class="ctx"><b>Contexte</b>
+  <div style="background-color: #E7E7E7; max-width: 15%; position:absolute">
+    <input checked type="checkbox" class="cbox" value="flux">
+    <label style="margin-left:5px">Flux</label><br>
+    <input checked type="checkbox" class="cbox" value="tension">
+    <label style="margin-left:5px">Tension</label><br>
+    <input type="checkbox" class="cbox" value="parade">
+    <label style="margin-left:5px">Parade</label>
+  </div>
+  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png"></div>
+<div class="container-fluid feed-content" style="margin-top: 10px; position:relative">
+  <div>
+    <of-filters></of-filters>
+  </div>
+
+
+  <div style="height:25px"> </div>
+
+  <div id="opfab-card-list" class="opfab-card-list" style="width:96%">
+    <div class="row" *ngFor="let currentLightCard of lightCards">
+      <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
+        <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||
+            isCardInGroup(selection|async, currentLightCard.id)" [selection]="selection">
+        </of-light-card>
+      </div>
+    </div>
+    <div *ngIf="!!lightCards && totalNumberOfLightsCards > lightCards.length" style="text-align:right;font-weight: bold;margin-top:0px;margin-right:10px;">
+       ... {{ totalNumberOfLightsCards - lightCards.length }} <span translate> feed.moreCards </span>
+    </div>
+  
+  </div>
+
+  <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
+    <a id="opfab-feed-ack-all-link" (click)="open(confirmationPopup)"><span translate> feed.acknowledgeAllCards.label </span></a>
+  </div>
+
+</div>
+</div>
+<div class="bar"></div>
+<div class="bar bar2"></div>
+
+
+
+
+<ng-template #confirmationPopup let-modal>
+  <div class="modal-header">
+    <div translate> feed.acknowledgeAllCards.popup.title </div>
+    <div class="opfab-close-modal-icon" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </div>
+  </div>
+  <div class="modal-body text-center">
+    <p translate>feed.acknowledgeAllCards.popup.doYouReallyWant</p>
+    <button id="opfab-ack-all-btn-cancel" type="button" class="opfab-btn-cancel" (click)="declineAckAllCards()" translate>button.cancel</button>
+    <button id="opfab-ack-all-btn-confirm" type="button" class="opfab-btn" (click)="confirmAckAllCards()" translate>button.ok</button>
+  </div>
+</ng-template>

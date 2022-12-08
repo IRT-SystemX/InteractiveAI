@@ -1,0 +1,80 @@
+/* Copyright (c) 2018-2022, RTE (http://www.rte-france.com)
+ * See AUTHORS.txt
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ * This file is part of the OperatorFabric project.
+ */
+
+.feed-content {
+    height: 100%;
+    margin: -6px;
+    padding: 0px;
+}
+
+.opfab-card-list {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.opfab-feed-horizontal-bar {
+    border-top-width: 1px;
+    border-top-style: solid;
+    height: 10px;
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-left: 1px;
+    border-color: var(--opfab-card-tab-border-color);
+}
+
+.opfab-ack-all-cards {
+    background-color: var(--opfab-bgcolor);
+    text-align: center;
+    font-size: 13px;
+    padding-top: 5px;
+    padding-right: 20px;
+}
+
+.opfab-ack-all-cards a:hover {
+    color: var(--opfab-navbar-color-active);
+    font-weight: bold;
+}
+
+#opfab-feed-ack-all-link {
+    cursor: pointer;
+}
+
+.modal-header {
+    font-size: 20px;
+}
+
+.modal-body {
+    font-size: 16px;
+}
+
+input[type=checkbox]:checked + label {
+    color: rgb(89,145,145);
+    font-style: normal;
+} 
+
+.ctx{
+    font-size:18px;
+    color:grey;
+}
+
+.cbox{
+    font-size: 16px;
+}
+
+.bar{
+    border-left: 2px solid lightgrey;
+    height: 700px;
+    position: absolute;
+    margin-left: 700px;
+    top: 0;
+}
+
+.bar2{
+    margin-left: 1130px;
+}
