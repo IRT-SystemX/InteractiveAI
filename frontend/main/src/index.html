@@ -68,11 +68,6 @@ These two parameters are place in this file as the style should have a title par
             cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
             cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
             cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
-            // if ( cards[card].classList.contains("light-card-detail-selected") ){
-                console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + cards[card].getAttribute("severity"));
-                // document.getElementsByClassName("opfab-feed-list-card-severity")[0].style.color = "green"
-                cards[card].style.color = "$sev"+cards[card].getAttribute("severity");
-            // }
         }
     }
     function refreshCtx() {

@@ -16,7 +16,7 @@
 
 .light-card-detail-selected {
     transition: margin 0.3s;
-    color:white;
+    color:white!important;
     #opfab-card-icon{
         filter: drop-shadow(1px 0px 4px white);
     }
@@ -49,7 +49,7 @@
 
 .light-card-detail-unselected {
     cursor: pointer;
-    background-color: var(--opfab-lightcard-detail-bgcolor); 
+    background-color: var(--opfab-lightcard-detail-bgcolor);
 }
 
 .light-card-detail-unread {
@@ -67,6 +67,19 @@
 }
 .light-card-border-information{
     border: 1px solid $sev-information;
+}
+
+.title-light-card-border-alarm{
+   color: $sev-alarm;
+}
+.title-light-card-border-action{
+   color: $sev-action;
+}
+.title-light-card-border-compliant{
+   color: $sev-compliant;
+}
+.title-light-card-border-information{
+   color: $sev-information;
 }
 
 .card:hover {

@@ -10,7 +10,7 @@
 
 <div id="opfab-feed-light-card-{{lightCard.process}}-{{lightCard.processInstanceId}}"
      attr.data-urlId="{{lightCard.process}}.{{lightCard.processInstanceId}}"
-     class="card light-card-detail light-card-border-{{lightCard.severity.toString()|lowercase}}"
+     class="card light-card-detail light-card-border-{{lightCard.severity.toString()|lowercase}} title-light-card-border-{{lightCard.severity.toString()|lowercase}}"
      attr.severity="{{lightCard.severity.toString()|lowercase}}"
      [class.light-card-detail-selected]="open || groupedCardOpen" [class.light-card-detail-unselected]="!open && !groupedCardOpen"
      [class.light-card-detail-unread]="displayUnreadIcon && !isArchivePageType() && !lightCard.hasBeenRead"
