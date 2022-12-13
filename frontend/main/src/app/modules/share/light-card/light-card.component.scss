@@ -17,10 +17,10 @@
 .light-card-detail-selected {
     transition: margin 0.3s;
     color:white!important;
-    #opfab-card-icon{
-        filter: drop-shadow(1px 0px 4px white);
-    }
-    
+}
+#opfab-card-icon{
+    filter: drop-shadow(1px 0px 4px white);
+    margin-left:5px;
 }
 
 .light-card-detail-selected-alarm {
@@ -83,7 +83,6 @@
 }
 
 .card:hover {
-    word-break: break-all;
     box-shadow: var(--opfab-card-shadow);
     background-color: #D1D1D1;
 }
@@ -141,4 +140,9 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
+    color:grey;
+}
+
+.light-card-detail-selected span{
+    color:white!important;
 }

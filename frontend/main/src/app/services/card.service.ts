@@ -124,26 +124,6 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
-                            // if (!this.cardAlreadySet || this.cardCount >2){
-                                setTimeout(() => {
-                                    cards = $(".card");
-                                    cards[0].innerHTML = cards[0].innerHTML.replace("action","Sureté");
-                                    cards[0].innerHTML = cards[0].innerHTML.replace("alarm","Sureté");
-                                    cards[0].innerHTML = cards[0].innerHTML.replace("compliant","Routine");
-                                    cards[0].innerHTML = cards[0].innerHTML.replace("information","Routine");                                // for(var card = 0; card<cards.length;card++){
-                                }, 3000);
-                                var cards = $(".card");
-                                // for(var card = 0; card<cards.length;card++){
-                                //     cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
-                                //     cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
-                                //     cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
-                                //     cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
-                                //     if ( cards[card].classList.contains("light-card-detail-selected") ){
-                                //         console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));
-                                //         $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
-                                //     }
-                                // }
-                            // }
 
                             if (operation.card.id === this.selectedCardId)
                                 this.store.dispatch(new LoadCardAction({id: operation.card.id}));

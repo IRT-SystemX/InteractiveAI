@@ -504,7 +504,7 @@ export class CustomTimelineChartComponent extends BaseChartComponent implements 
                 case 'COMPLIANT':
                     return '#599191'; // green
                 case 'INFORMATION':
-                    return '#1074AD'; // blue
+                    return '#599191'; // blue
                 default:
                     return 'blue';
             }
