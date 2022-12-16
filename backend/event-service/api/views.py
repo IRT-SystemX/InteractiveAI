@@ -43,10 +43,7 @@ class Events(MethodView):
         input_line = data["data"].get("line")
         event_id = get_event_id(input_line, use_case)
         data["id_event"] = str(event_id)
-        # TODO: this authenetication should be removed once this service is integrated into the same gateway as operatorFabric
-        # login
-        keycloak_client = KeycloakClient()
-        login_response = keycloak_client.login()
+
         # Create a new card (notification)
         card_pub_client = CardPubClient()
         severity = severity_map[data.get("criticality")]
@@ -54,8 +51,7 @@ class Events(MethodView):
         timestamp_date = int(round((date).timestamp()*1000))
         data["date"] = timestamp_date
 
-        card_pub_client.create_card(login_response.get("access_token"),
-                                    data["id_event"],
+        card_pub_client.create_card(data["id_event"],
                                     severity,
                                     timestamp_date,
                                     data["title"],

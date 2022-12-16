@@ -42,7 +42,7 @@ Before starting cab-platform you need a running version of [OperatorFabric](http
   ```sh
   git clone https://github.com/opfab/operatorfabric-core
   cd config/docker
-  docker-compose up -d
+  ./docker-compose.sh
   ```
 
 ### Installation

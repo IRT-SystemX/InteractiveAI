@@ -2,6 +2,7 @@ version: "3.5"
 services:
 
   cabcontext:
+    container_name: cab_context
     image: cab/cabcontext
     build:
       context: backend/context-service

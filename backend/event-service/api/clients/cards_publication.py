@@ -7,7 +7,7 @@ class CardPubClient:
     def __init__(self) -> None:
         self.base_url = CARDS_PUBLICATION_SERVICE
 
-    def create_card(self, token, id, severity, timestamp_date, title, description, metadata):
+    def create_card(self, id, severity, timestamp_date, title, description, metadata):
         url = f"{self.base_url}/cards"
         payload = json.dumps({
             "publisher": "publisher_test",
@@ -33,7 +33,6 @@ class CardPubClient:
             }
         })
         headers = {
-            'Authorization': f"Bearer {token}",
             'Content-Type': 'application/json'
         }
 
