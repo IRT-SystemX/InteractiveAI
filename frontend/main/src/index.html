@@ -72,7 +72,7 @@ These two parameters are place in this file as the style should have a title par
     }
     function refreshCtx() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open( "GET", "http://localhost:3200/cabcontext/api/v1/contexts?time="+new Date().getTime(), false ); // false for synchronous request
+      xmlHttp.open( "GET", window.location.hostname + ":3200/cabcontext/api/v1/contexts?time="+new Date().getTime(), false ); // false for synchronous request
       xmlHttp.send( null );
       var response  = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;

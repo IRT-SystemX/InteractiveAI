@@ -156,12 +156,12 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
-            $.get("http://localhost:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(window.location.hostname + ":3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
-            $.get("http://localhost:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(window.location.hostname + ":3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -172,7 +172,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-agent").hide()
         }
         else if (document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")) {
-            $.get("http://localhost:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(window.location.hostname + ":3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -189,12 +189,12 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").show()
             $("#opfab-div-card-template-agent").hide()
-            $.get("http://localhost:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(window.location.hostname + ":3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
-            $.get("http://localhost:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(window.location.hostname + ":3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -229,7 +229,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         //     $("#opfab-div-card-template").hide()
         //     $("#opfab-div-card-template-noparades").hide()
 
-        //     $.get( "http://localhost:3200/cabcontext/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+        //     $.get( window.location.hostname + ":3200/cabcontext/api/v1/contexts?time="+new Date().getTime(), function( data ) {
         //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
         //        $(".opfab-card-response-header").hide();
         //       });
