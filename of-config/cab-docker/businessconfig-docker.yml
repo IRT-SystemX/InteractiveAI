@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: businessconfig
+
+operatorfabric.businessconfig:
+  storage:
+    path: "/businessconfig-storage"
+

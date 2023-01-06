@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "id": "service1",
+      "name": "Event Base Example",
+      "processes": [
+        "eventProcess"
+      ]
+    }
+  ]
+}

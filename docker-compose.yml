@@ -16,7 +16,7 @@ services:
     volumes:
       - ./backend/context-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
   
   cabevent:
     image: cab/cabevent
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./backend/event-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
     depends_on:
       - db_postgres_event
 
@@ -54,7 +54,7 @@ services:
     volumes:
       - ./backend/historic-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
     depends_on:
       - db_postgres_historic
 
@@ -71,7 +71,7 @@ services:
     volumes:
       - postgres_context_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
   db_postgres_event:
     container_name: db_postgres_event
@@ -86,7 +86,7 @@ services:
     volumes:
       - postgres_event_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
   db_postgres_historic:
     container_name: db_postgres_historic
@@ -101,7 +101,7 @@ services:
     volumes:
       - postgres_historic_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
   pgadmin:
     container_name: pgadmin_container
@@ -115,7 +115,7 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     networks:
-      - docker_default
+      - cab-docker_default
     restart: unless-stopped
 
   angular-ui:
@@ -128,10 +128,10 @@ services:
     ports:
       - "3200:80"
     networks:
-      - docker_default
+      - cab-docker_default
 
 networks:
-  docker_default:
+  cab-docker_default:
     external: true
 
 volumes:
