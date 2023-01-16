@@ -5,10 +5,11 @@ services:
     container_name: cab_context
     image: cab/cabcontext
     build:
-      context: backend/context-service
-      dockerfile: Dockerfile
+      context: backend
+      dockerfile: Context-Service-Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
+      - HOST_IP=$HOST_IP
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -17,6 +18,8 @@ services:
       - ./backend/context-service:/code
     networks:
       - cab-docker_default
+    depends_on:
+      - frontend
   
   cabevent:
     image: cab/cabevent
@@ -118,7 +121,8 @@ services:
       - cab-docker_default
     restart: unless-stopped
 
-  angular-ui:
+  frontend:
+    container_name: frontend
     build:
       context: ./frontend/main
       dockerfile: Dockerfile
