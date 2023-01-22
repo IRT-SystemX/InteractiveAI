@@ -71,10 +71,27 @@ input[type=checkbox]:checked + label {
     border-left: 2px solid lightgrey;
     height: 700px;
     position: absolute;
-    margin-left: 700px;
     top: 0;
 }
 
-.bar2{
-    margin-left: 1130px;
-}
+.button {
+    background-color: blue; /* Green */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 12px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    width: 100px;
+    margin-bottom: 3px;
+  }
+
+  .button:hover{
+    background-color: grey; /* Green */
+  }
+
+  .imgMarged{
+    margin-left:100px;
+  }

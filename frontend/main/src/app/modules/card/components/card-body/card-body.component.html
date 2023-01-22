@@ -16,7 +16,7 @@
         <span class="opfab-tab" id="opfab-card-title">{{card.titleTranslated | opfabTitleCase}}</span>
       </li>
       <li class="nav-item opfab-menu-item-right" style="margin-right:130px">
-        <div *ngIf="!isSmallscreen()" style="display:flex">
+        <div  style="display:flex">
 
           <of-card-actions style="display:flex" [card]="this.card" [cardState]="this.cardState"
             [parentModalRef]="this.parentModalRef"  (closeCardDetail)="closeDetails()">

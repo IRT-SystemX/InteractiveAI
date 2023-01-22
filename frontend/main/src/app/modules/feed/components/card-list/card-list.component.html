@@ -6,9 +6,10 @@
 <!-- SPDX-License-Identifier: MPL-2.0                                      -->
 <!-- This file is part of the OperatorFabric project.                      -->
 
-<div id="container-cl" style="display:flex">
-<div id="ctx_div" class="ctx"><b>Contexte</b>
-  <div style="background-color: #E7E7E7; max-width: 15%; position:absolute">
+<div id="container-cl" style="display:flex;">
+<div id="ctx_div" class="ctx" style="position:relative;"><b>Contexte</b>
+  <div id="empty_block" style="width: 710px"></div>
+  <div id="rte_checkboxes" style="background-color: #E7E7E7; max-width: 15%; position:absolute">
     <input checked type="checkbox" class="cbox" value="flux">
     <label style="margin-left:5px">Flux</label><br>
     <input checked type="checkbox" class="cbox" value="tension">
@@ -16,16 +17,32 @@
     <input type="checkbox" class="cbox" value="parade">
     <label style="margin-left:5px">Parade</label>
   </div>
-  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png"></div>
-<div class="container-fluid feed-content" style="margin-top: 10px; position:relative">
+  <div id="dassault_div" style="position:absolute">
+    <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
+      Carte
+    </button><br>
+    <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique')">
+      Synoptique
+    </button><br>
+    <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances')">
+      Dépendances
+    </button>
+  </div>
+  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png">
+  <img id="carte" class="imgMarged" src="assets\images\dassault_carte.png" hidden>
+  <img id="synoptique" class="imgMarged" src="assets\images\dassault_synoptique.png" hidden>
+  <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
+
+</div>
+<div id="feed-content" class="container-fluid feed-content" style="margin-top: 10px; position:relative">
   <div>
     <of-filters></of-filters>
   </div>
 
 
-  <div style="height:25px"> </div>
+  <!-- <div style="height:25px"> </div> -->
 
-  <div id="opfab-card-list" class="opfab-card-list" style="width:96%">
+  <div id="opfab-card-list" class="opfab-card-list" style="width:100%">
     <div class="row" *ngFor="let currentLightCard of lightCards">
       <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
         <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||
@@ -45,8 +62,8 @@
 
 </div>
 </div>
-<div class="bar"></div>
-<div class="bar bar2"></div>
+<div id="bar" class="bar"></div>
+<div id="bar2" class="bar"></div>
 
 
 

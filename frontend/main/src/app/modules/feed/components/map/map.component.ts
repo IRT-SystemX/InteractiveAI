@@ -451,6 +451,20 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     isSmallscreen() {
+        document.getElementById("ctxImg").style.width = window.innerWidth / 2.70 + "px"; 
+        document.getElementById("ctxImg").style.height = window.innerHeight / 1.7 + "px";
+        document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
+        document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
+        document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
+        document.getElementById("bar").style.height = window.innerHeight / 1.5 + "px";
+        document.getElementById("bar2").style.height = window.innerHeight / 1.5 + "px";
+
+        document.getElementById("bar2").style.marginLeft =  parseInt(document.getElementById("ctxImg").style.width)-80 
+        + parseInt(document.getElementById("notifContainer").style.width + 15) + "px";
+        document.getElementById("assistOpTitle").style.left =  parseInt(document.getElementById("ctxImg").style.width) 
+        + parseInt(document.getElementById("notifContainer").style.width) - 15 + "px";
+        document.getElementById("feed-content").style.width = window.innerWidth / 4.60 + "px"; 
+        document.getElementById("opfab-card-list").style.maxHeight = window.innerHeight/1.27 - document.getElementById("of_timeline").offsetHeight +  "px"; 
         return window.innerWidth < 1000;
     }
 }

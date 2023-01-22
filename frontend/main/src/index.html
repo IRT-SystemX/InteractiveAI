@@ -47,12 +47,78 @@ These two parameters are place in this file as the style should have a title par
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script>
-  function closeHome(){
+    var selectedUseCase = "none";
+  function selectUseCase(uc){
+    switch(uc){
+      case "RTE":
+        console.log("RTE selected as use case");
+        selectedUseCase = uc;
+        document.getElementById("dassault_div").hidden = true;
+        document.getElementById("dassault_assist").hidden = true;
+        document.getElementById("rte_checkboxes").hidden = false;
+        document.getElementById("rte_assist").hidden = false;
+        document.getElementById("empty_block").hidden = true;
+        break;
+      case "Dassault":
+      console.log("Dassault selected as use case");
+      document.getElementById("dassault_div").hidden = false;
+      document.getElementById("dassault_assist").hidden = false;
+      document.getElementById("rte_assist").hidden = true;
+      document.getElementById("rte_checkboxes").hidden = true;
+      document.getElementById("ctxImg").hidden = true;
+      document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
+      document.getElementById("opfab-navbar-menu-menu1").text = "";
+      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+        break;
+      case "Orange":
+      console.log("Orange selected as use case");
+      document.getElementById("dassault_div").hidden = true;
+      document.getElementById("dassault_assist").hidden = true;
+      document.getElementById("rte_assist").hidden = true;
+      document.getElementById("rte_checkboxes").hidden = true;
+      document.getElementById("ctxImg").hidden = true;
+      document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
+      document.getElementById("opfab-navbar-menu-menu1").text = "";
+      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+      break;
+      case "SNCF":
+      console.log("SNCF selected as use case");
+      document.getElementById("dassault_div").hidden = true;
+      document.getElementById("dassault_assist").hidden = true;
+      document.getElementById("rte_assist").hidden = true;
+      document.getElementById("rte_checkboxes").hidden = true;
+      document.getElementById("ctxImg").hidden = true;
+      document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
+      document.getElementById("opfab-navbar-menu-menu1").text = "";
+      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+      break;
+
+    }
     document.getElementById("homescreen").style = "display:none";
     opfabStyle.setCss(opfabStyle.DAY_STYLE);
     document.getElementById("assistOpTitle").hidden = false;
   }
   
+  function selectDassaultCtx(type){
+      switch(type){
+        case "dependances":
+        document.getElementById("dependances").hidden = false;
+        document.getElementById("synoptique").hidden = true;
+        document.getElementById("carte").hidden = true;
+        break;
+        case "carte":
+        document.getElementById("dependances").hidden = true;
+        document.getElementById("synoptique").hidden = true;
+        document.getElementById("carte").hidden = false;
+        break;
+        case "synoptique":
+        document.getElementById("dependances").hidden = true;
+        document.getElementById("synoptique").hidden = false;
+        document.getElementById("carte").hidden = true;
+        break;
+
+      }
+    }
   setInterval(() => {
         setCardsSeverity();
     }, 5000);
@@ -83,9 +149,10 @@ These two parameters are place in this file as the style should have a title par
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
 </head>
-<body class="opfab-colors" style="max-height:730px">
+<body class="opfab-colors" id="bodyopfab" style="max-height:730px">
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden>
-    <b>Assistance à l'opérateur</b></div>
+    <b id="rte_assist">Assistance à l'opérateur</b>
+    <b id="dassault_assist">Interface de dialogue</b></div>
   <of-root></of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
