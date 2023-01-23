@@ -1,6 +1,5 @@
 import os
 
-import cab_common_auth.introspect
 from api.models import db
 from api.views import api_bp
 from apiflask import APIFlask

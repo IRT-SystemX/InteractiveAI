@@ -43,6 +43,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
+        "entitiesId": ["ORANGE"],
         "groups": ["RTE;ADMIN;ReadOnly"]
       },
       "credentials": [
@@ -76,6 +77,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
+        "entitiesId": ["DA/FW"],
         "groups": ["RTE;ADMIN;ReadOnly"]
       },
       "credentials": [
@@ -109,6 +111,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
+        "entitiesId": ["SNCF"],
         "groups": []
       },
       "credentials": [

@@ -1,6 +1,9 @@
 import uuid
 from datetime import datetime
 
+from cab_common_auth.decorators import get_use_cases
+from flask import request
+
 from .models import ContextModel, db
 
 
@@ -39,9 +42,13 @@ class ContextManager:
         return context_list
 
     def get_contexts_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).all()
+        use_cases = get_use_cases()
+        context = ContextModel.query.filter_by(date=date).filter(
+            ContextModel.use_case.in_(use_cases)).all()
         return context
 
     def get_context_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).first()
+        use_cases = get_use_cases()
+        context = ContextModel.query.filter_by(date=date).filter(
+            ContextModel.use_case.in_(use_cases)).first()
         return context
