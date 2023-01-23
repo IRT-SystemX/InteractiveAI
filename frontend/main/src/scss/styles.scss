@@ -27,7 +27,13 @@
         border-radius: 5px;
     }
 }
-
+#map{
+    width: 95%;
+    height: 48vh;
+    margin-top: 54px;
+    margin-left: 5px;
+    position: absolute;
+}
 body {
     color: $light;
     padding: 80px 0px 30px 0px;
