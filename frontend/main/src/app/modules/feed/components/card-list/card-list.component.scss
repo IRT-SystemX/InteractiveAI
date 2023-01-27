@@ -8,7 +8,7 @@
  */
 
 .feed-content {
-    height: 100%;
+    height: auto;
     margin: -6px;
     padding: 0px;
 }
@@ -74,24 +74,45 @@ input[type=checkbox]:checked + label {
     top: 0;
 }
 
-.button {
-    background-color: blue; /* Green */
-    border: none;
-    border-radius: 10px;
-    color: white;
-    padding: 12px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 12px;
-    width: 100px;
-    margin-bottom: 3px;
-  }
-
-  .button:hover{
-    background-color: grey; /* Green */
-  }
+.dassaultBar{
+    border-left: 15px solid black;
+    margin-left: 420px;
+    z-index: -2;
+}
+.dassaultBar2{
+    border-left: 15px solid black;
+    margin-left: 820px;
+    z-index: -2;
+}
 
   .imgMarged{
-    margin-left:100px;
+    margin-top:50px;
+  }
+
+  .btn-group button {
+    background-color: white;
+    color: #0085CC;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left;
+    border-radius: 5px;
+    border: #0085CC;
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-right: none;
+  }
+  
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .btn-group button:hover {
+    background-color: #0085CC;
+  }
+  .btn-group button:focus {
+    background-color: #0085CC;
+    color:white;
   }

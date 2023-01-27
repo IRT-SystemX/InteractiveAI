@@ -449,22 +449,40 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
     isSmallscreen() {
-        document.getElementById("ctxImg").style.width = window.innerWidth / 2.70 + "px"; 
+        var cabUseCase = document.getElementById("opfab-navbar-menu-feed").innerText;
+        switch(document.getElementById("opfab-navbar-menu-feed").innerText){
+            case 'CAB Dassault':
+                document.getElementById("ctxImg").style.width = window.innerWidth / 1.80 + "px"; 
+                break;
+            default:
+                document.getElementById("ctxImg").style.width = window.innerWidth / 2.70 + "px"; 
+                break;
+        }
         document.getElementById("ctxImg").style.height = window.innerHeight / 1.7 + "px";
         document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
         document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
         document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
         document.getElementById("bar").style.height = window.innerHeight / 1.5 + "px";
         document.getElementById("bar2").style.height = window.innerHeight / 1.5 + "px";
-
+        document.getElementById("dassaultBar").style.height = window.innerHeight / 1.2 + "px";
+        document.getElementById("dassaultBar2").style.height = window.innerHeight / 1.2 + "px";
         document.getElementById("bar2").style.marginLeft =  parseInt(document.getElementById("ctxImg").style.width)-80 
         + parseInt(document.getElementById("notifContainer").style.width + 15) + "px";
-        document.getElementById("assistOpTitle").style.left =  parseInt(document.getElementById("ctxImg").style.width) 
-        + parseInt(document.getElementById("notifContainer").style.width) - 15 + "px";
+        if(cabUseCase == 'CAB Dassault'){
+            document.getElementById("assistOpTitle").style.left =  parseInt(document.getElementById("ctxImg").style.width) 
+            + parseInt(document.getElementById("notifContainer").style.width) + "px";
+        }else{
+            document.getElementById("assistOpTitle").style.left =  parseInt(document.getElementById("ctxImg").style.width) 
+            + parseInt(document.getElementById("notifContainer").style.width) - 15 + "px";
+        }
         document.getElementById("feed-content").style.width = window.innerWidth / 4.60 + "px"; 
         document.getElementById("opfab-card-list").style.maxHeight = window.innerHeight/1.27 - document.getElementById("of_timeline").offsetHeight +  "px"; 
+        document.getElementById("map").style.width = parseInt(document.getElementById("ctxImg").style.width) - 25 + "px";
+        document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
+        document.getElementById("empty_block").style.width =  parseInt(document.getElementById("ctxImg").style.width)  + "px";
+        document.getElementById("dassaultBar2").style.marginLeft = parseInt(document.getElementById("feed-content").style.width) + parseInt(document.getElementById("map").style.width) + 55 + "px";
+
         return window.innerWidth < 1000;
     }
 }

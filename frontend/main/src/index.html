@@ -10,17 +10,16 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
   <title>Assistant CAB v1</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style title="opfabRootStyle">
-
-
-/** 
+  <style title="opfabRootStyle">
+    /** 
 Style parameters is define using css variables --params
 
 Just two variables are set here , the complete style is set by the navbar.component.ts using global-style.service.ts.
@@ -32,179 +31,231 @@ These two parameters are place in this file as the style should have a title par
 */
 
 
-:root {
-  --opfab-bgcolor: #262f3d;
-  --opfab-bgcolor-darker: #262f3d;
-  --opfab-text-color: white;
-  --opfab-input-text-color: white;
-  --opfab-form-border-color:  #606267;
-  --opfab-form-label-text-color: #bababa;
-}
-
-
-
-</style>
+    :root {
+      --opfab-bgcolor: #262f3d;
+      --opfab-bgcolor-darker: #262f3d;
+      --opfab-text-color: white;
+      --opfab-input-text-color: white;
+      --opfab-form-border-color: #606267;
+      --opfab-form-label-text-color: #bababa;
+    }
+  </style>
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script>
     var selectedUseCase = "none";
-  function selectUseCase(uc){
-    switch(uc){
-      case "RTE":
-        console.log("RTE selected as use case");
-        selectedUseCase = uc;
-        document.getElementById("dassault_div").hidden = true;
-        document.getElementById("dassault_assist").hidden = true;
-        document.getElementById("rte_checkboxes").hidden = false;
-        document.getElementById("rte_assist").hidden = false;
-        document.getElementById("empty_block").hidden = true;
-        break;
-      case "Dassault":
-      console.log("Dassault selected as use case");
-      document.getElementById("dassault_div").hidden = false;
-      document.getElementById("dassault_assist").hidden = false;
-      document.getElementById("rte_assist").hidden = true;
-      document.getElementById("rte_checkboxes").hidden = true;
-      document.getElementById("ctxImg").hidden = true;
-      document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
-      document.getElementById("opfab-navbar-menu-menu1").text = "";
-      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-        break;
-      case "Orange":
-      console.log("Orange selected as use case");
-      document.getElementById("dassault_div").hidden = true;
-      document.getElementById("dassault_assist").hidden = true;
-      document.getElementById("rte_assist").hidden = true;
-      document.getElementById("rte_checkboxes").hidden = true;
-      document.getElementById("ctxImg").hidden = true;
-      document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
-      document.getElementById("opfab-navbar-menu-menu1").text = "";
-      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-      break;
-      case "SNCF":
-      console.log("SNCF selected as use case");
-      document.getElementById("dassault_div").hidden = true;
-      document.getElementById("dassault_assist").hidden = true;
-      document.getElementById("rte_assist").hidden = true;
-      document.getElementById("rte_checkboxes").hidden = true;
-      document.getElementById("ctxImg").hidden = true;
-      document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
-      document.getElementById("opfab-navbar-menu-menu1").text = "";
-      document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-      initMap();
-      break;
 
+    function selectUseCase(uc) {
+      switch (uc) {
+        case "RTE":
+          console.log("RTE selected as use case");
+          selectedUseCase = uc;
+          document.getElementById("dassault_div").hidden = true;
+          document.getElementById("dassault_assist").hidden = true;
+          document.getElementById("rte_checkboxes").hidden = false;
+          document.getElementById("rte_assist").hidden = false;
+          document.getElementById("empty_block").hidden = true;
+          break;
+        case "Dassault":
+          console.log("Dassault selected as use case");
+          document.getElementById("dassault_div").hidden = false;
+          document.getElementById("dassault_assist").hidden = false;
+          document.getElementById("rte_assist").hidden = true;
+          document.getElementById("rte_checkboxes").hidden = true;
+          document.getElementById("ctxImg").hidden = true;
+          document.getElementById("bar").hidden = true;
+          document.getElementById("bar2").hidden = true;
+          document.getElementById("dassaultBar").hidden = false;
+          document.getElementById("dassaultBar2").hidden = false;
+          document.getElementById("feed-content").style.position = "absolute";
+          document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
+          document.getElementById("opfab-navbar-menu-menu1").text = "";
+          document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+          document.getElementById("of_timeline").style.backgroundColor = "black";
+          document.getElementById("ctx_div").style.marginLeft = "440px";
+          opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
+          break;
+        case "Orange":
+          selectedUseCase = uc;
+          console.log("Orange selected as use case");
+          document.getElementById("dassault_div").hidden = true;
+          document.getElementById("dassault_assist").hidden = true;
+          document.getElementById("rte_assist").hidden = true;
+          document.getElementById("rte_checkboxes").hidden = true;
+          document.getElementById("ctxImg").hidden = true;
+          document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
+          document.getElementById("opfab-navbar-menu-menu1").text = "";
+          document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+          break;
+        case "SNCF":
+          selectedUseCase = uc;
+          console.log("SNCF selected as use case");
+          document.getElementById("dassault_div").hidden = true;
+          document.getElementById("dassault_assist").hidden = true;
+          document.getElementById("rte_assist").hidden = true;
+          document.getElementById("rte_checkboxes").hidden = true;
+          document.getElementById("ctxImg").hidden = true;
+          document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
+          document.getElementById("opfab-navbar-menu-menu1").text = "";
+          document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+          initMap("SNCF");
+          break;
+
+      }
+      document.getElementById("homescreen").style = "display:none";
+      document.getElementById("assistOpTitle").hidden = false;
     }
-    document.getElementById("homescreen").style = "display:none";
-    opfabStyle.setCss(opfabStyle.DAY_STYLE);
-    document.getElementById("assistOpTitle").hidden = false;
-  }
-  
-  function selectDassaultCtx(type){
-      switch(type){
+
+    function selectDassaultCtx(type) {
+      switch (type) {
         case "dependances":
-        document.getElementById("dependances").hidden = false;
-        document.getElementById("synoptique").hidden = true;
-        document.getElementById("carte").hidden = true;
-        break;
+          document.getElementById("dependances").hidden = false;
+          document.getElementById("synoptique").hidden = true;
+          document.getElementById("carte").hidden = true;
+          document.getElementById("map").hidden = true;
+          break;
         case "carte":
-        document.getElementById("dependances").hidden = true;
-        document.getElementById("synoptique").hidden = true;
-        document.getElementById("carte").hidden = false;
-        break;
+          document.getElementById("dependances").hidden = true;
+          document.getElementById("synoptique").hidden = true;
+          document.getElementById("carte").hidden = false;
+          document.getElementById("map").hidden = false;
+          document.getElementById("map").classList.add("map_dassault");
+          initMap("Dassault");
+          break;
         case "synoptique":
-        document.getElementById("dependances").hidden = true;
-        document.getElementById("synoptique").hidden = false;
-        document.getElementById("carte").hidden = true;
-        break;
+          document.getElementById("dependances").hidden = true;
+          document.getElementById("synoptique").hidden = false;
+          document.getElementById("carte").hidden = true;
+          document.getElementById("map").hidden = true;
+          break;
 
       }
     }
-  setInterval(() => {
-        setCardsSeverity();
+    setInterval(() => {
+      setCardsSeverity();
     }, 5000);
-  setInterval(() => {
-        refreshCtx();
+    setInterval(() => {
+      refreshCtx();
     }, 30000);
-    
 
-    function setCardsSeverity(){
-        var cards = document.getElementsByClassName("card");
-        for(var card = 0; card<cards.length;card++){
-            cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
-            cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
-            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
-            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
-        }
+
+    function setCardsSeverity() {
+      var cards = document.getElementsByClassName("card");
+      for (var card = 0; card < cards.length; card++) {
+        cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
+        cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
+        cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Routine ");
+        cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
+      }
     }
     function refreshCtx() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open( "GET", "/cabcontext/api/v1/contexts?time="+new Date().getTime(), false ); // false for synchronous request
-      xmlHttp.send( null );
-      var response  = JSON.parse(xmlHttp.responseText)[0].data.topology;
+      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false); // false for synchronous request
+      xmlHttp.send(null);
+      var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;
     };
   </script>
 
 
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
   <meta name="theme-color" content="#1976d2">
 </head>
-<body class="opfab-colors" id="bodyopfab" style="max-height:730px">
 
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-<script>  
+<body class="opfab-colors" id="bodyopfab" style="height:auto">
 
-function initMap(){
-  var map = L.map('map', {
-    center: [47.9948, -4.09245],
-    zoom: 13
-});
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <script>
 
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  console.log("map init OK")
- 
- 
-  let customIcon = {
-  iconUrl:"https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png",
-  iconSize:[40,40]
-}
-  let customIcon2 = {
-  iconUrl:"https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg",
-  iconSize:[40,40]
-}
-let myIcon = L.icon(customIcon);
+    function initMap(usecase) {
 
-  
-  let iconOptions = {
-  title:"TGV 8872",
-  draggable:false,
-  icon:myIcon
-}
-let myIcon2 = L.icon(customIcon2);
+      switch (usecase) {
+        case 'Dassault':
+          mapZoom = 8;
+          mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
+          var map = L.map('map', {
+            center: [47.9948, -4.09245],
+            zoom: mapZoom
+          });
+          L.tileLayer(mapLayer, {
+          }).addTo(map);
+          let planeIcon = {
+            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/1/17/Plane_icon_nose_up.svg",
+            iconSize: [80, 80]
+          }
+          let myIcon3 = L.icon(planeIcon);
+          let iconOptions3 = {
+            draggable: false,
+            icon: myIcon3
+          }
 
-  
-  let iconOptions2 = {
-  title:"TGV 8763",
-  draggable:false,
-  icon:myIcon2
-}
+          let planeMarker = new L.Marker([47.99501, -4.09445], iconOptions3);
+          planeMarker.addTo(map).bindPopup(iconOptions3.title)
+          break;
+        case 'SNCF':
+          mapZoom = 17;
+          initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
+          railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
+          var map = L.map('map', {
+            center: [47.9948, -4.09245],
+            zoom: mapZoom
+          });
+          var baseLayer = L.tileLayer(initialLayer).addTo(map);
+          var topLayer = L.tileLayer(railwayLayer).addTo(map);
 
-  let marker = new L.Marker([47.99501, -4.09445],iconOptions);
-  marker.addTo(map).bindPopup(iconOptions.title)
-    .openPopup();
-  let marker2 = new L.Marker([47.9969, -4.0979],iconOptions2);
-  marker2.addTo(map).bindPopup(iconOptions2.title)
-    .openPopup();
-  }
-</script>
+          let customIcon = {
+            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png",
+            iconSize: [40, 40]
+          }
+          let customIcon2 = {
+            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg",
+            iconSize: [40, 40]
+          }
+          let myIcon = L.icon(customIcon);
+
+
+          let iconOptions = {
+            title: "TGV 8872",
+            draggable: false,
+            icon: myIcon
+          }
+          let myIcon2 = L.icon(customIcon2);
+
+          let iconOptions2 = {
+            title: "TGV 8763",
+            draggable: false,
+            icon: myIcon2
+          }
+
+
+
+
+          let marker = new L.Marker([47.99501, -4.09445], iconOptions);
+          marker.addTo(map).bindPopup(iconOptions.title)
+            .openPopup();
+          let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
+          marker2.addTo(map).bindPopup(iconOptions2.title)
+            .openPopup();
+          break;
+      }
+
+
+      console.log("map init OK")
+      {
+
+      }
+    }
+
+  </script>
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden>
     <b id="rte_assist">Assistance à l'opérateur</b>
-    <b id="dassault_assist">Interface de dialogue</b></div>
+    <b id="dassault_assist">Interface de dialogue</b>
+  </div>
   <of-root></of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
+
 </html>

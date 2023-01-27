@@ -31,8 +31,14 @@
     width: 95%;
     height: 48vh;
     margin-top: 54px;
-    margin-left: 5px;
     position: absolute;
+    border-radius: 5px;
+}
+
+.map_dassault{
+    width: 100%!important;
+    margin-top: 0px!important;
+    position: absolute!important;
 }
 body {
     color: $light;
