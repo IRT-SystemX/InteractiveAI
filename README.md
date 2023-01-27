@@ -39,26 +39,41 @@ Before starting cab-platform you need a running version of [OperatorFabric](http
 
 * Docker
 * OperatorFabric
-  ```sh
-  git clone https://github.com/opfab/operatorfabric-core
-  cd config/docker
-  ./docker-compose.sh
-  ```
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repo of OperatorFabric
+  ```sh
+  git clone https://github.com/opfab/operatorfabric-core
+  ```
+
+2. Clone the repo of cab assistant
    ```sh
    git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
    ```
-2. Load resources into OperatorFabric
+
+3. Set new configuration to OperatorFabric
+   ```sh
+   cd cab-assistant-platform
+   ./config_of.sh
+   ```
+
+4. Run OperatorFabric
+   ```sh
+   cd ../operatorfabric-core/config/cab-docker
+   ./docker-compose.sh
+   ```
+
+5. Run Cab-assistant
+   ```sh
+   cd ../../../cab-assistant-platform
+   ./docker-compose.sh
+   ```
+
+6. Load resources into OperatorFabric
    ```sh
    cd resources
    ./loadTestConf.sh
-   ```
-3. Run using docker:
-   ```sh
-   docker-compose up -d
    ```
 
 ## Usage
@@ -75,8 +90,12 @@ OperatorFabric use keycloak to manage users  authentication data. You can check 
 You can find authentication data in OperatorFabric repository under config/docker/users-docker.yml and config/keycloak
 
 Some examples of users logins/passwords:
-* operator1_fr/ test
+* admin/ test
 * publisher_test/ test
+* da_user/ test
+* sncf_user/ test
+* orange_user/ test
+* rte_user/ test
 
 # Docs
 A postman collection is under docs/postman_collections.

@@ -18,8 +18,9 @@ services:
       - ./backend/context-service:/code
     networks:
       - cab-docker_default
-    # depends_on:
-    #   - frontend
+    depends_on:
+      # - frontend
+      - db_postgres_context
   
   cabevent:
     container_name: cab_event
