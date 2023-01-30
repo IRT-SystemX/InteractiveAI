@@ -9,7 +9,7 @@
 <div id="container-cl" style="display:flex;">
 <div id="ctx_div" class="ctx" style="position:relative;"><b>Contexte</b>
   <div id="empty_block" style="width: 710px"></div>
-  <div id="rte_checkboxes" style="background-color: var(--opfab-navbar-color-hover); max-width: 15%; position:absolute">
+  <div id="rte_checkboxes" style="background-color: var(--opfab-navbar-color-hover); max-width: 15%; position:absolute" hidden>
     <input checked type="checkbox" class="cbox" value="flux">
     <label style="margin-left:5px">Flux</label><br>
     <input checked type="checkbox" class="cbox" value="tension">
@@ -17,7 +17,7 @@
     <input type="checkbox" class="cbox" value="parade">
     <label style="margin-left:5px">Parade</label>
   </div>
-  <div id="dassault_div" class="btn-group" style="position:absolute;">
+  <div id="dassault_div" class="btn-group" style="position:absolute;" hidden>
     <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
       Carte
     </button><br>
@@ -28,7 +28,7 @@
       Dépendances
     </button>
   </div>
-  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png">
+  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png" hidden>
   <div id="carte" class="imgMarged" hidden></div>
   <img id="synoptique" class="imgMarged" src="assets\images\dassault_synoptique.png" hidden>
   <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>

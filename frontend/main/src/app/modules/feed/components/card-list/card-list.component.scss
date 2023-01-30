@@ -76,12 +76,10 @@ input[type=checkbox]:checked + label {
 
 .dassaultBar{
     border-left: 15px solid black;
-    margin-left: 420px;
     z-index: -2;
 }
 .dassaultBar2{
     border-left: 15px solid black;
-    margin-left: 820px;
     z-index: -2;
 }
 
@@ -111,6 +109,7 @@ input[type=checkbox]:checked + label {
   
   .btn-group button:hover {
     background-color: #0085CC;
+    color:white;
   }
   .btn-group button:focus {
     background-color: #0085CC;
