@@ -1,7 +1,7 @@
 {
     "publisher": "publisher_test",
     "processVersion": "1",
-    "process": "eventProcess",
+    "process": "rteProcess",
     "processInstanceId": "event process 2",
     "state": "messageState",
     "groupRecipients": [
@@ -10,11 +10,11 @@
     "severity": "INFORMATION",
     "startDate": ${current_date_in_milliseconds_from_epoch_plus_2hours},
     "summary": {
-        "key": "eventProcess.summary",
+        "key": "rteProcess.summary",
         "parameters" : {"summary": "France-England's interconnection is 100% operational / Result of the maintenance is <OK>"}
     },
     "title": {
-        "key": "eventProcess.title",
+        "key": "rteProcess.title",
         "parameters" : {"title": "This is a title"}
     }
 }

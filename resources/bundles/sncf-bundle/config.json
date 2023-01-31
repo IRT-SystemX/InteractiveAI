@@ -1,0 +1,12 @@
+{
+	"id":"sncfProcess",
+	"name": "process.name",
+	"version":"1",
+	"states":{
+		"messageState" : {
+			"templateName" : "template",
+			"styles" : [ "style" ],
+			"acknowledgmentAllowed": "Always"
+		}
+	}
+}

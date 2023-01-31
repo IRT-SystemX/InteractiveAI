@@ -38,11 +38,14 @@ class ContextIn(Schema):
         if use_case == "RTE":
             ContextMetadataRTE().load(data)
         elif use_case == "SNCF":
-            ContextMetadataSNCF().load(data)
+            # ContextMetadataSNCF().load(data)
+            pass
         elif use_case == "ORANGE":
-            ContextMetadataOrange().load(data)
+            # ContextMetadataOrange().load(data)
+            pass
         elif use_case == "DA/FW":
-            ContextMetadataDAFW().load(data)
+            # ContextMetadataDAFW().load(data)
+            pass
         else:
             raise ValidationError("Invalid use case")
 

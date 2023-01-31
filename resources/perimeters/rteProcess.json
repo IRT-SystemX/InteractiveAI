@@ -1,0 +1,10 @@
+{
+  "id" : "rteProcess",
+  "process" : "rteProcess",
+  "stateRights" : [
+    {
+      "state" : "messageState",
+      "right" : "ReceiveAndWrite"
+    }
+  ]
+}

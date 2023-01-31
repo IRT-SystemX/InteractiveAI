@@ -1,0 +1,10 @@
+{
+  "id" : "orangeProcess",
+  "process" : "orangeProcess",
+  "stateRights" : [
+    {
+      "state" : "messageState",
+      "right" : "ReceiveAndWrite"
+    }
+  ]
+}

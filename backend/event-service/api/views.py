@@ -54,12 +54,39 @@ class Events(MethodView):
         timestamp_date = int(round((date).timestamp()*1000))
         data["date"] = timestamp_date
 
-        card_pub_client.create_card(data["id_event"],
-                                    severity,
-                                    timestamp_date,
-                                    data["title"],
-                                    data["description"],
-                                    data["data"])
+        use_case_process = {
+            "RTE": "rteProcess",
+            "SNCF": "sncfProcess",
+            "DA/FW": "daProcess",
+            "ORANGE": "orangeProcess"
+        }
+
+        card_payload = {
+            "publisher": "publisher_test",
+            "processVersion": "1",
+            "process": use_case_process[use_case],
+            "processInstanceId": data["id_event"],
+            "state": "messageState",
+            # "groupRecipients": [
+            #     "Dispatcher"
+            # ],
+            "entityRecipients": [use_case],
+            "severity": severity,
+            "startDate": timestamp_date,
+            "summary": {
+                "key": use_case_process[use_case] + ".summary",
+                "parameters": {"summary": data["description"]}
+            },
+            "title": {
+                "key": use_case_process[use_case] + ".title",
+                "parameters": {"title": data["title"]}
+            },
+            "data": {
+                "metadata": data["data"]
+            }
+        }
+
+        card_pub_client.create_card(card_payload)
         # Trace in histric service
         historic_client = HistoricClient()
         data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')

@@ -4,7 +4,10 @@
       "id": "service1",
       "name": "Event Base Example",
       "processes": [
-        "eventProcess"
+        "rteProcess",
+        "sncfProcess",
+        "daProcess",
+        "orangeProcess"
       ]
     }
   ]

@@ -22,7 +22,7 @@ fi
 	./deleteAllBundles.sh $url
 	./loadAllBundles.sh $url
 	cd ../processGroups
-	./loadProcessGroups.sh eventProcessGroup.json $url
+	./loadProcessGroups.sh cabProcessGroup.json $url
 	#TODO Clear perimeters first?
 	cd ../perimeters
 	./createAllPerimeter.sh $url

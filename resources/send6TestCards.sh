@@ -19,5 +19,5 @@ then
 fi
 (
 	cd cards
-	./sendCard.sh eventProcess/event.json $url
+	./sendCard.sh rteProcess/event.json $url
 )
