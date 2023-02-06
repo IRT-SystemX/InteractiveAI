@@ -1,8 +1,8 @@
 import os
 
 from api.models import db
-from apiflask import APIFlask
 from api.views import api_bp
+from apiflask import APIFlask
 
 
 def create_app():

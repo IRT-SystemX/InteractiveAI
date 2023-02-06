@@ -5,10 +5,11 @@ services:
     container_name: cab_context
     image: cab/cabcontext
     build:
-      context: backend/context-service
-      dockerfile: Dockerfile
+      context: backend
+      dockerfile: Context-Service-Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
+      - HOST_IP=$HOST_IP
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -16,27 +17,33 @@ services:
     volumes:
       - ./backend/context-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
+    depends_on:
+      # - frontend
+      - db_postgres_context
   
   cabevent:
+    container_name: cab_event
     image: cab/cabevent
     build:
-      context: backend/event-service
-      dockerfile: Dockerfile
+      context: backend
+      dockerfile: Event-Service-Dockerfile
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication:8080
       - GATEWAY_SERVICE=http://angular-ui:80
       - HISTORIC_SERVICE=http://cabhistoric:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_event:5432/cab-event
+      - HOST_IP=$HOST_IP
     command: sh -c "./entrypoint.sh"
     ports:
       - 5000:5000
     volumes:
       - ./backend/event-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
     depends_on:
+      # - frontend
       - db_postgres_event
 
   cabhistoric:
@@ -54,7 +61,7 @@ services:
     volumes:
       - ./backend/historic-service:/code
     networks:
-      - docker_default
+      - cab-docker_default
     depends_on:
       - db_postgres_historic
 
@@ -71,7 +78,7 @@ services:
     volumes:
       - postgres_context_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
   db_postgres_event:
     container_name: db_postgres_event
@@ -86,7 +93,7 @@ services:
     volumes:
       - postgres_event_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
   db_postgres_historic:
     container_name: db_postgres_historic
@@ -101,24 +108,25 @@ services:
     volumes:
       - postgres_historic_data:/var/lib/postgresql/data/
     networks:
-      - docker_default
+      - cab-docker_default
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - docker_default
-    restart: unless-stopped
+  # pgadmin:
+  #   container_name: pgadmin_container
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_SERVER_MODE: "False"
+  #   volumes:
+  #     - pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - "${PGADMIN_PORT:-5050}:80"
+  #   networks:
+  #     - cab-docker_default
+  #   restart: unless-stopped
 
-  angular-ui:
+  frontend:
+    container_name: frontend
     build:
       context: ./frontend/main
       dockerfile: Dockerfile
@@ -128,14 +136,14 @@ services:
     ports:
       - "3200:80"
     networks:
-      - docker_default
+      - cab-docker_default
 
 networks:
-  docker_default:
+  cab-docker_default:
     external: true
 
 volumes:
   postgres_context_data:
   postgres_event_data:
   postgres_historic_data:
-  pgadmin:
+  # pgadmin:

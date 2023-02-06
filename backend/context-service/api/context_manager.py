@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 
+from cab_common_auth.decorators import get_use_cases
+
 from .models import ContextModel, db
 
 
@@ -14,16 +16,16 @@ class ContextManager:
     def set_context(self, validated_data):
         validated_data["date"] = validated_data.get("date", datetime.now())
         use_case = validated_data.get("use_case")
-
-        if use_case == "RTE":
-            self.context["RTE"] = validated_data
-            # return self.context["RTE"]
-        elif use_case == "SNCF":
-            pass
-        elif use_case == "ORANGE":
-            pass
-        elif use_case == "DA/FW":
-            pass
+        self.context[use_case] = validated_data
+        # if use_case == "RTE":
+        #     self.context["RTE"] = validated_data
+        #     # return self.context["RTE"]
+        # elif use_case == "SNCF":
+        #     self.context["SNCF"] = validated_data
+        # elif use_case == "ORANGE":
+        #     self.context["ORANGE"] = validated_data
+        # elif use_case == "DA/FW":
+        #     self.context["DA/FW"] = validated_data
         # save context to db
         validated_data["id_context"] = str(uuid.uuid4())
         context = ContextModel(**validated_data)
@@ -32,16 +34,21 @@ class ContextManager:
         return context
 
     def get_context(self):
+        use_cases = get_use_cases()
         context_list = []
-        for _, value in self.context.items():
-            if value is not None:
+        for key, value in self.context.items():
+            if value is not None and key in use_cases:
                 context_list.append(value)
         return context_list
 
     def get_contexts_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).all()
+        use_cases = get_use_cases()
+        context = ContextModel.query.filter_by(date=date).filter(
+            ContextModel.use_case.in_(use_cases)).all()
         return context
 
     def get_context_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).first()
+        use_cases = get_use_cases()
+        context = ContextModel.query.filter_by(date=date).filter(
+            ContextModel.use_case.in_(use_cases)).first()
         return context

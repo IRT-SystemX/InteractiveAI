@@ -1,15 +1,15 @@
-import uuid
 from datetime import datetime
 
 from apiflask import APIBlueprint
+from cab_common_auth.decorators import get_use_cases, protected
 from flask.views import MethodView
 
 from .clients.cards_publication import CardPubClient
 from .clients.historic import HistoricClient
-from .clients.keycloak import KeycloakClient
 from .models import EventModel, db
 from .schemas import EventIn, EventOut
 from .utils import get_event_id
+
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
 
 
@@ -31,12 +31,15 @@ class HealthCheck(MethodView):
 class Events(MethodView):
 
     @api_bp.output(EventOut(many=True))
+    @protected
     def get(self):
         """Get all events"""
-        return EventModel.query.all()
+        use_cases = get_use_cases()
+        return EventModel.query.filter(EventModel.use_case.in_(use_cases))
 
     @api_bp.input(EventIn)
     @api_bp.output(EventOut, status_code=201)
+    @protected
     def post(self, data):
         """Add an event"""
         use_case = data["use_case"]
