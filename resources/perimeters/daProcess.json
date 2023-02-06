@@ -1,0 +1,10 @@
+{
+  "id" : "daProcess",
+  "process" : "daProcess",
+  "stateRights" : [
+    {
+      "state" : "messageState",
+      "right" : "ReceiveAndWrite"
+    }
+  ]
+}

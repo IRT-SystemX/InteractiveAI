@@ -1,0 +1,7 @@
+{
+	"sncfProcess":{
+		"title":"{{title}}",
+		"summary":"{{summary}}",
+        "metadata": "{{metadata}}"
+	}
+}

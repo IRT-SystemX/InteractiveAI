@@ -1,5 +1,5 @@
 {
-	"eventProcess":{
+	"daProcess":{
 		"title":"{{title}}",
 		"summary":"{{summary}}",
         "metadata": "{{metadata}}"

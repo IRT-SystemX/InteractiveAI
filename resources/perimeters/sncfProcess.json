@@ -1,0 +1,10 @@
+{
+  "id" : "sncfProcess",
+  "process" : "sncfProcess",
+  "stateRights" : [
+    {
+      "state" : "messageState",
+      "right" : "ReceiveAndWrite"
+    }
+  ]
+}

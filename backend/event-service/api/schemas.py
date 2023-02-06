@@ -46,11 +46,14 @@ class EventIn(Schema):
         if use_case == "RTE":
             MetadataRTE().load(metadata)
         elif use_case == "SNCF":
-            MetadataSNCF().load(metadata)
+            # MetadataSNCF().load(metadata)
+            pass
         elif use_case == "ORANGE":
-            MetadataOrange().load(metadata)
+            # MetadataOrange().load(metadata)
+            pass
         elif use_case == "DA/FW":
-            MetadataDAFW().load(metadata)
+            # MetadataDAFW().load(metadata)
+            pass
         else:
             raise ValidationError("Invalid use case")
 
