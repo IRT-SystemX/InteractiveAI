@@ -21,13 +21,13 @@ class ContextMetadataOrange(ContextMetadata):
     pass
 
 
-class ContextMetadataDAFW(ContextMetadata):
+class ContextMetadataDA(ContextMetadata):
     pass
 
 
 class ContextIn(Schema):
     use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+        ['RTE', 'SNCF', 'DA', 'ORANGE']))
     date = DateTime(format="iso")
     data = Dict()
 
@@ -43,8 +43,8 @@ class ContextIn(Schema):
         elif use_case == "ORANGE":
             # ContextMetadataOrange().load(data)
             pass
-        elif use_case == "DA/FW":
-            # ContextMetadataDAFW().load(data)
+        elif use_case == "DA":
+            # ContextMetadataDA().load(data)
             pass
         else:
             raise ValidationError("Invalid use case")
