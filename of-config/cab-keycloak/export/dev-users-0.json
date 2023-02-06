@@ -77,7 +77,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["DA/FW"],
+        "entitiesId": ["DA"],
         "groups": ["RTE;ADMIN;ReadOnly"]
       },
       "credentials": [

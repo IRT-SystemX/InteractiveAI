@@ -11,21 +11,13 @@ class ContextManager:
         self.context = {"RTE": None,
                         "SNCF": None,
                         "ORANGE": None,
-                        "DA/FW": None}
+                        "DA": None}
 
     def set_context(self, validated_data):
         validated_data["date"] = validated_data.get("date", datetime.now())
         use_case = validated_data.get("use_case")
         self.context[use_case] = validated_data
-        # if use_case == "RTE":
-        #     self.context["RTE"] = validated_data
-        #     # return self.context["RTE"]
-        # elif use_case == "SNCF":
-        #     self.context["SNCF"] = validated_data
-        # elif use_case == "ORANGE":
-        #     self.context["ORANGE"] = validated_data
-        # elif use_case == "DA/FW":
-        #     self.context["DA/FW"] = validated_data
+
         # save context to db
         validated_data["id_context"] = str(uuid.uuid4())
         context = ContextModel(**validated_data)

@@ -24,7 +24,7 @@ operatorfabric.users.default:
       entities: [ "ORANGE" ]
     - login: da_user
       groups: ["ReadOnly","Dispatcher"]
-      entities: [ "DA"]
+      entities: ["DA"]
     - login: rte_user
       groups: [ "RTE","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "RTE" ]

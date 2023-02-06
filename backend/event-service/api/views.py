@@ -57,7 +57,7 @@ class Events(MethodView):
         use_case_process = {
             "RTE": "rteProcess",
             "SNCF": "sncfProcess",
-            "DA/FW": "daProcess",
+            "DA": "daProcess",
             "ORANGE": "orangeProcess"
         }
 

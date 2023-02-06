@@ -110,26 +110,27 @@ services:
     networks:
       - cab-docker_default
 
-  # pgadmin:
-  #   container_name: pgadmin_container
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-  #     PGADMIN_CONFIG_SERVER_MODE: "False"
-  #   volumes:
-  #     - pgadmin:/var/lib/pgadmin
-  #   ports:
-  #     - "${PGADMIN_PORT:-5050}:80"
-  #   networks:
-  #     - cab-docker_default
-  #   restart: unless-stopped
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - cab-docker_default
+    restart: unless-stopped
 
   frontend:
     container_name: frontend
     build:
       context: ./frontend/main
       dockerfile: Dockerfile
+    restart: unless-stopped
     volumes:
       - "./ui-config:/usr/share/nginx/html/opfab"
       - "./nginx-cors-permissive.conf:/etc/nginx/conf.d/default.conf"
@@ -146,4 +147,4 @@ volumes:
   postgres_context_data:
   postgres_event_data:
   postgres_historic_data:
-  # pgadmin:
+  pgadmin:
