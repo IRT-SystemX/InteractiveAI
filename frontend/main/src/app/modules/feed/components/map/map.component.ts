@@ -488,8 +488,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         
         document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
         document.getElementById("empty_block").style.width =  parseInt(document.getElementById("ctxImg").style.width)  + "px";
-        document.getElementById("dassaultBar2").style.marginLeft = screen.availWidth * 75/100 + "px";
-        document.getElementById("dassaultBar").style.marginLeft = (screen.availWidth * 20/100) + "px";
+        document.getElementById("dassaultBar2").style.marginLeft = screen.availWidth * 77/100 + "px";
+        document.getElementById("dassaultBar").style.marginLeft = (screen.availWidth * 23/100) + "px";
 
         return window.innerWidth < 1000;
     }

@@ -44,8 +44,48 @@ These two parameters are place in this file as the style should have a title par
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script>
     var selectedUseCase = "none";
+    var token = window.localStorage.token;
+    var opFabPort = "2002";
+    var activeUser;
+    var entities;
+    var groups;
+    var mapInitialized = false;
+    var latitude;
+    var longitude;
+    var altitude;
 
-    function selectUseCase(uc) {
+    function checkTokenToMatchUseCase(){
+      var request = new XMLHttpRequest();
+      request.onreadystatechange= function () {
+          if (request.readyState==4) {
+            response = JSON.parse(request.responseText)
+            activeUser = response.login;
+            entities = response.entities;
+            groups = response.groups;
+            authorizedUseCase = entities[0];
+            return entities[0];
+          }
+          console.log("token checked")
+      }
+      // VM
+      request.open("POST","/users/users/synchronizeWithToken", true);
+      // local
+      // request.open("POST", "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken", true);
+      request.setRequestHeader("Accept","application/json");
+      request.setRequestHeader("Authorization","Bearer "+token);
+      request.send();
+          
+    }
+    function selectUseCase(uc){
+      // if (uc == authorizedUseCase){
+        grantedUseCase(authorizedUseCase);
+      // }else{
+        // alert("Error: You're not allowed to access this environment")
+      // }
+    }
+
+    function grantedUseCase(uc) {
+
       switch (uc) {
         case "RTE":
           console.log("RTE selected as use case");
@@ -54,8 +94,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("rte_assist").hidden = false;
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
+          setInterval(() => {
+            refreshCtxRTE();
+          }, 30000);
           break;
-        case "Dassault":
+        case "DA":
+          getCoordinates();
           console.log("Dassault selected as use case");
           document.getElementById("dassault_div").hidden = false;
           document.getElementById("dassault_assist").hidden = false;
@@ -69,6 +113,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("ctx_div").style.marginLeft = "440px";
           document.getElementById("bar").hidden = true;
           document.getElementById("bar2").hidden = true;
+          document.getElementById("of_timeline").style.zIndex = 5;
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           break;
         case "Orange":
@@ -105,7 +150,10 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("synoptique").hidden = true;
           document.getElementById("carte").hidden = false;
           document.getElementById("map").hidden = false;
-          initMap("Dassault");
+          if (!mapInitialized) {
+            initMap("Dassault");
+            mapInitialized = true;
+          }
           break;
         case "synoptique":
           document.getElementById("dependances").hidden = true;
@@ -119,10 +167,6 @@ These two parameters are place in this file as the style should have a title par
     setInterval(() => {
       setCardsSeverity();
     }, 5000);
-    setInterval(() => {
-      refreshCtx();
-    }, 30000);
-
 
     function setCardsSeverity() {
       var cards = document.getElementsByClassName("card");
@@ -133,7 +177,7 @@ These two parameters are place in this file as the style should have a title par
         cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
       }
     }
-    function refreshCtx() {
+    function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false); // false for synchronous request
       xmlHttp.send(null);
@@ -154,7 +198,22 @@ These two parameters are place in this file as the style should have a title par
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
   <script>
-
+    function getCoordinates(){
+      var request = new XMLHttpRequest();
+      request.onreadystatechange= function () {
+          if (request.readyState==4) {
+            response = JSON.parse(request.responseText)
+            latitude = response[0].data.Latitude;
+            longitude = response[0].data.Longitude;
+            altitude = response[0].data.Altitude;
+            console.log(response)
+          }
+      }
+      request.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts", true);
+      request.setRequestHeader("Accept","application/json");
+      request.setRequestHeader("Authorization","Bearer "+token);
+      request.send();
+    }
     function initMap(usecase) {
 
       switch (usecase) {
@@ -162,7 +221,8 @@ These two parameters are place in this file as the style should have a title par
           mapZoom = 8;
           mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
           var map = L.map('map', {
-            center: [47.9948, -4.09245],
+            // center: [47.9948, -4.09245],
+            center: [latitude,longitude],
             zoom: mapZoom
           });
           L.tileLayer(mapLayer, {
