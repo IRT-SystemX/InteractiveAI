@@ -51,6 +51,14 @@
     cursor: pointer;
     background-color: var(--opfab-lightcard-detail-bgcolor);
 }
+.light-card-background-action {
+    cursor: pointer;
+    background-color: #FFD2004D;
+}
+.light-card-background-alarm {
+    cursor: pointer;
+    background-color: #A70000;
+}
 
 .light-card-detail-unread {
     color: var(--opfab-lightcard-detail-unread-textcolor);

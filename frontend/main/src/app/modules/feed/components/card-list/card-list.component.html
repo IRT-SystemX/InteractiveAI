@@ -60,6 +60,21 @@
   <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
     <a id="opfab-feed-ack-all-link" (click)="open(confirmationPopup)"><span translate> feed.acknowledgeAllCards.label </span></a>
   </div>
+  <div id ="notifs_DA" style="width:97%" hidden>
+  <div style="font-size:15px;color:grey;"><b>Notifications</b></div>
+  <div  class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected" style="margin-top: 5px">
+        <div style="display: grid; grid-template-columns: auto auto; margin-top: 2px;color:black">
+          <p  class="card-title" style="margin-left: 5px;">
+    <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span></p>
+  </div>
+  </div>
+  <div  class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected" style="margin-top: 5px">
+      <div style="display: grid; grid-template-columns: auto auto; color:black">
+          <p  class="card-title" style="margin-left: 5px;">
+          <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span></p>
+      </div>
+  </div>
+</div>
 
 </div>
 </div>

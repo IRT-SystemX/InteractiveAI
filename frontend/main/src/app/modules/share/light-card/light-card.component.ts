@@ -205,10 +205,23 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
         }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("FAULT")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = false;
+            document.getElementById("noevent_da").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("DESTINATION")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = false;
+        }
 
     }
     public select($event) {
-        var card = $event.path[2].firstChild.offsetParent.outerText;
+        // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();

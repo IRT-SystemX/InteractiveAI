@@ -101,7 +101,7 @@ const opfabStyle = {
     NIGHT_STYLE : `:root { --opfab-bgcolor: #1D1D1D;
         --opfab-bgcolor-darker: #F3F2F1;
         --opfab-font-family: 'Open Sans', sans-serif;
-        --opfab-text-color: black;
+        --opfab-text-color: white;
         --opfab-text-color-stronger: black;
         --opfab-table-border-color: grey;
         --opfab-input-text-color : black;
