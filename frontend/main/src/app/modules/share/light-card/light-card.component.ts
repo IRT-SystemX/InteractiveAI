@@ -217,6 +217,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = false;
+            document.getElementById("noevent_da").hidden = true;
         }
 
     }

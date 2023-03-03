@@ -126,11 +126,14 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-feed-filter-btn-filter").hidden = true;
           document.getElementById("of_timeline").style.zIndex = 5;
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
+          setInterval(() => {
+            refreshCtxDA();
+          }, 30000);
           
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
           break;
-        case "Orange":
+        case "ORANGE":
           selectedUseCase = uc;
           console.log("Orange selected as use case");
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
@@ -158,12 +161,14 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("synoptique").hidden = true;
           document.getElementById("carte").hidden = true;
           document.getElementById("map").hidden = true;
+          document.getElementById("synoptic_back").hidden = true;
           break;
         case "carte":
           document.getElementById("dependances").hidden = true;
           document.getElementById("synoptique").hidden = true;
           document.getElementById("carte").hidden = false;
           document.getElementById("map").hidden = false;
+          document.getElementById("synoptic_back").hidden = true;
           if (!mapInitialized) {
             initMap("Dassault");
             mapInitialized = true;
@@ -171,6 +176,7 @@ These two parameters are place in this file as the style should have a title par
           break;
         case "synoptique":
           document.getElementById("dependances").hidden = true;
+          document.getElementById("synoptic_back").hidden = false;
           document.getElementById("synoptique").hidden = false;
           document.getElementById("carte").hidden = true;
           document.getElementById("map").hidden = true;
@@ -178,6 +184,18 @@ These two parameters are place in this file as the style should have a title par
 
       }
     }
+    
+    function displayStats(value){
+      switch (value){
+        case 'stat':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged' style='margin-top: 30px' src='assets/images/DA_stats.png'>";
+          break;
+        default : 
+        document.getElementById("synoptic_back").innerHTML = "<b style='margin-top: 80px; color:white'>Nothing to show</b>";
+          break;
+      }
+    }
+    
     function setDANotifications(){
       try {
               setCardsForDA();
@@ -230,7 +248,14 @@ These two parameters are place in this file as the style should have a title par
     }
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false); // false for synchronous request
+      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.send(null);
+      var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
+      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+    };
+    function refreshCtxDA() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;
@@ -290,8 +315,8 @@ These two parameters are place in this file as the style should have a title par
           L.tileLayer(mapLayer, {
           }).addTo(map);
           let planeIcon = {
-            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/1/17/Plane_icon_nose_up.svg",
-            iconSize: [80, 80]
+            iconUrl: "assets/images/plane_40x40.png",
+            iconSize: [40, 40]
           }
           let myIcon3 = L.icon(planeIcon);
           let iconOptions3 = {

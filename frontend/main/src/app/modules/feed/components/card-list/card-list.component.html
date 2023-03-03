@@ -19,18 +19,46 @@
   </div>
   <div id="dassault_div" class="btn-group" style="position:absolute;z-index:1" hidden>
     <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
-      Carte
+      Card
     </button><br>
     <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique')">
-      Synoptique
+      Synoptic
     </button><br>
     <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances')">
-      Dépendances
+      Dependencies
     </button>
   </div>
   <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png" hidden>
   <div id="carte" class="imgMarged" hidden></div>
-  <img id="synoptique" class="imgMarged" src="assets\images\dassault_synoptique.png" hidden>
+  <div id="synoptique" class="imgMarged btn-group btn-group-synoptic btn-group_synoptic" src="assets\images\dassault_synoptique.png" style="max-width: 15%; position: absolute;" hidden>
+      <button id="stat" class="button" onclick="displayStats('stat')">
+        STAT
+      </button><br>
+      <button id="eng" class="button" onclick="displayStats('')">
+        ENG
+      </button><br>
+      <button id="elec" class="button" onclick="displayStats('')">
+        ELEC
+      </button>
+      <button id="fuel" class="button" onclick="displayStats('')">
+        FUEL
+      </button><br>
+      <button id="hyd" class="button" onclick="displayStats('')">
+        HYD
+      </button><br>
+      <button id="ecs" class="button" onclick="displayStats('')">
+        ECS
+      </button>
+      <button id="bld" class="button" onclick="displayStats('')">
+        BLD
+      </button><br>
+      <button id="test" class="button" onclick="displayStats('')">
+        TEST
+      </button><br>
+      </div>
+      <div id="synoptic_back" hidden>
+
+  </div>
   <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
   <div id="map"></div>
 
@@ -58,7 +86,6 @@
   </div>
 
   <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
-    <a id="opfab-feed-ack-all-link" (click)="open(confirmationPopup)"><span translate> feed.acknowledgeAllCards.label </span></a>
   </div>
   <div id ="notifs_DA" style="width:97%" hidden>
   <div style="font-size:15px;color:grey;"><b>Notifications</b></div>
