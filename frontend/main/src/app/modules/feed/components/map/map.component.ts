@@ -454,7 +454,6 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         switch(document.getElementById("opfab-navbar-menu-feed").innerText){
             case 'CAB Dassault':
                 document.getElementById("ctxImg").style.width = window.innerWidth / 1.80 + "px"; 
-                document.getElementById("ctx_div").style.marginLeft =  parseInt(document.getElementById("dassaultBar").style.marginLeft) + 15 + "px";
                 break;
             default:
                 document.getElementById("ctxImg").style.width = window.innerWidth / 2.70 + "px"; 
@@ -463,35 +462,30 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         document.getElementById("ctxImg").style.height = window.innerHeight / 1.7 + "px";
         document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
         document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
-        document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
+        if(cabUseCase != "CAB SNCF"){
+            document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
+            document.getElementById("feed-content").style.width = window.innerWidth / 4.90 + "px"; 
+        }
         document.getElementById("bar").style.height = window.innerHeight / 1.5 + "px";
         document.getElementById("bar2").style.height = window.innerHeight / 1.5 + "px";
-        document.getElementById("dassaultBar").style.height = window.innerHeight / 1.2 + "px";
-        document.getElementById("dassaultBar2").style.height = window.innerHeight / 1.2 + "px";
         document.getElementById("bar2").style.marginLeft =  parseInt(document.getElementById("ctxImg").style.width)-80 
         + parseInt(document.getElementById("notifContainer").style.width + 15) + "px";
         if(cabUseCase == 'CAB Dassault'){
             document.getElementById("assistOpTitle").style.marginLeft = parseInt(document.getElementById("dassaultBar2").style.marginLeft) + 40 + "px"; 
-            // + parseInt(document.getElementById("notifContainer").style.width) + "px";
-            document.getElementById("map").style.width = parseInt(document.getElementById("dassaultBar2").style.marginLeft) - parseInt(document.getElementById("dassaultBar").style.marginLeft) - 40 + 'px'
-
-        }else{
-            document.getElementById("map").style.width = parseInt(document.getElementById("ctxImg").style.width) - 25 + "px";
-            document.getElementById("assistOpTitle").style.marginLeft = parseInt(document.getElementById("bar2").style.marginLeft) + 40 + "px"; 
-
-            // document.getElementById("assistOpTitle").style.left =  parseInt(document.getElementById("ctxImg").style.width) 
-            // + parseInt(document.getElementById("notifContainer").style.width) - 15 + "px";
+        }else if (cabUseCase == 'CAB SNCF')
+        {
+            document.getElementById("assistOpTitle").style.marginLeft = window.screen.width * 73/100 + "px"; 
         }
-        document.getElementById("feed-content").style.width = window.innerWidth / 4.90 + "px"; 
+        else
+        {
+            document.getElementById("map").style.width = parseInt(document.getElementById("ctxImg").style.width) - 25 + "px";
+        }
         document.getElementById("opfab-card-list").style.maxHeight = window.innerHeight/1.27 - document.getElementById("of_timeline").offsetHeight +  "px"; 
         
         
-        document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
+        // document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
         document.getElementById("empty_block").style.width =  parseInt(document.getElementById("ctxImg").style.width)  + "px";
-        document.getElementById("dassaultBar2").style.marginLeft = screen.availWidth * 77/100 + "px";
-        document.getElementById("dassaultBar").style.marginLeft = (screen.availWidth * 23/100) + "px";
         document.getElementById("dassault_assist_content_noContent").style.height = parseInt(document.getElementById("dassaultBar2").style.height) - document.getElementById("of_timeline").offsetHeight + "px";
-        
         return window.innerWidth < 1000;
     }
 }

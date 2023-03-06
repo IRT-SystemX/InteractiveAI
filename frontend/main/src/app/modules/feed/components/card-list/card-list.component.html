@@ -7,30 +7,33 @@
 <!-- This file is part of the OperatorFabric project.                      -->
 
 <div id="container-cl" style="display:flex;">
-<div id="ctx_div" class="ctx" style="position:relative;"><b>Contexte</b>
-  <div id="empty_block" style="width: 710px"></div>
-  <div id="rte_checkboxes" style="background-color: var(--opfab-navbar-color-hover); max-width: 15%; position:absolute" hidden>
-    <input checked type="checkbox" class="cbox" value="flux">
-    <label style="margin-left:5px">Flux</label><br>
-    <input checked type="checkbox" class="cbox" value="tension">
-    <label style="margin-left:5px">Tension</label><br>
-    <input type="checkbox" class="cbox" value="parade">
-    <label style="margin-left:5px">Parade</label>
-  </div>
-  <div id="dassault_div" class="btn-group" style="position:absolute;z-index:1" hidden>
-    <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
-      Card
-    </button><br>
-    <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique')">
-      Synoptic
-    </button><br>
-    <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances')">
-      Dependencies
-    </button>
-  </div>
-  <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png" hidden>
-  <div id="carte" class="imgMarged" hidden></div>
-  <div id="synoptique" class="imgMarged btn-group btn-group-synoptic btn-group_synoptic" src="assets\images\dassault_synoptique.png" style="max-width: 15%; position: absolute;" hidden>
+  <!-- <div id="ctx_div" class="ctx" style="position:relative;"><b>Contexte</b> -->
+  <div id="ctx_div" class="ctx" style="height:100%"><b>Contexte</b>
+    <div id="empty_block" style="width: 710px"></div>
+    <div id="rte_checkboxes"
+      style="background-color: var(--opfab-navbar-color-hover); max-width: 15%; position:absolute" hidden>
+      <input checked type="checkbox" class="cbox" value="flux">
+      <label style="margin-left:5px">Flux</label><br>
+      <input checked type="checkbox" class="cbox" value="tension">
+      <label style="margin-left:5px">Tension</label><br>
+      <input type="checkbox" class="cbox" value="parade">
+      <label style="margin-left:5px">Parade</label>
+    </div>
+    <div id="dassault_div" class="btn-group" style="position:absolute;z-index:1" hidden>
+      <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
+        Card
+      </button><br>
+      <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique')">
+        Synoptic
+      </button><br>
+      <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances')">
+        Dependencies
+      </button>
+    </div>
+    <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png" hidden>
+    <div id="carte" class="imgMarged" hidden></div>
+    <div id="synoptique" class="imgMarged btn-group btn-group-synoptic btn-group_synoptic"
+      src="assets\images\dassault_synoptique.png" style="max-width: 15%; position: absolute;" hidden>
       <button id="stat" class="button" onclick="displayStats('stat')">
         STAT
       </button><br>
@@ -55,55 +58,62 @@
       <button id="test" class="button" onclick="displayStats('')">
         TEST
       </button><br>
-      </div>
-      <div id="synoptic_back" hidden>
+    </div>
+    <div id="synoptic_back" hidden>
+
+    </div>
+    <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
+    <div id="map"></div>
 
   </div>
-  <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
-  <div id="map"></div>
-
-</div>
-<div id="feed-content" class="container-fluid feed-content" style="margin-top: 10px; position:relative">
-  <div>
-    <of-filters></of-filters>
-  </div>
+  <div id="feed-content" class="container-fluid feed-content" style="margin-top: 10px; position:relative">
+    <div>
+      <of-filters></of-filters>
+    </div>
 
 
-  <!-- <div style="height:25px"> </div> -->
+    <!-- <div style="height:25px"> </div> -->
 
-  <div id="opfab-card-list" class="opfab-card-list" style="width:100%">
-    <div class="row" *ngFor="let currentLightCard of lightCards">
-      <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
-        <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||
+    <div id="opfab-card-list" class="opfab-card-list" style="width:100%">
+      <div class="row" *ngFor="let currentLightCard of lightCards">
+        <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
+          <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||
             isCardInGroup(selection|async, currentLightCard.id)" [selection]="selection">
-        </of-light-card>
+          </of-light-card>
+        </div>
       </div>
-    </div>
-    <div *ngIf="!!lightCards && totalNumberOfLightsCards > lightCards.length" style="text-align:right;font-weight: bold;margin-top:0px;margin-right:10px;">
-       ... {{ totalNumberOfLightsCards - lightCards.length }} <span translate> feed.moreCards </span>
-    </div>
-  
-  </div>
+      <div *ngIf="!!lightCards && totalNumberOfLightsCards > lightCards.length"
+        style="text-align:right;font-weight: bold;margin-top:0px;margin-right:10px;">
+        ... {{ totalNumberOfLightsCards - lightCards.length }} <span translate> feed.moreCards </span>
+      </div>
 
-  <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
-  </div>
-  <div id ="notifs_DA" style="width:97%" hidden>
-  <div style="font-size:15px;color:grey;"><b>Notifications</b></div>
-  <div  class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected" style="margin-top: 5px">
+    </div>
+
+    <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
+    </div>
+    <div id="notifs_DA" style="width:97%" hidden>
+      <div style="font-size:15px;color:grey;"><b>Notifications</b></div>
+      <div
+        class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected"
+        style="margin-top: 5px">
         <div style="display: grid; grid-template-columns: auto auto; margin-top: 2px;color:black">
-          <p  class="card-title" style="margin-left: 5px;">
-    <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span></p>
-  </div>
-  </div>
-  <div  class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected" style="margin-top: 5px">
-      <div style="display: grid; grid-template-columns: auto auto; color:black">
-          <p  class="card-title" style="margin-left: 5px;">
-          <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span></p>
+          <p class="card-title" style="margin-left: 5px;">
+            <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span>
+          </p>
+        </div>
       </div>
-  </div>
-</div>
+      <div
+        class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected"
+        style="margin-top: 5px">
+        <div style="display: grid; grid-template-columns: auto auto; color:black">
+          <p class="card-title" style="margin-left: 5px;">
+            <span id="opfab-feed-list-card-title"><b>Autre Notification</b></span>
+          </p>
+        </div>
+      </div>
+    </div>
 
-</div>
+  </div>
 </div>
 <div id="bar" class="bar"></div>
 <div id="dassaultBar" class="bar dassaultBar" hidden></div>
@@ -122,7 +132,9 @@
   </div>
   <div class="modal-body text-center">
     <p translate>feed.acknowledgeAllCards.popup.doYouReallyWant</p>
-    <button id="opfab-ack-all-btn-cancel" type="button" class="opfab-btn-cancel" (click)="declineAckAllCards()" translate>button.cancel</button>
-    <button id="opfab-ack-all-btn-confirm" type="button" class="opfab-btn" (click)="confirmAckAllCards()" translate>button.ok</button>
+    <button id="opfab-ack-all-btn-cancel" type="button" class="opfab-btn-cancel" (click)="declineAckAllCards()"
+      translate>button.cancel</button>
+    <button id="opfab-ack-all-btn-confirm" type="button" class="opfab-btn" (click)="confirmAckAllCards()"
+      translate>button.ok</button>
   </div>
 </ng-template>

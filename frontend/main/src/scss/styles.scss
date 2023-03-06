@@ -34,6 +34,13 @@
     position: absolute;
     border-radius: 5px;
 }
+.map_sncf{
+    width: 100%;
+    height: 42vh;
+    margin-top: 20px;
+    position: relative!important;
+    border-radius: 5px;
+}
 
 body {
     color: $light;
@@ -638,7 +645,7 @@ tag-input {
 }
 
 .choose-uc-img:hover{
-    background-image: url("../assets/images/bouton DA nominal.png");
+    //TBD background-image: url("../assets/images/bouton DA nominal.png");
   }
 #opfab-card-icon{
     filter: drop-shadow(1px 0px 4px white);
@@ -651,4 +658,134 @@ label:hover{
 
 .DA_Card{
     min-height: 0px!important;
+}
+.sncf{
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+    border-radius: 5px;
+}
+
+.choose-uc-img{
+    width:25%;
+}
+#da_uc_btn{
+    margin-left:120px;
+}
+@media (max-height: 768px) { //random laptop
+    .sncf{
+        height:430px!important;
+    }
+    .sncf_ctx_div{
+        margin-left: 285px!important;
+    }
+    #map{
+        width:683px!important;
+        height:50vh;
+    }
+    #assistOpTitle{
+        width:360px!important;
+    }
+    .dassault_ctx_div{
+        margin-left: 329px
+    }
+    #dassaultBar{
+        height: 540px;
+        margin-left: 350px
+    }
+    #dassaultBar2{
+        height: 540px;
+        margin-left: 1055px;
+    }
+    .dassault_ctx_div{
+        margin-left: 370px
+    }
+    #dassault_assist,#dassault_assist_content_noContent{
+        margin-left: 1090px;
+    }
+    .map_da{
+        height: 45vh!important;
+    }
+    #dependances{
+        width:70%;
+    }
+  }
+@media (min-height: 1024px) and (max-width: 1366px){ //ipad
+    .sncf{
+        height: 680px!important;
+  }
+    #notifContainer{
+        width: 400px!important;
+    }
+    #feed-content{
+        width:350px!important;
+    }
+    #map{
+        width:610px!important;
+    }
+    .sncf_ctx_div{
+        margin-left: 360px;
+    }
+    .dassault_ctx_div{
+        margin-left: 370px
+    }
+    #dassaultBar{
+        height: 905px;
+        margin-left: 350px
+    }
+    #dassaultBar2{
+        height: 905px;
+        margin-left: 1065px;
+    }
+    #dassault_assist,#dassault_assist_content_noContent{
+        margin-left: 1105px;
+    }
+    #assistOpTitle{
+        width:360px!important;
+    }
+    .map_da{
+        height: 45vh!important;
+    }
+    .map_sncf{
+        height: 62vh!important;
+    }
+}
+@media (min-height: 1025px) and  (min-width: 1800px) { // demo
+    .sncf{
+        height: 680px!important;
+  }
+    #notifContainer{
+        width: 400px!important;
+    }
+    #feed-content{
+        width:350px!important;
+    }
+    .sncf_ctx_div{
+        margin-left: 360px;
+    }
+    .dassault_ctx_div{
+        margin-left: 370px
+    }
+    #dassaultBar{
+        height: 905px;
+        margin-left: 350px
+    }
+    #dassaultBar2{
+        height: 905px;
+        margin-left: 1400px
+    }
+    #dassault_assist,#dassault_assist_content_noContent{
+        margin-left: 1440px;
+    }
+    .map_da,.map_sncf{
+        height: 58vh!important;
+        width: 1010px !important;
+    }
+    #da_uc_btn {
+        margin-left: 185px;
+    }
+    #synoptic_back{
+        width: 65%!important;
+    }
+    .assist_sncf{
+        width:500px; 
+    }
 }
