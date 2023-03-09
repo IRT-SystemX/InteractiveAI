@@ -8,6 +8,7 @@ services:
       context: backend
       dockerfile: Context-Service-Dockerfile
     environment:
+      - CORRELATION_SERVICE=http://cab_correlation:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
       - HOST_IP=$HOST_IP
     restart: unless-stopped
