@@ -54,6 +54,11 @@ These two parameters are place in this file as the style should have a title par
     var longitude;
     var altitude;
     var authorizedUseCase;
+    var map;
+    var sncfMarker;
+    var markers = {};
+    var increasedLongitude = -4.09445;
+
     checkTokenToMatchUseCase();
 
 
@@ -74,9 +79,9 @@ These two parameters are place in this file as the style should have a title par
           // }
       }
       // VM
-      request.open("POST","/users/users/synchronizeWithToken", true);
+      // request.open("POST","/users/users/synchronizeWithToken", true);
       // local
-      // request.open("POST", "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken", true);
+      request.open("POST", "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken", true);
       request.setRequestHeader("Accept","application/json");
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
@@ -91,22 +96,22 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function grantedUseCase(uc) {
-
+      selectedUseCase = uc;
       switch (uc) {
         case "RTE":
           console.log("RTE selected as use case");
-          selectedUseCase = uc;
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
+          document.getElementById("assistOpTitle").classList += " assist_rte";
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
+          document.getElementById("map").hidden = true;
           setInterval(() => {
             refreshCtxRTE();
           }, 30000);
           break;
         case "DA":
           getCoordinates();
-          selectedUseCase = uc;
           console.log("Dassault selected as use case");
           document.getElementById("dassault_div").hidden = false;
           document.getElementById("dassault_assist").hidden = false;
@@ -129,20 +134,17 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
           setInterval(() => {
             refreshCtxDA();
-          }, 30000);
-          
+          }, 1000);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
           break;
         case "ORANGE":
-          selectedUseCase = uc;
           console.log("Orange selected as use case");
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           break;
         case "SNCF":
-          selectedUseCase = uc;
           console.log("SNCF selected as use case");
           document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
@@ -161,8 +163,10 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("feed-content").classList += " sncf";
           document.getElementById("ctx_div").classList+= " sncf sncf_ctx_div"
           document.getElementById("map").classList += " map_sncf";
-          
-          initMap("SNCF");
+          setInterval(() => {
+            refreshCtxSNCF();
+          }, 110);
+          mapSNCF();
           break;
 
       }
@@ -265,6 +269,7 @@ These two parameters are place in this file as the style should have a title par
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;
@@ -275,6 +280,16 @@ These two parameters are place in this file as the style should have a title par
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
       document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+    };
+    function refreshCtxSNCF() {
+      var xmlHttp = new XMLHttpRequest();
+      // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
+      xmlHttp.send(null);
+      var response = JSON.parse(xmlHttp.responseText);
+      var trains = response[0].data.trains;
+      setAndUpdateMarkersOnMap(trains);
     };
   </script>
 
@@ -313,6 +328,74 @@ These two parameters are place in this file as the style should have a title par
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
     }
+
+    function mapSNCF(){
+      mapZoom = 17;
+          initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
+          railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
+          defaultLatitude = 47.9948;
+          defaultLongitude = -4.09245;
+          map = L.map('map', {
+            center: [defaultLatitude, defaultLongitude],
+            zoom: mapZoom
+          });
+          var baseLayer = L.tileLayer(initialLayer).addTo(map);
+          var topLayer = L.tileLayer(railwayLayer).addTo(map);
+
+          let customIcon = {
+            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png",
+            iconSize: [40, 40]
+          }
+          let customIcon2 = {
+            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg",
+            iconSize: [40, 40]
+          }
+          let myIcon = L.icon(customIcon);
+
+
+          let iconOptions = {
+            title: "TGV 8872",
+            draggable: false,
+            icon: myIcon
+          }
+          let myIcon2 = L.icon(customIcon2);
+
+          let iconOptions2 = {
+            title: "TGV 8763",
+            draggable: false,
+            icon: myIcon2
+          }
+
+          let marker = new L.Marker([47.99501, -4.09445], iconOptions);
+          marker.addTo(map).bindPopup(iconOptions.title)
+            .openPopup();
+          let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
+          marker2.addTo(map).bindPopup(iconOptions2.title)
+            .openPopup();
+            sncfMarker = new L.Marker([defaultLatitude,defaultLongitude],iconOptions2);
+            map.addLayer(sncfMarker);
+    }
+    function setAndUpdateMarkersOnMap(data) {
+
+      data.forEach(function (train) {
+        if (!markers.hasOwnProperty(train.id_train)) {
+          if(train.failure){
+        iconUrl = "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"
+        }else{
+          iconUrl = "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg"
+        }
+        let trainIconSrc = {iconUrl,iconSize: [40, 40]}
+        let trainIcon = L.icon(trainIconSrc);
+          let iconOptions = {title: "TGV" + train.id_train,draggable: false,icon: trainIcon}
+          markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).bindPopup(iconOptions.title,{autoClose: false});
+          markers[train.id_train].previousLatLngs = [];
+        } else {
+          markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
+          markers[train.id_train].setLatLng([train.latitude, increasedLongitude -= 0.00045]);
+        }
+      });
+}
+
     function initMap(usecase) {
 
       switch (usecase) {
@@ -343,58 +426,8 @@ These two parameters are place in this file as the style should have a title par
           let planeMarker = new L.Marker([latitude, longitude], iconOptions3);
           planeMarker.addTo(map).bindPopup(iconOptions3.title)
           break;
-        case 'SNCF':
-          mapZoom = 17;
-          initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
-          railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
-          var map = L.map('map', {
-            center: [47.9948, -4.09245],
-            zoom: mapZoom
-          });
-          var baseLayer = L.tileLayer(initialLayer).addTo(map);
-          var topLayer = L.tileLayer(railwayLayer).addTo(map);
-
-          let customIcon = {
-            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png",
-            iconSize: [40, 40]
-          }
-          let customIcon2 = {
-            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg",
-            iconSize: [40, 40]
-          }
-          let myIcon = L.icon(customIcon);
-
-
-          let iconOptions = {
-            title: "TGV 8872",
-            draggable: false,
-            icon: myIcon
-          }
-          let myIcon2 = L.icon(customIcon2);
-
-          let iconOptions2 = {
-            title: "TGV 8763",
-            draggable: false,
-            icon: myIcon2
-          }
-
-
-
-
-          let marker = new L.Marker([47.99501, -4.09445], iconOptions);
-          marker.addTo(map).bindPopup(iconOptions.title)
-            .openPopup();
-          let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
-          marker2.addTo(map).bindPopup(iconOptions2.title)
-            .openPopup();
-          break;
       }
-
-
       console.log("map init OK")
-      {
-
-      }
     }
 
   </script>

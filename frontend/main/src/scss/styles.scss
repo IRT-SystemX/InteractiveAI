@@ -707,6 +707,12 @@ label:hover{
     #dependances{
         width:70%;
     }
+    .assist_rte{
+        margin-left: 805px;
+    }
+    #bar2{
+        margin-left: 785px;
+    }
   }
 @media (min-height: 1024px) and (max-width: 1366px){ //ipad
     .sncf{
@@ -716,13 +722,13 @@ label:hover{
         width: 400px!important;
     }
     #feed-content{
-        width:350px!important;
+        width:326px!important;
     }
     #map{
         width:610px!important;
     }
     .sncf_ctx_div{
-        margin-left: 360px;
+        margin-left: 345px;
     }
     .dassault_ctx_div{
         margin-left: 370px
@@ -739,7 +745,13 @@ label:hover{
         margin-left: 1105px;
     }
     #assistOpTitle{
-        width:360px!important;
+        width:326px!important;
+    }
+    .assist_rte{
+        margin-left: 875px;
+    }
+    #bar2{
+        margin-left: 850px;
     }
     .map_da{
         height: 45vh!important;
@@ -786,6 +798,12 @@ label:hover{
         width: 65%!important;
     }
     .assist_sncf{
-        width:500px; 
+        width:350px; 
+    }
+    .assist_rte{
+        margin-left: 1160px;
+    }
+    #bar2{
+        margin-left: 1135px;
     }
 }
