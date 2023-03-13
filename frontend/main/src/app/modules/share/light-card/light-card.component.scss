@@ -59,6 +59,16 @@
     cursor: pointer;
     background-color: #A70000;
 }
+.sncf-light-card-background-action {
+    cursor: pointer;
+    background-color: #E05206;
+    color:white;
+}
+.sncf-light-card-background-alarm {
+    cursor: pointer;
+    background-color: #C30044;
+    color:white;
+}
 
 .light-card-detail-unread {
     color: var(--opfab-lightcard-detail-unread-textcolor);

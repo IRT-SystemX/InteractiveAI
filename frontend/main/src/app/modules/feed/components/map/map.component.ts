@@ -474,15 +474,12 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
             document.getElementById("assistOpTitle").style.marginLeft = parseInt(document.getElementById("dassaultBar2").style.marginLeft) + 40 + "px"; 
         }else if (cabUseCase == 'CAB SNCF')
         {
-            document.getElementById("assistOpTitle").style.marginLeft = window.screen.width * 73/100 + "px"; 
+            // document.getElementById("assistOpTitle").style.marginLeft = window.screen.width * 73/100 + "px"; 
         }
         else
         {
             document.getElementById("map").style.width = parseInt(document.getElementById("ctxImg").style.width) - 25 + "px";
-        }
-        document.getElementById("opfab-card-list").style.maxHeight = window.innerHeight/1.27 - document.getElementById("of_timeline").offsetHeight +  "px"; 
-        
-        
+        }   
         // document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
         document.getElementById("empty_block").style.width =  parseInt(document.getElementById("ctxImg").style.width)  + "px";
         document.getElementById("dassault_assist_content_noContent").style.height = parseInt(document.getElementById("dassaultBar2").style.height) - document.getElementById("of_timeline").offsetHeight + "px";

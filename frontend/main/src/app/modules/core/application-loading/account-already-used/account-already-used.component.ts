@@ -71,6 +71,18 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
         }
     }
 
+    public setCardsBackground(){
+        console.log("setcardsbackground")
+        var cards = $(".card");
+        for(var card = 0; card<cards.length;card++){
+            document.getElementById(cards[card].id)
+            if(document.getElementById("opfab-navbar-menu-feed").innerText == "CAB SNCF"){
+                cards[card].classList += " light-card-background-" + $(cards[card]).attr("severity");
+                console.log("light-card-background-" + $(cards[card]).attr("severity"))
+            }
+        }
+    }
+
     public displayLoader(): void {
         setTimeout(() => {
             this.setCardsSeverity();

@@ -59,12 +59,25 @@
         TEST
       </button><br>
     </div>
-    <div id="synoptic_back" hidden>
+    <div id="synoptic_back" hidden></div>
+
+    <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
+    <div id="sncfControl" hidden>
+      <button id="incident" class="button sncfBtn" onclick="selectSNCFCtx('incident')">
+      <b>Infos Incident</b>
+      </button>
+      <button id="materiel" class="button sncfBtn" onclick="selectSNCFCtx('materiel')">
+        <b>Matériel</b>
+      </button>
+      <button id="carte" class="button sncfBtn" onclick="selectSNCFCtx('carte')">
+        <b>Carte</b>
+      </button>
+    </div>
+    <div id="map">
+    </div>
+    <div id="sncf_ctx" hidden>
 
     </div>
-    <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
-    <div id="map"></div>
-
   </div>
   <div id="feed-content" class="container-fluid feed-content" style="margin-top: 10px; position:relative">
     <div>

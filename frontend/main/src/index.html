@@ -97,12 +97,14 @@ These two parameters are place in this file as the style should have a title par
 
     function grantedUseCase(uc) {
       selectedUseCase = uc;
+      document.documentElement.requestFullscreen();
       switch (uc) {
         case "RTE":
           console.log("RTE selected as use case");
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
           document.getElementById("assistOpTitle").classList += " assist_rte";
+          document.getElementById("opfab-card-list").classList += " rteNotifs";
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
@@ -124,7 +126,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           document.getElementById("of_timeline").style.backgroundColor = "black";
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
-          document.getElementById("opfab-card-list").style.overflowY = "hidden";
           document.getElementById("notifs_DA").hidden = false;
           document.getElementById("bar").hidden = true;
           document.getElementById("bar2").hidden = true;
@@ -153,13 +154,13 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("bar").hidden = true;
           document.getElementById("bar2").hidden = true;
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-          document.getElementById("opfab-card-list").style.overflowY = "hidden";
           // document.getElementById("ctx_div").style.marginLeft = "440px";
           document.getElementById("assist").hidden = false;
-          document.getElementById("assistOpTitle").classList += " sncf assist_sncf";
+          document.getElementById("assistOpTitle").classList += " sncf assist_sncf assistOpTitle";
           document.getElementById("assistOpTitle").style.top = "80px";
           document.getElementById("feed-content").style.position = "absolute";
           document.getElementById("feed-content").style.marginTop = "0px";
+          document.getElementById("sncfControl").hidden = false;
           document.getElementById("feed-content").classList += " sncf";
           document.getElementById("ctx_div").classList+= " sncf sncf_ctx_div"
           document.getElementById("map").classList += " map_sncf";
@@ -204,6 +205,24 @@ These two parameters are place in this file as the style should have a title par
 
       }
     }
+    function selectSNCFCtx(type) {
+      switch (type) {
+        case "incident":
+          document.getElementById("map").hidden = true;
+          document.getElementById("sncf_ctx").hidden=true;
+          // document.getElementById("sncf_ctx").innerHTML("Trains")
+          break;
+        case "materiel":
+          document.getElementById("map").hidden = true;
+          document.getElementById("sncf_ctx").hidden=false;
+          break;
+        case "carte":
+          document.getElementById("map").hidden = false;
+          document.getElementById("sncf_ctx").hidden=true;
+          break;
+
+      }
+    }
     
     function displayStats(value){
       switch (value){
@@ -215,7 +234,7 @@ These two parameters are place in this file as the style should have a title par
           break;
       }
     }
-    
+       
     function setDANotifications(){
       try {
               setCardsForDA();
@@ -261,11 +280,25 @@ These two parameters are place in this file as the style should have a title par
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Routine ");
         cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
+
+        if (selectedUseCase == "SNCF"){
+          if (!cards[card].classList.toString().includes("light-card-background")){
+            cards[card].classList += " sncf-light-card-background-" + cards[card].attributes['severity'].value;
+          }
+        }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") ){
+            cards[card].classList += " title-light-card-border-" + cards[card].attributes['severity'].value;
+            cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
+        }else if (selectedUseCase == "DA"){
+          if (!cards[card].classList.toString().includes("light-card-background")){
+            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+          }
       }
+    }
       if (selectedUseCase == "DA"){
         setDANotifications();
       }
     }
+    
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
@@ -387,14 +420,32 @@ These two parameters are place in this file as the style should have a title par
         let trainIconSrc = {iconUrl,iconSize: [40, 40]}
         let trainIcon = L.icon(trainIconSrc);
           let iconOptions = {title: "TGV" + train.id_train,draggable: false,icon: trainIcon}
-          markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).bindPopup(iconOptions.title,{autoClose: false});
+          // markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).bindPopup(iconOptions.title,{autoClose: false});
+          markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).on('click', markerOnClick);
+          markers[train.id_train].attributes = train;
           markers[train.id_train].previousLatLngs = [];
         } else {
           markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
-          markers[train.id_train].setLatLng([train.latitude, increasedLongitude -= 0.00045]);
+          markers[train.id_train].setLatLng([train.latitude, increasedLongitude += 0.00025]);
         }
       });
 }
+
+    function markerOnClick(e){
+      markerOptions = e.sourceTarget.options;
+      markerTitle = markerOptions.title.replace("TGV","");
+      nb_passengers_connection = markers[markerTitle].attributes.nb_passengers_connection;
+      nb_passengers_onboard = markers[markerTitle].attributes.nb_passengers_onboard;
+      speed = markers[markerTitle].attributes.speed;
+      map.setView([e.sourceTarget._latlng.lat,e.sourceTarget._latlng.lng])
+      document.getElementById("sncf_ctx").innerHTML = '<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
+      + "Vitesse : " + speed + "km/h" +"<br>"
+      + "Direction : Massy TGV" + "<br>"
+      + "Voyageurs à bord : " + nb_passengers_onboard
+      + "</div>"
+      + "<span style='margin-top:5px'><b>Communication avec la rame </b></span>"
+      + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span style="margin-left:5px;border: 1px solid">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></div>';
+    }
 
     function initMap(usecase) {
 
@@ -434,16 +485,44 @@ These two parameters are place in this file as the style should have a title par
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
     <b id="assist" hidden>Assistance à l'opérateur</b>
+    <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <span>Passage à 2 noeuds  LTTD: 15min</span></div>
+      <!-- <span style="border-left:2px solid lightgrey"></span> -->
+      <hr>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 12 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <span>Ouverture départ vers poste 11  LTTD: 10min</span></div>
+      <hr>
+      <div><span class="rtePrd">Parade injection : Effacement de 30% de l'éolien au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <span>Production à la baisse LTTD: 15min</span></div>
+    </div>
+    <div id="opfab-div-card-template-security" class="opfab-card-template-rendering" style="display:none">
+    <b style="color:black">Parades</b><br>
+    <span>Aucune parade trouvée pour cet évènement</span>
+    <hr>
+    <div>
+      Action suggérée - réaliser une étude complémentaire
+      <button class="rteBtn">Utiliser l'outil d'étude</button>
+    </div>
+    </div>
+    <div id="opfab-div-card-template-noparades" class="opfab-card-template-rendering" style="display:none">
+      <b style="color:black">Parades</b><br>
+      <span>Aucune parade trouvée pour cet évènement</span>
+    </div>
+    <div id="opfab-div-card-template-agent" class="opfab-card-template-rendering" style="display:none">
+      <b style="color:black">Parades</b><br>
+      <b style="font-size: 15px">Je ne suis pas en mesure de vous fournir une assistance pour cet évènement </b>
+    </div>
     <b id="dassault_assist" hidden>Assistance</b>
     <div id="dassault_assist_content_noContent" hidden>
       <div id="da_bloc_content">
-        <div id ="noevent_da"> No Event Selected<br>
+        <div class = "da_assist" id="noevent_da"> No Event Selected<br>
           Please select an event<br>
           to have assistance</div>
-          <div id="high_procedure" hidden>
+          <div class = "da_assist" id="high_procedure" hidden>
             <img src="assets\images\endofprocedure_da.png">
           </div>
-          <div id="pdv_da" hidden>
+          <div class = "da_assist" id="pdv_da" hidden>
             <img src="assets\images\pdv_da.png">
           </div>
       </div>

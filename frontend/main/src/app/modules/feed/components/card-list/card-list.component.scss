@@ -123,6 +123,14 @@ input[type=checkbox]:checked + label {
     background-color: rgb(50,75,107);;
     color:white;
   }
+  .btn-group_synoptic button:active {
+    background-color: rgb(50,75,107);;
+    color:white;
+  }
+  .btn-group button:active {
+    background-color: #0085CC;
+    color:white;
+  }
   .btn-group button:focus {
     background-color: #0085CC;
     color:white;
