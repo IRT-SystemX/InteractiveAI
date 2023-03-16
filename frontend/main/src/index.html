@@ -13,7 +13,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Assistant CAB v1</title>
+  <title>Assistant CAB v2</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,11 +58,18 @@ These two parameters are place in this file as the style should have a title par
     var sncfMarker;
     var markers = {};
     var increasedLongitude = -4.09445;
+    var tokenSynchronizeUrl = ""
 
     checkTokenToMatchUseCase();
 
 
     function checkTokenToMatchUseCase(){
+      if(window.location.host.includes("localhost")){
+        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+      }
+      else{
+        tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
+      }
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
           if (request.readyState==4) {
@@ -74,14 +81,10 @@ These two parameters are place in this file as the style should have a title par
             return entities[0];
           }
           console.log("token checked")
-          // if (authorizedUseCase === undefined){
-          //   window.location.reload();
-          // }
       }
-      // VM
-      // request.open("POST","/users/users/synchronizeWithToken", true);
-      // local
-      request.open("POST", "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken", true);
+
+      request.open("POST",tokenSynchronizeUrl, true);
+
       request.setRequestHeader("Accept","application/json");
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
@@ -98,13 +101,14 @@ These two parameters are place in this file as the style should have a title par
     function grantedUseCase(uc) {
       selectedUseCase = uc;
       document.documentElement.requestFullscreen();
+      console.log(uc + " selected as use case");
       switch (uc) {
         case "RTE":
-          console.log("RTE selected as use case");
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
-          document.getElementById("assistOpTitle").classList += " assist_rte";
-          document.getElementById("opfab-card-list").classList += " rteNotifs";
+          document.getElementById("assistOpTitle").classList.add("assist_rte");
+          document.getElementById("opfab-card-list").classList.add("rteNotifs");
+          document.getElementById("opfab-feedbar").classList.add("rteNotifs");
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
@@ -114,7 +118,6 @@ These two parameters are place in this file as the style should have a title par
           break;
         case "DA":
           getCoordinates();
-          console.log("Dassault selected as use case");
           document.getElementById("dassault_div").hidden = false;
           document.getElementById("dassault_assist").hidden = false;
           document.getElementById("dassault_assist_content_noContent").hidden = false;
@@ -140,13 +143,11 @@ These two parameters are place in this file as the style should have a title par
           setDANotifications();
           break;
         case "ORANGE":
-          console.log("Orange selected as use case");
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           break;
         case "SNCF":
-          console.log("SNCF selected as use case");
           document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#009AA6"
@@ -210,15 +211,22 @@ These two parameters are place in this file as the style should have a title par
         case "incident":
           document.getElementById("map").hidden = true;
           document.getElementById("sncf_ctx").hidden=true;
-          // document.getElementById("sncf_ctx").innerHTML("Trains")
+          document.getElementById("sncf_incident_infos").hidden=false;
+          document.getElementById("history").hidden=false;
+          document.getElementById("incident").classList.remove("toBlink");
           break;
         case "materiel":
           document.getElementById("map").hidden = true;
           document.getElementById("sncf_ctx").hidden=false;
+          document.getElementById("sncf_incident_infos").hidden=true;
+          document.getElementById("history").hidden=true;
+          document.getElementById("materiel").classList.remove("toBlink");
           break;
         case "carte":
           document.getElementById("map").hidden = false;
           document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("history").hidden=true;
+          document.getElementById("sncf_incident_infos").hidden=true;
           break;
 
       }
@@ -250,7 +258,7 @@ These two parameters are place in this file as the style should have a title par
     if (selectedUseCase!= "DA"){
       setInterval(() => {
         setCardsSeverity();
-      }, 5000);
+      }, 3000);
     }
 
     function setCardsForDA() {
@@ -274,16 +282,82 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function setCardsSeverity() {
+      if (selectedUseCase == "SNCF"){
+        var severities = document.getElementsByClassName("opfab-feed-list-card-severity")
+        for (var severity = 0; severity < severities.length; severity++) {
+           severities[severity].hidden = true
+          }
+          var descs = document.getElementsByClassName("p-1");
+
+         var titles = document.getElementsByClassName("card-title")
+         for (var titleSncf = 0; titleSncf < titles.length; titleSncf++) {
+          titles[titleSncf].style.marginLeft = '40px'
+        }
+        for(var desc = 0;descs.length;desc++){
+          try {
+          descs[desc].hidden = true;
+          } catch (error) {
+            break;
+          }
+        }
+      }
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
         cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Routine ");
         cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
-
         if (selectedUseCase == "SNCF"){
-          if (!cards[card].classList.toString().includes("light-card-background")){
-            cards[card].classList += " sncf-light-card-background-" + cards[card].attributes['severity'].value;
+          if (!cards[card].classList.contains("SNCF_card")){
+            cards[card].classList.add("SNCF_Card");
+          }
+          //titre carte margé
+          if (innerWidth > 1800){
+            cards[card].children[0].style.marginLeft = '80px'
+          }else{
+            cards[card].children[0].style.marginLeft = '60px'
+          }
+
+          if (cards[card].classList.contains("light-card-detail-selected")){
+            //carte selectionée classe SNCF
+              cards[card].classList.add("sncf-light-card-selected");
+              cards[card].classList.add("sncf-border-" + cards[card].attributes['severity'].value);
+              cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
+              cards[card].classList.add("sncfCard");
+              cards[card].classList.remove("sncfCardNotSelected");
+              cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100"
+          }
+          if (cards[card].classList.toString().includes("light-card-detail-unselected")){
+            //carte selectionée classe SNCF
+              cards[card].classList.remove("sncf-light-card-selected");
+              try {
+                
+              } catch (error) {
+                
+              }
+            
+            try {
+              cards[card].classList.add("sncf-light-card-background-" + cards[card].attributes['severity'].value);
+              cards[card].classList.remove("sncfCard");
+              cards[card].classList.add("sncfCardNotSelected");
+              cards[card].classList.remove("sncf-border-" + cards[card].attributes['severity'].value);
+              } catch (error) {
+                console.info("non concerné, sncf")
+              }
+          }
+          if(cards[card].classList.toString().includes("light-card-detail-unread")){
+            // carte non lue
+            cards[card].style.color="white";
+          }
+          else if (cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
+          && cards[card].classList.toString().includes("light-card-detail-selected")
+           || cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
+          && cards[card].classList.toString().includes("sncf-light-card-selected") ){
+            // retrait du background si carte selectionnée
+            // cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
+            // cards[card].classList.add("sncf-border-" + cards[card].attributes['severity'].value);
+            // cards[card].classList.add("sncf-light-card-selected");
+            // cards[card].classList.remove("light-card-detail-selected");
           }
         }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") ){
             cards[card].classList += " title-light-card-border-" + cards[card].attributes['severity'].value;
@@ -324,6 +398,19 @@ These two parameters are place in this file as the style should have a title par
       var trains = response[0].data.trains;
       setAndUpdateMarkersOnMap(trains);
     };
+//     function deleteAllCookies() {
+//     const cookies = document.cookie.split(";");
+
+//     for (let i = 0; i < cookies.length; i++) {
+//         const cookie = cookies[i];
+//         const eqPos = cookie.indexOf("=");
+//         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+//         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+//     }
+//     localStorage.clear();
+
+//     // setTimeout(window.location.reload(),3000);
+// }
   </script>
 
 
@@ -363,11 +450,11 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function mapSNCF(){
-      mapZoom = 17;
+      mapZoom = 8;
           initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
           railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
-          defaultLatitude = 47.9948;
-          defaultLongitude = -4.09245;
+          defaultLatitude = 46.580224;
+          defaultLongitude = 0.340375;
           map = L.map('map', {
             center: [defaultLatitude, defaultLongitude],
             zoom: mapZoom
@@ -399,34 +486,47 @@ These two parameters are place in this file as the style should have a title par
             icon: myIcon2
           }
 
-          let marker = new L.Marker([47.99501, -4.09445], iconOptions);
-          marker.addTo(map).bindPopup(iconOptions.title)
-            .openPopup();
-          let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
-          marker2.addTo(map).bindPopup(iconOptions2.title)
-            .openPopup();
-            sncfMarker = new L.Marker([defaultLatitude,defaultLongitude],iconOptions2);
-            map.addLayer(sncfMarker);
+          // let marker = new L.Marker([47.99501, -4.09445], iconOptions);
+          // marker.addTo(map).bindPopup(iconOptions.title)
+          //   .openPopup();
+          // let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
+          // marker2.addTo(map).bindPopup(iconOptions2.title)
+          //   .openPopup();
+          //   sncfMarker = new L.Marker([defaultLatitude,defaultLongitude],iconOptions2);
+          //   map.addLayer(sncfMarker);
     }
     function setAndUpdateMarkersOnMap(data) {
 
       data.forEach(function (train) {
         if (!markers.hasOwnProperty(train.id_train)) {
           if(train.failure){
-        iconUrl = "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"
+        iconUrl = "/assets/images/icons/train_ko.png"
         }else{
-          iconUrl = "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg"
+          iconUrl = "/assets/images/icons/train_ok.png"
         }
-        let trainIconSrc = {iconUrl,iconSize: [40, 40]}
+        let trainIconSrc = {iconUrl,iconSize: [20, 20]}
         let trainIcon = L.icon(trainIconSrc);
           let iconOptions = {title: "TGV" + train.id_train,draggable: false,icon: trainIcon}
           // markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).bindPopup(iconOptions.title,{autoClose: false});
           markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).on('click', markerOnClick);
+          // try {
+          //   train.latitude
+          //   train.longitude
+          // } catch (error) {
+            
+          // }
           markers[train.id_train].attributes = train;
           markers[train.id_train].previousLatLngs = [];
         } else {
-          markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
-          markers[train.id_train].setLatLng([train.latitude, increasedLongitude += 0.00025]);
+          if(train.latitude == null && train.longitude == null){
+            lastLat = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lat
+            lastLong = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lng
+            markers[train.id_train].setLatLng([lastLat, lastLong]);
+          }
+          else {
+            markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
+            markers[train.id_train].setLatLng([train.latitude, train.longitude]);
+          }
         }
       });
 }
@@ -437,7 +537,7 @@ These two parameters are place in this file as the style should have a title par
       nb_passengers_connection = markers[markerTitle].attributes.nb_passengers_connection;
       nb_passengers_onboard = markers[markerTitle].attributes.nb_passengers_onboard;
       speed = markers[markerTitle].attributes.speed;
-      map.setView([e.sourceTarget._latlng.lat,e.sourceTarget._latlng.lng])
+      map.setView([e.sourceTarget._latlng.lat,e.sourceTarget._latlng.lng],13)
       document.getElementById("sncf_ctx").innerHTML = '<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
       + "Vitesse : " + speed + "km/h" +"<br>"
       + "Direction : Massy TGV" + "<br>"
@@ -445,6 +545,9 @@ These two parameters are place in this file as the style should have a title par
       + "</div>"
       + "<span style='margin-top:5px'><b>Communication avec la rame </b></span>"
       + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span style="margin-left:5px;border: 1px solid">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></div>';
+      document.getElementById("materiel").classList.add("toBlink");
+      markers[markerTitle].bindPopup(markerOptions.title + "<br> Vitesse: " + speed + " km/h" );
+      
     }
 
     function initMap(usecase) {

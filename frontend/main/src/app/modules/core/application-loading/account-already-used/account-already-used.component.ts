@@ -64,9 +64,11 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
             cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
             cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
             cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
-            if ( cards[card].classList.contains("light-card-detail-selected") ){
-                console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));
-                $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+            if (document.getElementById("opfab-navbar-menu-feed").innerText != 'CAB SNCF'){
+                if ( cards[card].classList.contains("light-card-detail-selected") ){
+                    console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                    $(cards[card]).addClass("light-card-detail-selected-" + $(cards[card]).attr("severity"));
+                }
             }
         }
     }

@@ -69,6 +69,14 @@
     background-color: #C30044;
     color:white;
 }
+.sncf-border-alarm{
+    border-color: #C30044;
+    border-width: 4px;
+}
+.sncf-border-action{
+    border-color: #E05206;
+    border-width: 4px;
+}
 
 .light-card-detail-unread {
     color: var(--opfab-lightcard-detail-unread-textcolor);
@@ -162,5 +170,5 @@
 }
 
 .light-card-detail-selected span{
-    color:white!important;
+    color:white;
 }

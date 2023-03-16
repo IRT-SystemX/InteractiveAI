@@ -657,7 +657,10 @@ label:hover{
 }
 
 .DA_Card{
-    min-height: 0px!important;
+    min-height: 31px!important;
+}
+.SNCF_Card{
+    min-height: 45px !important
 }
 .sncf{
     box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
@@ -853,7 +856,7 @@ label:hover{
         left: 1100px;
     }
 }
-@media (min-height: 1025px) and  (min-width: 1800px) { // demo
+@media (min-height: 900px) and  (min-width: 1800px) { // demo
     .rteNotifs{
         width:122%!important;
     }
@@ -872,7 +875,7 @@ label:hover{
     }
     .sncf_ctx_div{
         margin-left: 360px;
-        min-width: 1055px;
+        min-width: 1190px
     }
     .dassault_ctx_div{
         margin-left: 370px
@@ -929,4 +932,50 @@ label:hover{
     #sncf_ctx{
         margin-top : 10px;
     }
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .toBlink {
+    animation: blinker 1s linear infinite;
+  }  
+
+  #closeBtn{
+    width: 40px;
+    position: absolute;
+    right: 0px;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .sncf-light-card-selected span{
+    color:black!important
+  }
+  .sncfCard{
+    background: url(../assets/images/!.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position-x: 60px;
+}
+  .sncfCardNotSelected{
+    background: url(../assets/images/white_!.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position-x: 60px;
+}
+.sncf_incidents{
+    border-radius: 5px;
+    border: 2px solid;
+    margin-left: 5px;
+}
+#incidents{
+    width: 30%;
+}
+#sncf_dependances{
+    width: 70%;
+    text-align: center;
 }
