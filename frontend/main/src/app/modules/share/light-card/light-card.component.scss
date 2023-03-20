@@ -69,11 +69,29 @@
     background-color: #C30044;
     color:white;
 }
+.sncf-light-card-background-compliant {
+    cursor: pointer;
+    background-color: #E05206;
+    color:white;
+}
+.sncf-light-card-background-information {
+    cursor: pointer;
+    background-color: #C30044;
+    color:white;
+}
 .sncf-border-alarm{
     border-color: #C30044;
     border-width: 4px;
 }
 .sncf-border-action{
+    border-color: #E05206;
+    border-width: 4px;
+}
+.sncf-border-compliant{
+    border-color: #E05206;
+    border-width: 4px;
+}
+.sncf-border-information{
     border-color: #E05206;
     border-width: 4px;
 }

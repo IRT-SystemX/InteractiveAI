@@ -244,11 +244,10 @@ export class LightCardComponent implements OnInit, OnDestroy {
             = 
             '<div class="sncf_incidents" id="incidents">' 
             + '<b>Fiche Evenement</b><br>'
-            + "TGV n° : " + cardDesc.substring(0, cardDesc.indexOf(' ')) +"<br>"
-            + document.getElementById("opfab-card-title").innerText + "<br>"
-            + "Date <br>"
-            + cardDesc
-            // + severity
+            + '<img src = "/assets/images/map.png">' + "TGV n° : " + cardDesc.substring(0, cardDesc.indexOf(' ')) +"<br>"
+            + '<img src = "/assets/images/information.png">' + document.getElementById("opfab-card-title").innerText + "<br>"
+            + '<img src = "/assets/images/time.png">' +new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Europe/Paris' }).format(new Date()) + "<br>"
+            + '<img src = "/assets/images/warning.png">' + document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[1].innerText.replace("Routine ","Gravité Mineure")  
             + "</div>"
             + '<div class="sncf_incidents" id="sncf_dependances">'
             + '<b>Dépendances</b><br>'
