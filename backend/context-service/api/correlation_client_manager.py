@@ -2,6 +2,7 @@ import multiprocessing
 
 from .clients.correlation_client import CorrelationClient
 from settings import logger
+import itertools
 
 
 class CorrelationClientManager:
@@ -19,10 +20,18 @@ class CorrelationClientManager:
         self.correlation_app_queue.put(data)
 
     def send_correlation(self):
+        raw = []
         while True:
             try:
                 logger.info("Data sending")
-                params = self.correlation_app_queue.get()
+                # Remove the oldest element if there are already 12 elements in the list
+                if len(raw) == 12:
+                    raw.pop(0)
+                # Add the latest data to the list
+                new_data = self.correlation_app_queue.get()
+                raw.append(new_data)
+                # Send the last 12 elements
+                params = list(itertools.chain(*raw))
                 self.correaltion_client.send_correlation(params)
             except Exception as err:
                 logger.error(f"Failed to add correlation with error {err}")
