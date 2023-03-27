@@ -911,6 +911,9 @@ label:hover{
     .assist_sncf{
         width:350px; 
     }
+    .assist_orange{
+        width:350px; 
+    }
     .assist_rte{
         margin-left: 1160px;
     }
@@ -978,4 +981,75 @@ label:hover{
 #sncf_dependances{
     width:60%;
     text-align: center;
+}
+
+.orange_theme{
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+}
+.orange_details{
+    right: 0px;
+    position: absolute;
+}
+.orange_button{
+    border-radius: 7px;
+    font-weight: 900;
+    color: white;
+    border-width: thin;
+}
+.orange_button_orange{
+    background: #FF7900;
+}
+.orange_button_green{
+    background: #50BE87;
+}
+.orange_button_purple{
+    background: #A885D8;
+}
+#orange_correlation_desc{
+    color:black;
+    font-size: 13px;
+}
+.orange_button_theme{
+    border: none;
+    background: none;
+}
+
+.histo_tab:hover{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.histo_tab:active{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.histo_tab:focus{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.stats_tab:hover{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+.stats_tab:active{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+.stats_tab:focus{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+#correlation_app_y,#orange_incidents{
+    margin: 10px;
+}
+#display_result{
+    border-radius: 5px;
+    color:white;
+    background-color: #4BB4E6;
+}
+#box_methode_calcul{
+    font-size: 12px;
+}
+.reduced{
+    width: 5%;
 }

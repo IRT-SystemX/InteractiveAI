@@ -96,6 +96,39 @@
           </of-light-card>
         </div>
       </div>
+    <div id="orange_incidents" hidden><b>Incident sur <button id="btnApp" class="orange_button orange_button_orange" 
+      onclick="document.getElementById('orange_incidents_description').hidden = false;document.getElementById('correlation_app_y').hidden = false">App X</button></b>
+    
+    <div id="orange_incidents_description" hidden>
+      <span style="color:#FF7900"><b>Descriptif</b></span><br>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
+      <span style="color:#FF7900"><b>Historique application</b></span>
+      <div id="content_version" style="display:flex">
+        <div>Version : </div><div class="orange_details">v3.6.14</div>
+      </div>
+      <div id="content_last_change" style="display:flex">
+        <br><div>Dernier changement : </div><div class="orange_details">il y a 18h</div>
+      </div>
+      <br>
+    <div id="orange_incidents_state_title"><b>Etat des <button id="btnApp" class="orange_button orange_button_green" onclick="document.getElementById('orange_incident_state').hidden=false">App Inter.</button> à l'app X</b>
+      <div id="orange_incident_state" hidden>
+        <div id="content_state" >
+          <span style="color:#50BE87"><b>Changes</b></span>
+          <br>En cours
+        </div>
+        <div id="content_state" style="display:flex">
+          <div>Change sur DataCenter#1</div><div class="orange_details">ℹ️</div>
+        </div>
+        <hr>
+        <div id="content_state_2" style="display:flex">
+          <br><div>Change sur AppBBB : </div><div class="orange_details">ℹ️</div>
+        </div>
+        <hr>  
+    </div>
+
+
+
+    </div>
       <div *ngIf="!!lightCards && totalNumberOfLightsCards > lightCards.length"
         style="text-align:right;font-weight: bold;margin-top:0px;margin-right:10px;">
         ... {{ totalNumberOfLightsCards - lightCards.length }} <span translate> feed.moreCards </span>

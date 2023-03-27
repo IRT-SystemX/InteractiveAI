@@ -157,7 +157,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             }
          });
         if(window.location.host.includes("localhost")){
-            this.rteUrl = "http://192.168.211.95:3200/cabcontext/api/v1/contexts";
+            this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
           }
         if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
             $("#opfab-div-card-template-security").hide()

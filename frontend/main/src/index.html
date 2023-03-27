@@ -65,7 +65,7 @@ These two parameters are place in this file as the style should have a title par
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
@@ -141,11 +141,33 @@ These two parameters are place in this file as the style should have a title par
           }, 1000);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
+          mapDA();
           break;
         case "ORANGE":
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
+          document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
+          document.getElementById("opfab-navbar-menu-feed").style.color = "white";
+          document.getElementById("bar").hidden = true;
+          document.getElementById("bar2").hidden = true;
+          document.getElementById("orange_incidents").hidden = false;
+          document.getElementById("correlation").hidden = false;
+          document.getElementById("orange_assist").hidden = false;
+          document.getElementById("assistOpTitle").classList.add("orange_theme");
+          document.getElementById("assistOpTitle").classList.add("assist_sncf");
+          document.getElementById("assistOpTitle").classList.add("assistOpTitle");
+          document.getElementById("assistOpTitle").style.top = "80px";
+          document.getElementById("feed-content").style.position = "absolute";
+          document.getElementById("feed-content").style.marginTop = "0px";
+          document.getElementById("feed-content").classList.add("orange_theme");
+          document.getElementById("ctx_div").classList.add("orange_theme");
+          document.getElementById("ctx_div").classList.add("sncf_ctx_div");
+          document.getElementById("ctx_div").classList.add("sncf");
+          document.getElementById("assistOpTitle").classList.add("sncf");
+          document.getElementById("feed-content").classList.add("sncf");
+          document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Incidents");
+
           break;
         case "SNCF":
           document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
@@ -383,20 +405,22 @@ These two parameters are place in this file as the style should have a title par
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
-      var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
-      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+      var response = JSON.parse(xmlHttp.responseText);
+      setAndUpdateDAMarkersOnMap(response)
     };
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
       // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
       var trains = response[0].data.trains;
-      setAndUpdateMarkersOnMap(trains);
+      setAndUpdateSNCFMarkersOnMap(trains);
     };
 //     function deleteAllCookies() {
 //     const cookies = document.cookie.split(";");
@@ -424,6 +448,7 @@ These two parameters are place in this file as the style should have a title par
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function getCoordinates(){
       var request = new XMLHttpRequest();
@@ -432,9 +457,9 @@ These two parameters are place in this file as the style should have a title par
             try {
             response = JSON.parse(request.responseText)
             //temporary fix for coordinates
-              latitude = parseFloat(response[0].data.Latitude.replace("(","").replace(")","").replace(",",""));
-              longitude = parseFloat(response[0].data.Longitude.replace("(","").replace(")","").replace(",",""));
-              altitude = parseFloat(response[0].data.Altitude.replace("(","").replace(")","").replace(",",""));
+              latitude = response[0].data.Latitude;
+              longitude = response[0].data.Longitude;
+              altitude = response[0].data.Altitude;
             } catch (error) {
               latitude = 47.9948;
               longitude = -4.09245;
@@ -462,40 +487,21 @@ These two parameters are place in this file as the style should have a title par
           var baseLayer = L.tileLayer(initialLayer).addTo(map);
           var topLayer = L.tileLayer(railwayLayer).addTo(map);
 
-          let customIcon = {
-            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png",
-            iconSize: [40, 40]
-          }
-          let customIcon2 = {
-            iconUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Location_dot_grey.svg",
-            iconSize: [40, 40]
-          }
-          let myIcon = L.icon(customIcon);
-
-
-          let iconOptions = {
-            title: "TGV 8872",
-            draggable: false,
-            icon: myIcon
-          }
-          let myIcon2 = L.icon(customIcon2);
-
-          let iconOptions2 = {
-            title: "TGV 8763",
-            draggable: false,
-            icon: myIcon2
-          }
-
-          // let marker = new L.Marker([47.99501, -4.09445], iconOptions);
-          // marker.addTo(map).bindPopup(iconOptions.title)
-          //   .openPopup();
-          // let marker2 = new L.Marker([47.9948, -4.09245], iconOptions2);
-          // marker2.addTo(map).bindPopup(iconOptions2.title)
-          //   .openPopup();
-          //   sncfMarker = new L.Marker([defaultLatitude,defaultLongitude],iconOptions2);
-          //   map.addLayer(sncfMarker);
     }
-    function setAndUpdateMarkersOnMap(data) {
+    function mapDA(){
+      mapZoom = 8;
+          mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
+          if(latitude === undefined || longitude === undefined){
+              latitude = 47.9948;
+              longitude = -4.09245;
+          }
+          map = L.map('map', {
+            center: [latitude,longitude],
+            zoom: mapZoom
+          });
+          L.tileLayer(mapLayer).addTo(map);
+    }
+    function setAndUpdateSNCFMarkersOnMap(data) {
 
       data.forEach(function (train) {
         if (!markers.hasOwnProperty(train.id_train)) {
@@ -507,14 +513,7 @@ These two parameters are place in this file as the style should have a title par
         let trainIconSrc = {iconUrl,iconSize: [20, 20]}
         let trainIcon = L.icon(trainIconSrc);
           let iconOptions = {title: "TGV" + train.id_train,draggable: false,icon: trainIcon}
-          // markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).bindPopup(iconOptions.title,{autoClose: false});
           markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).on('click', markerOnClick);
-          // try {
-          //   train.latitude
-          //   train.longitude
-          // } catch (error) {
-            
-          // }
           markers[train.id_train].attributes = train;
           markers[train.id_train].previousLatLngs = [];
         } else {
@@ -526,6 +525,30 @@ These two parameters are place in this file as the style should have a title par
           else {
             markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
             markers[train.id_train].setLatLng([train.latitude, train.longitude]);
+          }
+        }
+      });
+}
+    function setAndUpdateDAMarkersOnMap(data) {
+
+      data.forEach(function (plane) {
+        if (!markers.hasOwnProperty(plane.id_context)) {
+        iconUrl = "assets/images/plane_40x40.png"
+        let planeIconSrc = {iconUrl,iconSize: [40, 40]}
+        let planeIcon = L.icon(planeIconSrc);
+          let iconOptions = {title: "VOL " + plane.id_context,draggable: false,icon: planeIcon}
+          markers[plane.id_context] = new L.Marker([plane.data.Latitude, plane.data.Longitude],iconOptions).addTo(map).on('click', markerOnClick);
+          markers[plane.id_context].attributes = plane;
+          markers[plane.id_context].previousLatLngs = [];
+        } else {
+          if(plane.data.Latitude == null && plane.data.Longitude == null){
+            lastLat = markers[plane.id_context].previousLatLngs[markers[plane.id_context].previousLatLngs.length-1].lat
+            lastLong = markers[plane.id_context].previousLatLngs[markers[plane.id_context].previousLatLngs.length-1].lng
+            markers[plane.id_context].setLatLng([lastLat, lastLong]);
+          }
+          else {
+            markers[plane.id_context].previousLatLngs.push(markers[plane.id_context].getLatLng());
+            markers[plane.id_context].setLatLng([plane.data.Latitude, plane.data.Longitude]);
           }
         }
       });
@@ -584,10 +607,61 @@ These two parameters are place in this file as the style should have a title par
       console.log("map init OK")
     }
 
+    function displaySwal(){
+      Swal.fire({
+      html:'<span style="font-size:20px">Paramétrage service corrélation</span><br>'
+      + '<div id="box_methode_calcul"><b>Choix de la méthode de calcul</b>'
+      + '<div style="width:100%;"><br><form>'
+      + '<input name="choice" type="radio"><label style="width:70%">Méthode 1</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
+      + '<input name="choice" type="radio"><label style="width:70%">Méthode 2</label>'+'<img class="reduced" src="./assets/images/!.png"><br>'
+      + '</form></div><br>'
+      + '<b>Choix des KPIs</b>'
+      + '<div style="width:100%;"><br><form>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Temps de réponse</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de requêtes lentes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre d\'erreurs 4xx-5xx</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
+      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux d\'érreurs</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
+      + '</form></div>'
+      + '</div>',
+      footer: '<button>Calculer Corrélation</button>',
+      showConfirmButton: false
+    })
+  }
   </script>
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
     <b id="assist" hidden>Assistance à l'opérateur</b>
+    <b id="correlation" hidden>Corrélations</b>
+    <div id="orange_assist" hidden>
+      <div id="orange_headers" style="display:flex">
+        <div><button class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
+        <div><button class="orange_button_theme stats_tab stats" onclick='document.getElementById("stats_temps").hidden=false;document.getElementById("correlation_app_y").hidden=true'>Statistiques</button></div>
+      </div>
+      <div id="stats_temps" hidden>
+        <b>Fenêtre de temps</b>
+        <button id="display_result" onclick=displaySwal()>Afficher le résultat</button>
+      </div>
+      <div id="correlation_app_y" hidden>
+        <div id="orange_correlation_notif">Correlation avec <button 
+          class="orange_button orange_button_purple" 
+          onclick="document.getElementById('orange_correlation_desc').hidden=false">App Y</button></div>
+        <div id="orange_correlation_desc">
+          <b>Incidents passés sur l'App X en corrélation avec l'App Y</b><br>
+          Fiche CANARI APPX & Y <br>
+          28/12/2023<br>
+          <hr>
+          Fiche CANARI APPX & Y<br>
+          14/11/2023<br>
+          <hr>
+          <b>Action de rétalissement passées sur l'App X</b><br>
+          Description de l'action de rétablissement<br>
+          28/12/2023 
+          <hr>
+        </div>
+      </div>
+    </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
       <span>Passage à 2 noeuds  LTTD: 15min</span></div>
