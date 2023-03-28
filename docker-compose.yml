@@ -22,7 +22,7 @@ services:
     depends_on:
       # - frontend
       - db_postgres_context
-  
+
   cabevent:
     container_name: cab_event
     image: cab/cabevent
@@ -68,7 +68,7 @@ services:
 
   db_postgres_context:
     container_name: db_postgres_context
-    image: postgres:latest
+    image: postgres:14.7
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
@@ -83,7 +83,7 @@ services:
 
   db_postgres_event:
     container_name: db_postgres_event
-    image: postgres:latest
+    image: postgres:14.7
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
@@ -98,7 +98,7 @@ services:
 
   db_postgres_historic:
     container_name: db_postgres_historic
-    image: postgres:latest
+    image: postgres:14.7
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
@@ -165,7 +165,7 @@ services:
 
   db_postgres_correlation:
     container_name: db_postgres_correlation
-    image: postgres:latest
+    image: postgres:14.7
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
