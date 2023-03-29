@@ -723,6 +723,9 @@ label:hover{
 #dassault_assist,#dassault_assist_content_noContent{
     position:absolute
 }
+#assistOpTitle{
+    overflow: scroll;
+}
 @media (max-height: 768px) { //random laptop
     .sncf{
         height:430px!important;
@@ -1079,4 +1082,9 @@ input[type="range"] {
 .slider-container{
     width:80%;
     margin-left: 25px;
+}
+.correlation{
+    display: flex;
+    border: 2px solid #4BB4E6;
+    border-radius: 5px;
 }

@@ -90,6 +90,9 @@ These two parameters are place in this file as the style should have a title par
       request.send();
 
     }
+    function orangeCtx(){
+      document.getElementById("orange_ctx_container").innerHTML = "<img src='assets/images/orange_contexte_appx_y.png'>";
+    }
     function selectUseCase(uc){
       if (uc == authorizedUseCase){
         grantedUseCase(authorizedUseCase);
@@ -405,8 +408,8 @@ These two parameters are place in this file as the style should have a title par
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -414,17 +417,26 @@ These two parameters are place in this file as the style should have a title par
     };
     function getCorrelation() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "http://192.168.211.95:3200/cab_correlation/api/v1/correlation?size=1", false);
+      // xmlHttp.open("GET", "http://192.168.211.95:3200/cab_correlation/api/v1/correlation?size=1", false);
+      xmlHttp.open("GET", "./assets/correlation.json", false);
       // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
-      console.log(response)
+      document.getElementById("orange_assist").innerHTML += Object.keys(response[0].data).length + " corrélations trouvées.";
+      Object.entries(response[0].data).forEach(entry => {
+        const [key, value] = entry;
+        document.getElementById("orange_assist").innerHTML += '<span class="correlation"><b>' + key + '</b><button class="orange_button_theme">' + value[key] + '</button></span>'
+
+      });
+
+        
+
     };
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -635,7 +647,7 @@ These two parameters are place in this file as the style should have a title par
             +'<option value="300" label="5h"></option>'
           +'</datalist>'
         +'</div>'
-      + '<button onclick="Swal.close();">Calculer Corrélation</button>',
+      + '<button onclick="Swal.close();getCorrelation()">Calculer Corrélation</button>',
       showConfirmButton: false
     })
   }
@@ -663,7 +675,7 @@ These two parameters are place in this file as the style should have a title par
             <option value="300" label="5h"></option>
           </datalist>
         </div>
-        <button id="display_result" onclick="getCorrelation()">Afficher le résultat</button>
+        <button id="display_result" onclick="">Afficher le résultat</button>
       </div>
       <div id="correlation_app_y" hidden>
         <div id="orange_correlation_notif">Correlation avec <button 
