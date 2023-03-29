@@ -73,6 +73,11 @@
         <b>Carte</b>
       </button>
     </div>
+    <div id="orange_ctx" hidden>
+      <button class="orange_button_theme stats_tab">Graphe Réseau</button>
+      <button class="orange_button_theme stats_tab">Corrélation Statistiques</button>
+      <div id="orange_ctx_container"><img src="assets/images/orange_contexte_initial.png"></div>
+    </div>
     <div id="map">
     </div>
     <div id="sncf_ctx" hidden></div>
@@ -96,8 +101,11 @@
           </of-light-card>
         </div>
       </div>
-    <div id="orange_incidents" hidden><b>Incident sur <button id="btnApp" class="orange_button orange_button_orange" 
-      onclick="document.getElementById('orange_incidents_description').hidden = false;document.getElementById('correlation_app_y').hidden = false">App X</button></b>
+    <div id="orange_incidents" hidden><b>Incident sur 
+      <button id="btnApp" class="orange_button orange_button_orange" 
+      onclick="document.getElementById('canari').onclick();orangeCtx();
+      document.getElementById('orange_incidents_description').hidden = false;
+      document.getElementById('correlation_app_y').hidden = false">App X</button></b>
     
     <div id="orange_incidents_description" hidden>
       <span style="color:#FF7900"><b>Descriptif</b></span><br>

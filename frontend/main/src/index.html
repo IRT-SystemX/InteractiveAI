@@ -88,7 +88,7 @@ These two parameters are place in this file as the style should have a title par
       request.setRequestHeader("Accept","application/json");
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
-          
+
     }
     function selectUseCase(uc){
       if (uc == authorizedUseCase){
@@ -149,11 +149,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
           document.getElementById("opfab-navbar-menu-feed").style.color = "white";
+          setTimeout(document.getElementById("orange_incidents").hidden = false,20000);
           document.getElementById("bar").hidden = true;
           document.getElementById("bar2").hidden = true;
-          document.getElementById("orange_incidents").hidden = false;
           document.getElementById("correlation").hidden = false;
           document.getElementById("orange_assist").hidden = false;
+          document.getElementById("orange_ctx").hidden = false;
           document.getElementById("assistOpTitle").classList.add("orange_theme");
           document.getElementById("assistOpTitle").classList.add("assist_sncf");
           document.getElementById("assistOpTitle").classList.add("assistOpTitle");
@@ -167,7 +168,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("assistOpTitle").classList.add("sncf");
           document.getElementById("feed-content").classList.add("sncf");
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Incidents");
-
           break;
         case "SNCF":
           document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
@@ -412,6 +412,15 @@ These two parameters are place in this file as the style should have a title par
       var response = JSON.parse(xmlHttp.responseText);
       setAndUpdateDAMarkersOnMap(response)
     };
+    function getCorrelation() {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", "http://192.168.211.95:3200/cab_correlation/api/v1/correlation?size=1", false);
+      // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
+      xmlHttp.send(null);
+      var response = JSON.parse(xmlHttp.responseText);
+      console.log(response)
+    };
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
       // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
@@ -422,19 +431,6 @@ These two parameters are place in this file as the style should have a title par
       var trains = response[0].data.trains;
       setAndUpdateSNCFMarkersOnMap(trains);
     };
-//     function deleteAllCookies() {
-//     const cookies = document.cookie.split(";");
-
-//     for (let i = 0; i < cookies.length; i++) {
-//         const cookie = cookies[i];
-//         const eqPos = cookie.indexOf("=");
-//         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-//         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-//     }
-//     localStorage.clear();
-
-//     // setTimeout(window.location.reload(),3000);
-// }
   </script>
 
 
@@ -450,6 +446,7 @@ These two parameters are place in this file as the style should have a title par
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+
     function getCoordinates(){
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
@@ -624,8 +621,21 @@ These two parameters are place in this file as the style should have a title par
       + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
       + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux d\'érreurs</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
       + '</form></div>'
-      + '</div>',
-      footer: '<button>Calculer Corrélation</button>',
+      + '</div>'
+      + '<div id="orangeTimeSelector">'
+          +'<b>Fenêtre de temps</b>'
+          +'<br>'
+          +'<input type="range" id="slider" name="temp" list="values" />'
+          +'<datalist id="values">'
+            +'<option value="15" label="15mn"></option>'
+            +'<option value="60" label="1h"></option>'
+            +'<option value="120" label="2h"></option>'
+            +'<option value="180" label="3h"></option>'
+            +'<option value="240" label="4h"></option>'
+            +'<option value="300" label="5h"></option>'
+          +'</datalist>'
+        +'</div>'
+      + '<button onclick="Swal.close();">Calculer Corrélation</button>',
       showConfirmButton: false
     })
   }
@@ -636,12 +646,24 @@ These two parameters are place in this file as the style should have a title par
     <b id="correlation" hidden>Corrélations</b>
     <div id="orange_assist" hidden>
       <div id="orange_headers" style="display:flex">
-        <div><button class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
-        <div><button class="orange_button_theme stats_tab stats" onclick='document.getElementById("stats_temps").hidden=false;document.getElementById("correlation_app_y").hidden=true'>Statistiques</button></div>
+        <div><button id="canari" class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
+        <div><button class="orange_button_theme stats_tab stats" onclick='document.getElementById("stats_temps").hidden=false;document.getElementById("correlation_app_y").hidden=true;displaySwal()'>Statistiques</button></div>
       </div>
       <div id="stats_temps" hidden>
-        <b>Fenêtre de temps</b>
-        <button id="display_result" onclick=displaySwal()>Afficher le résultat</button>
+        <div id="orangeTimeSelector">
+          <b>Fenêtre de temps</b>
+          <br>
+          <input type="range" id="slider" name="temp" list="values" />
+          <datalist id="values">
+            <option value="15" label="15mn"></option>
+            <option value="60" label="1h"></option>
+            <option value="120" label="2h"></option>
+            <option value="180" label="3h"></option>
+            <option value="240" label="4h"></option>
+            <option value="300" label="5h"></option>
+          </datalist>
+        </div>
+        <button id="display_result" onclick="getCorrelation()">Afficher le résultat</button>
       </div>
       <div id="correlation_app_y" hidden>
         <div id="orange_correlation_notif">Correlation avec <button 

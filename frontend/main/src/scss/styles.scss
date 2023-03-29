@@ -792,8 +792,15 @@ label:hover{
     }
     #train_welcome img{
         width: 30%;
-    }   
-  }
+    }
+    #orange_ctx_container{
+        overflow: hidden;
+        height: 370px;
+    }
+    #orange_ctx{
+        max-height: 287px;
+    }
+}
 @media (min-height: 1024px) and (max-width: 1366px){ //ipad
     .sncf{
         height: 680px!important;
@@ -1040,7 +1047,7 @@ label:hover{
     color: #4BB4E6
 }
 #correlation_app_y,#orange_incidents{
-    margin: 10px;
+    margin: 7px;
 }
 #display_result{
     border-radius: 5px;
@@ -1052,4 +1059,24 @@ label:hover{
 }
 .reduced{
     width: 5%;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    writing-mode: horizontal-tb;
+    width: 200px;
+}
+
+option {
+  padding: 0;
+}
+
+input[type="range"] {
+  width: 200px;
+  margin: 0;
+}
+.slider-container{
+    width:80%;
+    margin-left: 25px;
 }
