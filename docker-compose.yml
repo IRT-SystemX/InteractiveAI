@@ -178,6 +178,21 @@ services:
     networks:
       - cab-docker_default
 
+  cabrecommendation:
+    container_name: cab_recommendation
+    image: cab/cabrecommendation
+    build:
+      context: backend
+      dockerfile: Recommendation-Service-Dockerfile
+    restart: unless-stopped
+    command: sh -c "./entrypoint.sh"
+    ports:
+      - 5400:5000
+    volumes:
+      - ./backend/recommendation-service:/code
+    networks:
+      - cab-docker_default
+
 networks:
   cab-docker_default:
     external: true
