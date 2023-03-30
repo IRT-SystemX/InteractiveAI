@@ -1,0 +1,52 @@
+{
+	"info": {
+		"_postman_id": "9963e342-44a6-4436-b946-04dde92bd865",
+		"name": "Recommendation-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get recommendation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODA3OTE2MzEsImlhdCI6MTY4MDE4NjgzMSwianRpIjoiOGQ1NDNkYjQtMWMxZi00NDQ4LWIzZmEtZTBjOTUxYWVlYmYxIiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjA4LjU3OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJkYV91c2VyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImJlY2ZkMDNiLTY5ZTYtNDFhNi04ZjJmLTc3ZWUxZTg3NzEwZCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6ImJlY2ZkMDNiLTY5ZTYtNDFhNi04ZjJmLTc3ZWUxZTg3NzEwZCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjoiUlRFO0FETUlOO1JlYWRPbmx5IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZGFfdXNlciIsImVudGl0aWVzSWQiOiJEQSJ9.Qh9wU20XHVUej3j7YeeSXMQaNUMxWgNsL5ogDKvfmLROibGMHRqnYULDtcCeqSg8VspmGS18sqMnNIfe7hbotms2FtIxnFjxGndLFoC1McsamS8f7UIxrqEoxCeDYdZNUIUEsnQxxw3bGkwbvkpfbmnUqMnLzY6Ja_bHiP_plFoWtkwuy5YfKWkkmqPhKCIyfi2r-vjrV2Xogi9u14PCGzVwTm2Bnq3cbH0a-VbhA5vTxainbO82kJQNDG5EB1ocXIHTVdl28wr1e9hw-Z1LZLBCpooctvUZ4pgAt54mjXUjS7Ie6w7YZhdUvT3BBDx-yC8_hMDOeuJ9mP-tc8qvfA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_recommendation/api/v1/recommendation",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_recommendation",
+						"api",
+						"v1",
+						"recommendation"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
