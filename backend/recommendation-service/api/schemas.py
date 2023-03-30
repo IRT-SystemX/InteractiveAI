@@ -7,7 +7,7 @@ class RecommendationAsk(Schema):
     event = Dict()
 
 
-class Recommendation(Schema):
+class BaseRecommendation(Schema):
     id_recommendation = String()
     timestamp_start = DateTime(format="iso")
     timestamp_end = DateTime(format="iso")

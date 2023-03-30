@@ -185,6 +185,9 @@ services:
       context: backend
       dockerfile: Recommendation-Service-Dockerfile
     restart: unless-stopped
+    environment:
+      - GATEWAY_SERVICE=http://angular-ui:80
+      - HOST_IP=$HOST_IP
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
