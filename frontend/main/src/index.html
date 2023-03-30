@@ -123,10 +123,12 @@ These two parameters are place in this file as the style should have a title par
           getCoordinates();
           document.getElementById("dassault_div").hidden = false;
           document.getElementById("dassault_assist").hidden = false;
-          document.getElementById("dassault_assist_content_noContent").hidden = false;
+          document.getElementById("dassault_title").hidden = false;
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
           document.getElementById("feed-content").style.position = "absolute";
+          document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
+          document.getElementById("assistOpTitle").style.top = "80px";
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
@@ -139,12 +141,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("of_timeline").style.zIndex = 5;
           document.getElementById("map").classList += " map_da";
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
-          setInterval(() => {
-            refreshCtxDA();
-          }, 1000);
+          // setInterval(() => {
+          //   refreshCtxDA();
+          // }, 1000);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
-          mapDA();
+          // mapDA();
           break;
         case "ORANGE":
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
@@ -162,6 +164,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("assistOpTitle").classList.add("assist_sncf");
           document.getElementById("assistOpTitle").classList.add("assistOpTitle");
           document.getElementById("assistOpTitle").style.top = "80px";
+          document.getElementById("assistOpTitle").style.overflow = "scroll";
           document.getElementById("feed-content").style.position = "absolute";
           document.getElementById("feed-content").style.marginTop = "0px";
           document.getElementById("feed-content").classList.add("orange_theme");
@@ -259,11 +262,29 @@ These two parameters are place in this file as the style should have a title par
     
     function displayStats(value){
       switch (value){
-        case 'stat':
-          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged' style='margin-top: 30px' src='assets/images/DA_stats.png'>";
+        case 'STAT':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/STATUS_nominal.png'>";
           break;
-        default : 
-        document.getElementById("synoptic_back").innerHTML = "<b style='margin-top: 80px; color:white'>Nothing to show</b>";
+        case 'ECS':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ECS_nominal.png'>";
+          break;
+        case 'ELEC':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC_nominal.png'>";
+          break;
+        case 'FUEL':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/FUEL_nominal.png'>";
+          break;
+        case 'HYD':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/HYD_nominal.png'>";
+          break;
+        case 'BLD':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/BLEED_nominal.png'>";
+          break;
+        case 'TEST':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/TEST_nominal.png'>";
+          break;
+        case 'ENG':
+          document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ENGINE_nominal.png'>";
           break;
       }
     }
@@ -427,12 +448,10 @@ These two parameters are place in this file as the style should have a title par
       Object.entries(response[0].data).forEach(entry => {
         const [key, value] = entry;
         document.getElementById("orange_assist").innerHTML += '<span class="correlation"><b>' + key + '</b><button class="orange_button_theme">' + value[key] + '</button></span>'
-
       });
-
-        
-
     };
+
+
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
@@ -656,6 +675,7 @@ These two parameters are place in this file as the style should have a title par
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
     <b id="assist" hidden>Assistance à l'opérateur</b>
     <b id="correlation" hidden>Corrélations</b>
+    <b id="dassault_title" hidden>Assistance</b>
     <div id="orange_assist" hidden>
       <div id="orange_headers" style="display:flex">
         <div><button id="canari" class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
@@ -696,6 +716,17 @@ These two parameters are place in this file as the style should have a title par
         </div>
       </div>
     </div>
+    <div id="dassault_assist" hidden>
+      <div id="da_bloc_content">
+        <div class = "da_assist" id="noevent_da"> <img src='assets/images/no_event_da.png'></div>
+          <div class = "da_assist" id="high_procedure" hidden>
+            <img src="assets\images\endofprocedure_da.png">
+          </div>
+          <div class = "da_assist" id="pdv_da" hidden>
+            <img src="assets\images\pdv_da.png">
+          </div>
+      </div>
+    </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
       <span>Passage à 2 noeuds  LTTD: 15min</span></div>
@@ -724,20 +755,7 @@ These two parameters are place in this file as the style should have a title par
       <b style="color:black">Parades</b><br>
       <b style="font-size: 15px">Je ne suis pas en mesure de vous fournir une assistance pour cet évènement </b>
     </div>
-    <b id="dassault_assist" hidden>Assistance</b>
-    <div id="dassault_assist_content_noContent" hidden>
-      <div id="da_bloc_content">
-        <div class = "da_assist" id="noevent_da"> No Event Selected<br>
-          Please select an event<br>
-          to have assistance</div>
-          <div class = "da_assist" id="high_procedure" hidden>
-            <img src="assets\images\endofprocedure_da.png">
-          </div>
-          <div class = "da_assist" id="pdv_da" hidden>
-            <img src="assets\images\pdv_da.png">
-          </div>
-      </div>
-    </div>
+
   </div>
   <of-root></of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>

@@ -320,7 +320,7 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
 
     private setSelectedCardColor(){
         if (!this.cardAlreadyClicked){
-            $(".light-card-detail-selected").click();
+            // $(".light-card-detail-selected").click();
             this.cardAlreadyClicked = true;
         }
         if (document.getElementById("opfab-navbar-menu-feed").innerText != 'CAB SNCF'){

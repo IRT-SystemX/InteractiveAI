@@ -460,8 +460,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
                 break;
         }
         document.getElementById("ctxImg").style.height = window.innerHeight / 1.90 + "px";
-        document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
-        document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
+        // document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
+        // document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
         if(cabUseCase != "CAB SNCF"){
             document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
             document.getElementById("feed-content").style.width = window.innerWidth / 4.90 + "px"; 
@@ -482,7 +482,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         }   
         // document.getElementById("ctx_div").style.width =  parseInt(document.getElementById("bar").style.marginLeft) + 10 + "px";
         document.getElementById("empty_block").style.width =  parseInt(document.getElementById("ctxImg").style.width)  + "px";
-        document.getElementById("dassault_assist_content_noContent").style.height = parseInt(document.getElementById("dassaultBar2").style.height) - document.getElementById("of_timeline").offsetHeight + "px";
+        // document.getElementById("dassault_title").style.height = parseInt(document.getElementById("dassaultBar2").style.height) - document.getElementById("of_timeline").offsetHeight + "px";
         return window.innerWidth < 1000;
     }
 }

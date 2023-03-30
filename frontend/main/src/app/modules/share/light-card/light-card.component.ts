@@ -56,6 +56,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
     isGeoMapEnabled;
     rteUrl = "/cabcontext/api/v1/contexts";
     token = window.localStorage.token;
+    emergencyClicked = false;
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -221,12 +222,14 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("high_procedure").hidden = false;
             document.getElementById("noevent_da").hidden = true;
             document.getElementById("pdv_da").hidden = true;
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC-gen1+2+3-fault.png'>";
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("DESTINATION")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = false;
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ECS_cabin-alt-too-high.png'>";
             document.getElementById("noevent_da").hidden = true;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Panne")) {
@@ -236,9 +239,53 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("pdv_da").hidden = true;
             document.getElementById("noevent_da").hidden = false;
         }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("PRESS")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/STATUS_nominal.png'>";
+            this.getEmergencyPlan();
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ELEC")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC-gen1+2+3-fault.png'>";
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ENGINE")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ENGINE-eng1-out.png'>";
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("FUEL")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/FUEL-eng1-out.png'>";
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("HYD")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/HYD-eng1-out.png'>";
+        }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
             document.getElementById("sncf_incident_infos").innerHTML 
             = 
@@ -257,6 +304,36 @@ export class LightCardComponent implements OnInit, OnDestroy {
         }
 
     }
+    public getEmergencyPlan() {
+        if (!this.emergencyClicked){
+          document.getElementById("noevent_da").hidden=true;
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", "./assets/emergency_procedures_short.json", false);
+          // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+          xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
+          xmlHttp.send(null);
+          var response = JSON.parse(xmlHttp.responseText);
+          console.log(response.procedure);
+          Object.keys(response.procedure).forEach(function(key) {
+            var blockIndex = response.procedure[key].block.block_index;
+            var blockName = response.procedure[key].block.block_name;
+            var blockTask = response.procedure[key].block.toExecute;
+            document.getElementById("dassault_assist").innerHTML+= "<button class='assist_da_btn'><b>" + blockName + "</b></button><br>"
+            Object.keys(blockTask).forEach(function(key) {
+              console.log(blockTask[key])
+            document.getElementById("dassault_assist").innerHTML+= "<span>"  + blockTask[key].index + " - " + blockTask[key].type +" "+  blockTask[key].content + "</span><br>"
+            });
+          });
+            document.getElementById("dassault_assist").innerHTML+= "<hr><span><b>Active limitations</b></span><br>";
+            document.getElementById("dassault_assist").innerHTML+= "<span> Speed MIN - " + response.maxSpeed + "</span><br>";
+            document.getElementById("dassault_assist").innerHTML+= "<span> Speed MAX - " + response.minSpeed + "</span><br>";
+            document.getElementById("assistOpTitle").style.overflowY = "scroll";
+            this.emergencyClicked = true;
+      }else{
+        document.getElementById("dassault_assist").hidden = true;
+        document.getElementById("assistOpTitle").style.overflowY = "hidden";
+      }
+      };
     public select($event) {
         // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
