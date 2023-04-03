@@ -1,0 +1,13 @@
+# Fichier de configuration du simulateur
+
+titre = "Simulator configuration"
+
+env_name = "/code/resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test"
+env_seed = 2118338672
+scenario_name = 'jan_28_1' # the scenario to play from env_name repository
+
+#assistant_path = "2021_ICAPS_1st_XDSilly"
+assistant_path = "/code/resources/rte/rtegrid2op_poc_simulator/XD_silly_repo"
+assistant_seed = 1227139268
+
+	
