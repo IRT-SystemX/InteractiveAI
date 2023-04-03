@@ -1,14 +1,10 @@
 from .base_recommendation import BaseRecommendation
+from resources.rte.rtegrid2op_poc_simulator.assistantManager import AgentManager
 
 
-class RTEManager(BaseRecommendation):
+class RTEManager(AgentManager, BaseRecommendation):
 
     def get_recommendation(self, request_args):
-        # TODO: Add a call for make_recommendation & get_onto_recommendation
-        return {"rte_recommendation": "recommendation"}
-
-    def make_recommendation(self, obs):
-        pass
-
-    def get_onto_recommendation(self, event_line, event_flow):
-        pass
+        self.recommandate(request_args.get("context", {}))
+        parades = self.getlistOfParadeInfo()
+        return {"ia_recommendation": parades}

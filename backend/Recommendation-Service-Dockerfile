@@ -1,10 +1,11 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11.0-slim
+FROM python:3.10.0-slim
 
 RUN mkdir /code
 RUN mkdir /cab_common
 
+# Install recommendation-service modules
 COPY ./recommendation-service/ /code/
 COPY ./cab_common/ /cab_common/
 
@@ -15,6 +16,12 @@ RUN pip3 install -r requirements.txt
 WORKDIR /cab_common
 
 RUN pip3 install .
+
+# Install rte IA modules
+WORKDIR /code/resources/rte/rtegrid2op_poc_simulator
+
+RUN pip3 install -r requirements.txt
+
 
 WORKDIR /code
 

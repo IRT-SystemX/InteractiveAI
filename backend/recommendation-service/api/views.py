@@ -26,9 +26,9 @@ class HealthCheck(MethodView):
 
 class RecommendationView(MethodView):
 
-    @api_bp.output(BaseRecommendation)
+    @api_bp.input(RecommendationAsk)
     @protected
-    def get(self):
+    def post(self, data):
         """Get recommendation"""
         # Get data from the request
         request_use_case = request.args.get('use_case')
@@ -44,7 +44,7 @@ class RecommendationView(MethodView):
         use_case = factory.get_use_case(use_case_name)
 
         # Call the appropriate method on the use case
-        result = use_case.get_recommendation(request.args)
+        result = use_case.get_recommendation(data)
 
         # Return the result as JSON
         return jsonify(result)
