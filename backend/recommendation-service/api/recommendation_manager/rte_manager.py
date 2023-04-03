@@ -74,8 +74,13 @@ class RTEManager(AgentManager, BaseRecommendation):
         set_bus_test = RTE_onto_inferences.Change_bus_vect("set_bus_test")
         issue_test.is_associated_with.append(set_bus_test)
 
-        # Display the action recommandation
-        print("The recommanded action is:",
-              RTE_onto_inferences.get_parents_of(set_bus_test))
-        recommandation = RTE_onto_inferences.get_parents_of(set_bus_test)[0]
-        return str(recommandation)
+        action = str(RTE_onto_inferences.get_parents_of(set_bus_test)[0])
+
+        if action == 'Onto2grid_v1.2.Change_bus_vect':
+            recommandation = "Changer le bus"
+        elif action == "Onto2grid_v1.2.Disconnect_line":
+            recommandation = "Deconnecter la ligne"
+        else:
+            recommandation = "Parade non identifiée"
+
+        return recommandation
