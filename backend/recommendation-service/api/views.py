@@ -3,7 +3,7 @@ from cab_common_auth.decorators import get_use_cases, protected
 from flask import request, jsonify, abort
 from flask.views import MethodView
 
-from .schemas import RecommendationAsk, BaseRecommendation
+from .schemas import RecommendationAsk
 from settings import logger
 from .utils import UseCaseFactory
 from .recommendation_manager.da_manager import DAManager
