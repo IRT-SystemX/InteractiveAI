@@ -1,6 +1,5 @@
 from owlready2 import default_world, get_ontology
 from settings import logger
-import json
 
 from .base_recommendation import BaseRecommendation
 
@@ -27,7 +26,7 @@ class DAManager(BaseRecommendation):
         minSpeed = 180
         maxSpeed = 260
         all_events = {
-            '90 PRESS : ALT TOO HIGH': 'procedure_90_PRESS_CABIN_ALT_TOO_HI',
+            '90 PRESS : CABIN ALT TOO HIGH': 'procedure_90_PRESS_CABIN_ALT_TOO_HI',
             'ENG1: AUTO SHUTDOWN': 'procedure_ENG1_AUTO_SHUTDOWN'
         }
         # Load ontology
@@ -65,15 +64,12 @@ class DAManager(BaseRecommendation):
             """))
 
         # jsonify & add index
-        procedure_dict = {"Procedure": [], 'minSpeed': minSpeed, 'maxSpeed': maxSpeed}
+        procedure_dict = {"Procedure": [],
+                          'minSpeed': minSpeed, 'maxSpeed': maxSpeed}
 
         for i, sub_list in enumerate(procedure):
             task_dict = {"TaskIndex": i + 1, "TaskText": sub_list[0]}
 
             procedure_dict["Procedure"].append(task_dict)
 
-        # Convertir le dictionnaire en format JSON
-        json_string = json.dumps(procedure_dict)
-
-        return json_string
-
+        return procedure_dict
