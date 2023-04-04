@@ -1,8 +1,8 @@
 import requests
 import json
-from settings import CARDS_PUBLICATION_SERVICE
+from settings import CARDS_PUBLICATION_SERVICE, logger
 
-import logging
+
 class CardPubClient:
     def __init__(self) -> None:
         self.base_url = CARDS_PUBLICATION_SERVICE
@@ -15,5 +15,5 @@ class CardPubClient:
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
-        logging.error(response.status_code)
+        logger.info(response.status_code)
         response.raise_for_status()

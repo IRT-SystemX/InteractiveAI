@@ -1,17 +1,15 @@
-from .models import EventModel
-import uuid
-import logging
+from .event_manager.base_event_manager import BaseEventManager
 
 
-def get_event_id(input_line, use_case):
-    if input_line:
-        events_list = EventModel.query.filter_by(use_case=use_case).all()
+class UseCaseFactory:
+    def __init__(self):
+        self._use_cases = {}
 
-        for event in events_list:
-            if event.data.get("line") == input_line:
-                event_id = event.id_event
-                logging.debug(f"Found event: {event_id} containing line: {input_line}")
-                return str(event_id)
-    event_id = uuid.uuid4()
-    logging.debug(f"Genrating event_id: {event_id}")
-    return str(event_id)
+    def register_use_case(self, name, use_case):
+        self._use_cases[name] = use_case
+
+    def get_event_manager(self, name) -> BaseEventManager:
+        use_case = self._use_cases.get(name)
+        if use_case is None:
+            raise ValueError(f"Unknown use case '{name}'")
+        return use_case

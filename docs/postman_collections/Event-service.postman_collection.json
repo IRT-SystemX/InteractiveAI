@@ -8,11 +8,21 @@
 		{
 			"name": "event",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzYzMDM0NDMsImlhdCI6MTY3NTY5ODY0MywianRpIjoiZWFjOWZmNGMtNjM0NC00NDg5LTgzZGQtNmE4ZjRjNDRkYTE2IiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvYXV0aC9yZWFsbXMvZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6InB1Ymxpc2hlcl90ZXN0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjM1ZmY2NGFhLWNmN2MtNGFiMC1hNGE5LTgzODRiMWQ4MjI5ZCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjM1ZmY2NGFhLWNmN2MtNGFiMC1hNGE5LTgzODRiMWQ4MjI5ZCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjoiRGlzcGF0Y2hlcjtSZWFkT25seTtTdXBlcnZpc29yIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicHVibGlzaGVyX3Rlc3QiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.hruPmitQ-mnW4yLaE5UvdaO-4I7BNI4X2L8GPtmMEgGqJ0-4n-IpRRDMZ0imhhU6xHBe0L3nRpjjQM3ntIAGA9eraSNRXDlM3OKL7qQilv-dANjkWGNNzeaR2Cbd6IuCn7PpUwX6WLgQXn3wBgW-Tb8joqf-8stqcb7LBnMl-Ljo3FUX52nBGTIBNWNF9jUSGG8pI9czDzM3j1QeqCwMvpIXrz9iPHHsttth8tJIfqxAl-NF-FTtXSnp1hebBtpA3EjY614gYamrSky6Z87vT61dfrbb0d442s7X9aQ8ph-hE1GhblC-BJBWD2eFoLhAD8fuP38oURAq9MJiiO2xQg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"this is a title for event db test\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": \"1_2_3\",\r\n        \"flux\": 456.35\r\n    },\r\n    \"use_case\": \"RTE\",\r\n    \"is_active\": false\r\n}",
+					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88212\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,12 +30,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{ENV_ENDPOINT_EVENT}}/api/v1/events",
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
 					"protocol": "http",
 					"host": [
-						"{{ENV_ENDPOINT_EVENT}}"
+						"{{ENV_ENDPOINT_UI}}"
 					],
 					"path": [
+						"cab_event",
 						"api",
 						"v1",
 						"events"
@@ -88,6 +99,176 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"criticality\": \"ROUTINE\",\n    \"date\": \"2022-11-07T15:23:53.595000+00:00\",\n    \"description\": \"s\",\n    \"id_event\": \"3\",\n    \"metadata\": {\n        \"event_type\": \"KPI\",\n        \"flux\": 456,\n        \"line\": 123,\n        \"zone\": \"Est\"\n    },\n    \"use_case\": \"RTE\"\n}"
+				},
+				{
+					"name": "event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"event with line 1_2_3\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Ouest\",\r\n        \"line\": \"1_2_3\",\r\n        \"flux\": 456.36\r\n    },\r\n    \"use_case\": \"RTE\",\r\n    \"is_active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_EVENT}}/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_EVENT}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"SNCF\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 Jan 2023 15:21:04 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "292"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"criticality\": \"MEDIUM\",\n    \"data\": {\n        \"delay\": 17.3,\n        \"event_type\": \"VOYAGEUR\",\n        \"id_train\": \"57000\",\n        \"num_name\": \"abc\",\n        \"tmp_name\": \"def\"\n    },\n    \"date\": \"2023-01-30T15:21:04.118300\",\n    \"description\": \"Soyez vigilant sur la zone Est\",\n    \"id_event\": \"91b2cf99-9325-4776-b323-e95e23c7dbb8\",\n    \"is_active\": null,\n    \"use_case\": \"SNCF\"\n}"
+				},
+				{
+					"name": "event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"SNCF\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"DA\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"flux\": 456,\r\n        \"line\": \"123\",\r\n        \"zone\": \"Est\"\r\n    }\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
 				}
 			]
 		},
@@ -97,6 +278,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODExMjk3NjIsImlhdCI6MTY4MDUyNDk2MiwianRpIjoiNzc4ODk0NTUtNzAzYi00Yjc3LTlkZGEtNWFjMzRjMDk4YzU3IiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjA4LjU3OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJydGVfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJlM2RiOTcwOS0xNmRmLTRhNzYtOGI4Zi0wMjM1OGQ0OTlmZmEiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJlM2RiOTcwOS0xNmRmLTRhNzYtOGI4Zi0wMjM1OGQ0OTlmZmEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InJ0ZV91c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.VCHFrIXRpi6VHTFDjjhoxDxfEL8JAGvbYfMC9OQ3GjeoAKIdc9cROQztw-vbpczRPt9bpYHkLDT_ncmiMfdW1ogXVCX1L9xDLR24Mk_2aFvyOKTfm4Q1pjClVcyw4lVz9WjveZjro2RvXXB1C0TVku7ec8OLvC3zgzFztAZmht6Ln1aHCpA8AJUEUFz2jHShMBrrFwIsIdPemjJEKHG8jc2OweKWpX4hivhdS2oqY9JMERSwY9oq7a0IyglxAoWKfjNxPzFRErnIYYp75wTMZYLAY0v1EG58H339UkceZt8WOBz5WGRVp5KU3DEXzHJudmcklSdZegJUl_GXnafTcQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -109,12 +300,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{ENV_ENDPOINT_EVENT}}/api/v1/events",
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
 					"protocol": "http",
 					"host": [
-						"{{ENV_ENDPOINT_EVENT}}"
+						"{{ENV_ENDPOINT_UI}}"
 					],
 					"path": [
+						"cab_event",
 						"api",
 						"v1",
 						"events"
