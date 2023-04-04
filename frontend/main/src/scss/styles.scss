@@ -720,11 +720,8 @@ label:hover{
     width: 210px;
     margin-bottom:10px;
 }
-#dassault_assist,#dassault_assist_content_noContent{
-    position:absolute
-}
-#assistOpTitle{
-    overflow: scroll;
+#dassaultBar,#dassaultBar2{
+    margin-top: -44px;
 }
 @media (max-height: 768px) { //random laptop
     .sncf{
@@ -734,19 +731,23 @@ label:hover{
         margin-left: 285px!important;
         min-width: 710px;
     }
+    #sncf_assist_nominal{
+        text-align: center;
+        margin-top: 160px!important;
+    }
     #map{
         // width:683px!important;
         height:46vh;
     }
-    .da_assist{
-        margin-left: 1095px;
-        margin-top: 25px;
-    }
     #assistOpTitle{
-        width:330px!important;
+        width:336px!important;
+        height:440px;
     }
     .assistOpTitle{
         left:1025px;
+    }
+    .assistOpTitleDA{
+        left:995px;
     }
     .dassault_ctx_div{
         margin-left: 329px
@@ -757,20 +758,20 @@ label:hover{
     }
     #dassaultBar2{
         height: 540px;
-        margin-left: 1055px;
+        margin-left: 960px;
     }
     .dassault_ctx_div{
         margin-left: 370px
     }
-    #dassault_assist{
-        left: 1100px;
+    #synoptique{
+        font-size: 12px;
     }
     .map_da{
         height: 43vh!important;
-        width: 685px!important;
+        width: 578px !important;
     }
     #synoptic_back{
-        width:57%;
+        width:77%!important;
     }
     #dependances{
         width:70%;
@@ -779,13 +780,13 @@ label:hover{
         left: 810px!important;
     }
     #bar2{
-        margin-left: 785px;
+        margin-left: 280px;
     }
     #opfab-card-list{
         max-height: 375px;
     }
     #feed-content{
-        width:280px!important;
+        width:345px!important;
     }
     .map_sncf{
         width:710px!important
@@ -807,15 +808,12 @@ label:hover{
 @media (min-height: 1024px) and (max-width: 1366px){ //ipad
     .sncf{
         height: 680px!important;
-  }
+    }
     #notifContainer{
         width: 400px!important;
     }
     #feed-content{
         width:326px!important;
-    }
-    #synoptic_back{
-        width:57%;
     }
     .sncf_ctx_div{
         margin-left: 334px;
@@ -824,17 +822,19 @@ label:hover{
     .dassault_ctx_div{
         margin-left: 370px
     }
+    #synoptique{
+        font-size: 12px;
+    }
+    #synoptic_back{
+        width: 77%!important;
+    }
     #dassaultBar{
         height: 905px;
         margin-left: 350px
     }
-    .da_assist{
-        margin-left: 1095px;
-        margin-top: 25px;
-    }
     #dassaultBar2{
         height: 905px;
-        margin-left: 1065px;
+        margin-left: 1050px;
     }
     #assistOpTitle{
         width:326px!important;
@@ -842,15 +842,18 @@ label:hover{
     .assistOpTitle{
         left:1025px;
     }
+    .assistOpTitleDA{
+        left:1087px;
+    }
     .assist_rte{
         margin-left: 875px;
     }
     #bar2{
-        margin-left: 850px;
+        margin-left: 280px;
     }
     .map_da{
         height: 45vh!important;
-        width: 685px!important
+        width: 668px!important
     }
     .map_sncf{
         height: 59vh!important;
@@ -861,9 +864,6 @@ label:hover{
     }
     #train_welcome img{
         width: 30%;
-    }
-    #dassault_assist{
-        left: 1100px;
     }
 }
 @media (min-height: 900px) and  (min-width: 1800px) { // demo
@@ -879,10 +879,6 @@ label:hover{
     #feed-content{
         width:350px!important;
     }
-    .da_assist{
-        margin-left:1440px;
-        margin-top: 40px;
-    }
     .sncf_ctx_div{
         margin-left: 360px;
         min-width: 1190px
@@ -896,17 +892,13 @@ label:hover{
     }
     #dassaultBar2{
         height: 905px;
-        margin-left: 1400px
+        margin-left: 1500px
     }
-    #dassault_assist{
-        left:1440px
-    }
-
     .map_da{
         height: 58vh!important;
     }
     .map_da{
-        width:1020px!important;
+        width:1115px!important;
     }
     .map_sncf{
         width: 1185px !important;
@@ -916,7 +908,7 @@ label:hover{
         margin-left: 185px;
     }
     #synoptic_back{
-        width: 65%!important;
+        width: 91%!important;
     }
     .assist_sncf{
         width:350px; 
@@ -929,12 +921,16 @@ label:hover{
     }
     #assistOpTitle{
         width:326px!important;
+        overflow-y: hidden!important;
     }
     .assistOpTitle{
         left:1580px;
     }
+    .assistOpTitleDA{
+        left: 1540px;
+    }
     #bar2{
-        margin-left: 1135px;
+        margin-left: 430px;
     }
     #opfab-card-list{
         max-height: 620px;
@@ -1087,4 +1083,41 @@ input[type="range"] {
     display: flex;
     border: 2px solid #4BB4E6;
     border-radius: 5px;
+}
+.assist_da_btn{
+    background: grey;
+    border-radius: 7px;
+    color: white;
+}
+.daSyn{
+    width:100%;
+}
+.sncf_button{
+    color:white;
+    background: #009AA6;
+}
+.sncf_button_assist{
+    color:white;
+    background: #E05206;
+    margin-right: 3px;
+}
+.sncf_button_grey{
+    color:white;
+    background: #707070;
+}
+
+.sncf_button,.sncf_button_assist,.sncf_button_grey{
+    border-radius: 7px;
+    border: none;
+}
+#sncf_assist_nominal{
+    text-align: center;
+    margin-top: 300px;
+}
+#sncf_solution{
+    margin-top: 3px;
+    font-size:15px
+}
+#sncf_assist_full,#sncf_solution{
+    margin-left:3px;
 }

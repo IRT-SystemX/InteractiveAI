@@ -151,7 +151,23 @@ export class LightCardComponent implements OnInit, OnDestroy {
     handleDate(timeStamp: number): string {
         return this.dateTimeFormatter.getFormattedDateAndTimeFromEpochDate(timeStamp);
     }
+    public hideAllSynops(){
+        var synops = ['STATUS','ECS','ELEC','FUEL','HYD','BLEED','TEST','ENGINE'];
+        for (var synop=0;synop<synops.length;synop++){
+          try {
+            document.getElementById(synops[synop]).hidden= true;
+          } catch (error) {
+            console.log("unknown synop element")
+          }
+          try {
+            document.getElementById(synops[synop]+"_nominal").hidden= true;
+          } catch (error) {
+            console.log("unknown synop nominal element")
+          }
+        }
+      }
     public getCardTitle($event) {
+        this.hideAllSynops();
         $.ajaxSetup({
             headers:{
                'Authorization': " Bearer " + this.token
@@ -222,15 +238,19 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("high_procedure").hidden = false;
             document.getElementById("noevent_da").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC-gen1+2+3-fault.png'>";
         }
-         else if (document.getElementById("opfab-card-title").innerHTML.includes("DESTINATION")) {
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ENG1")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = false;
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ECS_cabin-alt-too-high.png'>";
             document.getElementById("noevent_da").hidden = true;
+            document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
+            document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
+            document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
+            document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
+            document.getElementById("ELEC_nominal").hidden = false;
+
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Panne")) {
             $(".opfab-card-response-header").hide();
@@ -245,7 +265,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
             document.getElementById("noevent_da").hidden = true;
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/STATUS_nominal.png'>";
+            document.getElementById("ECS_nominal").setAttribute("src",document.getElementById("ECS").getAttribute("src"));
+            document.getElementById("ECS").hidden = false;
             this.getEmergencyPlan();
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ELEC")) {
@@ -254,7 +275,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC-gen1+2+3-fault.png'>";
+            document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
+            document.getElementById("ELEC_nominal").hidden = false;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ENGINE")) {
             document.getElementById("high_procedure").hidden = true;
@@ -262,7 +284,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ENGINE-eng1-out.png'>";
+            document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
+            document.getElementById("ENGINE_nominal").hidden = false;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("FUEL")) {
             document.getElementById("high_procedure").hidden = true;
@@ -270,7 +293,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/FUEL-eng1-out.png'>";
+            document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
+            document.getElementById("FUEL_nominal").hidden = false;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("HYD")) {
             document.getElementById("high_procedure").hidden = true;
@@ -278,7 +302,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("synoptic_back").innerHTML = "<img class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/HYD-eng1-out.png'>";
+            document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
+            document.getElementById("HYD_nominal").hidden = false;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
