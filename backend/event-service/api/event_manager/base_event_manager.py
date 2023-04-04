@@ -24,6 +24,7 @@ class BaseEventManager:
         return str(event_id)
 
     def save_event_db(self, data):
+        logger.info(data)
         event = EventModel(**data)
         db.session.merge(event)
         db.session.commit()

@@ -12,7 +12,6 @@ class RTEEventManager(BaseEventManager):
         super().__init__()
         self.use_case = "RTE"
         self.use_case_process = "rteProcess"
-        
 
     def get_event_id(self, input_line):
         if input_line:
