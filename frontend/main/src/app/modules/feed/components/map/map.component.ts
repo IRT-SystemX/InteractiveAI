@@ -466,8 +466,8 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
             document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
             document.getElementById("feed-content").style.width = window.innerWidth / 4.90 + "px"; 
         }
-        document.getElementById("bar").style.height = window.innerHeight / 1.5 + "px";
-        document.getElementById("bar2").style.height = window.innerHeight / 1.5 + "px";
+        document.getElementById("bar").style.height = window.innerHeight / 1.6 + "px";
+        document.getElementById("bar2").style.height = window.innerHeight / 1.6 + "px";
         // document.getElementById("bar2").style.marginLeft =  parseInt(document.getElementById("ctxImg").style.width)-80 
         // + parseInt(document.getElementById("notifContainer").style.width + 15) + "px";
         if(cabUseCase == 'CAB Dassault'){
