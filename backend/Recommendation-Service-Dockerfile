@@ -26,6 +26,11 @@ WORKDIR /code/resources/rte/rtegrid2op_poc_simulator
 
 RUN pip3 install -r requirements.txt
 
+# Install SNCF IA modules
+WORKDIR /code/resources/sncf
+
+RUN pip3 install -r requirements.txt
+
 
 WORKDIR /code
 
