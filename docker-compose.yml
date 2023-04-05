@@ -195,7 +195,8 @@ services:
       - ./backend/recommendation-service:/code
     networks:
       - cab-docker_default
-
+    depends_on:
+      - frontend
 networks:
   cab-docker_default:
     external: true
