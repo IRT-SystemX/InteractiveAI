@@ -174,7 +174,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             }
          });
         if(window.location.host.includes("localhost")){
-            this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
+            this.rteUrl = "http://192.168.211.95:3200/cabcontext/api/v1/contexts";
           }
         if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
             $("#opfab-div-card-template-security").hide()
@@ -245,6 +245,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = false;
             document.getElementById("noevent_da").hidden = true;
+            document.getElementById("da_block_request").hidden = true;
             document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
             document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
             document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
@@ -343,19 +344,19 @@ export class LightCardComponent implements OnInit, OnDestroy {
             var blockIndex = response.procedure[key].block.block_index;
             var blockName = response.procedure[key].block.block_name;
             var blockTask = response.procedure[key].block.toExecute;
-            document.getElementById("dassault_assist").innerHTML+= "<button class='assist_da_btn'><b>" + blockName + "</b></button><br>"
+            document.getElementById("da_block_request").innerHTML+= "<button class='assist_da_btn'><b>" + blockName + "</b></button><br>"
             Object.keys(blockTask).forEach(function(key) {
               console.log(blockTask[key])
-            document.getElementById("dassault_assist").innerHTML+= "<span>"  + blockTask[key].index + " - " + blockTask[key].type +" "+  blockTask[key].content + "</span><br>"
+            document.getElementById("da_block_request").innerHTML+= "<span>"  + blockTask[key].index + " - " + blockTask[key].type +" "+  blockTask[key].content + "</span><br>"
             });
           });
-            document.getElementById("dassault_assist").innerHTML+= "<hr><span><b>Active limitations</b></span><br>";
-            document.getElementById("dassault_assist").innerHTML+= "<span> Speed MIN - " + response.maxSpeed + "</span><br>";
-            document.getElementById("dassault_assist").innerHTML+= "<span> Speed MAX - " + response.minSpeed + "</span><br>";
+            document.getElementById("da_block_request").innerHTML+= "<hr><span><b>Active limitations</b></span><br>";
+            document.getElementById("da_block_request").innerHTML+= "<span> Speed MIN - " + response.maxSpeed + "</span><br>";
+            document.getElementById("da_block_request").innerHTML+= "<span> Speed MAX - " + response.minSpeed + "</span><br>";
             document.getElementById("assistOpTitle").style.overflowY = "scroll";
             this.emergencyClicked = true;
       }else{
-        document.getElementById("dassault_assist").hidden = true;
+        document.getElementById("da_block_request").hidden = true;
         document.getElementById("assistOpTitle").style.overflowY = "hidden";
       }
       };

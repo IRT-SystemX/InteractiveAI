@@ -731,6 +731,17 @@ label:hover{
         margin-left: 285px!important;
         min-width: 710px;
     }
+    .rte_ctx_div {
+        margin-left: 349px !important;
+        min-width: 615px;
+        height:440px!important;
+    }
+    .rteNotifs{
+        height:440px!important;
+    }
+    .rte_ctxImg{
+        max-width: 608px;
+    }
     #sncf_assist_nominal{
         text-align: center;
         margin-top: 160px!important;
@@ -785,7 +796,7 @@ label:hover{
     #opfab-card-list{
         max-height: 375px;
     }
-    .feed-content_dassault{
+    .feed-content_optimized{
         width:345px!important;
     }
     .map_sncf{
@@ -818,6 +829,14 @@ label:hover{
     .sncf_ctx_div{
         margin-left: 334px;
         min-width: 658px;
+    }
+    .rte_ctx_div {
+        margin-left: 334px;
+        min-width: 722px;
+        height:700px!important;
+    }
+    .rte_ctxImg{
+        max-width: 608px;
     }
     .dassault_ctx_div{
         margin-left: 370px
@@ -868,7 +887,8 @@ label:hover{
 }
 @media (min-height: 900px) and  (min-width: 1800px) { // demo
     .rteNotifs{
-        width:122%!important;
+        width:100%!important;
+        height:700px;
     }
     .sncf{
         height: 680px!important;
@@ -877,18 +897,34 @@ label:hover{
         width: 400px!important;
     }
     #feed-content{
-        width:350px!important;
+        width:350px;
     }
     .sncf_ctx_div{
         margin-left: 360px;
         min-width: 1190px
     }
+    .feed-content_override{
+        width: 350px!important;
+    }
+    .rte_ctx_div{
+        margin-left: 432px;
+        min-width: 1076px;
+        height:700px!important;
+    }
+    .rte_ctxImg{
+        max-width: 100%;
+        height: 673px;
+    }
+    .rteNotifsE{
+        width: 420px !important;
+        height: 700px!important;
+    }
     .dassault_ctx_div{
-        margin-left: 370px
+        margin-left: 405px;
     }
     #dassaultBar{
         height: 905px;
-        margin-left: 350px
+        margin-left: 392px;
     }
     #dassaultBar2{
         height: 905px;
@@ -898,7 +934,7 @@ label:hover{
         height: 58vh!important;
     }
     .map_da{
-        width:1115px!important;
+        width:1078px!important;
     }
     .map_sncf{
         width: 1185px !important;
@@ -916,18 +952,25 @@ label:hover{
     .assist_orange{
         width:350px; 
     }
+    .assist_orange_overflow_override{
+        overflow: scroll!important;
+    }
     .assist_rte{
         margin-left: 1160px;
+        height: 726px;
     }
     #assistOpTitle{
         width:326px!important;
-        overflow-y: hidden!important;
+        overflow-y: hidden;
     }
     .assistOpTitle{
         left:1580px;
     }
     .assistOpTitleDA{
         left: 1540px;
+    }
+    .assistOpTitle_rte{
+        height: 700px;
     }
     #bar2{
         margin-left: 430px;
@@ -940,6 +983,9 @@ label:hover{
     }
     #sncf_ctx{
         margin-top : 10px;
+    }
+    #orange_ctx_container{
+        margin-left: 300px;
     }
 }
 

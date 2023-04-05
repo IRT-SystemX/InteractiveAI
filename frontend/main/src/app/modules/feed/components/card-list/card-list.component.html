@@ -30,7 +30,7 @@
         Dependencies
       </button>
     </div>
-    <img id="ctxImg" style="width: 710px;height:615px" src="assets\images\ctx.png" hidden>
+    <img id="ctxImg"  src="assets\images\ctx.png" hidden>
     <div id="carte" class="imgMarged" hidden></div>
     <div id="synoptique" class="imgMarged btn-group btn-group-synoptic btn-group_synoptic"
       src="assets\images\dassault_synoptique.png" style="max-width: 15%; position: absolute;" hidden>
@@ -184,10 +184,8 @@
 
   </div>
 </div>
-<div id="bar" class="bar"></div>
 <div id="dassaultBar" class="bar dassaultBar" hidden></div>
 <div id="dassaultBar2" class="bar dassaultBar2" hidden></div>
-<div id="bar2" class="bar"></div>
 
 
 
@@ -196,7 +194,7 @@
   <div class="modal-header">
     <div translate> feed.acknowledgeAllCards.popup.title </div>
     <div class="opfab-close-modal-icon" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
+      <span aria-hidden="false">&times;</span>
     </div>
   </div>
   <div class="modal-body text-center">

@@ -60,12 +60,20 @@ These two parameters are place in this file as the style should have a title par
     var increasedLongitude = -4.09445;
     var tokenSynchronizeUrl = ""
     var msg_train = ', Jean votre superviseur, la présence d’un voyageur malade à bord nous oblige à marquer un arrêt supplémentaire en gare de  Poitiers pour permettre l’intervention des services de secours. Des informations complémentaires vous seront communiquées ultérieurement. Merci de votre attention.';
+    var trainIconFr = "/assets/images/icons/train_framboise.png";
+    var train_ko = "/assets/images/icons/train_ko.png";
+    var train_ok = "/assets/images/icons/train_ok.png";
+    var SNCFseverities = {
+        ACTION : train_ko,
+        ALARM : trainIconFr,
+      } 
+    var planeMarker;
     checkTokenToMatchUseCase();
 
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
@@ -100,6 +108,14 @@ These two parameters are place in this file as the style should have a title par
       }
     }
 
+    function getRecommandations(){
+      document.getElementById("sncf_button_grey").style.cursor = 'wait';
+      setTimeout(getRecoWithTimer,10000);
+    }
+    function getRecoWithTimer(){
+      document.getElementById("sncf_solution").hidden=false;
+      document.getElementById("sncf_button_grey").style.cursor = 'unset';
+    }
     function grantedUseCase(uc) {
       selectedUseCase = uc;
       document.documentElement.requestFullscreen();
@@ -108,9 +124,20 @@ These two parameters are place in this file as the style should have a title par
         case "RTE":
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
-          document.getElementById("assistOpTitle").classList.add("assist_rte");
+          document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
+          document.getElementById("assistOpTitle").classList.add("orange_theme");
+          document.getElementById("feed-content").classList.add("orange_theme");
+          document.getElementById("feed-content").style.position = "absolute";
+          document.getElementById("feed-content").classList.add("feed-content_optimized");
+          document.getElementById("feed-content").classList.add("rteNotifsE");
+          document.getElementById("ctx_div").classList.add("orange_theme");
+          document.getElementById("ctx_div").classList.add("rte_ctx_div");
           document.getElementById("opfab-card-list").classList.add("rteNotifs");
-          document.getElementById("opfab-feedbar").classList.add("rteNotifs");
+          document.getElementById("feed-content").classList.add("rteNotifs");
+          document.getElementById("ctxImg").classList.add("rte_ctxImg");
+          document.getElementById("assistOpTitle").style.top = "80px";
+          document.getElementById("assistOpTitle").classList.add("assistOpTitle_rte");
+          document.getElementById("feed-content").style.top = "70px";
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
@@ -126,7 +153,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
           document.getElementById("feed-content").style.position = "absolute";
-          document.getElementById("feed-content").classList.add("feed-content_dassault")
+          document.getElementById("feed-content").classList.add("feed-content_optimized")
           document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
           document.getElementById("assistOpTitle").style.top = "80px";
           document.getElementById("opfab-card-list").style.overflowY = "hidden";
@@ -136,15 +163,14 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("of_timeline").style.backgroundColor = "black";
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
           document.getElementById("notifs_DA").hidden = false;
-          document.getElementById("bar").hidden = true;
-          document.getElementById("bar2").hidden = true;
           document.getElementById("opfab-feed-filter-btn-filter").hidden = true;
+          document.getElementById("da_block_request").hidden = false;
           document.getElementById("of_timeline").style.zIndex = 5;
           document.getElementById("map").classList += " map_da";
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
-          // setInterval(() => {
-          //   refreshCtxDA();
-          // }, 1000);
+          setInterval(() => {
+            refreshCtxDA();
+          }, 110);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
           // mapDA();
@@ -155,9 +181,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
           document.getElementById("opfab-navbar-menu-feed").style.color = "white";
-          setTimeout(document.getElementById("orange_incidents").hidden = false,20000);
-          document.getElementById("bar").hidden = true;
-          document.getElementById("bar2").hidden = true;
+          setTimeout(getOrangeIncidents,20000);
           document.getElementById("map").hidden = true;
           document.getElementById("correlation").hidden = false;
           document.getElementById("orange_assist").hidden = false;
@@ -170,10 +194,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("feed-content").style.position = "absolute";
           document.getElementById("feed-content").style.marginTop = "0px";
           document.getElementById("feed-content").classList.add("orange_theme");
+          document.getElementById("feed-content").classList.add("feed-content_override");
           document.getElementById("ctx_div").classList.add("orange_theme");
           document.getElementById("ctx_div").classList.add("sncf_ctx_div");
           document.getElementById("ctx_div").classList.add("sncf");
           document.getElementById("assistOpTitle").classList.add("sncf");
+          document.getElementById("assistOpTitle").classList.add("assist_orange_overflow_override");
           document.getElementById("feed-content").classList.add("sncf");
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Incidents");
           break;
@@ -182,8 +208,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#009AA6"
           document.getElementById("opfab-navbar-menu-feed").style.color = "white"
-          document.getElementById("bar").hidden = true;
-          document.getElementById("bar2").hidden = true;
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           // document.getElementById("ctx_div").style.marginLeft = "440px";
           document.getElementById("sncf_assist").hidden = false;
@@ -195,6 +219,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("feed-content").style.marginTop = "0px";
           document.getElementById("sncfControl").hidden = false;
           document.getElementById("feed-content").classList += " sncf";
+          document.getElementById("feed-content").classList.add("feed-content_override");
           document.getElementById("ctx_div").classList+= " sncf sncf_ctx_div"
           document.getElementById("map").classList += " map_sncf";
           setInterval(() => {
@@ -208,6 +233,9 @@ These two parameters are place in this file as the style should have a title par
       document.getElementById("assistOpTitle").hidden = false;
     }
 
+    function getOrangeIncidents(){
+      document.getElementById("orange_incidents").hidden = false;
+    }
     function selectDassaultCtx(type) {
       switch (type) {
         case "dependances":
@@ -355,7 +383,6 @@ These two parameters are place in this file as the style should have a title par
            severities[severity].hidden = true
           }
           var descs = document.getElementsByClassName("p-1");
-
          var titles = document.getElementsByClassName("card-title")
          for (var titleSncf = 0; titleSncf < titles.length; titleSncf++) {
           titles[titleSncf].style.marginLeft = '40px'
@@ -377,6 +404,11 @@ These two parameters are place in this file as the style should have a title par
         if (selectedUseCase == "SNCF"){
           if (!cards[card].classList.contains("SNCF_card")){
             cards[card].classList.add("SNCF_Card");
+            try {
+              getCardContent(cards[card].getAttribute("data-urlid"));
+            } catch (error) {
+              console.log(error)
+            }
           }
           //titre carte margé
           if (innerWidth > 1800){
@@ -439,10 +471,29 @@ These two parameters are place in this file as the style should have a title par
         setDANotifications();
       }
     }
-    
+    function getCardContent(id_card) {
+      if (id_card != null){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "/cards/cards/"+id_card,false);
+        // xmlHttp.open("GET", "http://192.168.211.95:3200/cards/cards/"+id_card,false);
+        xmlHttp.setRequestHeader("Authorization","Bearer "+token);
+        xmlHttp.send(null);
+        var response = JSON.parse(xmlHttp.responseText);
+        lastTrain = response.card.data.metadata.id_train;
+        lastSeverity = response.card.severity;
+        console.log(response)
+        updateTrainStatus(lastTrain,lastSeverity)
+      }
+    };
+
+    function updateTrainStatus(id_train,severity){
+      markers[id_train]._icon.src = SNCFseverities[severity]+"?time=" + new Date().getTime();
+      console.log(markers[id_train])
+      console.log(SNCFseverities[severity] + " pour le train " + id_train)
+    }
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
@@ -450,12 +501,12 @@ These two parameters are place in this file as the style should have a title par
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      // xmlHttp.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
-      setAndUpdateDAMarkersOnMap(response)
+      setAndUpdateDAMarkersOnMap(response[0].data)
     };
     function getCorrelations() {
       var xmlHttp = new XMLHttpRequest();
@@ -474,7 +525,7 @@ These two parameters are place in this file as the style should have a title par
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      // xmlHttp.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -554,7 +605,6 @@ These two parameters are place in this file as the style should have a title par
           L.tileLayer(mapLayer).addTo(map);
     }
     function setAndUpdateSNCFMarkersOnMap(data) {
-
       data.forEach(function (train) {
         if (!markers.hasOwnProperty(train.id_train)) {
           if(train.failure){
@@ -563,52 +613,31 @@ These two parameters are place in this file as the style should have a title par
           iconUrl = "/assets/images/icons/train_ok.png"
         }
         let trainIconSrc = {iconUrl,iconSize: [20, 20]}
-        let trainIcon = L.icon(trainIconSrc);
-          let iconOptions = {title: "TGV" + train.id_train,draggable: false,icon: trainIcon}
+          let trainIcon = L.icon(trainIconSrc);
+          let iconOptions = {title: train.id_train,draggable: false,icon: trainIcon}
           markers[train.id_train] = new L.Marker([train.latitude, train.longitude],iconOptions).addTo(map).on('click', markerOnClick);
           markers[train.id_train].attributes = train;
           markers[train.id_train].previousLatLngs = [];
         } else {
-          if(train.latitude == null && train.longitude == null){
-            lastLat = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lat
-            lastLong = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lng
-            markers[train.id_train].setLatLng([lastLat, lastLong]);
+            if(train.latitude == null && train.longitude == null){
+              lastLat = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lat
+              lastLong = markers[train.id_train].previousLatLngs[markers[train.id_train].previousLatLngs.length-1].lng
+              markers[train.id_train].setLatLng([lastLat, lastLong]);
+            }
+            else {
+              markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
+              markers[train.id_train].setLatLng([train.latitude, train.longitude]);
+            }
           }
-          else {
-            markers[train.id_train].previousLatLngs.push(markers[train.id_train].getLatLng());
-            markers[train.id_train].setLatLng([train.latitude, train.longitude]);
-          }
-        }
       });
 }
     function setAndUpdateDAMarkersOnMap(data) {
-
-      data.forEach(function (plane) {
-        if (!markers.hasOwnProperty(plane.id_context)) {
-        iconUrl = "assets/images/plane_40x40.png"
-        let planeIconSrc = {iconUrl,iconSize: [40, 40]}
-        let planeIcon = L.icon(planeIconSrc);
-          let iconOptions = {title: "VOL " + plane.id_context,draggable: false,icon: planeIcon}
-          markers[plane.id_context] = new L.Marker([plane.data.Latitude, plane.data.Longitude],iconOptions).addTo(map).on('click', markerOnClick);
-          markers[plane.id_context].attributes = plane;
-          markers[plane.id_context].previousLatLngs = [];
-        } else {
-          if(plane.data.Latitude == null && plane.data.Longitude == null){
-            lastLat = markers[plane.id_context].previousLatLngs[markers[plane.id_context].previousLatLngs.length-1].lat
-            lastLong = markers[plane.id_context].previousLatLngs[markers[plane.id_context].previousLatLngs.length-1].lng
-            markers[plane.id_context].setLatLng([lastLat, lastLong]);
-          }
-          else {
-            markers[plane.id_context].previousLatLngs.push(markers[plane.id_context].getLatLng());
-            markers[plane.id_context].setLatLng([plane.data.Latitude, plane.data.Longitude]);
-          }
-        }
-      });
-}
+      planeMarker.setLatLng([data.Latitude, data.Longitude]);
+    }
 
     function markerOnClick(e){
       markerOptions = e.sourceTarget.options;
-      markerTitle = markerOptions.title.replace("TGV","");
+      markerTitle = markerOptions.title;
       nb_passengers_connection = markers[markerTitle].attributes.nb_passengers_connection;
       nb_passengers_onboard = markers[markerTitle].attributes.nb_passengers_onboard;
       speed = markers[markerTitle].attributes.speed;
@@ -653,7 +682,7 @@ These two parameters are place in this file as the style should have a title par
             icon: myIcon3
           }
 
-          let planeMarker = new L.Marker([latitude, longitude], iconOptions3);
+          planeMarker = new L.Marker([latitude, longitude], iconOptions3);
           planeMarker.addTo(map).bindPopup(iconOptions3.title)
           break;
       }
@@ -721,14 +750,14 @@ These two parameters are place in this file as the style should have a title par
             <button class="sncf_button"><b>Choisir</b></button>
           </div>
         </div>
-        <button class="sncf_button_grey" style="float:right" onclick="document.getElementById('sncf_solution').hidden=false">Je propose une solution</button>
+        <button id="sncf_button_grey" class="sncf_button_grey" style="float:right" onclick="getRecommandations()">Je propose une solution</button>
       </div>
       <div id="sncf_solution" hidden style="margin-top: 30px">
         <input type="checkbox" id="sol1" value="sol1">
-        <label for="sol1">Retenir le train à Angoulème</label>
+        <label for="sol1">Retenue TGV 7652 à Angoulême</label>
         <hr>
         <input type="checkbox" id="sol2" value="sol2">
-        <label for="sol2">Contourner via poitier</label>
+        <label for="sol2">Retenue TGV 5440 à Angoulême</label>
         <hr>
       </div>
     </div>
@@ -782,6 +811,7 @@ These two parameters are place in this file as the style should have a title par
             <img src="assets\images\pdv_da.png">
           </div>
       </div>
+      <div id="da_block_request" hidden></div>
     </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
