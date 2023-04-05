@@ -10,7 +10,9 @@ except ImportError:
 import toml
 import sys
 import os
+import json
 from settings import logger
+import numpy as np
 
 
 class AgentManager:
@@ -21,8 +23,23 @@ class AgentManager:
             config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
 
             # grid2op Environment and observation definition and loading
-            env = grid2op.make(config_assistant['env_name'], backend=bkClass())
-            self.obs = env.observation_space(env)
+            self.env = grid2op.make(
+                config_assistant['env_name'], backend=bkClass())
+            self.env.seed(config_assistant['env_seed'])
+            # Search scenario with provided name
+            for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
+                sp_end = os.path.basename(sp)
+                if sp_end == config_assistant['scenario_name']:
+                    id_scenario = id
+            #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
+            self.env.set_id(id_scenario)  # Scenario choice
+            self.obs = self.env.reset()
+
+            #self.obs = self.env.observation_space(self.env)
+            if self.obs.current_step is None:
+                self.previous_step = "1"
+            else:
+                self.previous_step = self.obs.current_step
 
             # assistant definition and loading
             assistant_path = config_assistant['assistant_path']
@@ -45,23 +62,33 @@ class AgentManager:
                 try:
                     from submission import make_agent
                     self.assistant = make_agent(
-                        env.copy(), os.path.join(abs_assistant_path, "submission"))
+                        self.env.copy(), os.path.join(abs_assistant_path, "submission"))
                     if not isinstance(self.assistant, BaseAgent):
                         msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
                         raise RuntimeError(msg_)
                 except Exception as exc_:
-                    logger.error(exc_)
                     raise
                 self.assistant.seed(int(assistant_seed))
+                self.nb_timestep = int(0)
         except Exception as e:
             logger.error(e)
             exit()
 
+    def get_nbOfTimestepSinceLastObs(self, obs_dict):
+        self.nb_timestep = int(obs_dict.get("current_step")[
+                               0]) - int(self.previous_step)
+        return self.nb_timestep
+
     def recommandate(self, obs_dict, n_actions=3):
+        self.get_nbOfTimestepSinceLastObs(obs_dict)
+        if self.nb_timestep > 0:
+            self.env.fast_forward_chronics(self.nb_timestep)
+            self.previous_step = obs_dict.get("current_step")[0]
+        self.obs = self.env.get_obs()
         self.obs.from_json(obs_dict)
-        self.recommondations = self.assistant.make_recommandations(
+        self.recommandations = self.assistant.make_recommandations(
             self.obs, n_actions)
-        return self.recommondations
+        return self.recommandations
 
     def getParadeInfo(self, act):
         Titre = []
@@ -201,7 +228,7 @@ class AgentManager:
 
     def getlistOfParadeInfo(self):
         listOfAct_dict = []
-        for rec in self.recommondations:
+        for rec in self.recommandations:
             act, max_forecasted_rho_0 = rec
             act_dict = self.getParadeInfo(act)
             listOfAct_dict.append(act_dict)
@@ -214,16 +241,18 @@ if __name__ == '__main__':
     event_received = False
     Context_received = False
 
-    # Init
+    # Init (must be used in CAB)
     agentM = AgentManager()
 
-    # Input from RTE simulator
+    # Input from RTE simulator (for this example)
     obs_backup = agentM.obs
-    obs_dict = agentM.obs.to_json()
+    with open('obs88.json') as mon_fichier:
+        obs_dict = json.load(mon_fichier)
+    # print(obs_dict)
 
     for ii in iteration_in_cab:
         print('Simulation iteration : ', ii)
-        if ii == 3 or ii == 7:
+        if ii == 3:
             event_received = True
             context_received = True
         else:
@@ -231,9 +260,12 @@ if __name__ == '__main__':
             context_received = False
 
         if event_received and context_received:
-            agentM.recommandate(obs_dict)
+            # Main calls to use in CAB in this same order any time both an event and a context is received
+            nbOfTimestep = agentM.get_nbOfTimestepSinceLastObs(obs_dict)
+            recommandation = agentM.recommandate(obs_dict)
             parades = agentM.getlistOfParadeInfo()
 
-            # Test as example (Should be remove)
-            assert obs_backup == agentM.obs
-            print(parades)
+            # Test for this example (Should be remove)
+            print("nbOfTimestep = ", nbOfTimestep)
+            print("recommandation = ", recommandation)
+            print("parades = ", parades)
