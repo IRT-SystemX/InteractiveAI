@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.10.0-slim
+
+RUN apt-get update && apt-get install -y default-jre
+
+RUN mkdir /code
+RUN mkdir /cab_common
+
+# Install recommendation-service modules
+COPY ./recommendation-service/ /code/
+COPY ./cab_common/ /cab_common/
+
+WORKDIR /code
+
+RUN pip3 install -r requirements.txt
+
+RUN pip3 install owlready2
+
+WORKDIR /cab_common
+
+RUN pip3 install .
+
+# Install rte IA modules
+WORKDIR /code/resources/rte/rtegrid2op_poc_simulator
+
+RUN pip3 install -r requirements.txt
+
+# Install SNCF IA modules
+WORKDIR /code/resources/sncf
+
+RUN pip3 install -r requirements.txt
+
+
+WORKDIR /code
+
+CMD ["./entrypoint.sh"]

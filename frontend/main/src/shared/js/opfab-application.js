@@ -72,8 +72,9 @@ const opfabStyle = {
         --opfab-card-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
         --opfab-card-detail-border-color : #dddddd;
         --opfab-navbar-color: black;
-        --opfab-navbar-color-hover:black;
+        --opfab-navbar-color-hover:#E7E7E7;
         --opfab-navbar-color-active:#0d6efd;
+        --opfab-navbar-color-links: black;
         --opfab-navbar-toggler-icon: url("data:image/svg+xml, %3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         --opfab-navbar-toggler-border-color: rgba(0,0,0,.1) ;
         --opfab-navbar-info-block-color: rgba(0,0,0,.9);
@@ -97,10 +98,10 @@ const opfabStyle = {
         --opfab-pagination-disabled-link: #808080;
         }`,
 
-    NIGHT_STYLE : `:root { --opfab-bgcolor: white;
+    NIGHT_STYLE : `:root { --opfab-bgcolor: #1D1D1D;
         --opfab-bgcolor-darker: #F3F2F1;
         --opfab-font-family: 'Open Sans', sans-serif;
-        --opfab-text-color: black;
+        --opfab-text-color: white;
         --opfab-text-color-stronger: black;
         --opfab-table-border-color: grey;
         --opfab-input-text-color : black;
@@ -133,9 +134,9 @@ const opfabStyle = {
         --opfab-card-bgcolor : #F3F2F1;
         --opfab-card-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
         --opfab-card-detail-border-color : #dddddd;
-        --opfab-navbar-color: black;
-        --opfab-navbar-color-hover:black;
-        --opfab-navbar-color-active:#0d6efd;
+        --opfab-navbar-color-hover:#0085CC;
+        --opfab-navbar-color-active:white;
+        --opfab-navbar-color-links: white;
         --opfab-navbar-toggler-icon: url("data:image/svg+xml, %3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0,0,0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         --opfab-navbar-toggler-border-color: rgba(0,0,0,.1) ;
         --opfab-navbar-info-block-color: rgba(0,0,0,.9);

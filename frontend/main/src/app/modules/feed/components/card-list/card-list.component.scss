@@ -8,14 +8,14 @@
  */
 
 .feed-content {
-    height: 100%;
+    height: auto;
     margin: -6px;
     padding: 0px;
 }
 
 .opfab-card-list {
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .opfab-feed-horizontal-bar {
@@ -71,10 +71,79 @@ input[type=checkbox]:checked + label {
     border-left: 2px solid lightgrey;
     height: 700px;
     position: absolute;
-    margin-left: 700px;
     top: 0;
 }
 
-.bar2{
-    margin-left: 1130px;
+.dassaultBar{
+    border-left: 15px solid black;
+    z-index: -2;
 }
+.dassaultBar2{
+    border-left: 15px solid black;
+    z-index: -2;
+}
+
+  .imgMarged{
+    margin-top:50px;
+  }
+
+  .btn-group button {
+    background-color: white;
+    color: #0085CC;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left;
+    border-radius: 5px;
+    border: #0085CC;
+  }
+  .btn-group-synoptic button {
+    background-color: white;
+    color: black;
+    padding: 2px 24px;
+    cursor: pointer;
+    float: left;
+    border-radius: 5px;
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-right: none;
+  }
+  
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .btn-group button:hover {
+    background-color: #0085CC;
+    color:white;
+  }
+  .btn-group_synoptic button:hover {
+    background-color: rgb(50,75,107);;
+    color:white;
+  }
+  .btn-group_synoptic button:active {
+    background-color: rgb(50,75,107);;
+    color:white;
+  }
+  .btn-group button:active {
+    background-color: #0085CC;
+    color:white;
+  }
+  .btn-group button:focus {
+    background-color: #0085CC;
+    color:white;
+  }
+  .btn-group_synoptic button:focus {
+    background-color: rgb(50,75,107);
+    color:white;
+  }
+
+  #synoptic_back{
+    background-color: black;
+    height: 340px;
+    width: 91%;
+    margin-top: 50px;
+    border-radius: 7px;
+  }

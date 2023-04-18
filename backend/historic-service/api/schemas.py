@@ -7,7 +7,7 @@ from marshmallow import ValidationError, validates_schema
 class Event(Schema):
     id_event = String()
     use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+        ['RTE', 'SNCF', 'DA', 'ORANGE']))
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
     date = DateTime(format="iso")
@@ -30,7 +30,7 @@ class AskForHelp(Schema):
 
 class TraceIn(Schema):
     use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+        ['RTE', 'SNCF', 'DA', 'ORANGE']))
     step = String(required=True, validate=OneOf(
         ['EVENT', 'ASKFORHELP', 'SOLUTION', 'AWARD']))
     date = DateTime(format="iso")
@@ -55,7 +55,7 @@ class TraceIn(Schema):
 class TraceOut(Schema):
     id_trace = String()
     use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+        ['RTE', 'SNCF', 'DA', 'ORANGE']))
     step = String(required=True, validate=OneOf(
         ['EVENT', 'ASKFORHELP', 'SOLUTION', 'AWARD']))
     date = DateTime(format="iso")

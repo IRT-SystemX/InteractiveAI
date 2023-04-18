@@ -1,0 +1,1173 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/RTEOntology"
+         xmlns="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/RTEOntology#">
+
+<owl:Ontology rdf:about="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/RTEOntology">
+  <contacts xml:lang="irt-systemx">emna.amdouni</contacts>
+  <contributors>AMDOUNI Emna (IRT-SystemX), MAROT Antoine (RTE), ROZIER Alexandre (RTE), CROCHEPIERRE Laure (RTE)</contributors>
+  <creationDate>27th March 2023</creationDate>
+  <creators>AMDOUNI Emna (IRT-SystemX)</creators>
+  <status>beta</status>
+  <owl:versionInfo>V1.2</owl:versionInfo>
+</owl:Ontology>
+
+<owl:ObjectProperty rdf:about="#achives"/>
+
+<owl:ObjectProperty rdf:about="#bearer_of"/>
+
+<owl:ObjectProperty rdf:about="#has_goal">
+  <owl:inverseOf rdf:resource="#is_goal_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_goal_of"/>
+
+<owl:ObjectProperty rdf:about="#has_input">
+  <owl:inverseOf rdf:resource="#is_input_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_input_of"/>
+
+<owl:ObjectProperty rdf:about="#has_measurement">
+  <owl:inverseOf rdf:resource="#is_measurement_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_measurement_of"/>
+
+<owl:ObjectProperty rdf:about="#has_measurement_unit">
+  <rdfs:subPropertyOf rdf:resource="#has_value_specification"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#has_value_specification"/>
+
+<owl:ObjectProperty rdf:about="#has_output">
+  <owl:inverseOf rdf:resource="#is_output_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_output_of"/>
+
+<owl:ObjectProperty rdf:about="#has_part">
+  <owl:inverseOf rdf:resource="#is_part_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_part_of"/>
+
+<owl:ObjectProperty rdf:about="#has_participant"/>
+
+<owl:ObjectProperty rdf:about="#has_profile"/>
+
+<owl:ObjectProperty rdf:about="#has_quality">
+  <owl:inverseOf rdf:resource="#is_quality_of"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_quality_of"/>
+
+<owl:ObjectProperty rdf:about="#has_weights"/>
+
+<owl:ObjectProperty rdf:about="#is_about"/>
+
+<owl:ObjectProperty rdf:about="#is_associated_with">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#is_quality_measurement_of"/>
+
+<owl:ObjectProperty rdf:about="#is_realised_by">
+  <owl:inverseOf rdf:resource="#realises"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#realises"/>
+
+<owl:ObjectProperty rdf:about="#requests"/>
+
+<owl:DatatypeProperty rdf:about="#has_final_gen_p_value">
+  <rdfs:subPropertyOf rdf:resource="#has_final_value"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_final_value">
+  <rdfs:subPropertyOf rdf:resource="#has_value"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_value">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_final_value_gen_q">
+  <rdfs:subPropertyOf rdf:resource="#has_final_value"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_initial_value">
+  <rdfs:subPropertyOf rdf:resource="#has_value"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_initial_value_gen_q">
+  <rdfs:subPropertyOf rdf:resource="#has_initial_value"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#has_intial_gen_p_value">
+  <rdfs:subPropertyOf rdf:resource="#has_initial_value"/>
+</owl:DatatypeProperty>
+
+<owl:AnnotationProperty rdf:about="#contacts"/>
+
+<owl:AnnotationProperty rdf:about="#contributors"/>
+
+<owl:AnnotationProperty rdf:about="#creationDate"/>
+
+<owl:AnnotationProperty rdf:about="#creators"/>
+
+<owl:AnnotationProperty rdf:about="#status"/>
+
+<owl:AnnotationProperty rdf:about="#acronym"/>
+
+<owl:AnnotationProperty rdf:about="#description"/>
+
+<owl:Class rdf:about="#A_or">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Grid_state">
+  <rdfs:subClassOf rdf:resource="#Observation"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom rdf:resource="#Line_status"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom rdf:resource="#Topo_vect"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Observation">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Event"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Observation"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Base_infrastructure"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Line_status">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Powerline"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment>Gives the status (connected / disconnected) for every powerline (True at position i means the powerline i is connected)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Topo_vect">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:allValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment>For each object (load, generator, ends of a powerline) it gives on which bus this object is connected in its substation.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Event">
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Base_infrastructure"/>
+
+<owl:Class rdf:about="#Powerline">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_measurement"/>
+      <owl:someValuesFrom rdf:resource="#Power_flow"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Electrical_grid">
+  <rdfs:subClassOf rdf:resource="#Grid_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid_component"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Environment"/>
+
+<owl:Class rdf:about="#Electrical_grid_component">
+  <rdfs:subClassOf rdf:resource="#Grid_infrastructure"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Power_flow">
+  <rdfs:subClassOf rdf:resource="#Physical_grid_characteristics"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Grid_infrastructure"/>
+
+<owl:Class rdf:about="#Physical_grid_characteristics">
+  <rdfs:subClassOf rdf:resource="#Grid_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Action">
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_realised_by"/>
+      <owl:someValuesFrom rdf:resource="#Operator"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment>Consider the temporal aspects.</rdfs:comment>
+  <rdfs:comment>See:https://grid2op.readthedocs.io/en/latest/action.html#main-action-properties</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Grid_operations"/>
+
+<owl:Class rdf:about="#Operator">
+  <rdfs:subClassOf rdf:resource="#Stakeholders"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_profile"/>
+      <owl:someValuesFrom rdf:resource="#Profile"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_weights"/>
+      <owl:someValuesFrom rdf:resource="#Goal"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#requests"/>
+      <owl:someValuesFrom rdf:resource="#Request_function"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Stakeholders"/>
+
+<owl:Class rdf:about="#Profile">
+  <rdfs:subClassOf rdf:resource="#Stakeholders"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Goal">
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Request_function">
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#achives"/>
+      <owl:someValuesFrom rdf:resource="#Goal"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#bearer_of"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Action_battery">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Action_execution">
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Action_prod">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Load"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Load">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Action_topo">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom>
+        <owl:Class>
+          <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Powerline"/>
+            <rdf:Description rdf:about="#Substation"/>
+          </owl:intersectionOf>
+        </owl:Class>
+      </owl:someValuesFrom>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Substation">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:unionOf rdf:parseType="Collection">
+        <owl:Class>
+          <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Generator"/>
+            <rdf:Description rdf:about="#Load"/>
+            <owl:Restriction>
+              <owl:onProperty rdf:resource="#has_part"/>
+              <owl:someValuesFrom rdf:resource="#Powerline"/>
+            </owl:Restriction>
+          </owl:intersectionOf>
+        </owl:Class>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Node"/>
+        </owl:Restriction>
+      </owl:unionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+  <rdfs:comment>The id of the substation to which the load is connected</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Generator">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Node">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_measurement"/>
+          <owl:someValuesFrom rdf:resource="#Voltage"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Generator"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Load"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Powerline"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Voltage">
+  <rdfs:subClassOf rdf:resource="#Physical_grid_characteristics"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Atypic_observation">
+  <rdfs:subClassOf rdf:resource="#Observation"/>
+  <rdfs:comment>We could call it Abnormal (to be discussed later)</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Available_margins_for_dispatching">
+  <rdfs:subClassOf rdf:resource="#Qualitative_measurement_datum_KPI"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Qualitative_measurement_datum_KPI">
+  <rdfs:subClassOf rdf:resource="#Current_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Current_grid_KPI_measurement_datum">
+  <rdfs:subClassOf rdf:resource="#KPI_datum"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Expected_grid_KPI_measurement_datum">
+  <rdfs:subClassOf rdf:resource="#KPI_datum"/>
+</owl:Class>
+
+<owl:Class rdf:about="#KPI_datum">
+  <rdfs:subClassOf rdf:resource="#Base_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Grid_state"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Goal"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment>is_extracted from Physical grid measurement</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Bus">
+  <rdfs:subClassOf rdf:resource="#Substation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Change_bus_vect">
+  <rdfs:subClassOf rdf:resource="#Action_topo"/>
+  <rdfs:subClassOf rdf:resource="#Powerline_overload_past_action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_overload_past_action">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#Past_action"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_about"/>
+          <owl:someValuesFrom rdf:resource="#Powerline"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_associated_with"/>
+          <owl:someValuesFrom rdf:resource="#Powerline_overload_issue"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Past_action"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:onClass rdf:resource="#Powerline"/>
+      <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_overload_issue">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#Issue"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_measurement"/>
+          <owl:someValuesFrom>
+            <owl:Class>
+              <owl:intersectionOf rdf:parseType="Collection">
+                <rdf:Description rdf:about="#Rho"/>
+                <owl:Restriction>
+                  <owl:onProperty rdf:resource="#has_value"/>
+                  <owl:someValuesFrom>
+                    <rdfs:Datatype>
+                      <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+                      <owl:withRestrictions>
+                        <rdf:Description>
+                          <rdf:first>
+                            <rdf:Description>
+                              <xsd:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</xsd:minExclusive>
+                            </rdf:Description>
+                          </rdf:first>
+                          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                        </rdf:Description>
+                      </owl:withRestrictions>
+                    </rdfs:Datatype>
+                  </owl:someValuesFrom>
+                </owl:Restriction>
+              </owl:intersectionOf>
+            </owl:Class>
+          </owl:someValuesFrom>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Issue"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_associated_with"/>
+      <owl:someValuesFrom rdf:resource="#Powerline_overload_past_action"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Past_action">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Rho">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+  <rdfs:comment>The capacity of each powerline. It is defined at the observed current flow divided by the thermal limit of each powerline (no unit).</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Issue">
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Comfort">
+  <rdfs:subClassOf rdf:resource="#Goal"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Operator"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Context">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Observation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Similar_situation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_about"/>
+          <owl:someValuesFrom rdf:resource="#Issue"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Similar_situation">
+  <rdfs:subClassOf rdf:resource="#Situation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Situation">
+  <rdfs:subClassOf rdf:resource="#Observation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Critical_observation">
+  <rdfs:subClassOf rdf:resource="#Observation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Current_action">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Datum_KPI_calcul">
+  <rdfs:subClassOf rdf:resource="#Action_execution"/>
+  <rdfs:subClassOf>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_input"/>
+          <owl:someValuesFrom rdf:resource="#Initial_situation"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_output"/>
+          <owl:someValuesFrom rdf:resource="#Final_situation"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Initial_situation">
+  <rdfs:subClassOf rdf:resource="#Situation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Final_situation">
+  <rdfs:subClassOf rdf:resource="#Situation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decrease_energy_losses_objective">
+  <rdfs:subClassOf rdf:resource="#Increase_grid_optimisation_objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Increase_grid_optimisation_objective">
+  <rdfs:subClassOf rdf:resource="#Objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Objective">
+  <rdfs:subClassOf rdf:resource="#Environment"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decrease_nb_actions_objective">
+  <rdfs:subClassOf rdf:resource="#Increase_operator_confort_objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Increase_operator_confort_objective">
+  <rdfs:subClassOf rdf:resource="#Objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decrease_nb_overloads">
+  <rdfs:subClassOf rdf:resource="#Make_grid_safe_objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Make_grid_safe_objective">
+  <rdfs:subClassOf rdf:resource="#Objective"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decreasing_losses">
+  <rdfs:subClassOf rdf:resource="#Request_function"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decreasing_nb_actions">
+  <rdfs:subClassOf rdf:resource="#Request_function"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decreasing_nb_overloads">
+  <rdfs:subClassOf rdf:resource="#Request_function"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Decreasing_operator_workload">
+  <rdfs:subClassOf rdf:resource="#Request_function"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Distance_from_reference_topology">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid_topology"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Comfort"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Electrical_grid_topology">
+  <rdfs:subClassOf rdf:resource="#Grid_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Electrical_grid_area">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom>
+        <owl:Class>
+          <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Powerline"/>
+            <rdf:Description rdf:about="#Substation"/>
+          </owl:intersectionOf>
+        </owl:Class>
+      </owl:someValuesFrom>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Electrical_grid_system">
+  <rdfs:subClassOf rdf:resource="#Grid_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid_area"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Energy_losses">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Optimisation"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Optimisation">
+  <rdfs:subClassOf rdf:resource="#Goal"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Explanation">
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Forecast">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Gen_p">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Gen_q">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Gen_v">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Grid_region">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom>
+        <owl:Class>
+          <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Powerline"/>
+            <rdf:Description rdf:about="#Substation"/>
+          </owl:intersectionOf>
+        </owl:Class>
+      </owl:someValuesFrom>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Human">
+  <rdfs:subClassOf rdf:resource="#Operator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Hydro_generator">
+  <rdfs:subClassOf rdf:resource="#Generator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Junior_profile">
+  <rdfs:subClassOf rdf:resource="#Profile"/>
+</owl:Class>
+
+<owl:Class rdf:about="#List_of_actions">
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+</owl:Class>
+
+<owl:Class rdf:about="#List_recommanded_actions">
+  <rdfs:subClassOf rdf:resource="#List_of_actions"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Load_p">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+  <rdfs:comment>The active load value of each consumption (expressed in MW).</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Load_q">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Load_v">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Loss_of_line">
+  <rdfs:subClassOf rdf:resource="#Event"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Machine">
+  <rdfs:subClassOf rdf:resource="#Operator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Maintenance">
+  <rdfs:subClassOf rdf:resource="#Event"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Measurement">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Normal_observation">
+  <rdfs:subClassOf rdf:resource="#Observation"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Normal_powerline">
+  <rdfs:subClassOf rdf:resource="#Powerline"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Nuclear_generator">
+  <rdfs:subClassOf rdf:resource="#Generator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Number_of_actions">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Action"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Comfort"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Number_of_available_assets">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Comfort"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Number_of_available_flexibilities">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Optimisation"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Number_of_overloads">
+  <rdfs:subClassOf rdf:resource="#Quantitative_measurement_datum_KPI"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Quantitative_measurement_datum_KPI">
+  <rdfs:subClassOf rdf:resource="#Current_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+</owl:Class>
+
+<owl:Class rdf:about="#P_or">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_connection">
+  <rdfs:subClassOf rdf:resource="#Powerline_current_action"/>
+  <rdfs:subClassOf rdf:resource="#Powerline_overload_past_action"/>
+  <rdfs:subClassOf rdf:resource="#Powerline_recommanded_action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_current_action">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#Current_action"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_associated_with"/>
+          <owl:someValuesFrom rdf:resource="#Powerline_overload_issue"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Current_action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_recommanded_action">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#Recommanded_action"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_about"/>
+          <owl:someValuesFrom rdf:resource="#Powerline"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#is_associated_with"/>
+          <owl:someValuesFrom rdf:resource="#Powerline_overload_issue"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Recommanded_action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Recommanded_action">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Powerline_disconnection">
+  <rdfs:subClassOf rdf:resource="#Powerline_current_action"/>
+  <rdfs:subClassOf rdf:resource="#Powerline_overload_past_action"/>
+  <rdfs:subClassOf rdf:resource="#Powerline_recommanded_action"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Q_or">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Ranked_list_recommanded_actions">
+  <rdfs:subClassOf rdf:resource="#List_recommanded_actions"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom rdf:resource="#Recommanded_action"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:comment>add ranking function (how much does it answer to a specific goal).</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Recommandation_data">
+  <owl:equivalentClass>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_part"/>
+      <owl:someValuesFrom>
+        <owl:Class>
+          <owl:intersectionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="#Explanation"/>
+            <rdf:Description rdf:about="#Recommanded_action"/>
+            <rdf:Description rdf:about="#Similar_situation"/>
+          </owl:intersectionOf>
+        </owl:Class>
+      </owl:someValuesFrom>
+    </owl:Restriction>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+  <rdfs:comment>The process should satisfy the goal</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Recommandation_process">
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_input"/>
+          <owl:someValuesFrom rdf:resource="#Grid_state"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_output"/>
+          <owl:someValuesFrom rdf:resource="#Recommandation_data"/>
+        </owl:Restriction>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#has_part"/>
+          <owl:someValuesFrom rdf:resource="#Request_function"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:subClassOf rdf:resource="#Grid_operations"/>
+  <rdfs:comment>Antoine: consider mapping this calss with the notion of issue and alarm. The agent receives an alarm. Task is a problem to be resolved by an agent and associated with a notification.</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Remedial_action">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+  <rdfs:comment>is an action that resolves a specific issue. 
+-&gt; create an axiom</rdfs:comment>
+</owl:Class>
+
+<owl:Class rdf:about="#Renewable_energy_share">
+  <rdfs:subClassOf rdf:resource="#Expected_grid_KPI_measurement_datum"/>
+  <rdfs:subClassOf rdf:resource="#Quantitative_measurement_datum_KPI"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_quality_measurement_of"/>
+      <owl:someValuesFrom rdf:resource="#Comfort"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Safety">
+  <rdfs:subClassOf rdf:resource="#Goal"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#is_about"/>
+      <owl:someValuesFrom rdf:resource="#Electrical_grid"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Scalar_value_specification">
+  <rdfs:subClassOf rdf:resource="#Base_infrastructure"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#has_measurement_unit"/>
+      <owl:someValuesFrom rdf:resource="#Unit"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Unit">
+  <rdfs:subClassOf rdf:resource="#Base_infrastructure"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Senior_profile">
+  <rdfs:subClassOf rdf:resource="#Profile"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Set_line_status">
+  <rdfs:subClassOf rdf:resource="#Action_topo"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Set_topo_vect">
+  <rdfs:subClassOf rdf:resource="#Action_topo"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Solar_generator">
+  <rdfs:subClassOf rdf:resource="#Generator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Storage">
+  <rdfs:subClassOf rdf:resource="#Electrical_grid_component"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Switch_line_status">
+  <rdfs:subClassOf rdf:resource="#Action_topo"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Thermal_generator">
+  <rdfs:subClassOf rdf:resource="#Generator"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Transformer">
+  <rdfs:subClassOf rdf:resource="#Powerline"/>
+</owl:Class>
+
+<owl:Class rdf:about="#V_or">
+  <rdfs:subClassOf rdf:resource="#Grid_state"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Value">
+  <rdfs:subClassOf rdf:resource="#Base_infrastructure"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Wind_generator">
+  <rdfs:subClassOf rdf:resource="#Generator"/>
+</owl:Class>
+
+<Electrical_grid rdf:about="#electrical_grid">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_part rdf:resource="#line_54_55_145"/>
+  <has_part rdf:resource="#line_54_58_154"/>
+  <has_part rdf:resource="#line_58_60_156"/>
+</Electrical_grid>
+
+<Powerline rdf:about="#line_54_55_145">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Powerline>
+
+<Powerline rdf:about="#line_54_58_154">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Powerline>
+
+<Powerline rdf:about="#line_58_60_156">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Powerline>
+
+<Issue rdf:about="#issue_115">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_115"/>
+  <is_associated_with rdf:resource="#set_bus"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Rho rdf:about="#rho_115">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#line_54_55_145"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.01</has_value>
+</Rho>
+
+<Change_bus_vect rdf:about="#set_bus">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_associated_with rdf:resource="#issue_115"/>
+  <is_associated_with rdf:resource="#issue_120"/>
+  <is_associated_with rdf:resource="#issue_89"/>
+  <is_associated_with rdf:resource="#issue_751"/>
+  <is_associated_with rdf:resource="#issue_175"/>
+</Change_bus_vect>
+
+<Issue rdf:about="#issue_120">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_120"/>
+  <is_associated_with rdf:resource="#set_bus"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Issue rdf:about="#issue_89">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_751"/>
+  <is_associated_with rdf:resource="#set_bus"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Issue rdf:about="#issue_751">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_751"/>
+  <is_associated_with rdf:resource="#set_bus"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Issue rdf:about="#issue_175">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_175"/>
+  <is_associated_with rdf:resource="#set_bus"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Rho rdf:about="#rho_120">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#line_58_60_156"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.01</has_value>
+</Rho>
+
+<Rho rdf:about="#rho_751">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#line_54_58_154"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.006</has_value>
+</Rho>
+
+<Rho rdf:about="#rho_175">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#line_54_55_145"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.05</has_value>
+</Rho>
+
+<Rho rdf:about="#rho_89">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#line_54_58_154"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.008</has_value>
+</Rho>
+
+<Issue rdf:about="#1">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <has_measurement rdf:resource="#rho_test"/>
+  <rdf:type rdf:resource="#Powerline_overload_issue"/>
+</Issue>
+
+<Rho rdf:about="#rho_test">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  <is_about rdf:resource="#544"/>
+  <has_value rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.5</has_value>
+</Rho>
+
+<Powerline rdf:about="#544">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Powerline>
+
+<Change_bus_vect rdf:about="#set_bus_test">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+</Change_bus_vect>
+
+
+</rdf:RDF>

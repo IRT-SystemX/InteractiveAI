@@ -320,14 +320,16 @@ export class CardBodyComponent implements OnChanges, OnInit, OnDestroy {
 
     private setSelectedCardColor(){
         if (!this.cardAlreadyClicked){
-            $(".light-card-detail-selected").click();
+            // $(".light-card-detail-selected").click();
             this.cardAlreadyClicked = true;
         }
-        var cards = $(".card");
-        for(var card = 0; card<cards.length;card++){
-            if ( cards[card].classList.contains("light-card-detail-selected") ){
-                var severity = $(cards[card]).attr("severity");
-                $(cards[card]).addClass("light-card-detail-selected-" + severity)
+        if (document.getElementById("opfab-navbar-menu-feed").innerText != 'CAB SNCF'){
+            var cards = $(".card");
+            for(var card = 0; card<cards.length;card++){
+                if ( cards[card].classList.contains("light-card-detail-selected") ){
+                    var severity = $(cards[card]).attr("severity");
+                    $(cards[card]).addClass("light-card-detail-selected-" + severity)
+                }
             }
         }
     }

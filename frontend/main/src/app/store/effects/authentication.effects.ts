@@ -70,6 +70,7 @@ export class AuthenticationEffects {
                 return this.authService.askTokenFromPassword(payload.username, payload.password).pipe(
                     map((authenticationInfo) => {
                         this.authService.regularCheckTokenValidity();
+                        window.location.reload();
                         return new AcceptLogInAction(authenticationInfo);
                     }),
                     catchError((errorResponse) => {

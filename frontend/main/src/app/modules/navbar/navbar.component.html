@@ -6,25 +6,25 @@
 <!-- SPDX-License-Identifier: MPL-2.0                                      -->
 <!-- This file is part of the OperatorFabric project.                      -->
 
-<div class="fixed-top" id="homescreen" style="width: 1920PX;
-  height: 950px;
-  background-color: white;
+<div class="fixed-top" id="homescreen" style="background-color: white;
+  height: 100%;
   z-index: 2;
   padding-bottom: 162px;
-  text-align: center;">
-  <div style="height:67px;background-color:#00A7DE;color:white"><b
+  text-align: center;
+  overflow: auto;">
+  <div style="padding-top:28px;background-color:#00A7DE;color:white"><b
       style="font: normal normal 600 30px/40px Segoe UI;">Assistant CAB</b></div>
   <div style="height:30px"></div>
   <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage supervision</b></div>
   <div style="height:20px"></div>
-  <img class="choose-uc-img" style="margin-right: 50px;" src="assets\images\Bouton orange nominal.png">
-  <a href="#"> <img class="choose-uc-img" src="assets\images\bouton RTE nominal.png" onclick="closeHome()"> </a>
-  <img class="choose-uc-img" style="margin-left: 50px;" src="assets\images\bouton SNCF nominal.png">
+  <img class="choose-uc-img" style="margin-right: 50px;" src="assets\images\Bouton orange nominal.png"  onclick="selectUseCase('ORANGE')">
+  <a href="#"> <img class="choose-uc-img" src="assets\images\bouton RTE nominal.png" onclick="selectUseCase('RTE')"> </a>
+  <img class="choose-uc-img" style="margin-left: 50px;" src="assets\images\bouton SNCF nominal.png"  onclick="selectUseCase('SNCF')">
   <div style="height:100px"></div>
   <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage pilotage d'aéronef</b></div>
   <div style="height:20px"></div>
-  <img class="choose-uc-img" style="margin-left: 50px;" src="assets\images\bouton DA nominal.png"
-    style="float: left;margin-left: 205px;">
+  <a href="#"><img id="da_uc_btn" class="choose-uc-img"  src="assets\images\bouton DA nominal.png" onclick="selectUseCase('DA')"
+    style="float: left;"></a>
 
 </div>
 
@@ -87,7 +87,7 @@
 
       </li>
     </ul>
-
+    <img src="assets/images/closeBtn.png" id="closeBtn" onclick="localStorage.clear();window.location.reload()">
     <div *ngIf="displayEnvironmentName"
       style=" position: absolute;right:0;width:80px;height:87px;overflow: hidden;margin-top: -30px;margin-bottom:-20px;">
       <!-- <div [style.background-color]="environmentColor" 

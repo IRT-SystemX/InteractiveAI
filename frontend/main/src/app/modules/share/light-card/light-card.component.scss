@@ -16,11 +16,11 @@
 
 .light-card-detail-selected {
     transition: margin 0.3s;
-    color:white;
-    #opfab-card-icon{
-        filter: drop-shadow(1px 0px 4px white);
-    }
-    
+    color:white!important;
+}
+#opfab-card-icon{
+    filter: drop-shadow(1px 0px 4px white);
+    margin-left:5px;
 }
 
 .light-card-detail-selected-alarm {
@@ -49,7 +49,51 @@
 
 .light-card-detail-unselected {
     cursor: pointer;
-    background-color: var(--opfab-lightcard-detail-bgcolor); 
+    background-color: var(--opfab-lightcard-detail-bgcolor);
+}
+.light-card-background-action {
+    cursor: pointer;
+    background-color: #FFD2004D;
+}
+.light-card-background-alarm {
+    cursor: pointer;
+    background-color: #A70000;
+}
+.sncf-light-card-background-action {
+    cursor: pointer;
+    background-color: #E05206;
+    color:white;
+}
+.sncf-light-card-background-alarm {
+    cursor: pointer;
+    background-color: #C30044;
+    color:white;
+}
+.sncf-light-card-background-compliant {
+    cursor: pointer;
+    background-color: #E05206;
+    color:white;
+}
+.sncf-light-card-background-information {
+    cursor: pointer;
+    background-color: #C30044;
+    color:white;
+}
+.sncf-border-alarm{
+    border-color: #C30044;
+    border-width: 4px;
+}
+.sncf-border-action{
+    border-color: #E05206;
+    border-width: 4px;
+}
+.sncf-border-compliant{
+    border-color: #E05206;
+    border-width: 4px;
+}
+.sncf-border-information{
+    border-color: #E05206;
+    border-width: 4px;
 }
 
 .light-card-detail-unread {
@@ -69,8 +113,20 @@
     border: 1px solid $sev-information;
 }
 
+.title-light-card-border-alarm{
+   color: $sev-alarm;
+}
+.title-light-card-border-action{
+   color: $sev-action;
+}
+.title-light-card-border-compliant{
+   color: $sev-compliant;
+}
+.title-light-card-border-information{
+   color: $sev-information;
+}
+
 .card:hover {
-    word-break: break-all;
     box-shadow: var(--opfab-card-shadow);
     background-color: #D1D1D1;
 }
@@ -128,4 +184,9 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
+    color:grey;
+}
+
+.light-card-detail-selected span{
+    color:white;
 }

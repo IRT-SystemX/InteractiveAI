@@ -27,6 +27,20 @@
         border-radius: 5px;
     }
 }
+#map{
+    width: 100%;
+    height: 42vh;
+    margin-top: 20px;
+    position: absolute;
+    border-radius: 5px;
+}
+.map_sncf{
+    width: 100%;
+    height: 42vh;
+    margin-top: 20px;
+    position: relative!important;
+    border-radius: 5px;
+}
 
 body {
     color: $light;
@@ -631,7 +645,7 @@ tag-input {
 }
 
 .choose-uc-img:hover{
-    background-image: url("../assets/images/bouton DA nominal.png");
+    //TBD background-image: url("../assets/images/bouton DA nominal.png");
   }
 #opfab-card-icon{
     filter: drop-shadow(1px 0px 4px white);
@@ -640,4 +654,516 @@ tag-input {
 label:hover{
     font-weight: bold;
     color: var(--bs-blue);
+}
+
+.DA_Card{
+    min-height: 31px!important;
+}
+.SNCF_Card{
+    min-height: 54px !important
+}
+.sncf{
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+    border-radius: 5px;
+}
+
+.choose-uc-img{
+    width:25%;
+}
+.rteBtn{
+    border-radius: 6px;
+    border: none;
+    color: white;
+    background-color: rgb(0,167,222);
+    float:right;
+}
+.rteBtn:hover{
+    font-weight: bold;
+}
+.rtePrd:focus{
+    color: rgb(0,167,222);
+}
+.rtePrd:hover{
+    color: rgb(0,167,222);
+    font-weight: bold;
+}
+#opfab-div-card-template-alarm{
+    font-size : 12px!important;
+}
+#da_uc_btn{
+    margin-left:120px;
+}
+#sncfControl{
+    display: flex;
+}
+.sncfBtn{
+    border: none;
+    background: none;
+}
+.sncfBtn:hover{
+    text-decoration: underline red 5px;
+}
+.sncfBtn:active{
+    text-decoration: underline orange 5px;
+}
+.sncfBtn:focus{
+    text-decoration: underline orange 5px;
+}
+#train_welcome{
+    display:flex;
+}
+#train_infos{
+    border: 1px solid;
+    border-radius: 10px;
+}
+#train_infos{
+    width: 210px;
+    margin-bottom:10px;
+}
+#dassaultBar,#dassaultBar2{
+    margin-top: -44px;
+}
+@media (max-height: 768px) { //random laptop
+    .sncf{
+        height:430px!important;
+    }
+    .sncf_ctx_div{
+        margin-left: 285px!important;
+        min-width: 710px;
+    }
+    .rte_ctx_div {
+        margin-left: 349px !important;
+        min-width: 615px;
+        height:440px!important;
+    }
+    .rteNotifs{
+        height:440px!important;
+    }
+    .rte_ctxImg{
+        max-width: 608px;
+    }
+    #sncf_assist_nominal{
+        text-align: center;
+        margin-top: 160px!important;
+    }
+    #map{
+        // width:683px!important;
+        height:46vh;
+    }
+    #assistOpTitle{
+        width:336px!important;
+        height:440px;
+    }
+    .assistOpTitle{
+        left:1025px;
+    }
+    .assistOpTitleDA{
+        left:995px;
+    }
+    .dassault_ctx_div{
+        margin-left: 329px
+    }
+    #dassaultBar{
+        height: 540px;
+        margin-left: 350px
+    }
+    #dassaultBar2{
+        height: 540px;
+        margin-left: 960px;
+    }
+    .dassault_ctx_div{
+        margin-left: 370px
+    }
+    #synoptique{
+        font-size: 12px;
+    }
+    .map_da{
+        height: 43vh!important;
+        width: 578px !important;
+    }
+    #synoptic_back{
+        width:77%!important;
+    }
+    #dependances{
+        width:70%;
+    }
+    .assist_rte{
+        left: 810px!important;
+    }
+    #bar2{
+        margin-left: 280px;
+    }
+    #opfab-card-list{
+        max-height: 375px;
+    }
+    .feed-content_optimized{
+        width:345px!important;
+    }
+    .map_sncf{
+        width:710px!important
+    }
+    #train_infos{
+        font-size: 12px;
+    }
+    #train_welcome img{
+        width: 30%;
+    }
+    #orange_ctx_container{
+        overflow: hidden;
+        height: 370px;
+    }
+    #orange_ctx{
+        max-height: 287px;
+    }
+}
+@media (min-height: 1024px) and (max-width: 1366px){ //ipad
+    .sncf{
+        height: 680px!important;
+    }
+    #notifContainer{
+        width: 400px!important;
+    }
+    #feed-content{
+        width:326px!important;
+    }
+    .sncf_ctx_div{
+        margin-left: 334px;
+        min-width: 658px;
+    }
+    .rte_ctx_div {
+        margin-left: 334px;
+        min-width: 722px;
+        height:700px!important;
+    }
+    .rte_ctxImg{
+        max-width: 608px;
+    }
+    .dassault_ctx_div{
+        margin-left: 370px
+    }
+    #synoptique{
+        font-size: 12px;
+    }
+    #synoptic_back{
+        width: 77%!important;
+    }
+    #dassaultBar{
+        height: 905px;
+        margin-left: 350px
+    }
+    #dassaultBar2{
+        height: 905px;
+        margin-left: 1050px;
+    }
+    #assistOpTitle{
+        width:326px!important;
+    }
+    .assistOpTitle{
+        left:1025px;
+    }
+    .assistOpTitleDA{
+        left:1087px;
+    }
+    .assist_rte{
+        margin-left: 875px;
+    }
+    #bar2{
+        margin-left: 280px;
+    }
+    .map_da{
+        height: 45vh!important;
+        width: 668px!important
+    }
+    .map_sncf{
+        height: 59vh!important;
+        width: 658px!important;
+    }
+    #opfab-card-list{
+        max-height: 630px;
+    }
+    #train_welcome img{
+        width: 30%;
+    }
+}
+@media (min-height: 900px) and  (min-width: 1800px) { // demo
+    .rteNotifs{
+        width:100%!important;
+        height:700px;
+    }
+    .sncf{
+        height: 680px!important;
+    }
+    #notifContainer{
+        width: 400px!important;
+    }
+    #feed-content{
+        width:350px;
+    }
+    .sncf_ctx_div{
+        margin-left: 360px;
+        min-width: 1190px
+    }
+    .feed-content_override{
+        width: 350px!important;
+    }
+    .rte_ctx_div{
+        margin-left: 432px;
+        min-width: 1076px;
+        height:700px!important;
+    }
+    .rte_ctxImg{
+        max-width: 100%;
+        height: 673px;
+    }
+    .rteNotifsE{
+        width: 420px !important;
+        height: 700px!important;
+    }
+    .dassault_ctx_div{
+        margin-left: 405px;
+    }
+    #dassaultBar{
+        height: 905px;
+        margin-left: 392px;
+    }
+    #dassaultBar2{
+        height: 905px;
+        margin-left: 1500px
+    }
+    .map_da{
+        height: 58vh!important;
+    }
+    .map_da{
+        width:1078px!important;
+    }
+    .map_sncf{
+        width: 1185px !important;
+        height: 56vh!important;
+    }
+    #da_uc_btn {
+        margin-left: 185px;
+    }
+    #synoptic_back{
+        width: 91%!important;
+    }
+    .assist_sncf{
+        width:350px; 
+    }
+    .assist_orange{
+        width:350px; 
+    }
+    .assist_orange_overflow_override{
+        overflow: scroll!important;
+    }
+    .assist_rte{
+        margin-left: 1160px;
+        height: 726px;
+    }
+    #assistOpTitle{
+        width:326px!important;
+        overflow-y: hidden;
+    }
+    .assistOpTitle{
+        left:1580px;
+    }
+    .assistOpTitleDA{
+        left: 1540px;
+    }
+    .assistOpTitle_rte{
+        height: 700px;
+    }
+    #bar2{
+        margin-left: 430px;
+    }
+    #opfab-card-list{
+        max-height: 620px;
+    }
+    #sncfControl{
+        display: flex;
+    }
+    #sncf_ctx{
+        margin-top : 10px;
+    }
+    #orange_ctx_container{
+        margin-left: 300px;
+    }
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .toBlink {
+    animation: blinker 1s linear infinite;
+  }  
+
+  #closeBtn{
+    width: 40px;
+    position: absolute;
+    right: 0px;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .sncf-light-card-selected span{
+    color:black!important
+  }
+  .sncfCard{
+    background: url(../assets/images/!.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position-x: 60px;
+}
+  .sncfCardNotSelected{
+    background: url(../assets/images/white_!.png);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position-x: 60px;
+}
+.sncf_incidents{
+    border-radius: 5px;
+    border: 2px solid;
+    margin-left: 5px;
+}
+#incidents{
+    width: 40%;
+}
+#sncf_dependances{
+    width:60%;
+    text-align: center;
+}
+
+.orange_theme{
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+}
+.orange_details{
+    right: 0px;
+    position: absolute;
+}
+.orange_button{
+    border-radius: 7px;
+    font-weight: 900;
+    color: white;
+    border-width: thin;
+}
+.orange_button_orange{
+    background: #FF7900;
+}
+.orange_button_green{
+    background: #50BE87;
+}
+.orange_button_purple{
+    background: #A885D8;
+}
+#orange_correlation_desc{
+    color:black;
+    font-size: 13px;
+}
+.orange_button_theme{
+    border: none;
+    background: none;
+}
+
+.histo_tab:hover{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.histo_tab:active{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.histo_tab:focus{
+    text-decoration: underline #A885D8 2px;
+    color: #A885D8
+}
+.stats_tab:hover{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+.stats_tab:active{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+.stats_tab:focus{
+    text-decoration: underline #4BB4E6 2px;
+    color: #4BB4E6
+}
+#correlation_app_y,#orange_incidents{
+    margin: 7px;
+}
+#display_result{
+    border-radius: 5px;
+    color:white;
+    background-color: #4BB4E6;
+}
+#box_methode_calcul{
+    font-size: 12px;
+}
+.reduced{
+    width: 5%;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    writing-mode: horizontal-tb;
+    width: 200px;
+}
+
+option {
+  padding: 0;
+}
+
+input[type="range"] {
+  width: 200px;
+  margin: 0;
+}
+.slider-container{
+    width:80%;
+    margin-left: 25px;
+}
+.correlation{
+    display: flex;
+    border: 2px solid #4BB4E6;
+    border-radius: 5px;
+}
+.assist_da_btn{
+    background: grey;
+    border-radius: 7px;
+    color: white;
+}
+.daSyn{
+    width:100%;
+}
+.sncf_button{
+    color:white;
+    background: #009AA6;
+}
+.sncf_button_assist{
+    color:white;
+    background: #E05206;
+    margin-right: 3px;
+}
+.sncf_button_grey{
+    color:white;
+    background: #707070;
+}
+
+.sncf_button,.sncf_button_assist,.sncf_button_grey{
+    border-radius: 7px;
+    border: none;
+}
+#sncf_assist_nominal{
+    text-align: center;
+    margin-top: 300px;
+}
+#sncf_solution{
+    margin-top: 3px;
+    font-size:15px
+}
+#sncf_assist_full,#sncf_solution{
+    margin-left:3px;
 }

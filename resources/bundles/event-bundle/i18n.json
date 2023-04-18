@@ -1,7 +1,0 @@
-{
-	"eventProcess":{
-		"title":"{{title}}",
-		"summary":"{{summary}}",
-        "metadata": "{{metadata}}"
-	}
-}

@@ -24,13 +24,13 @@ class MetadataOrange(Metadata):
     pass
 
 
-class MetadataDAFW(Metadata):
+class MetadataDA(Metadata):
     pass
 
 
 class EventIn(Schema):
     use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA/FW', 'ORANGE']))
+        ['RTE', 'SNCF', 'DA', 'ORANGE']))
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
     date = DateTime(format="iso")
@@ -46,11 +46,14 @@ class EventIn(Schema):
         if use_case == "RTE":
             MetadataRTE().load(metadata)
         elif use_case == "SNCF":
-            MetadataSNCF().load(metadata)
+            # MetadataSNCF().load(metadata)
+            pass
         elif use_case == "ORANGE":
-            MetadataOrange().load(metadata)
-        elif use_case == "DA/FW":
-            MetadataDAFW().load(metadata)
+            # MetadataOrange().load(metadata)
+            pass
+        elif use_case == "DA":
+            # MetadataDA().load(metadata)
+            pass
         else:
             raise ValidationError("Invalid use case")
 

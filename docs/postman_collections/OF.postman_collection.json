@@ -1,0 +1,448 @@
+{
+	"info": {
+		"_postman_id": "8b3df545-a48d-43dd-885c-2bfc69a3662a",
+		"name": "OF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "opfab-keycloak-secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "default"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "default"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "default"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"auth",
+						"token"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "test",
+									"type": "default"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "default"
+								},
+								{
+									"key": "clientId",
+									"value": "opfab-client",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_OF_UI}}/auth/token",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_OF_UI}}"
+							],
+							"path": [
+								"auth",
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jan 2023 14:42:59 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2059"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-store"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KEYCLOAK_LOCALE=; Version=1; Comment=Expiring cookie; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/auth/realms/dev/; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "KC_RESTART=; Version=1; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/auth/realms/dev/; HttpOnly"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=node0ndq2rwuz8rax11u10y5aliepe0.7c11ba6c68bc; path=/auth"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "ALLOW-FROM http://localhost:4200"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "no-referrer"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzM0NDgxNzksImlhdCI6MTY3Mjg0MzM3OSwianRpIjoiMWU4YjRlZjEtODkwMy00MzYxLWJkMzktOTViNjdhOGQ0ODc1IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyMDAyL2F1dGgvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhZG1pbiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJlMGUzM2M0MC1kYmY4LTQ4YzgtOGI5MS0zN2VkZGJmOGQxMjUiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJlMGUzM2M0MC1kYmY4LTQ4YzgtOGI5MS0zN2VkZGJmOGQxMjUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkFETUlOIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIn0.bwqIjoj4-kCo2VCXfcWOvV4ogF-UZECaPC2BM_OZixRclFbux_noiB8QYRCmVjNLoVy8ynDVDPOQT7loCn1UwspALQTW6ZeOA7cZqdZGgVwpbr7oxQ3oFv5cwkya8fQL6t3AhowBcAS1yLlUsrkIiCBEIysv77VtPV0zuJhChDkA9pTQy4ptWeDpdkEMWNdlBhRJnqEd_6kHd10Wegaj1OLtEpz9o9huFRi5tyXA3CZBsb8jQbnxk-LGtap6Pa7ZS8OKztrz_jzvcjV6nCf2SiCw_YLouT2duFXxPk-QdH2ZOi1UZyM-bj_JzJVmyrzcz9ELO7o1QuBVK9D5F4VBgA\",\n    \"expires_in\": 604800,\n    \"refresh_expires_in\": 1800,\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzZjdkZTM0OC05N2Q5LTRiOTUtYjViNi04MjExYTI3YjdlNzYifQ.eyJleHAiOjE2NzI4NDUxNzksImlhdCI6MTY3Mjg0MzM3OSwianRpIjoiZDEwM2ZlZTgtZjY2Ny00NDJmLWFlMzMtYTEwZDNlYjZkMzc5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyMDAyL2F1dGgvcmVhbG1zL2RldiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MjAwMi9hdXRoL3JlYWxtcy9kZXYiLCJzdWIiOiJhZG1pbiIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiZTBlMzNjNDAtZGJmOC00OGM4LThiOTEtMzdlZGRiZjhkMTI1Iiwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiZTBlMzNjNDAtZGJmOC00OGM4LThiOTEtMzdlZGRiZjhkMTI1In0.f9-Yk7m4Htf-tZZ6oGkgefgCGpf_GWeKnoEZIzlVGuU\",\n    \"token_type\": \"Bearer\",\n    \"not-before-policy\": 0,\n    \"session_state\": \"e0e33c40-dbf8-48c8-8b91-37eddbf8d125\",\n    \"scope\": \"email profile\"\n}"
+				}
+			]
+		},
+		{
+			"name": "synchronizeWithToken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzQxNDUwNTQsImlhdCI6MTY3MzU0MDI1NCwianRpIjoiYWMyMDM2OGYtOTlmNy00YWY4LWE2NTgtOGM0YzNiMjczZTJhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjAwL2F1dGgvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhZG1pbiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJkZWRkZGQ1Zi02YzViLTQxNDAtODc2MC0wOTEwMDRiYTI2ZGYiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJkZWRkZGQ1Zi02YzViLTQxNDAtODc2MC0wOTEwMDRiYTI2ZGYiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkFETUlOIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIn0.WRRwQs3Jd6zeltc6XWZql1VFTDQePwwlT5bw0h8mnWqgmhWpsShsoRNpkEeqp3rnfoVWVP7ZNPvtqZoDK4OrcjEG5Cf9zvnRjUuLdVacUELkmWjqGjOOMfl9nxDt-YQQir6nXOQA8eiAKEMcWI2S5ueGO580LWCpGOvNzhszTlOlKiiis4c0EEZmNYFXVt4JcC-4qSSAf16YPx9MYO75a1SKxHdDwkdwYoC9Oz1r5xShvTJV-LM8pjzs52OtaWfpOb6Fz67XBxngnmC9LD6YOmxeL691PPkSTTjnlz421h8Yl2LxAWgWDMsxHWTHF82mbE-yqlFbOAZS-wwwCn4jDQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/users/users/synchronizeWithToken",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"users",
+						"users",
+						"synchronizeWithToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CurrentUserWithPerimeters",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzQ0MjYyNTcsImlhdCI6MTY3MzgyMTQ1NywianRpIjoiOWM2YjVmNTQtYTcwZS00OGY5LTg5MmMtMTllZjAzOTYzYjJlIiwiaXNzIjoiaHR0cDovLzEwLjE4OC4yMDAuOTg6MzIwMC9hdXRoL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYWRtaW4iLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiYWE0MjNkYjEtYWUxNy00YzgzLWI0ZjktOTZlYTZlODQ0NDYyIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiYWE0MjNkYjEtYWUxNy00YzgzLWI0ZjktOTZlYTZlODQ0NDYyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJncm91cHMiOiJBRE1JTiIsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZW50aXRpZXNJZCI6IlNOQ0Y7T1JBTkdFO0RBO1JURSJ9.NuFach6XD8lVHsqtzSaBJ-L-wd4mklz7hif4Xo9uE5mCuzsiKBEm8JvJWQnkwVi8rD6-xCe8hEa5S1K4dw2W_I7_lrWfK5QMEHxg9F-a9M2PzbRPADnBtfXkvD0bjHgXUNm0Oml7Co676FR4hQw4RJ1DVYn969Axs7kIOET3RM51xisZB_PRve5SdOeBMbD0y-fTXj5-wT0SF8v8rAVlpI1coLuaIuPMEYsLU5s3dPbInDr0RPL52KU1MiRTGarbM4tVstcUMIm8jb5znoe5fUMoDBVgR8BLPQOCFLF7TEoHaTZ6XDAkULvNazvjSvLwH90JMH8Cjgq-YZ8qw4KCUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/users/CurrentUserWithPerimeters",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"users",
+						"CurrentUserWithPerimeters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "CurrentUserWithPerimeters",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_OF_UI}}/users/CurrentUserWithPerimeters",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_OF_UI}}"
+							],
+							"path": [
+								"users",
+								"CurrentUserWithPerimeters"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 04 Jan 2023 14:43:20 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=node01rkllk9vzu5kr1tvh54syck71m1.node0; Path=/"
+						},
+						{
+							"key": "Expires",
+							"value": "Thu, 01 Jan 1970 00:00:00 GMT"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"userData\": {\n        \"login\": \"admin\",\n        \"firstName\": null,\n        \"lastName\": null,\n        \"entities\": [\n            \"RTE\",\n            \"IRT_MAIN\",\n            \"SNCF\",\n            \"DA\",\n            \"ORANGE\"\n        ],\n        \"authorizedIPAddresses\": [],\n        \"groups\": [\n            \"ADMIN\"\n        ]\n    },\n    \"computedPerimeters\": [],\n    \"processesStatesNotNotified\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "settings",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_OF_UI}}/users/users/admin/settings",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_OF_UI}}"
+					],
+					"path": [
+						"users",
+						"users",
+						"admin",
+						"settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check_token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzQxNDUwNTQsImlhdCI6MTY3MzU0MDI1NCwianRpIjoiYWMyMDM2OGYtOTlmNy00YWY4LWE2NTgtOGM0YzNiMjczZTJhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjAwL2F1dGgvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhZG1pbiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJkZWRkZGQ1Zi02YzViLTQxNDAtODc2MC0wOTEwMDRiYTI2ZGYiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJkZWRkZGQ1Zi02YzViLTQxNDAtODc2MC0wOTEwMDRiYTI2ZGYiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkFETUlOIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIn0.WRRwQs3Jd6zeltc6XWZql1VFTDQePwwlT5bw0h8mnWqgmhWpsShsoRNpkEeqp3rnfoVWVP7ZNPvtqZoDK4OrcjEG5Cf9zvnRjUuLdVacUELkmWjqGjOOMfl9nxDt-YQQir6nXOQA8eiAKEMcWI2S5ueGO580LWCpGOvNzhszTlOlKiiis4c0EEZmNYFXVt4JcC-4qSSAf16YPx9MYO75a1SKxHdDwkdwYoC9Oz1r5xShvTJV-LM8pjzs52OtaWfpOb6Fz67XBxngnmC9LD6YOmxeL691PPkSTTjnlz421h8Yl2LxAWgWDMsxHWTHF82mbE-yqlFbOAZS-wwwCn4jDQ",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "token_type_hint",
+							"value": "access_token",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzQ0MjEyMDEsImlhdCI6MTY3MzgxNjQwMSwianRpIjoiM2YyMDM4ZGQtMGE0MC00MDcyLWJhZWItODRhODQ4ZGQyZGFiIiwiaXNzIjoiaHR0cDovLzEwLjE4OC4yMDAuOTg6MzIwMC9yZWFsbXMvZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImFkbWluIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjA4NmYyMjJjLTIxMTAtNDRmMi1iMjFjLTkwN2UzMjhkOThkNCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjA4NmYyMjJjLTIxMTAtNDRmMi1iMjFjLTkwN2UzMjhkOThkNCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjoiQURNSU4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImVudGl0aWVzSWQiOiJTTkNGO09SQU5HRTtEQTtSVEUifQ.ZNsCkUmrwQPB10V8OaCGmtNZhOpSgYzurUUYznkB0ngWL9wdX9N7T8W68340-G1hUo2KGfCveUn_9QfrhW0yKSFa4DRNsAmoTGr-bEDGgk3H0U4l-Kq866u5bLB9De7hIUdP-RIplqcDPyp5m0O7bOSWcrHUZlY7LDoXvfutGPW9UDnmpStzhIRLvquNB1VK2fjxHT5U_9FFrsZh1XPbqiAsFedagYFxATLsHagwfl4xMgJHhCsCKP772UyLtS4GK8kOazyY65Cp67jO6__rFR4r5DS-POgMRYqbstfJqjKUQ0-mEabqzjr8bAFDlf_B3mP870IeyRud932uEfqk0g",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/auth/check_token",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"auth",
+						"check_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzQxNDIwMTYsImlhdCI6MTY3MzUzNzIxNiwianRpIjoiYWE3YzdhMGQtOGY0OS00OGE4LTk0ZjgtMzUyNTliMGI0NDQwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjAwL2F1dGgvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhZG1pbiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiIxNWZiYzliZC1iOWU2LTRkOTEtYmMzZC1jNTY1MjRlOWE1ZGIiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiIxNWZiYzliZC1iOWU2LTRkOTEtYmMzZC1jNTY1MjRlOWE1ZGIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkFETUlOIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIn0.WJVkcqSLEBX-BYTJfLaDHbajRgjiLMctWvD5S2B0lh3wppo_0d7J-GuKVYKDEKMNGyNjusiFb-EXMsXjv8wMD110EgjG6E7VTwH_TLj1r3MGh5k3hgU2TQ2hWxp_IFzqDfkwExW604KNl4jXt4yCGMMXdrtcjRFbZKf_IETDGG41QkKsDTqcERgoLl2V4CEVArwFrn5dBDged14SEFSEDEAy_iHm6YM_BaC8nVLN6DAz9B7QI5wgE_GHT-02LwqHO5mQNyaFsy70YQn_tW9YOtRM2oHz50_GR1K4FJdTevjlozFvOrepnHEZ8eTa_LmfdfkZ1KjyFlB3vzqVD-MGrQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:89/auth/realms/dev/protocol/openid-connect/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "89",
+					"path": [
+						"auth",
+						"realms",
+						"dev",
+						"protocol",
+						"openid-connect",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

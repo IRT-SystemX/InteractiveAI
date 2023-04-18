@@ -27,7 +27,7 @@
     },
     {
       "id": "admin",
-      "visible": true,
+      "visible": false,
       "showOnlyForGroups": ["ADMIN"]
     },
     {
@@ -80,19 +80,6 @@
           "linkType": "BOTH"
         }
       ]
-    },
-    {
-      "id": "adminmenu",
-      "label": "title.admin",
-      "entries": [
-        {
-          "id": "uid_test_3",
-          "url": "https://opfab.github.io/",
-          "label": "entry.admin",
-          "linkType": "BOTH",
-          "showOnlyForGroups": ["ADMIN"]
-        }
-      ]
     }
   ],
   "locales": [
@@ -106,14 +93,6 @@
           "entry": {
             "single": "Supervision"
           }
-        },
-        "adminmenu": {
-          "title": {
-            "admin": "Admin menu"
-          },
-          "entry": {
-            "admin": "Admin menu entry"
-          }
         }
       }
     },
@@ -126,14 +105,6 @@
           },
           "entry": {
             "single": "Supervision"
-          }
-        },
-        "adminmenu": {
-          "title": {
-            "admin": "Admin menu"
-          },
-          "entry": {
-            "admin": "Admin menu entry"
           }
         }
       }

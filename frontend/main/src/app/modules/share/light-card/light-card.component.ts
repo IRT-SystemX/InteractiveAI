@@ -54,6 +54,9 @@ export class LightCardComponent implements OnInit, OnDestroy {
     groupedCardsVisible = true;
     hasGeoLocation;
     isGeoMapEnabled;
+    rteUrl = "/cabcontext/api/v1/contexts";
+    token = window.localStorage.token;
+    emergencyClicked = false;
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -148,7 +151,60 @@ export class LightCardComponent implements OnInit, OnDestroy {
     handleDate(timeStamp: number): string {
         return this.dateTimeFormatter.getFormattedDateAndTimeFromEpochDate(timeStamp);
     }
-    public getCardTitle() {
+    public hideAllSynops(){
+        var synops = ['STATUS','ECS','ELEC','FUEL','HYD','BLEED','TEST','ENGINE'];
+        for (var synop=0;synop<synops.length;synop++){
+          try {
+            document.getElementById(synops[synop]).hidden= true;
+          } catch (error) {
+            console.log("unknown synop element")
+          }
+          try {
+            document.getElementById(synops[synop]+"_nominal").hidden= true;
+          } catch (error) {
+            console.log("unknown synop nominal element")
+          }
+        }
+      }
+
+      public getRecommandationDA(title){
+        var recoResponse;
+        var data = JSON.stringify({
+          "event": {
+            "event_type": title
+          }
+        });
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            document.getElementById("da_block_request").innerHTML = "";
+            document.getElementById("da_block_request").innerHTML += "Procedure <hr>"
+            recoResponse = JSON.parse(this.responseText);
+            Object.keys(recoResponse.da_recommendation.Procedure).forEach(function(k){
+                document.getElementById("da_block_request").hidden = false;
+                document.getElementById("da_block_request").innerHTML += recoResponse.da_recommendation.Procedure[k].TaskIndex + ' - ' +recoResponse.da_recommendation.Procedure[k].TaskText + '<hr>';
+          });
+    
+          }
+        });
+        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(data);
+      }
+    public getCardTitle($event) {
+        this.hideAllSynops();
+        $.ajaxSetup({
+            headers:{
+               'Authorization': " Bearer " + this.token
+            }
+         });
+        if(window.location.host.includes("localhost")){
+            this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
+          }
+
         if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
@@ -156,12 +212,12 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
-            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
-            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -172,7 +228,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-agent").hide()
         }
         else if (document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")) {
-            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -185,16 +241,16 @@ export class LightCardComponent implements OnInit, OnDestroy {
             && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
-            $("#opfab-div-card-template-alarm").hide()
+            $("#opfab-div-card-template-alarm").show()
             $("#opfab-div-card-template").hide()
-            $("#opfab-div-card-template-noparades").show()
+            $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
-            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
-            $.get("http://192.168.208.57:5100/api/v1/contexts?time=" + new Date().getTime(), function (data) {
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
@@ -205,10 +261,137 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
         }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("FAULT")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = false;
+            document.getElementById("noevent_da").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ENG1")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            document.getElementById("da_block_request").hidden = true;
+            this.getRecommandationDA(document.getElementById("opfab-card-title").innerText);
+            document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
+            document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
+            document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
+            document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
+            document.getElementById("ELEC_nominal").hidden = false;
+
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("Panne")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = false;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("PRESS")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            document.getElementById("ECS_nominal").setAttribute("src",document.getElementById("ECS").getAttribute("src"));
+            document.getElementById("ECS").hidden = false;
+            this.getEmergencyPlan();
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ELEC")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
+            document.getElementById("ELEC_nominal").hidden = false;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("ENGINE")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
+            document.getElementById("ENGINE_nominal").hidden = false;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("FUEL")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
+            document.getElementById("FUEL_nominal").hidden = false;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("HYD")) {
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
+            document.getElementById("HYD_nominal").hidden = false;
+        }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            document.getElementById("high_procedure").hidden = true;
+            document.getElementById("pdv_da").hidden = true;
+            document.getElementById("noevent_da").hidden = true;
+            var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
+            document.getElementById("sncf_incident_infos").innerHTML 
+            = 
+            '<div class="sncf_incidents" id="incidents">' 
+            + '<b>Fiche Evenement</b><br>'
+            + '<img src = "/assets/images/map.png">' + "TGV n° : " + cardDesc.substring(0, cardDesc.indexOf(' ')) +"<br>"
+            + '<img src = "/assets/images/information.png">' + document.getElementById("opfab-card-title").innerText + "<br>"
+            + '<img src = "/assets/images/time.png">' +new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short', timeZone: 'Europe/Paris' }).format(new Date()) + "<br>"
+            + '<img src = "/assets/images/warning.png">' + document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[1].innerText.replace("Routine ","Gravité Mineure")  
+            + "</div>"
+            + '<div class="sncf_incidents" id="sncf_dependances">'
+            + '<b>Dépendances</b><br>'
+            + 'Aucune dépendance à afficher'
+            + '</div>';
+            document.getElementById("incident").classList.add("toBlink");
+        }
 
     }
+    public getEmergencyPlan() {
+        if (!this.emergencyClicked){
+          document.getElementById("noevent_da").hidden=true;
+          document.getElementById("da_block_request").innerHTML = "";
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.open("GET", "./assets/emergency_procedures_short.json", false);
+          // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+          xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
+          xmlHttp.send(null);
+          var response = JSON.parse(xmlHttp.responseText);
+          Object.keys(response.procedure).forEach(function(key) {
+            var blockIndex = response.procedure[key].block.block_index;
+            var blockName = response.procedure[key].block.block_name;
+            var blockTask = response.procedure[key].block.toExecute;
+            document.getElementById("da_block_request").innerHTML+= "<button class='assist_da_btn'><b>" + blockName + "</b></button><br>"
+            Object.keys(blockTask).forEach(function(key) {
+              console.log(blockTask[key])
+            document.getElementById("da_block_request").innerHTML+= "<span>"  + blockTask[key].index + " - " + blockTask[key].type +" "+  blockTask[key].content + "</span><br>"
+            });
+          });
+            document.getElementById("da_block_request").innerHTML+= "<hr><span><b>Active limitations</b></span><br>";
+            document.getElementById("da_block_request").innerHTML+= "<span> Speed MIN - " + response.maxSpeed + "</span><br>";
+            document.getElementById("da_block_request").innerHTML+= "<span> Speed MAX - " + response.minSpeed + "</span><br>";
+            document.getElementById("assistOpTitle").style.overflowY = "scroll";
+            this.emergencyClicked = true;
+      }else{
+        document.getElementById("da_block_request").hidden = true;
+        document.getElementById("assistOpTitle").style.overflowY = "hidden";
+      }
+      };
     public select($event) {
-        var card = $event.path[2].firstChild.offsetParent.outerText;
+        // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();
@@ -220,7 +403,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         if (this.displayContext != DisplayContext.PREVIEW)
             this.router.navigate(['/' + this.currentPath, 'cards', this.lightCard.id]);
         setTimeout(() => {
-            this.getCardTitle()
+            this.getCardTitle($event)
         }, 1000);
         // if(card.includes("Surcharge")){
         //     $("#opfab-div-card-template-security").hide()
@@ -229,7 +412,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         //     $("#opfab-div-card-template").hide()
         //     $("#opfab-div-card-template-noparades").hide()
 
-        //     $.get( "http://192.168.208.57:5100/api/v1/contexts?time="+new Date().getTime(), function( data ) {
+        //     $.get( this.rteUrl + "?time=" + +new Date().getTime(), function( data ) {
         //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
         //        $(".opfab-card-response-header").hide();
         //       });

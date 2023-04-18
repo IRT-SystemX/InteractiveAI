@@ -7,10 +7,10 @@
 <!-- This file is part of the OperatorFabric project.                      -->
 
 
-
+<!-- class="card light-card-detail light-card-border-{{lightCard.severity.toString()|lowercase}} title-light-card-border-{{lightCard.severity.toString()|lowercase}}" -->
 <div id="opfab-feed-light-card-{{lightCard.process}}-{{lightCard.processInstanceId}}"
      attr.data-urlId="{{lightCard.process}}.{{lightCard.processInstanceId}}"
-     class="card light-card-detail light-card-border-{{lightCard.severity.toString()|lowercase}}"
+     class="card light-card-detail"
      attr.severity="{{lightCard.severity.toString()|lowercase}}"
      [class.light-card-detail-selected]="open || groupedCardOpen" [class.light-card-detail-unselected]="!open && !groupedCardOpen"
      [class.light-card-detail-unread]="displayUnreadIcon && !isArchivePageType() && !lightCard.hasBeenRead"
@@ -21,8 +21,8 @@
     <div class="d-flex  p-0 border-0">
         <div  style="width: 100%">
             <div style="display: grid;grid-template-columns: auto auto;margin-top:2px">
-                <p class="card-title ">
-                    <span id="opfab-feed-list-card-title" style="margin-left:3px">{{lightCard.titleTranslated | opfabTitleCase}}</span>
+                <p class="card-title" style="margin-left:5px">
+                    <span id="opfab-feed-list-card-title">{{lightCard.titleTranslated | opfabTitleCase}}</span>
                 </p>
                 <p class="card-severity ">
                     <span class="opfab-feed-list-card-severity">{{lightCard.severity.toString()|lowercase}} 

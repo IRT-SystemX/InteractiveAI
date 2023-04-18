@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces",
+					"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=RTE",
 					"protocol": "http",
 					"host": [
 						"{{ENV_ENDPOINT_HISTORIC}}"
@@ -20,10 +20,315 @@
 						"api",
 						"v1",
 						"traces"
+					],
+					"query": [
+						{
+							"key": "date_start",
+							"value": "2022-11-21T16:33:51.304097"
+						},
+						{
+							"key": "date_end",
+							"value": "2003-12-22T16:33:51.304097",
+							"disabled": true
+						},
+						{
+							"key": "use_case",
+							"value": "RTE"
+						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Traces",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&date_end=2022-12-22T16:33:51.304097",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_HISTORIC}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traces"
+							],
+							"query": [
+								{
+									"key": "date_start",
+									"value": "2022-11-21T16:33:51.304097"
+								},
+								{
+									"key": "date_end",
+									"value": "2022-12-22T16:33:51.304097"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 08 Dec 2022 12:35:52 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "392"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+				},
+				{
+					"name": "Traces",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_HISTORIC}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traces"
+							],
+							"query": [
+								{
+									"key": "date_start",
+									"value": "2022-11-21T16:33:51.304097",
+									"disabled": true
+								},
+								{
+									"key": "date_end",
+									"value": "2022-12-22T16:33:51.304097",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 08 Dec 2022 12:43:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "756"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"MEDIUM\",\n            \"data\": {\n                \"event_type\": \"agent\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2012-01-04T07:25:00.000000\",\n            \"description\": \"Soyez vigilant sur la zone Est\",\n            \"id_event\": \"be9bf8bb-8b11-43bc-9474-cccda94e622d\",\n            \"title\": \"Alerte Agent IA\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2012-01-04T07:25:00\",\n        \"id_trace\": \"4a565b7a-c95f-43e5-a9a2-8132979046e0\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    },\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+				},
+				{
+					"name": "Traces",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_HISTORIC}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traces"
+							],
+							"query": [
+								{
+									"key": "date_start",
+									"value": "2022-11-21T16:33:51.304097"
+								},
+								{
+									"key": "date_end",
+									"value": "2022-12-22T16:33:51.304097",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 08 Dec 2022 12:52:40 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				},
+				{
+					"name": "Traces",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_end=2003-12-22T16:33:51.304097",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_HISTORIC}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traces"
+							],
+							"query": [
+								{
+									"key": "date_start",
+									"value": "2022-11-21T16:33:51.304097",
+									"disabled": true
+								},
+								{
+									"key": "date_end",
+									"value": "2003-12-22T16:33:51.304097"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 08 Dec 2022 13:28:10 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				},
+				{
+					"name": "Traces",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=RTE",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_HISTORIC}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traces"
+							],
+							"query": [
+								{
+									"key": "date_start",
+									"value": "2022-11-21T16:33:51.304097"
+								},
+								{
+									"key": "date_end",
+									"value": "2003-12-22T16:33:51.304097",
+									"disabled": true
+								},
+								{
+									"key": "use_case",
+									"value": "RTE"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.2.2 Python/3.11.0"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 08 Dec 2022 13:35:48 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "392"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "Traces",
@@ -32,7 +337,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"date\": \"2022-11-22T16:33:51.304097\",\n        \"description\": \"this is a description\",\n        \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n        \"metadata\": {\n            \"event_type\": \"KPI\",\n            \"flux\": 456.34,\n            \"line\": \"1_2_3\",\n            \"zone\": \"Est\"\n        },\n        \"use_case\": \"RTE\"\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"RTE\"\n}",
+					"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"date\": \"2022-11-22T16:33:51.304097\",\n        \"description\": \"this is a description\",\n        \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n        \"data\": {\n            \"event_type\": \"KPI\",\n            \"flux\": 456.34,\n            \"line\": \"1_2_3\",\n            \"zone\": \"Est\"\n        },\n        \"use_case\": \"RTE\"\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"RTE\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
