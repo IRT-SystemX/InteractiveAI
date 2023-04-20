@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODEzMTUwNTksImlhdCI6MTY4MDcxMDI1OSwianRpIjoiOTlkYjg2NTktZDcxOS00OGU1LThiM2MtZGJhMzViNmJiNmJiIiwiaXNzIjoiaHR0cDovLzE3Mi4xNy4wLjE6MzIwMC9hdXRoL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoic25jZl91c2VyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjA1MTYxOGJkLWVkNzctNDlhMC1iZmUwLWZjODQ4OTM1MDdmZCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjA1MTYxOGJkLWVkNzctNDlhMC1iZmUwLWZjODQ4OTM1MDdmZCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic25jZl91c2VyIiwiZW50aXRpZXNJZCI6IlNOQ0YifQ.Oxd07PJkEAgDza59dK0glasKYb5JnYMm8PiX2-TdM512XPMOKSAr9vRGjSgLk98qoKJ2g9k2cP--PsJlvG1HE64bp7Bf3LgF_KVT-s0bMO8mE28AjffF-bLN5ALOcpBookbiS0KKnZr3DBDNKCJmRSxzCMH-TXkj7iypIrvjlwgwjlXz5_qPTvpnXz8AhRQZeMOGRHlWOS64ay3P2Pfz1Tw_RcGQN10EetaXyFIWtvmK6PIrcsOqxic13LAEKAkhsxhVwThRtfQ74NVamF6zaN5n3KMBR8JXmCxPscyUAB8ekQUTyDvvQTFvW3mTwkkNDSE0FtA40nxqL_NwmQOx2Q",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODI2MDY4MzQsImlhdCI6MTY4MjAwMjAzNCwianRpIjoiZjM5MDg3NDItZDMwNi00ODNiLWE2MWItNzEwNmRkMzJlZTc5IiwiaXNzIjoiaHR0cDovLzE3Mi4xNy4wLjE6MzIwMC9hdXRoL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoic25jZl91c2VyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImUyMWMzZmY0LTk4YjMtNGYyYy05YjRkLTIyN2VmYTIyNWE3ZSIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6ImUyMWMzZmY0LTk4YjMtNGYyYy05YjRkLTIyN2VmYTIyNWE3ZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic25jZl91c2VyIiwiZW50aXRpZXNJZCI6IlNOQ0YifQ.Wdict9nnXLRe_SssVUP3-WUjkAXN5YAUyh_zwoB23n7ZVrrrTNEM_3ZBx-PXNj6sfqwMBH5iCN3p4kz3yfmx2P_fQdxUj5fqEOWNCfYKuqwDSah_SeiGTRtDHMwYjL-oXZe9ry4Nj_4DNRtdnd4f4crEGDRxV1COgUjaYienZzfFzzLrIQFOBtGsq6TxPQQf4ablHuroW45iJEJvJtuDVsSQmxx7IEClP4HreEYjBNxEK4yUFanoZxCVpRB2_KXaKk8D56RYoKFBsijFOk24VFLLm1oKPgJksd0cK-4ugV7R3aPYKPJaauA-B3x8SEZZaUd0xfi1468fy7xcm2F2eg",
 							"type": "string"
 						}
 					]
@@ -22,7 +22,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"context\": {\n        \"position_agents\": {\n            \"0\": [\n                3,\n                2\n            ],\n            \"1\": [\n                3,\n                2\n            ],\n            \"2\": [\n                3,\n                2\n            ]\n        },\n        \"direction_agents\": [\n            2,\n            0,\n            0\n        ],\n        \"list_of_target\": {\n            \"0\": [\n                8,\n                7\n            ],\n            \"1\": [\n                310,\n                7\n            ],\n            \"2\": [\n                8,\n                7\n            ]\n        }\n    },\n    \"event\": {\n        \"malfunction_agent\": 0,\n        \"malfunction_position\": [\n            9,\n            12\n        ],\n        \"malfunction_delay\": 15\n    }\n}",
+					"raw": "{\n    \"context\": {\n        \"position_agents\": {\n            \"0\": [\n                3,\n                2\n            ],\n            \"1\": [\n                3,\n                2\n            ],\n            \"2\": [\n                3,\n                2\n            ]\n        },\n        \"direction_agents\": [\n            2,\n            0,\n            0\n        ],\n        \"list_of_target\": {\n            \"0\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"1\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"2\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ]\n        }\n    },\n    \"event\": {\n        \"malfunction_agent\": 0,\n        \"malfunction_position\": [\n            9,\n            12\n        ],\n        \"malfunction_delay\": 15\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -325,6 +325,78 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"recommendation\": [\n        \"Trains impactés : TGV 8404, TGV 7652 et TGV 5440.\",\n        \"La prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 7652 devait être la gare de Bordeaux, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 5440 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Poitiers.\"\n    ]\n}"
+				},
+				{
+					"name": "Get recommendation SNCF v2.1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"context\": {\n        \"position_agents\": {\n            \"0\": [\n                3,\n                2\n            ],\n            \"1\": [\n                3,\n                2\n            ],\n            \"2\": [\n                3,\n                2\n            ]\n        },\n        \"direction_agents\": [\n            2,\n            0,\n            0\n        ],\n        \"list_of_target\": {\n            \"0\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"1\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"2\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ]\n        }\n    },\n    \"event\": {\n        \"malfunction_agent\": 0,\n        \"malfunction_position\": [\n            9,\n            12\n        ],\n        \"malfunction_delay\": 15\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_recommendation/api/v1/recommendation",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_recommendation",
+								"api",
+								"v1",
+								"recommendation"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Apr 2023 15:04:00 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "400"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"recommendation\": [\n        \"Trains impactés : TGV 8404 et TGV 5440.\",\n        \"La prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 7652 reste la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 5440 devait être la gare de Angoulême, sera maintenant la gare de Poitiers.\"\n    ]\n}"
 				}
 			]
 		}

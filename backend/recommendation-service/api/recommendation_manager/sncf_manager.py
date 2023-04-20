@@ -22,8 +22,10 @@ class SNCFManager(BaseRecommendation):
 
         position_agents = [tuple(value)
                            for value in raw_position_agents.values()]
-        list_of_target = [tuple(value)
-                          for value in raw_list_of_target.values()]
+
+        list_of_target = [[tuple(target) for target in agent_targets]
+                          for agent_targets in raw_list_of_target.values()]
+
         recommendation = self.hypervisor.recommend(position_agents,
                                                    direction_agents,
                                                    list_of_target,
