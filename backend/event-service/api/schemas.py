@@ -39,21 +39,21 @@ class EventIn(Schema):
     data = Dict()
     is_active = Boolean()
 
+    @property
+    def _metadata_loaders(self):
+        return {
+            'RTE': MetadataRTE,
+            'SNCF': MetadataSNCF,
+            'ORANGE': MetadataOrange,
+            'DA': MetadataDA,
+        }
+
     @validates_schema
     def validate_metadata(self, data, **kwargs):
         use_case = data.get("use_case")
         metadata = data.get("data")
-        if use_case == "RTE":
-            MetadataRTE().load(metadata)
-        elif use_case == "SNCF":
-            # MetadataSNCF().load(metadata)
-            pass
-        elif use_case == "ORANGE":
-            # MetadataOrange().load(metadata)
-            pass
-        elif use_case == "DA":
-            # MetadataDA().load(metadata)
-            pass
+        if use_case in self._metadata_loaders:
+            self._metadata_loaders[use_case]().load(metadata)
         else:
             raise ValidationError("Invalid use case")
 
