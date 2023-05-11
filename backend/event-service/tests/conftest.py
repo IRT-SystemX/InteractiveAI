@@ -1,27 +1,32 @@
 from datetime import datetime
-import pytest
 
-from api.models import db, EventModel
-from app import create_app
 import config
-import requests_mock
+import pytest
+from api.models import EventModel, db
+from app import create_app
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def app():
     app = create_app(config.TestConfig)
-
     with app.app_context():
+        # Create the database tables
+        db.create_all()
+
         yield app
 
+        # Clean up the database after the test
+        db.session.remove()
+        db.drop_all()
 
-@pytest.fixture(scope="module")
+
+@pytest.fixture(scope="function")
 def client(app):
     return app.test_client()
 
 
 @pytest.fixture
-def auth_mocker(client, mocker):
+def rte_auth_mocker(client, mocker):
     # Mock the keycloak.introspect method to return a valid response
     mocker.patch('cab_common_auth.decorators.keycloak.introspect',
                  return_value={
@@ -65,28 +70,119 @@ def auth_mocker(client, mocker):
 
 
 @pytest.fixture
-def mock_operator_fabric_cards_api_request(requests_mock):
+def da_auth_mocker(client, mocker):
+    # Mock the keycloak.introspect method to return a valid response
+    mocker.patch('cab_common_auth.decorators.keycloak.introspect',
+                 return_value={
+                     "exp": 1684401219,
+                     "iat": 1683796419,
+                     "jti": "a28734f6-f5c8-4130-8fb7-573d75c39d8c",
+                     "iss": "http://192.168.211.95:3200/realms/dev",
+                     "aud": "account",
+                     "sub": "da_user",
+                     "typ": "Bearer",
+                     "azp": "opfab-client",
+                     "session_state": "bd3b8610-1d05-4bdd-916b-61dcfe6d5e72",
+                     "preferred_username": "da_user",
+                     "email_verified": False,
+                     "acr": "1",
+                     "realm_access": {
+                         "roles": [
+                             "offline_access",
+                             "uma_authorization"
+                         ]
+                     },
+                     "resource_access": {
+                         "account": {
+                             "roles": [
+                                 "manage-account",
+                                 "manage-account-links",
+                                 "view-profile"
+                             ]
+                         }
+                     },
+                     "scope": "email profile",
+                     "sid": "bd3b8610-1d05-4bdd-916b-61dcfe6d5e72",
+                     "groups": "RTE;ADMIN;ReadOnly",
+                     "entitiesId": "DA",
+                     "client_id": "opfab-client",
+                     "username": "da_user",
+                     "active": True
+                 })
 
-    mock_response_cards = {
-        "id": "string",
-        "uid": "string"
-    }
+
+@pytest.fixture
+def sncf_auth_mocker(client, mocker):
+    # Mock the keycloak.introspect method to return a valid response
+    mocker.patch('cab_common_auth.decorators.keycloak.introspect',
+                 return_value={
+                     "exp": 1684413915,
+                     "iat": 1683809115,
+                     "jti": "6f63636a-625a-4926-9684-6d5ed3b80e2a",
+                     "iss": "http://192.168.211.95:3200/realms/dev",
+                     "aud": "account",
+                     "sub": "sncf_user",
+                     "typ": "Bearer",
+                     "azp": "opfab-client",
+                     "session_state": "0dee604d-5c03-416c-8d95-59b0aa95b61a",
+                     "preferred_username": "sncf_user",
+                     "email_verified": False,
+                     "acr": "1",
+                     "realm_access": {
+                         "roles": [
+                             "offline_access",
+                             "uma_authorization"
+                         ]
+                     },
+                     "resource_access": {
+                         "account": {
+                             "roles": [
+                                 "manage-account",
+                                 "manage-account-links",
+                                 "view-profile"
+                             ]
+                         }
+                     },
+                     "scope": "email profile",
+                     "sid": "0dee604d-5c03-416c-8d95-59b0aa95b61a",
+                     "entitiesId": "SNCF",
+                     "client_id": "opfab-client",
+                     "username": "sncf_user",
+                     "active": True
+                 })
+
+
+@pytest.fixture
+def mock_of_create_cards_request(requests_mock):
+    mock_response_cards = {"id": "string", "uid": "string"}
     requests_mock.post('http://op/cards', json=mock_response_cards)
-
     mock_response_historic = {}
     requests_mock.post('http://historic/api/v1/traces',
                        json=mock_response_historic)
 
 
-@ pytest.fixture
-def create_events(client, auth_mocker):
-    db.create_all()
-    event1 = EventModel(id_event='123', use_case='RTE', title='Test Event 1',
-                        description='This is a test event', date=datetime.now(), criticality='HIGH',
-                        data={'event_type': 'KPI'})
-    event2 = EventModel(id_event='456', use_case='DA', title='Test Event 2',
-                        description='This is another test event', date=datetime.now(), criticality='LOW',
-                        data={'category': 'test'})
-    db.session.add(event1)
-    db.session.add(event2)
-    db.session.commit()
+@pytest.fixture(scope='function')
+def create_events(client, rte_auth_mocker):
+    with client.application.app_context():
+        db.create_all()
+        event1 = EventModel(
+            id_event='123',
+            use_case='RTE',
+            title='Test Event 1',
+            description='This is a test event',
+            date=datetime.now(),
+            criticality='HIGH',
+            data={'event_type': 'KPI'}
+        )
+        event2 = EventModel(
+            id_event='456',
+            use_case='DA',
+            title='Test Event 2',
+            description='This is another test event',
+            date=datetime.now(),
+            criticality='LOW',
+            data={'category': 'test'}
+        )
+        db.session.add(event1)
+        db.session.add(event2)
+        db.session.commit()
