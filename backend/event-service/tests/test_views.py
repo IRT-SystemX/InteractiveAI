@@ -1,0 +1,44 @@
+import json
+import pytest
+
+
+def test_get_all_rte_events(client, auth_mocker, create_events):
+    headers = {
+        'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODQzMzMyNjEsImlhdCI6MTY4MzcyODQ2MSwianRpIjoiNzE2YjAyZDQtMjliYS00MWJkLTg1YjItODAwNGNlYzFhMDMzIiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJydGVfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InJ0ZV91c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.j-_kiNnn5jQtUBMZ-oaeWVVfZLM1dWLFjRYKfL9pkpklG-CAVl1CuUQE969YkaPZLD4TtXaiNy02LhkIWmSwQuks2lH5_dtUlCBlpIouD1liDxg1g_oXn_m3vKwzDQ03KeeVC03BCMJR8gDTED80U-vjXT33-BngpjMP2rFMZRiZIJO_BB4GnIf55dnazWj8jbp0MVZYS9fuNeuLLrRgMevGDn5s-AlznmWLce1K6P882StmhI0unRXVOTRae8xRvDkk0BJ545K9FtLoZtgOeyEw7JrvElkPMqWKOy3R5hmpJENZSV1zCMBdXusVi7GTyn4denCqA7yYerWi_yaITg'
+    }
+    response = client.get('/api/v1/events', headers=headers)
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert len(data) == 1
+
+
+def test_add_event(client, auth_mocker, mock_operator_fabric_cards_api_request):
+    event_data = {
+        "criticality": "ROUTINE",
+        "title": "event with line 1_2_3",
+        "description": "this is a description",
+        "data": {
+            "event_type": "KPI",
+            "zone": "Ouest",
+            "line": "1_2_3",
+            "flux": 456.36
+        },
+        "use_case": "RTE",
+        "is_active": False
+    }
+    headers = {
+        'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODQzMzMyNjEsImlhdCI6MTY4MzcyODQ2MSwianRpIjoiNzE2YjAyZDQtMjliYS00MWJkLTg1YjItODAwNGNlYzFhMDMzIiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJydGVfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InJ0ZV91c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.j-_kiNnn5jQtUBMZ-oaeWVVfZLM1dWLFjRYKfL9pkpklG-CAVl1CuUQE969YkaPZLD4TtXaiNy02LhkIWmSwQuks2lH5_dtUlCBlpIouD1liDxg1g_oXn_m3vKwzDQ03KeeVC03BCMJR8gDTED80U-vjXT33-BngpjMP2rFMZRiZIJO_BB4GnIf55dnazWj8jbp0MVZYS9fuNeuLLrRgMevGDn5s-AlznmWLce1K6P882StmhI0unRXVOTRae8xRvDkk0BJ545K9FtLoZtgOeyEw7JrvElkPMqWKOy3R5hmpJENZSV1zCMBdXusVi7GTyn4denCqA7yYerWi_yaITg'
+    }
+    response = client.post('/api/v1/events', headers=headers, json=event_data)
+    assert response.status_code == 201
+
+
+def test_get_events_for_use_case(client, auth_mocker):
+    headers = {
+        'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODQzMzMyNjEsImlhdCI6MTY4MzcyODQ2MSwianRpIjoiNzE2YjAyZDQtMjliYS00MWJkLTg1YjItODAwNGNlYzFhMDMzIiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJydGVfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI4OTc2YjEyNS0zOWE4LTRiZGYtYjUyMy03ZTBkY2JjZGQzYjQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InJ0ZV91c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.j-_kiNnn5jQtUBMZ-oaeWVVfZLM1dWLFjRYKfL9pkpklG-CAVl1CuUQE969YkaPZLD4TtXaiNy02LhkIWmSwQuks2lH5_dtUlCBlpIouD1liDxg1g_oXn_m3vKwzDQ03KeeVC03BCMJR8gDTED80U-vjXT33-BngpjMP2rFMZRiZIJO_BB4GnIf55dnazWj8jbp0MVZYS9fuNeuLLrRgMevGDn5s-AlznmWLce1K6P882StmhI0unRXVOTRae8xRvDkk0BJ545K9FtLoZtgOeyEw7JrvElkPMqWKOy3R5hmpJENZSV1zCMBdXusVi7GTyn4denCqA7yYerWi_yaITg'
+    }
+    response = client.get('/api/v1/events?use_case=RTE', headers=headers)
+    assert response.status_code == 200
+    data = json.loads(response.data)
+    assert len(data) == 2
+    assert data[0]['use_case'] == 'RTE'
