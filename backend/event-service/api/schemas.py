@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, Float, Integer, String, Boolean
+from apiflask.fields import DateTime, Dict, Float, Integer, String, Boolean, List
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -17,7 +17,14 @@ class MetadataRTE(Metadata):
 
 
 class MetadataSNCF(Metadata):
-    pass
+    agent_id = String()
+    event_type = String()
+    agent_position = List(Integer())
+    delay = Integer()
+    id_train = String()
+    malfunction_stop_position = List(Integer())
+    num_rame = String()
+    tmp_rame = String()
 
 
 class MetadataOrange(Metadata):
@@ -25,7 +32,8 @@ class MetadataOrange(Metadata):
 
 
 class MetadataDA(Metadata):
-    pass
+    event_type = String()
+    system = String()
 
 
 class EventIn(Schema):
@@ -54,8 +62,8 @@ class EventIn(Schema):
         metadata = data.get("data")
         if use_case in self._metadata_loaders:
             self._metadata_loaders[use_case]().load(metadata)
-        else:
-            raise ValidationError("Invalid use case")
+            return
+        raise ValidationError("Invalid use case")
 
 
 class EventOut(Schema):
