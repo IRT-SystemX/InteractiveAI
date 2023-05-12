@@ -1,6 +1,6 @@
 import multiprocessing
 
-from .clients.correlation_client import CorrelationClient
+from ..clients.correlation_client import CorrelationClient
 from settings import logger
 import itertools
 
