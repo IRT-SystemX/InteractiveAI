@@ -212,6 +212,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
+            $.ajaxSetup({
+                headers:{
+                   'Authorization': " Bearer " + this.token
+                }
+             });
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
@@ -228,6 +233,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-agent").hide()
         }
         else if (document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")) {
+            $.ajaxSetup({
+                headers:{
+                   'Authorization': " Bearer " + this.token
+                }
+             });
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
@@ -239,6 +249,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-noparades").hide()
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
             && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
+            $.ajaxSetup({
+                headers:{
+                    'Authorization': " Bearer " + this.token
+                }
+                });
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#opfab-div-card-template-alarm").show()
@@ -249,7 +264,25 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
+        && document.getElementById("opfab-card-title").innerHTML.includes("54_55_145")) {
+        $.ajaxSetup({
+            headers:{
+                'Authorization': " Bearer " + this.token
+            }
+            });
+        $("#opfab-div-card-template-security").hide()
+        $("#opfab-div-card-template-op").hide()
+        $("#opfab-div-card-template-alarm").hide()
+        $("#opfab-div-card-template-alarm-second").show()
+        $("#opfab-div-card-template").hide()
+        $("#opfab-div-card-template-noparades").hide()
+        $("#opfab-div-card-template-agent").hide()
+        $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
+            $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+            $(".opfab-card-response-header").hide();
+        });
+    }else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();

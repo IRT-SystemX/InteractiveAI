@@ -601,7 +601,7 @@ These two parameters are place in this file as the style should have a title par
         // 
       }
       });
-      xmlHttp.open("GET", "/cab_recommendation/api/v1/recommendation");
+      xmlHttp.open("POST", "/cab_recommendation/api/v1/recommendation");
       // xmlHttp.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.setRequestHeader("Content-Type","application/json");
@@ -660,11 +660,11 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function mapSNCF(){
-      mapZoom = 8;
+      mapZoom = 6;
           initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
           railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
-          defaultLatitude = 46.580224;
-          defaultLongitude = 0.340375;
+          defaultLatitude = 44.837789;
+          defaultLongitude = -0.57918;
           map = L.map('map', {
             center: [defaultLatitude, defaultLongitude],
             zoom: mapZoom
@@ -894,15 +894,38 @@ These two parameters are place in this file as the style should have a title par
       <div id="da_block_request" hidden></div>
     </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
-      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Passage à 2 noeuds  LTTD: 15min</span></div>
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <span> LTTD: 5min</span>
+</div>
       <!-- <span style="border-left:2px solid lightgrey"></span> -->
       <hr>
-      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 12 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Ouverture départ vers poste 11  LTTD: 10min</span></div>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+        <span> LTTD: 5min</span>
+       </div>
       <hr>
-      <div><span class="rtePrd">Parade injection : Effacement de 30% de l'éolien au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Production à la baisse LTTD: 15min</span></div>
+      <div><span class="rtePrd">Parade topologique: prise de schéma au poste 28</span><button class="rteBtn">Appliquer Parade</button><br>
+      <span>LTTD: 5min</span></div>
+      <hr>
+
+      <div><span class="rtePrd">Changer de bus</span><button class="rteBtn">Appliquer Parade</button><br>
+      </div>
+    </div>
+    <div id="opfab-div-card-template-alarm-second" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <span> LTTD: 5min</span>
+</div>
+      <!-- <span style="border-left:2px solid lightgrey"></span> -->
+      <hr>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 26 </span><button class="rteBtn">Appliquer Parade</button><br>
+        <span> LTTD: 5min</span>
+       </div>
+      <hr>
+      <div><span class="rtePrd">Parade injection: redispatch de source de production</span><button class="rteBtn">Appliquer Parade</button><br>
+      <span>LTTD: 5min</span></div>
+      <hr>
+
+      <div><span class="rtePrd">Changer de bus</span><button class="rteBtn">Appliquer Parade</button><br>
+      </div>
     </div>
     <div id="opfab-div-card-template-security" class="opfab-card-template-rendering" style="display:none">
     <b style="color:black">Parades</b><br>
