@@ -15,11 +15,11 @@ from .event_manager.sncf_event_manager import SNCFEventManager
 
 
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
-factory = UseCaseFactory()
-factory.register_use_case('DA', DAEventManager())
-factory.register_use_case('RTE', RTEEventManager())
-factory.register_use_case('ORANGE', OrangeEventManager())
-factory.register_use_case('SNCF', SNCFEventManager())
+use_case_factory = UseCaseFactory()
+use_case_factory.register_use_case('DA', DAEventManager())
+use_case_factory.register_use_case('RTE', RTEEventManager())
+use_case_factory.register_use_case('ORANGE', OrangeEventManager())
+use_case_factory.register_use_case('SNCF', SNCFEventManager())
 
 
 class HealthCheck(MethodView):
@@ -43,7 +43,7 @@ class Events(MethodView):
     def post(self, data):
         """Add an event"""
         use_case = data["use_case"]
-        event_manager = factory.get_event_manager(use_case)
+        event_manager = use_case_factory.get_event_manager(use_case)
         event = event_manager.create_event(data)
         return event
 

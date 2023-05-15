@@ -1,6 +1,6 @@
 import multiprocessing
 
-from .clients.correlation_client import CorrelationClient
+from ..clients.correlation_client import CorrelationClient
 from settings import logger
 import itertools
 
@@ -11,9 +11,9 @@ class CorrelationClientManager:
 
         # correlation queue and process
         self.correlation_app_queue = multiprocessing.Queue()
-        correlation_request_process = multiprocessing.Process(
+        self.correlation_request_process = multiprocessing.Process(
             target=self.send_correlation)
-        correlation_request_process.start()
+        self.correlation_request_process.start()
 
     def add_correlation(self, data):
         logger.info("Added data new correaltion data")
