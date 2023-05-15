@@ -3,7 +3,6 @@ from cab_common_auth.decorators import get_use_cases, protected
 from flask import request
 from flask.views import MethodView
 
-from .context_manager import ContextManager
 from .context_manager.da_context_manager import DAContextManager
 from .context_manager.orange_context_manager import OrangeContextManager
 from .context_manager.rte_context_manager import RTEContextManager
@@ -12,7 +11,6 @@ from .schemas import ContextIn, ContextOut
 from .utils import UseCaseFactory
 
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
-# context_manager = ContextManager()
 
 use_case_factory = UseCaseFactory()
 use_case_factory.register_use_case('DA', DAContextManager())
@@ -24,7 +22,7 @@ use_case_factory.register_use_case('SNCF', SNCFContextManager())
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {'message': 'Ok'}
 
 
 class Context(MethodView):
