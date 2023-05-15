@@ -139,6 +139,12 @@ services:
       - "3200:80"
     networks:
       - cab-docker_default
+    depends_on:
+      - cabcorrelation
+      - cabrecommendation
+      - cabevent
+      - cabcontext
+      - cabhistoric
 
   cabcorrelation:
     container_name: cab_correlation
@@ -195,8 +201,7 @@ services:
       - ./backend/recommendation-service:/code
     networks:
       - cab-docker_default
-    depends_on:
-      - frontend
+
 networks:
   cab-docker_default:
     external: true
