@@ -4,11 +4,15 @@ from resources.rte.rtegrid2op_poc_simulator.assistantManager import \
 from settings import logger
 
 from .base_recommendation import BaseRecommendation
+from flask import current_app
+import os
 
 
 class RTEManager(AgentManager, BaseRecommendation):
     def __init__(self):
-        self.owl_file_path = "/code/resources/rte/ontology/Onto2grid_v1.2.owl"
+        self.root_path = current_app.config['ROOT_PATH']
+        self.owl_file_path = os.path.join(
+            self.root_path, "resources/rte/ontology/Onto2grid_v1.2.owl")
         super().__init__()
 
     def get_recommendation(self, request_data):
