@@ -13,18 +13,23 @@ import os
 import json
 from settings import logger
 import numpy as np
+from flask import current_app
 
 
 class AgentManager:
     def __init__(self):
         try:
             # Load RTE simulator configuration
-            abs_path = "/code/resources/rte/rtegrid2op_poc_simulator/"
+            self.root_path = current_app.config['ROOT_PATH']
+            abs_path = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
+
             config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
 
             # grid2op Environment and observation definition and loading
-            self.env = grid2op.make(
-                config_assistant['env_name'], backend=bkClass())
+            env_name = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
+            self.env = grid2op.make(env_name, backend=bkClass())
             self.env.seed(config_assistant['env_seed'])
             # Search scenario with provided name
             for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
@@ -42,7 +47,8 @@ class AgentManager:
                 self.previous_step = self.obs.current_step
 
             # assistant definition and loading
-            assistant_path = config_assistant['assistant_path']
+            assistant_path = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
             assistant_seed = config_assistant['assistant_seed']
 
             # lazy loading
@@ -67,12 +73,12 @@ class AgentManager:
                         msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
                         raise RuntimeError(msg_)
                 except Exception as exc_:
-                    raise
+                    raise exc_
                 self.assistant.seed(int(assistant_seed))
                 self.nb_timestep = int(0)
         except Exception as e:
             logger.error(e)
-            exit()
+            # exit()
 
     def get_nbOfTimestepSinceLastObs(self, obs_dict):
         self.nb_timestep = int(obs_dict.get("current_step")[

@@ -1,12 +1,17 @@
 from resources.sncf.hypervisor import Hypervisor
 from .base_recommendation import BaseRecommendation
+from flask import current_app
+import os
 
 
 class SNCFManager(BaseRecommendation):
     def __init__(self) -> None:
         super().__init__()
+        self.root_path = current_app.config['ROOT_PATH']
+        self.hypervisor_path = os.path.join(
+            self.root_path, "resources/sncf/hypervisor.pth")
         self.hypervisor = Hypervisor()
-        self.hypervisor.load("/code/resources/sncf/hypervisor.pth")
+        self.hypervisor.load(self.hypervisor_path)
 
     def get_recommendation(self, request_data):
         context_data = request_data.get("context", {})
