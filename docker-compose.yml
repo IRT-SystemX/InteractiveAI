@@ -194,11 +194,13 @@ services:
     environment:
       - GATEWAY_SERVICE=http://angular-ui:80
       - HOST_IP=$HOST_IP
+      - FLASK_APP=app:create_app('prod')
+      - FLASK_ENV=production
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
     volumes:
-      - ./backend/recommendation-service:/code
+      - ./backend/recommendation-service:/my_app
     networks:
       - cab-docker_default
 

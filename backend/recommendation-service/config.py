@@ -5,7 +5,7 @@ class Config:
 
 class DevConfig(Config):
     TESTING = False
-    ROOT_PATH = "/code"
+    ROOT_PATH = "/my_app"
 
 
 class TestConfig(Config):
@@ -15,4 +15,4 @@ class TestConfig(Config):
 
 class ProdConfig(Config):
     TESTING = False
-    ROOT_PATH = "/code"
+    ROOT_PATH = "/my_app"

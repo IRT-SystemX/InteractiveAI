@@ -22,13 +22,13 @@ services:
     restart: unless-stopped
     environment:
       - HOST_IP=$HOST_IP
-      - FLASK_APP=app:create_app("dev")
-      # - FLASK_ENV=development
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
     volumes:
-      - ../../../backend/recommendation-service:/code
+      - ../../../backend/recommendation-service:/my_app
 
   gateway:
     build:

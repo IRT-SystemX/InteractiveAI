@@ -1,22 +1,23 @@
-import config
+from .config import DevConfig, TestConfig, ProdConfig
 from api.views import api_bp
 from apiflask import APIFlask
 from api.utils import UseCaseFactory
 from api.recommendation_manager.da_manager import DAManager
 from api.recommendation_manager.rte_manager import RTEManager
 from api.recommendation_manager.sncf_manager import SNCFManager
-
+from .settings import logger
 config_mapping = {
-    'dev': config.DevConfig,
-    'test': config.TestConfig,
-    'prod': config.ProdConfig
+    'dev': DevConfig,
+    'test': TestConfig,
+    'prod': ProdConfig
 }
 
 
 def create_app(config_mode):
+    logger.info(f"starting recommendation-service in {config_mode} mode")
     app = APIFlask("recommendation-service")
     app.register_blueprint(api_bp)
-    app.config.from_object(config_mapping.get(config_mode, config.DevConfig))
+    app.config.from_object(config_mapping.get(config_mode, DevConfig))
     # Create the application context
     app_ctx = app.app_context()
     app_ctx.push()
