@@ -1,0 +1,43 @@
+version: "3.5"
+services:
+
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    command: -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/cab-keycloak/export -Dkeycloak.profile.feature.upload_scripts=enabled
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=H2
+    volumes:
+      - ../../../of-config/cab-keycloak:/cab-keycloak
+    ports:
+      - "89:8080"
+
+  cabrecommendation:
+    container_name: cab_recommendation
+    image: cab/cabrecommendation
+    build:
+      context: ../../../backend
+      dockerfile: Recommendation-Service-Dockerfile
+    restart: unless-stopped
+    environment:
+      - HOST_IP=$HOST_IP
+      - FLASK_APP=app:create_app("dev")
+      # - FLASK_ENV=development
+    command: sh -c "./entrypoint.sh"
+    ports:
+      - 5400:5000
+    volumes:
+      - ../../../backend/recommendation-service:/code
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ../../../frontend/main
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - "../../../ui-config:/usr/share/nginx/html/opfab"
+      - "./nginx.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "3200:80"
