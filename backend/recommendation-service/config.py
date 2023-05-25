@@ -11,3 +11,8 @@ class DevConfig(Config):
 class TestConfig(Config):
     TESTING = True
     ROOT_PATH = "."
+
+
+class ProdConfig(Config):
+    TESTING = False
+    ROOT_PATH = "/code"
