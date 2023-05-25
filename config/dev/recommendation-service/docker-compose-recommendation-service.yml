@@ -30,14 +30,12 @@ services:
     volumes:
       - ../../../backend/recommendation-service:/code
 
-  frontend:
-    container_name: frontend
+  gateway:
     build:
-      context: ../../../frontend/main
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Gateway-Recommendation-Service-Dockerfile
     restart: unless-stopped
     volumes:
-      - "../../../ui-config:/usr/share/nginx/html/opfab"
       - "./nginx.conf:/etc/nginx/conf.d/default.conf"
     ports:
       - "3200:80"
