@@ -39,8 +39,7 @@ class RecommendationView(MethodView):
         # Call the appropriate method on the use case
         result = use_case.get_recommendation(data)
 
-        # Return the result as JSON    def get(self):
-        return {'message': 'Ok'}
+        # Return the result as JSON
         return jsonify(result)
 
 
