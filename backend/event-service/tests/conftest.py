@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import config
+
 import pytest
 from api.models import EventModel, db
 from app import create_app
@@ -8,7 +8,7 @@ from app import create_app
 
 @pytest.fixture(scope="function")
 def app():
-    app = create_app(config.TestConfig)
+    app = create_app("test")
     with app.app_context():
         # Create the database tables
         db.create_all()
