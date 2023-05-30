@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import config
 import pytest
 from api.models import ContextModel, db
 from app import create_app
@@ -8,14 +7,14 @@ from app import create_app
 
 @pytest.fixture(scope="function")
 def app():
-    app = create_app(config.TestConfig)
+    app = create_app("test")
     with app.app_context():
         # Create the database tables
         db.create_all()
 
         yield app
 
-        from api.views import use_case_factory
+        use_case_factory = app.use_case_factory
         orange_factory = use_case_factory.get_context_manager("ORANGE")
         orange_factory.correaltion_manager.correlation_request_process.terminate()
 

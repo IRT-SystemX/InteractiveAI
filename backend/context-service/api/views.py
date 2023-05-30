@@ -3,20 +3,9 @@ from cab_common_auth.decorators import get_use_cases, protected
 from flask import request
 from flask.views import MethodView
 
-from .context_manager.da_context_manager import DAContextManager
-from .context_manager.orange_context_manager import OrangeContextManager
-from .context_manager.rte_context_manager import RTEContextManager
-from .context_manager.sncf_context_manager import SNCFContextManager
 from .schemas import ContextIn, ContextOut
-from .utils import UseCaseFactory
 
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
-
-use_case_factory = UseCaseFactory()
-use_case_factory.register_use_case('DA', DAContextManager())
-use_case_factory.register_use_case('RTE', RTEContextManager())
-use_case_factory.register_use_case('ORANGE', OrangeContextManager())
-use_case_factory.register_use_case('SNCF', SNCFContextManager())
 
 
 class HealthCheck(MethodView):
@@ -31,6 +20,8 @@ class Context(MethodView):
     @protected
     def get(self, date):
         """Get a context"""
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         use_cases = get_use_cases()
         context_list = []
         for use_case in use_cases:
@@ -45,6 +36,8 @@ class Contexts(MethodView):
     @protected
     def get(self):
         """Get all contexts"""
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         date_query_param = request.args.get('date')
         use_cases = get_use_cases()
         context_list = []
@@ -65,6 +58,8 @@ class Contexts(MethodView):
     @protected
     def post(self, data):
         """Add an context"""
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         use_case = data.get("use_case")
         context_manager = use_case_factory.get_context_manager(use_case)
         return context_manager.set_context(data)
