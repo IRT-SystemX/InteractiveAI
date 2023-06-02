@@ -1,10 +1,10 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
-    name='cab_common',
-    version='0.1.0',
+    name="cab_common",
+    version="0.1.0",
     packages=["cab_common_auth"],
     install_requires=[
-        'python-keycloak',
+        "python-keycloak",
     ],
 )
