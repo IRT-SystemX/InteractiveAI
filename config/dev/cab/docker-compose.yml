@@ -12,6 +12,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
+      - PYTHONPATH=/code
       # - FLASK_ENV=development
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
@@ -38,6 +39,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_event:5432/cab-event
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
+      - PYTHONPATH=/code
       # - FLASK_ENV=development
     command: sh -c "./entrypoint.sh"
     ports:
@@ -161,6 +163,7 @@ services:
       - HISTORIC_SERVICE=http://cabhistoric:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_correlation:5432/cab-correlation
       - HOST_IP=$HOST_IP
+      - PYTHONPATH=/code
     command: sh -c "./entrypoint.sh"
     ports:
       - 5300:5000
@@ -198,6 +201,7 @@ services:
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - FLASK_ENV=development
+      - PYTHONPATH=/my_app
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
