@@ -53,6 +53,10 @@
 }
 .light-card-background-action {
     cursor: pointer;
+    background-color: #EC775C;
+}
+.light-card-background-action_DA {
+    cursor: pointer;
     background-color: #FFD2004D;
 }
 .light-card-background-alarm {
@@ -125,6 +129,9 @@
 .title-light-card-border-information{
    color: $sev-information;
 }
+.title-light-card-border-white{
+    color:white
+}
 
 .card:hover {
     box-shadow: var(--opfab-card-shadow);
@@ -184,7 +191,7 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
-    color:grey;
+    color:white;
 }
 
 .light-card-detail-selected span{

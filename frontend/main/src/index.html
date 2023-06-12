@@ -60,6 +60,8 @@ These two parameters are place in this file as the style should have a title par
     var increasedLongitude = -4.09445;
     var tokenSynchronizeUrl = ""
     var msg_train = ', Jean votre superviseur, la présence d’un voyageur malade à bord nous oblige à marquer un arrêt supplémentaire en gare de  Poitiers pour permettre l’intervention des services de secours. Des informations complémentaires vous seront communiquées ultérieurement. Merci de votre attention.';
+    var msg_train2 = ', Jean votre superviseur, merci à toute personne ayant des connaissances médicales de se faire connaître auprès de la borne d’appel.';
+    var msgs_train = [msg_train,msg_train2];
     var trainIconFr = "/assets/images/icons/train_framboise.png";
     var train_ko = "/assets/images/icons/train_ko.png";
     var train_ok = "/assets/images/icons/train_ok.png";
@@ -362,7 +364,9 @@ These two parameters are place in this file as the style should have a title par
     function setCardsForDA() {
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
-          cards[card].classList += " DA_Card light-card-detail-unselected-DA-MED";
+          if (!cards[card].classList.contains("DA_Card") || !cards[card].classList.contains("light-card-detail-unselected-DA-MED")){
+            cards[card].classList += " DA_Card light-card-detail-unselected-DA-MED";
+          }
         }
       }
           
@@ -432,12 +436,6 @@ These two parameters are place in this file as the style should have a title par
           if (cards[card].classList.toString().includes("light-card-detail-unselected")){
             //carte selectionée classe SNCF
               cards[card].classList.remove("sncf-light-card-selected");
-              try {
-                
-              } catch (error) {
-                
-              }
-            
             try {
               cards[card].classList.add("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.remove("sncfCard");
@@ -455,18 +453,15 @@ These two parameters are place in this file as the style should have a title par
           && cards[card].classList.toString().includes("light-card-detail-selected")
            || cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
           && cards[card].classList.toString().includes("sncf-light-card-selected") ){
-            // retrait du background si carte selectionnée
-            // cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
-            // cards[card].classList.add("sncf-border-" + cards[card].attributes['severity'].value);
-            // cards[card].classList.add("sncf-light-card-selected");
-            // cards[card].classList.remove("light-card-detail-selected");
           }
         }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") ){
-            cards[card].classList += " title-light-card-border-" + cards[card].attributes['severity'].value;
+            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+            cards[card].classList += " title-light-card-border-white";
             cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
         }else if (selectedUseCase == "DA"){
           if (!cards[card].classList.toString().includes("light-card-background")){
             cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
           }
       }
     }
@@ -687,7 +682,7 @@ These two parameters are place in this file as the style should have a title par
       + "</div>"
       + "<span style='margin-top:5px'><b>Communication avec la rame </b></span>"
       + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span style="margin-left:5px;border: 1px solid">' + 
-        'Chers clients  du train '+ markerTitle + msg_train + '</span></div>';
+        'Chers clients  du train '+ markerTitle + msgs_train[Math.floor(Math.random() * (1 - 0 + 1) + 0)] + '</span></div>';
       document.getElementById("materiel").classList.add("toBlink");
       markers[markerTitle].bindPopup(markerOptions.title + "<br> Vitesse: " + speed + " km/h" );
       

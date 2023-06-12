@@ -204,6 +204,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.addEventListener("readystatechange", function() {
         if(this.readyState === 4) {
             that.jsonContextObject = JSON.parse(this.responseText);
+            that.getRecommandationRTE();
         }
         });
         // xhr.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts");
@@ -214,13 +215,13 @@ export class LightCardComponent implements OnInit, OnDestroy {
       }
 
         public getCardProcess(){
+            this.getContextRTE();
             var cards = document.getElementsByClassName("card");
             for (var card = 0; card < cards.length; card++) {
                 if (cards[card].classList.contains("light-card-detail-selected")){
                 this.getCard(cards[card].getAttribute("data-urlid"));
                 }
               }
-              this.getContextRTE();this.getRecommandationRTE();
       }
 
     public getCard(id_card) {
@@ -255,8 +256,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
              }
           }
         });
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -277,8 +278,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
           }
         });
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -322,6 +323,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
+            $("#rte_assist").hide()
             $("#opfab-div-card-template-security").show()
             $("#opfab-div-card-template-op").hide()
             $("#opfab-div-card-template-alarm").hide()
@@ -351,6 +353,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
                     'Authorization': " Bearer " + this.token
                 }
                 });
+                $("#rte_assist").hide()
+
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             this.getCardProcess();
@@ -473,6 +477,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
             document.getElementById("noevent_da").hidden = true;
+            $("#rte_assist").hide()
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
             document.getElementById("sncf_incident_infos").innerHTML 
             = 
@@ -536,35 +541,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.getCardTitle($event)
         }, 1000);
-        // if(card.includes("Surcharge")){
-        //     $("#opfab-div-card-template-security").hide()
-        //     $("#opfab-div-card-template-op").hide()
-        //     $("#opfab-div-card-template-alarm").show()
-        //     $("#opfab-div-card-template").hide()
-        //     $("#opfab-div-card-template-noparades").hide()
-
-        //     $.get( this.rteUrl + "?time=" + +new Date().getTime(), function( data ) {
-        //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-        //        $(".opfab-card-response-header").hide();
-        //       });
-        //     }else if(card.includes("Routine")) {
-        //         $("#opfab-div-card-template").hide()
-        //         $("#opfab-div-card-template-op").show()
-        //         $("#opfab-div-card-template-security").hide()
-        //         $("#opfab-div-card-template-alarm").hide()
-        //         $("#opfab-div-card-template-noparades").hide()
-        //     }else if(card.includes("Risque sur aléa")){
-        //         $("#opfab-div-card-template-security").show()
-        //         $("#opfab-div-card-template-op").hide()
-        //         $("#opfab-div-card-template-alarm").hide()
-        //         $("#opfab-div-card-template-noparades").hide()
-        //         }else if (card.includes("Surcharge de ligne") && card.includes("54_58_154")){
-        //             $("#opfab-div-card-template-noparades").show()
-        //             $("#opfab-div-card-template-security").hide()
-        //             $("#opfab-div-card-template-op").hide()
-        //             $("#opfab-div-card-template-alarm").hide()
-
-        //         }
     }
 
 
