@@ -1,11 +1,13 @@
-from .config import DevConfig, TestConfig, ProdConfig
-from api.views import api_bp
-from apiflask import APIFlask
-from api.utils import UseCaseFactory
 from api.recommendation_manager.da_manager import DAManager
 from api.recommendation_manager.rte_manager import RTEManager
 from api.recommendation_manager.sncf_manager import SNCFManager
-from .settings import logger
+from api.utils import UseCaseFactory
+from api.views import api_bp
+from apiflask import APIFlask
+from settings import logger
+
+from config import DevConfig, ProdConfig, TestConfig
+
 config_mapping = {
     'dev': DevConfig,
     'test': TestConfig,
