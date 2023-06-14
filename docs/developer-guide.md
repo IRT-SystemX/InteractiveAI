@@ -44,7 +44,7 @@ To set up the development environment, follow these steps:
 
 The Cab Assistant Platform can be run in different modes depending on your development needs.
 
-### Running Recommendation Service (Dev Mode)
+### Running Recommendation Service (Dev Mode using docker)
 
 To run the Recommendation Service on your local machine:
 
@@ -60,6 +60,41 @@ cd cab-assistant-platform/config/recommendation-service/
 ./docker-compose.bash
 
 ```
+
+### Running Recommendation Service (Test Mode using python virtualenv)
+
+To run the Recommendation Service on your local machine:
+
+1. Create a python virtual env. For linux you can use these commands:
+
+```sh
+python3 -m venv <name_of_virtualenv>
+source <name_of_virtualenv>/bin/activate
+```
+
+2. Install python requirements.txt
+
+```sh
+cd backend/recommendation-service
+pip install -r requirements.txt
+```
+
+3. If you usecase uses Owlready2, Install Java
+
+4. 
+   * Option 1:
+      Update envirement variables as felow:
+         FLASK_APP="app:create_app('test')"
+         FLASK_ENV="development"
+         AUTH_DISABLED="True"
+         DEFAULT_USE_CASE=YOUR_USE_CASE ("SNCF", "RTE", "DA")
+      then start service using command:
+```sh
+python -m flask run --host=0.0.0.0 --reload
+```
+
+   * Option 2:
+      Update start_service.bash and use it to run service
 
 ### Running All Services (Dev Mode)
 
