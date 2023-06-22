@@ -1,7 +1,7 @@
 from apiflask import APIBlueprint
 from cab_common_auth.decorators import get_use_cases, protected
 from flask import request, jsonify, abort
-from flask.views import MethodView
+from apiflask.views import MethodView
 
 from .schemas import RecommendationAsk
 from settings import logger

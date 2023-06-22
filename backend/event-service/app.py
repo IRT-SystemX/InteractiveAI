@@ -35,7 +35,7 @@ def create_app(config_mode):
     app.use_case_factory = use_case_factory
     # intiate database
     db.init_app(app)
-    db.create_all(app=app)
+    db.create_all()
     return app
 
 

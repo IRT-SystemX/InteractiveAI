@@ -10,11 +10,7 @@ from settings import logger
 
 from config import DevConfig, ProdConfig, TestConfig
 
-config_mapping = {
-    'dev': DevConfig,
-    'test': TestConfig,
-    'prod': ProdConfig
-}
+config_mapping = {"dev": DevConfig, "test": TestConfig, "prod": ProdConfig}
 
 
 def create_app(config_mode):
@@ -27,14 +23,14 @@ def create_app(config_mode):
     app_ctx.push()
     # add use_case_factory
     use_case_factory = UseCaseFactory()
-    use_case_factory.register_use_case('DA', DAContextManager())
-    use_case_factory.register_use_case('RTE', RTEContextManager())
-    use_case_factory.register_use_case('ORANGE', OrangeContextManager())
-    use_case_factory.register_use_case('SNCF', SNCFContextManager())
+    use_case_factory.register_use_case("DA", DAContextManager())
+    use_case_factory.register_use_case("RTE", RTEContextManager())
+    use_case_factory.register_use_case("ORANGE", OrangeContextManager())
+    use_case_factory.register_use_case("SNCF", SNCFContextManager())
     app.use_case_factory = use_case_factory
     # intiate database
     db.init_app(app)
-    db.create_all(app=app)
+    db.create_all()
     return app
 
 

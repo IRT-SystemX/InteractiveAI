@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11.0-slim
+FROM python:3.11.4-slim
 
 RUN mkdir /code
 RUN mkdir /cab_common
