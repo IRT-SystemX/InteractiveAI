@@ -276,20 +276,31 @@ These two parameters are place in this file as the style should have a title par
         case "incident":
           document.getElementById("map").hidden = true;
           document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
           document.getElementById("sncf_incident_infos").hidden=false;
           document.getElementById("history").hidden=false;
           document.getElementById("incident").classList.remove("toBlink");
           break;
         case "materiel":
           document.getElementById("map").hidden = true;
-          document.getElementById("sncf_ctx").hidden=false;
+          document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=false;
           document.getElementById("sncf_incident_infos").hidden=true;
           document.getElementById("history").hidden=true;
           document.getElementById("materiel").classList.remove("toBlink");
           break;
+        case "voyageurs":
+          document.getElementById("map").hidden = true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
+          document.getElementById("sncf_ctx").hidden=false;
+          document.getElementById("sncf_incident_infos").hidden=true;
+          document.getElementById("history").hidden=true;
+          document.getElementById("voyageurs").classList.remove("toBlink");
+          break;
         case "carte":
           document.getElementById("map").hidden = false;
           document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
           document.getElementById("history").hidden=true;
           document.getElementById("sncf_incident_infos").hidden=true;
           break;
@@ -675,15 +686,35 @@ These two parameters are place in this file as the style should have a title par
       nb_passengers_onboard = markers[markerTitle].attributes.nb_passengers_onboard;
       speed = markers[markerTitle].attributes.speed;
       map.setView([e.sourceTarget._latlng.lat,e.sourceTarget._latlng.lng],13)
-      document.getElementById("sncf_ctx").innerHTML = '<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
-      + "Vitesse : " + speed + "km/h" +"<br>"
-      + "Direction : Massy TGV" + "<br>"
-      + "Voyageurs à bord : " + nb_passengers_onboard
+      document.getElementById("sncf_ctx").innerHTML = 
+      
+      "<div id='data_train'>"
+        +'<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
+        + "Vitesse : " + speed + "km/h" +"<br>"
+        + "Direction : N/A" + "<br>"
+        + "Voyageurs à bord  " + nb_passengers_onboard +"<br>"
+        + "Voyageurs voiture  <br>"
+        + "Température int. <br> "
       + "</div>"
+      + '<div id="sncf_indice">'
+      +'<img id="img_indice" src="assets\/images\/rame_indice.png">'
+      +'</div></div>'
       + "<span style='margin-top:5px'><b>Communication avec la rame </b></span>"
-      + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span style="margin-left:5px;border: 1px solid">' + 
+      + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span id="txt_passengers" style="margin-left:5px;border: 1px solid">' + 
         'Chers clients  du train '+ markerTitle + msgs_train[Math.floor(Math.random() * (1 - 0 + 1) + 0)] + '</span></div>';
+        
+      document.getElementById("sncf_ctx_materiel").innerHTML =
+      '<b>Etat de la râme </b><br> '+
+      '<div id="train_infos">'
+      // + "TGV n° : " + markerTitle +"<br>"
+      + "Point kilométrique : " + 'N/A' +"<br>"
+      + "Vitesse : " + speed + "km/h" +"<br>"
+      + "Prochain arrêt : N/A" + "<br>"
+      + "Destination : N/A" + "<br>"
+      + "Voyageurs à bord : " + nb_passengers_onboard
+      + "</div>";
       document.getElementById("materiel").classList.add("toBlink");
+      document.getElementById("voyageurs").classList.add("toBlink");
       markers[markerTitle].bindPopup(markerOptions.title + "<br> Vitesse: " + speed + " km/h" );
       
     }

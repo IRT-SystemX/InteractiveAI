@@ -715,6 +715,7 @@ label:hover{
 #train_infos{
     border: 1px solid;
     border-radius: 10px;
+    max-height: 125px;
 }
 #train_infos{
     width: 210px;
@@ -726,6 +727,9 @@ label:hover{
 @media (max-height: 768px) { //random laptop
     .sncf{
         height:430px!important;
+    }
+    #txt_passengers{
+        font-size: 17px;
     }
     .sncf_ctx_div{
         margin-left: 285px!important;
@@ -815,10 +819,16 @@ label:hover{
     #orange_ctx{
         max-height: 287px;
     }
+    #sncf_indice{
+        margin-left: 120px;
+    }
 }
 @media (min-height: 1024px) and (max-width: 1366px){ //ipad
     .sncf{
         height: 680px!important;
+    }
+    #sncf_indice{
+        margin-left: none;
     }
     #notifContainer{
         width: 400px!important;
@@ -884,6 +894,11 @@ label:hover{
     #train_welcome img{
         width: 30%;
     }
+    #train_infos{
+        flex: none;
+        width: 45%;
+        max-height: 200px;
+    }
 }
 @media (min-height: 900px) and  (min-width: 1800px) { // demo
     .rteNotifs{
@@ -892,6 +907,12 @@ label:hover{
     }
     .sncf{
         height: 680px!important;
+    }
+    #sncf_indice{
+        margin-left: 450px;
+    }
+    #img_indice{
+        width: 150%;
     }
     #notifContainer{
         width: 400px!important;
@@ -986,6 +1007,9 @@ label:hover{
     }
     #orange_ctx_container{
         margin-left: 300px;
+    }
+    #train_infos{
+        max-height: 200px;
     }
 }
 
@@ -1166,4 +1190,7 @@ input[type="range"] {
 }
 #sncf_assist_full,#sncf_solution{
     margin-left:3px;
+}
+#data_train{
+    display: flex;
 }
