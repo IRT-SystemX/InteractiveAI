@@ -46,6 +46,7 @@ These two parameters are place in this file as the style should have a title par
     var selectedUseCase = "none";
     var token = window.localStorage.token;
     var opFabPort = "2002";
+    var cabPort = "3200";
     var activeUser;
     var entities;
     var groups;
@@ -71,14 +72,20 @@ These two parameters are place in this file as the style should have a title par
       } 
     var planeMarker;
     var contextSNCF;
+    var host;
+    var traceHost;
+    var tracePort = 5200;
     checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
         tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        host = "http://192.168.208.57" + ":" + cabPort;
+        traceHost = "http://192.168.208.57" + ":" + tracePort;
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
+        host = "";
       }
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
@@ -469,12 +476,12 @@ These two parameters are place in this file as the style should have a title par
            || cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
           && cards[card].classList.toString().includes("sncf-light-card-selected") ){
           }
-        }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") ){
+        }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") && cards[card].classList.toString().includes("light-card-detail")){
             cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
             cards[card].classList += " title-light-card-border-white";
             cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
         }else if (selectedUseCase == "DA"){
-          if (!cards[card].classList.toString().includes("light-card-background")){
+          if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
             try {
               cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
               cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
@@ -489,12 +496,10 @@ These two parameters are place in this file as the style should have a title par
         setDANotifications();
       }
     }
-
     function getCardContent(id_card) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/cards/cards/"+id_card,false);
-        // xmlHttp.open("GET", "http://192.168.208.57:3200/cards/cards/"+id_card,false);
+        xmlHttp.open("GET", host + "/cards/cards/"+id_card,false);
         xmlHttp.setRequestHeader("Authorization","Bearer "+token);
         xmlHttp.send(null);
         var response = JSON.parse(xmlHttp.responseText);
@@ -512,8 +517,7 @@ These two parameters are place in this file as the style should have a title par
     }
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
@@ -521,8 +525,7 @@ These two parameters are place in this file as the style should have a title par
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -530,8 +533,7 @@ These two parameters are place in this file as the style should have a title par
     };
     function getCorrelations() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cab_correlation/api/v1/correlation?size=1", false);
-      xmlHttp.open("GET", "/cab_correlation/api/v1/correlation?size=1", false);
+      xmlHttp.open("GET", host + "/cab_correlation/api/v1/correlation?size=1", false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -549,8 +551,7 @@ These two parameters are place in this file as the style should have a title par
 
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -573,8 +574,7 @@ These two parameters are place in this file as the style should have a title par
         // 
       }
       });
-      xmlHttp.open("POST", "/cab_recommendation/api/v1/recommendation");
-      // xmlHttp.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+      xmlHttp.open("POST", host + "/cab_recommendation/api/v1/recommendation");
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.setRequestHeader("Content-Type","application/json");
       xmlHttp.send(JSON.stringify(contextSNCF));
@@ -598,8 +598,7 @@ These two parameters are place in this file as the style should have a title par
         }
       });
 
-      // xhr.open("POST", "http://192.168.208.57:5200/api/v1/traces");
-      xhr.open("POST", "/api/v1/traces");
+      xhr.open("POST", traceHost + "/api/v1/traces");
       xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.send(data);
