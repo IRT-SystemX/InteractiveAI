@@ -256,8 +256,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
              }
           }
         });
-        xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-        // xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -278,8 +278,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
           }
         });
-        xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-        // xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -301,7 +301,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
           }
 
-        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")) {
+        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && document.getElementById("rte_assist_nominal").hidden) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
@@ -346,44 +346,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-op").hide()
             $("#opfab-div-card-template-alarm").hide()
             $("#opfab-div-card-template-noparades").hide()
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
-            && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
-            $.ajaxSetup({
-                headers:{
-                    'Authorization': " Bearer " + this.token
-                }
-                });
-                $("#rte_assist").hide()
-
-            $("#opfab-div-card-template-security").hide()
-            $("#opfab-div-card-template-op").hide()
-            this.getCardProcess();
-            $("#opfab-div-card-template").hide()
-            $("#opfab-div-card-template-noparades").hide()
-            $("#opfab-div-card-template-agent").hide()
-            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-                $(".opfab-card-response-header").hide();
-            });
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
-        && document.getElementById("opfab-card-title").innerHTML.includes("54_55_145")) {
-        $.ajaxSetup({
-            headers:{
-                'Authorization': " Bearer " + this.token
-            }
-            });
-        $("#opfab-div-card-template-security").hide()
-        $("#opfab-div-card-template-op").hide()
-        $("#opfab-div-card-template-alarm").hide()
-        $("#opfab-div-card-template-alarm-second").show()
-        $("#opfab-div-card-template").hide()
-        $("#rte_assist").hide()
-        $("#opfab-div-card-template-noparades").hide()
-        $("#opfab-div-card-template-agent").hide()
-        $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-            $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-            $(".opfab-card-response-header").hide();
-        });
+        
     }else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)

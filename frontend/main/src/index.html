@@ -137,6 +137,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("ctx_div").classList.add("orange_theme");
           document.getElementById("ctx_div").classList.add("rte_ctx_div");
           document.getElementById("opfab-card-list").classList.add("rteNotifs");
+          document.getElementById("opfab-card-list").classList.add("opfab-card-list-RTE");
           document.getElementById("feed-content").classList.add("rteNotifs");
           document.getElementById("ctxImg").classList.add("rte_ctxImg");
           document.getElementById("assistOpTitle").style.top = "80px";
@@ -145,6 +146,10 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
+          document.getElementById("rte_assist_nominal").hidden = false;
+          document.getElementById("notifs_RTE").hidden = false;
+          document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Alertes");
+
           setInterval(() => {
             refreshCtxRTE();
           }, 30000);
@@ -363,7 +368,6 @@ These two parameters are place in this file as the style should have a title par
             try {
               setSeverityForDA();
             } catch (error) {
-              
             }
     }
     if (selectedUseCase!= "DA"){
@@ -471,8 +475,13 @@ These two parameters are place in this file as the style should have a title par
             cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
         }else if (selectedUseCase == "DA"){
           if (!cards[card].classList.toString().includes("light-card-background")){
-            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
-            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
+            try {
+              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
+            } catch (error) {
+              //nothing to catch, normal behavior 
+            }
+
           }
       }
     }
@@ -480,6 +489,7 @@ These two parameters are place in this file as the style should have a title par
         setDANotifications();
       }
     }
+
     function getCardContent(id_card) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
@@ -570,17 +580,45 @@ These two parameters are place in this file as the style should have a title par
       xmlHttp.send(JSON.stringify(contextSNCF));
     };
 
-     
-    
-    
-    function askCab(){
-      
-      document.getElementById("sncf_assist_nominal").hidden = true;
-      document.getElementById("sncf_assist_full").hidden = false;
-      document.getElementById("recos_sncf").hidden = false;
-      getRecommandationSNCF();
+    function traceInHistory(traceType,useCase){
+      var data = JSON.stringify({
+        "data": {},
+        "date": "2022-11-22T16:22:57.371000",
+        "id_trace": "6dee81be-9bdd-4c29-b500-146da932e4d3",
+        "step": traceType,
+        "use_case": useCase
+      });
 
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+          console.info("TRACE",this.responseText);
+        }
+      });
+
+      // xhr.open("POST", "http://192.168.208.57:5200/api/v1/traces");
+      xhr.open("POST", "/api/v1/traces");
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.send(data);
     }
+
+    function askCab(){
+      traceInHistory("ASKFORHELP",authorizedUseCase);
+      switch(authorizedUseCase){
+        case "SNCF":
+          document.getElementById("sncf_assist_nominal").hidden = true;
+          document.getElementById("sncf_assist_full").hidden = false;
+          document.getElementById("recos_sncf").hidden = false;
+          getRecommandationSNCF();
+        break;
+        case "RTE":
+        document.getElementById("rte_assist_nominal").hidden = true;
+        break;
+      }
+      }
   </script>
 
 
@@ -875,10 +913,12 @@ These two parameters are place in this file as the style should have a title par
       </div>
       <div id="da_block_request" hidden></div>
     </div>
-    <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
-    
+    <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
     </div>
-    <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
+    <div id ="rte_assist_nominal" hidden><img style="width:100%" src="assets/images/assistop_colored.png"><br>
+      <button class="sncf_button" style="margin-left: 100px" onclick="askCab()"><b>Solliciter CAB</b></button>
+    </div>
+    <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button class="rteBtn">Appliquer Parade</button><br>
       <span> LTTD: 5min</span>
 </div>
@@ -895,7 +935,7 @@ These two parameters are place in this file as the style should have a title par
       <div><span class="rtePrd">Changer de bus</span><button class="rteBtn">Appliquer Parade</button><br>
       </div>
     </div>
-    <div id="opfab-div-card-template-alarm-second" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
+    <div id="opfab-div-card-template-alarm-second" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
       <span> LTTD: 5min</span>
 </div>
