@@ -30,8 +30,8 @@ class RTEManager(AgentManager, BaseRecommendation):
             logger.info("getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(
                 event_id, event_line, event_flow)
-        return {"ia_recommendation": parades,
-                "onto_recommendation": onto_recommendation}
+        # both parades & onto_recommendation should be lists on the same format
+        return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_id, event_line, event_flow):
         # Loading ontology
@@ -87,4 +87,4 @@ class RTEManager(AgentManager, BaseRecommendation):
         else:
             recommandation = "Parade non identifiée"
 
-        return recommandation
+        return [recommandation]
