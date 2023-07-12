@@ -11,5 +11,6 @@ class RecommendationOut(Schema):
     title = String()
     description = String()
     use_case = String()
+    description = String()
     agent_type = String()
     actions = List(Dict())
