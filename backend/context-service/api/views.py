@@ -11,7 +11,7 @@ api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
 class HealthCheck(MethodView):
 
     def get(self):
-        return {'message': 'Ok'}
+        return {"message": "Ok"}
 
 
 class Context(MethodView):

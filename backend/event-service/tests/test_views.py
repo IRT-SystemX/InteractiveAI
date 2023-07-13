@@ -189,3 +189,8 @@ def test_update_sncf_event_if_exist(client, sncf_auth_mocker, mock_of_create_car
     data = json.loads(response.data)
     assert len(data) == 1
     assert data[0]["criticality"] == "HIGH"
+
+
+def test_health_check(client):
+    response = client.get('/api/v1/health')
+    assert response.status_code == 200
