@@ -584,7 +584,6 @@ These two parameters are place in this file as the style should have a title par
       var data = JSON.stringify({
         "data": {},
         "date": "2022-11-22T16:22:57.371000",
-        "id_trace": "6dee81be-9bdd-4c29-b500-146da932e4d3",
         "step": traceType,
         "use_case": useCase
       });
@@ -600,8 +599,8 @@ These two parameters are place in this file as the style should have a title par
 
       xhr.open("POST", traceHost + "/api/v1/traces");
       xhr.setRequestHeader("Content-Type", "application/json");
-
       xhr.send(data);
+      console.log(data)
     }
 
     function askCab(){
