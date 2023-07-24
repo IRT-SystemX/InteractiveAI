@@ -13,7 +13,7 @@ api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {"message": "Ok"}
 
 
 class Events(MethodView):

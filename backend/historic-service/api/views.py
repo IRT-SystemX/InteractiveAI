@@ -1,7 +1,7 @@
 import uuid
 
 from apiflask import APIBlueprint
-from flask.views import MethodView
+from apiflask.views import MethodView
 from flask import request
 from .models import TraceModel, db
 from .schemas import TraceIn, TraceOut
@@ -12,7 +12,7 @@ api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {"message": "Ok"}
 
 
 class Trace(MethodView):
