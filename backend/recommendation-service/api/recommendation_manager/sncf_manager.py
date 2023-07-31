@@ -21,9 +21,9 @@ class SNCFManager(BaseRecommendation):
 
         event_data = request_data.get("event", {})
 
-        malfunction_agent = event_data.get("malfunction_agent")
-        malfunction_position = tuple(event_data.get("malfunction_position"))
-        malfunction_delay = event_data.get("malfunction_delay")
+        malfunction_agent = event_data.get("agent_id")
+        malfunction_position = tuple(event_data.get("agent_position"))
+        malfunction_delay = event_data.get("delay")
 
         position_agents = [tuple(value)
                            for value in raw_position_agents.values()]
