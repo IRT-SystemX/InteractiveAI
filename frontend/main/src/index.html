@@ -79,9 +79,9 @@ These two parameters are place in this file as the style should have a title par
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
-        host = "http://192.168.208.57" + ":" + cabPort;
-        traceHost = "http://192.168.208.57" + ":" + tracePort;
+        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        host = "http://192.168.211.95" + ":" + cabPort;
+        traceHost = "http://192.168.211.95" + ":" + tracePort;
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
@@ -505,15 +505,12 @@ These two parameters are place in this file as the style should have a title par
         var response = JSON.parse(xmlHttp.responseText);
         lastTrain = response.card.data.metadata.id_train;
         lastSeverity = response.card.severity;
-        console.log(response)
         updateTrainStatus(lastTrain,lastSeverity)
       }
     };
 
     function updateTrainStatus(id_train,severity){
       markers[id_train]._icon.src = SNCFseverities[severity]+"?time=" + new Date().getTime();
-      console.log(markers[id_train])
-      console.log(SNCFseverities[severity] + " pour le train " + id_train)
     }
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
@@ -560,30 +557,42 @@ These two parameters are place in this file as the style should have a title par
       setAndUpdateSNCFMarkersOnMap(trains);
     };
 
-    function getRecommandationSNCF() {
-      var recommandations;
-      var xmlHttp = new XMLHttpRequest();
-      xmlHttp.addEventListener("readystatechange", function() {
-      if(this.readyState === 4) {
-        recommandations = JSON.parse(this.responseText).recommendation;
-        document.getElementById("assistOpTitle").style.overflowY = "scroll";
-        Object.keys(recommandations).forEach(function(k){
-          document.getElementById("recos_sncf").innerHTML += recommandations[k] + '<hr>'; 
-      });
-
-        // 
-      }
-      });
-      xmlHttp.open("POST", host + "/cab_recommendation/api/v1/recommendation");
-      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
-      xmlHttp.setRequestHeader("Content-Type","application/json");
-      xmlHttp.send(JSON.stringify(contextSNCF));
+    function getRecommandationSNCF(){
+        document.getElementById('sncf_solution').innerHTML = "";
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            var recoSNCF = JSON.parse(this.responseText).recommandation;
+            console.log(JSON.parse(this.responseText))
+            document.getElementById('sncf_solution').innerHTML += recoSNCF;
+          }
+        });
+        xhr.open("POST", host +  "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        var recommendationBody = 
+          { context : contextSNCF,
+            event : jsonEventObject
+          }
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    
+    function getLastCard() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", host + "/cards/cards/"+ document.getElementsByClassName("card")[0].getAttribute("data-urlid"),false);
+        xmlHttp.setRequestHeader("Authorization","Bearer "+ window.localStorage.token);
+        xmlHttp.send(null);
+        var response = JSON.parse(xmlHttp.responseText);
+        var eventAttributes = response.card.data.metadata;
+        console.log(eventAttributes);
+        jsonEventObject = eventAttributes;
     };
-
-    function traceInHistory(traceType,useCase){
+    function traceInHistory(traceType,useCase,data){
       var data = JSON.stringify({
-        "data": {},
-        "date": "2022-11-22T16:22:57.371000",
+        "data": {data},
+        "date": new Date(),
         "step": traceType,
         "use_case": useCase
       });
@@ -604,12 +613,13 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function askCab(){
-      traceInHistory("ASKFORHELP",authorizedUseCase);
+      traceInHistory("ASKFORHELP",authorizedUseCase,null);
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
           document.getElementById("sncf_assist_full").hidden = false;
           document.getElementById("recos_sncf").hidden = false;
+          getLastCard();
           getRecommandationSNCF();
         break;
         case "RTE":
@@ -617,6 +627,21 @@ These two parameters are place in this file as the style should have a title par
         break;
       }
       }
+    function applyRecommandation(){
+      traceInHistory("AWARD",authorizedUseCase,jsonEventObject);
+      switch(authorizedUseCase){
+        case "SNCF":
+          document.getElementById("sncf_assist_nominal").hidden = true;
+          document.getElementById("sncf_assist_full").hidden = false;
+          document.getElementById("recos_sncf").hidden = false;
+        break;
+        case "RTE":
+        document.getElementById("rte_assist_nominal").hidden = true;
+        break;
+      }
+      }
+
+      
   </script>
 
 
