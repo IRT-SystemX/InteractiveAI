@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM harbor.irtsysx.fr/cab/cab-common:0.0.1
+FROM harbor.irtsysx.fr/cab/cab-common:3.11.4-slim
 
 COPY ./historic-service/ /code/
 
