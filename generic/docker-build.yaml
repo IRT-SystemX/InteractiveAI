@@ -1,0 +1,24 @@
+
+variables:
+  DOCKER_REGISTRY: "harbor.irtsysx.fr"
+  DOCKER_CONTEXT: "./backend/"
+  DOCKERFILE: "Dockerfile"
+  IMAGE_NAME: ""
+  IMAGE_VERSION: ""
+
+.docker-build:
+  stage: build_dev
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - echo "{\"auths\":{\"${DOCKER_REGISTRY}\":{\"username\":\"${HARBOR_USER}\",\"password\":\"${HARBOR_PWD}\",\"auth\":\"$(printf "%s:%s" "${HARBOR_USER}" "${HARBOR_PWD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${DOCKER_CONTEXT}"
+      --build-arg "HARBOR_USER=$HARBOR_USER"
+      --build-arg "HARBOR_PWD=$HARBOR_PWD"
+      --dockerfile "${DOCKERFILE}"
+      --compressed-caching=false
+      --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "test-ci"

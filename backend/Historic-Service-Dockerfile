@@ -2,7 +2,7 @@
 
 FROM harbor.irtsysx.fr/cab/cab-common:0.0.1
 
-COPY ./context-service/ /code/
+COPY ./historic-service/ /code/
 
 WORKDIR /code
 

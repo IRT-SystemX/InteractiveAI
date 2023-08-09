@@ -6,6 +6,6 @@ RUN mkdir /code
 COPY . /code/
 WORKDIR /code
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install --default-timeout=1000 --no-cache-dir -r requirements.txt
 
 CMD ["./entrypoint.sh"]
