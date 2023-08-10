@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.image-pull-secret: regcred
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
@@ -19,6 +20,7 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+        kompose.image-pull-secret: regcred
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
@@ -37,11 +39,11 @@ spec:
             - name: CARDS_PUBLICATION_SERVICE
               value: http://cards-publication.cab-dev.svc.cluster.local:8080
             - name: DATABASE_URL
-              value: postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5435/cab-correlation
+              value: postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
             - name: GATEWAY_SERVICE
               value: http://angular-ui.cab-dev.svc.cluster.local:80
             - name: HISTORIC_SERVICE
-              value: http://cab-historic.cab-dev.svc.cluster.local:5200
+              value: http://cab-historic.cab-dev.svc.cluster.local:5000
             - name: HOST_IP
             - name: PYTHONPATH
               value: /code
@@ -49,7 +51,7 @@ spec:
           name: cab-correlation
           ports:
             - containerPort: 5000
-              hostPort: 5300
+              hostPort: 5000
               protocol: TCP
           resources:
             limits:
@@ -58,5 +60,7 @@ spec:
             requests:
               cpu: 200m
               memory: "1024Mi"
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
 status: {}

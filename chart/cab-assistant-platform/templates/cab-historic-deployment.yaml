@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.image-pull-secret: regcred
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
@@ -19,6 +20,7 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+        kompose.image-pull-secret: regcred
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
@@ -35,12 +37,12 @@ spec:
             - --reload
           env:
             - name: DATABASE_URL
-              value: postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5433/cab-historic
+              value: postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5432/cab-historic
           image: harbor.irtsysx.fr/cab/cab-historic:0.0.1
           name: cab-historic
           ports:
             - containerPort: 5000
-              hostPort: 5200
+              hostPort: 5000
               protocol: TCP
           resources:
             limits:
@@ -49,5 +51,7 @@ spec:
             requests:
               cpu: 200m
               memory: "256Mi"
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
 status: {}

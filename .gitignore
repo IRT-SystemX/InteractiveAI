@@ -195,3 +195,5 @@ htmlcov/
 frontend/main/.angular/*
 frontend/main/node_modules
 node_modules
+
+go.sh

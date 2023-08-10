@@ -4,6 +4,7 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
     kompose.version: 1.30.0 (9d8dcb518)
+    kompose.volume.subpath: pg-data
   creationTimestamp: null
   labels:
     io.kompose.service: db-postgres-event
@@ -21,6 +22,7 @@ spec:
       annotations:
         kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
         kompose.version: 1.30.0 (9d8dcb518)
+        kompose.volume.subpath: pg-data
       creationTimestamp: null
       labels:
         io.kompose.network/chart-default: "true"
@@ -40,7 +42,7 @@ spec:
           name: db-postgres-event
           ports:
             - containerPort: 5432
-              hostPort: 5436
+              hostPort: 5432
               protocol: TCP
           resources:
             limits:
@@ -52,6 +54,7 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-event-data
+              subPath: pg-data
       restartPolicy: Always
       volumes:
         - name: postgres-event-data

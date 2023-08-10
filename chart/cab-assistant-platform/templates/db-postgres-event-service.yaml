@@ -4,6 +4,7 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
     kompose.version: 1.30.0 (9d8dcb518)
+    kompose.volume.subpath: pg-data
   creationTimestamp: null
   labels:
     io.kompose.service: db-postgres-event
@@ -11,8 +12,8 @@ metadata:
   
 spec:
   ports:
-    - name: "5436"
-      port: 5436
+    - name: "5432"
+      port: 5432
       targetPort: 5432
   selector:
     io.kompose.service: db-postgres-event

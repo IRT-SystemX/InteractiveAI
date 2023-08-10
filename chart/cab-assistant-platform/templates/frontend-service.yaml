@@ -3,6 +3,7 @@ kind: Service
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.image-pull-secret: regcred
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
@@ -11,8 +12,8 @@ metadata:
   
 spec:
   ports:
-    - name: "3200"
-      port: 3200
+    - name: "80"
+      port: 80
       targetPort: 80
   selector:
     io.kompose.service: frontend

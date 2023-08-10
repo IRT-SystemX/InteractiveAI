@@ -4,6 +4,7 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
     kompose.version: 1.30.0 (9d8dcb518)
+    kompose.volume.subpath: pg-data
   creationTimestamp: null
   labels:
     io.kompose.service: pgadmin
@@ -11,8 +12,8 @@ metadata:
   
 spec:
   ports:
-    - name: "5050"
-      port: 5050
+    - name: "80"
+      port: 80
       targetPort: 80
   selector:
     io.kompose.service: pgadmin

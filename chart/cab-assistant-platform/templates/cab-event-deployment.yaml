@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.image-pull-secret: regcred
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
@@ -19,6 +20,7 @@ spec:
     metadata:
       annotations:
         kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+        kompose.image-pull-secret: regcred
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
@@ -37,7 +39,7 @@ spec:
             - name: CARDS_PUBLICATION_SERVICE
               value: http://cards-publication.cab-dev.svc.cluster.local:8080
             - name: DATABASE_URL
-              value: postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5436/cab-event
+              value: postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
             - name: FLASK_APP
               value: app:create_app('dev')
             - name: GATEWAY_SERVICE
@@ -60,5 +62,7 @@ spec:
             requests:
               cpu: 200m
               memory: "256Mi"
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
 status: {}
