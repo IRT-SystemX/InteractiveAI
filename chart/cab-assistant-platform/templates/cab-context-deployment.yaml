@@ -43,7 +43,7 @@ spec:
             - name: HOST_IP
             - name: PYTHONPATH
               value: /code
-          image: harbor.irtsysx.fr/cab/cabcontext:0.0.1
+          image: harbor.irtsysx.fr/cab/cab-context:0.0.1
           name: cab-context
           ports:
             - containerPort: 5000

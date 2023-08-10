@@ -36,7 +36,7 @@ spec:
           env:
             - name: DATABASE_URL
               value: postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5433/cab-historic
-          image: harbor.irtsysx.fr/cab/cabhistoric:0.0.1
+          image: harbor.irtsysx.fr/cab/cab-historic:0.0.1
           name: cab-historic
           ports:
             - containerPort: 5000

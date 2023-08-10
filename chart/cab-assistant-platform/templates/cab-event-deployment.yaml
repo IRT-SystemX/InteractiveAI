@@ -47,7 +47,7 @@ spec:
             - name: HOST_IP
             - name: PYTHONPATH
               value: /code
-          image: harbor.irtsysx.fr/cab/cabevent:0.0.1
+          image: harbor.irtsysx.fr/cab/cab-event:0.0.1
           name: cab-event
           ports:
             - containerPort: 5000

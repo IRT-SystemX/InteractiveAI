@@ -43,7 +43,7 @@ spec:
             - name: HOST_IP
             - name: PYTHONPATH
               value: /my_app
-          image: harbor.irtsysx.fr/cab/cabrecommendation:0.0.1
+          image: harbor.irtsysx.fr/cab/cab-recommendation:0.0.1
           name: cab-recommendation
           ports:
             - containerPort: 5000

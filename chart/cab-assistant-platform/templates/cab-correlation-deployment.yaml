@@ -45,7 +45,7 @@ spec:
             - name: HOST_IP
             - name: PYTHONPATH
               value: /code
-          image: harbor.irtsysx.fr/cab/cabcorrelation:0.0.1
+          image: harbor.irtsysx.fr/cab/cab-correlation:0.0.1
           name: cab-correlation
           ports:
             - containerPort: 5000

@@ -2,7 +2,7 @@ version: "3.5"
 services:
 
   cab-context:
-    image: harbor.irtsysx.fr/cab/cabcontext:0.0.1
+    image: harbor.irtsysx.fr/cab/cab-context:0.0.1
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5300
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5434/cab-context
@@ -26,7 +26,7 @@ services:
           memory: 256M
 
   cab-event:
-    image: harbor.irtsysx.fr/cab/cabevent:0.0.1
+    image: harbor.irtsysx.fr/cab/cab-event:0.0.1
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -52,7 +52,7 @@ services:
           memory: 256M
 
   cab-historic:
-    image: harbor.irtsysx.fr/cab/cabhistoric:0.0.1
+    image: harbor.irtsysx.fr/cab/cab-historic:0.0.1
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5433/cab-historic
     restart: unless-stopped
@@ -178,7 +178,7 @@ services:
           memory: 50M
 
   cab-correlation:
-    image: harbor.irtsysx.fr/cab/cabcorrelation:0.0.1
+    image: harbor.irtsysx.fr/cab/cab-correlation:0.0.1
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -222,7 +222,7 @@ services:
           memory: 50M
 
   cab-recommendation:
-    image: harbor.irtsysx.fr/cab/cabrecommendation:0.0.1
+    image: harbor.irtsysx.fr/cab/cab-recommendation:0.0.1
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
