@@ -8,6 +8,7 @@ variables:
 
 .docker-build:
   stage: build_dev
+  interruptible: true
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
@@ -24,6 +25,7 @@ variables:
 
 .docker-build-common:
   stage: build_common
+  interruptible: true
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]

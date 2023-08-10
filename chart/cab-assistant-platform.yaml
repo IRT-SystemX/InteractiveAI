@@ -154,11 +154,11 @@ services:
     image: harbor.irtsysx.fr/cab/frontend:0.0.1
     restart: unless-stopped
     configs:
-      - source: ui-config-web-ui.json
+      - source: ui-config-web-ui
         target: /usr/share/nginx/html/opfab/web-ui.json
-      - source: ui-config-ui-menu.json
+      - source: ui-config-ui-menu
         target: /usr/share/nginx/html/opfab/ui-menu.json
-      - source: nginx-conf-nginx-cors-permissive.conf
+      - source: nginx-conf-nginx-cors-permissive
         target: /etc/nginx/conf.d/default.conf
     ports:
       - "3200:80"
@@ -251,9 +251,9 @@ volumes:
 
 
 configs:
-  ui-config-web-ui.json:
+  ui-config-web-ui:
     file: ../ui-config/web-ui.json
-  ui-config-ui-menu.json:
+  ui-config-ui-menu:
     file: ../ui-config/ui-menu.json
-  nginx-conf-nginx-cors-permissive.conf:
+  nginx-conf-nginx-cors-permissive:
     file: ../config/dev/cab/nginx-cors-permissive.conf

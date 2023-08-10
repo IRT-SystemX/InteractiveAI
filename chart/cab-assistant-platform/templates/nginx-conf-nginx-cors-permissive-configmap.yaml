@@ -334,5 +334,5 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: frontend
-  name: nginx-conf-nginx-cors-permissive.conf
+  name: nginx-conf-nginx-cors-permissive
   

@@ -141,5 +141,5 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: frontend
-  name: ui-config-web-ui.json
+  name: ui-config-web-ui
   

@@ -5,6 +5,7 @@ variables:
 .pytest-coverage:
   stage: test
   image: python:3.11.4-slim
+  interruptible: true
   artifacts:
     when: always
     reports:
