@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file cab-assistant-platform.yaml convert -c
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cab-correlation
+  name: cab-correlation
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cab-correlation
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file cab-assistant-platform.yaml convert -c
+        kompose.version: 1.30.0 (9d8dcb518)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/chart-default: "true"
+        io.kompose.service: cab-correlation
+    spec:
+      containers:
+        - args:
+            - python
+            - -m
+            - flask
+            - run
+            - --host=0.0.0.0
+            - --reload
+          env:
+            - name: CARDS_PUBLICATION_SERVICE
+              value: http://cards-publication.cab-dev.svc.cluster.local:8080
+            - name: DATABASE_URL
+              value: postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5435/cab-correlation
+            - name: GATEWAY_SERVICE
+              value: http://angular-ui.cab-dev.svc.cluster.local:80
+            - name: HISTORIC_SERVICE
+              value: http://cab-historic.cab-dev.svc.cluster.local:5200
+            - name: HOST_IP
+            - name: PYTHONPATH
+              value: /code
+          image: harbor.irtsysx.fr/cab/cabcorrelation:0.0.1
+          name: cab-correlation
+          ports:
+            - containerPort: 5000
+              hostPort: 5300
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: "2048Mi"
+            requests:
+              cpu: 200m
+              memory: "1024Mi"
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file cab-assistant-platform.yaml convert -c
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cab-historic
+  name: cab-historic
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cab-historic
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file cab-assistant-platform.yaml convert -c
+        kompose.version: 1.30.0 (9d8dcb518)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/chart-default: "true"
+        io.kompose.service: cab-historic
+    spec:
+      containers:
+        - args:
+            - python
+            - -m
+            - flask
+            - run
+            - --host=0.0.0.0
+            - --reload
+          env:
+            - name: DATABASE_URL
+              value: postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5433/cab-historic
+          image: harbor.irtsysx.fr/cab/cabhistoric:0.0.1
+          name: cab-historic
+          ports:
+            - containerPort: 5000
+              hostPort: 5200
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: "512Mi"
+            requests:
+              cpu: 200m
+              memory: "256Mi"
+      restartPolicy: Always
+status: {}

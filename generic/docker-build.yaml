@@ -20,6 +20,7 @@ variables:
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
+      when: never
 
 .docker-build-common:
   stage: build_common
@@ -35,4 +36,5 @@ variables:
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
+      when: never
 
