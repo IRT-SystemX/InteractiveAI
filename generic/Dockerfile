@@ -2,10 +2,10 @@
 
 FROM harbor.irtsysx.fr/cab/cab-common:3.11.4-slim
 
-COPY ./event-service/ /code/
+COPY . /code/
 
 WORKDIR /code
 
 RUN pip3 install --default-timeout=1000 --no-cache-dir -r requirements.txt
 
-CMD ["./entrypoint.sh"]
+# CMD ["./entrypoint.sh"]

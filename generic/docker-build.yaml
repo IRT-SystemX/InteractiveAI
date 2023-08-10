@@ -2,7 +2,7 @@
 variables:
   DOCKER_REGISTRY: "harbor.irtsysx.fr"
   DOCKER_CONTEXT: "./backend/"
-  DOCKERFILE: "Dockerfile"
+  DOCKERFILE: "generic/Dockerfile"
   IMAGE_NAME: ""
   IMAGE_VERSION: ""
 
@@ -29,9 +29,8 @@ variables:
   script:
     - echo "{\"auths\":{\"${DOCKER_REGISTRY}\":{\"username\":\"${HARBOR_USER}\",\"password\":\"${HARBOR_PWD}\",\"auth\":\"$(printf "%s:%s" "${HARBOR_USER}" "${HARBOR_PWD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor
-      --context "${DOCKER_CONTEXT}"
+      --context "./backend/cab_common"
       --build-arg "PYTHON_TAG=${PYTHON_TAG}"
-      --dockerfile "${DOCKERFILE}"
       --compressed-caching=false
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
   rules:

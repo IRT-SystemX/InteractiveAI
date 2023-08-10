@@ -10,10 +10,10 @@ RUN mkdir -p /usr/share/man/man1 \
 
 
 # Install recommendation-service modules
-COPY ./recommendation-service/ /my_app/
+COPY . /my_app/
 
 WORKDIR /my_app
 RUN pip3 install --default-timeout=2000 --no-cache-dir -r requirements.txt \
   && pip3 install --default-timeout=1000 --no-cache-dir owlready2
 
-CMD ["./entrypoint.sh"]
+# CMD ["./entrypoint.sh"]
