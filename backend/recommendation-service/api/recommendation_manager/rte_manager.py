@@ -1,6 +1,6 @@
 from owlready2 import default_world, get_ontology, sync_reasoner
 from resources.rte.rtegrid2op_poc_simulator.assistantManager import \
-    AgentManager
+    AgentManager, AgentType
 from settings import logger
 
 from .base_recommendation import BaseRecommendation
@@ -17,7 +17,7 @@ class RTEManager(AgentManager, BaseRecommendation):
 
     def get_recommendation(self, request_data):
 
-        self.recommandate(request_data.get("context", {}))
+        self.recommendate(request_data.get("context", {}))
         logger.info("getting parades")
         parades = self.getlistOfParadeInfo()
 
@@ -81,10 +81,11 @@ class RTEManager(AgentManager, BaseRecommendation):
         action = str(RTE_onto_inferences.get_parents_of(set_bus_test)[0])
 
         if action == 'Onto2grid_v1.2.Change_bus_vect':
-            recommandation = "Changer le bus"
+            Titre = "Changer le bus"
         elif action == "Onto2grid_v1.2.Disconnect_line":
-            recommandation = "Deconnecter la ligne"
+            Titre = "Deconnecter la ligne"
         else:
-            recommandation = "Parade non identifiée"
+            Titre = "Parade non identifiée"
 
-        return [recommandation]
+        recommendation = {"Title":Titre, "Description": "", "Use_case":"RTE", "Agent_type": AgentType.onto.name, "Action": {}}
+        return [recommendation]
