@@ -81,11 +81,11 @@ class RTEManager(AgentManager, BaseRecommendation):
         action = str(RTE_onto_inferences.get_parents_of(set_bus_test)[0])
 
         if action == 'Onto2grid_v1.2.Change_bus_vect':
-            Titre = "Changer le bus"
+            title = "Changer le bus"
         elif action == "Onto2grid_v1.2.Disconnect_line":
-            Titre = "Deconnecter la ligne"
+            title = "Deconnecter la ligne"
         else:
-            Titre = "Parade non identifiée"
+            title = "Parade non identifiée"
 
-        recommendation = {"Title":Titre, "Description": "", "Use_case":"RTE", "Agent_type": AgentType.onto.name, "Action": {}}
+        recommendation = {"title":title, "description":"", "use_case":"RTE", "agent_type":AgentType.onto.name, "actions":{}}
         return [recommendation]
