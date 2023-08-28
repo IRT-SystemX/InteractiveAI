@@ -75,6 +75,7 @@ These two parameters are place in this file as the style should have a title par
     var host;
     var traceHost;
     var tracePort = 5200;
+    var assistNeverTriggered = true;
     checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
@@ -153,7 +154,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
-          document.getElementById("rte_assist_nominal").hidden = false;
           document.getElementById("notifs_RTE").hidden = false;
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Alertes");
 
@@ -164,7 +164,6 @@ These two parameters are place in this file as the style should have a title par
         case "DA":
           getCoordinates();
           document.getElementById("dassault_div").hidden = false;
-          document.getElementById("dassault_assist").hidden = false;
           document.getElementById("dassault_title").hidden = false;
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
@@ -227,7 +226,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.color = "white"
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           // document.getElementById("ctx_div").style.marginLeft = "440px";
-          document.getElementById("sncf_assist").hidden = false;
           document.getElementById("sncf_assist_nominal").hidden = false;
           document.getElementById("assist").hidden = false;
           document.getElementById("assistOpTitle").classList += " sncf assist_sncf assistOpTitle";
@@ -453,7 +451,11 @@ These two parameters are place in this file as the style should have a title par
               cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.add("sncfCard");
               cards[card].classList.remove("sncfCardNotSelected");
-              cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100"
+              cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100";
+              if(assistNeverTriggered){
+                document.getElementById("sncf_assist").hidden = false;
+                assistNeverTriggered = false;
+              }
           }
           if (cards[card].classList.toString().includes("light-card-detail-unselected")){
             //carte selectionée classe SNCF
@@ -490,10 +492,20 @@ These two parameters are place in this file as the style should have a title par
             }
 
           }
+      }else if (selectedUseCase == "RTE"){
+          if (cards[card].classList.contains("light-card-detail-selected")){
+              if(assistNeverTriggered){
+                document.getElementById("rte_assist_nominal").hidden = false;
+                assistNeverTriggered = false;
+              }
+          }
       }
     }
       if (selectedUseCase == "DA"){
         setDANotifications();
+        if(assistNeverTriggered){
+          document.getElementById("dassault_assist").hidden = false;
+        assistNeverTriggered = false;
       }
     }
     function getCardContent(id_card) {
