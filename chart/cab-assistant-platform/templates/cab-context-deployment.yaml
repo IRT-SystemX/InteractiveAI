@@ -39,7 +39,7 @@ spec:
             - name: CORRELATION_SERVICE
               value: http://cab-correlation.cab-dev.svc.cluster.local:5000
             - name: DATABASE_URL
-              value: postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5434/cab-context
+              value: postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
             - name: FLASK_APP
               value: app:create_app('dev')
             - name: HOST_IP

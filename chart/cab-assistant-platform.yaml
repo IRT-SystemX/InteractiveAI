@@ -5,7 +5,7 @@ services:
     image: harbor.irtsysx.fr/cab/cab-context:0.0.1
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5000
-      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5434/cab-context
+      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
@@ -33,7 +33,7 @@ services:
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
       - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
-      - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5200
+      - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
@@ -203,6 +203,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - HOST_IP=$HOST_IP
       - PYTHONPATH=/code
+      - FLASK_APP=app:create_app('dev')
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000:5000

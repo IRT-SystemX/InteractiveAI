@@ -40,6 +40,8 @@ spec:
               value: http://cards-publication.cab-dev.svc.cluster.local:8080
             - name: DATABASE_URL
               value: postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
+            - name: FLASK_APP
+              value: app:create_app('dev')
             - name: GATEWAY_SERVICE
               value: http://angular-ui.cab-dev.svc.cluster.local:80
             - name: HISTORIC_SERVICE

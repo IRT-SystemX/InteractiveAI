@@ -19,8 +19,6 @@ variables:
       --dockerfile "${DOCKERFILE}"
       --compressed-caching=false
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
-  rules:
-    - if: $CI_COMMIT_BRANCH == "test-ci"
 
 .docker-build-common:
   stage: build_common
@@ -35,6 +33,4 @@ variables:
       --build-arg "PYTHON_TAG=${PYTHON_TAG}"
       --compressed-caching=false
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
-  rules:
-    - if: $CI_COMMIT_BRANCH == "test-ci"
 

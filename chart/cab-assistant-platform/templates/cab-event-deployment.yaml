@@ -45,7 +45,7 @@ spec:
             - name: GATEWAY_SERVICE
               value: http://angular-ui.cab-dev.svc.cluster.local:80
             - name: HISTORIC_SERVICE
-              value: http://cab-historic.cab-dev.svc.cluster.local:5200
+              value: http://cab-historic.cab-dev.svc.cluster.local:5000
             - name: HOST_IP
             - name: PYTHONPATH
               value: /code
