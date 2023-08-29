@@ -85,11 +85,11 @@
         }
     },
     "event": {
-        "malfunction_agent": 0,
-        "malfunction_position": [
+        "agent_id": 0,
+        "agent_position": [
             9,
             12
         ],
-        "malfunction_delay": 15
+        "delay": 15
     }
 }
