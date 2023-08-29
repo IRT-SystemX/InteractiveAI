@@ -3,7 +3,7 @@ services:
 
   cabcontext:
     container_name: cab_context
-    image: harbor.irtsysx.fr/cab/cabcontext
+    image: cab/cabcontext
     build:
       context: ../../../backend
       dockerfile: Context-Service-Dockerfile
@@ -27,7 +27,7 @@ services:
 
   cabevent:
     container_name: cab_event
-    image: harbor.irtsysx.fr/cab/cabevent
+    image: cab/cabevent
     build:
       context: ../../../backend
       dockerfile: Event-Service-Dockerfile
@@ -53,7 +53,7 @@ services:
 
   cabhistoric:
     container_name: cabhistoric
-    image: harbor.irtsysx.fr/cab/cabhistoric
+    image: cab/cabhistoric
     build:
       context: ../../../backend/historic-service
       dockerfile: Dockerfile
@@ -132,7 +132,6 @@ services:
 
   frontend:
     container_name: frontend
-    image: harbor.irtsysx.fr/cab/frontend
     build:
       context: ../../../frontend/main
       dockerfile: Dockerfile
@@ -153,7 +152,7 @@ services:
 
   cabcorrelation:
     container_name: cab_correlation
-    image: harbor.irtsysx.fr/cab/cabcorrelation
+    image: cab/cabcorrelation
     build:
       context: ../../../backend
       dockerfile: Correlation-Service-Dockerfile
@@ -192,7 +191,7 @@ services:
 
   cabrecommendation:
     container_name: cab_recommendation
-    image: harbor.irtsysx.fr/cab/cabrecommendation
+    image: cab/cabrecommendation
     build:
       context: ../../../backend
       dockerfile: Recommendation-Service-Dockerfile

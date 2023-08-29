@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.11.4-slim
+
+RUN mkdir /code
+RUN mkdir /cab_common
+
+COPY ./event-service/ /code/
+COPY ./cab_common/ /cab_common/
+
+WORKDIR /code
+
+RUN pip3 install -r requirements.txt
+
+WORKDIR /cab_common
+
+RUN pip3 install .
+
+WORKDIR /code
+
+CMD ["./entrypoint.sh"]

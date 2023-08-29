@@ -1,0 +1,28 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.8.10-slim
+
+RUN mkdir -p /usr/share/man/man1
+RUN apt-get update && apt-get install -y default-jre
+
+RUN mkdir /my_app
+RUN mkdir /cab_common
+
+# Install recommendation-service modules
+COPY ./recommendation-service/ /my_app/
+COPY ./cab_common/ /cab_common/
+
+WORKDIR /my_app
+
+RUN pip3 install -r requirements.txt
+
+RUN pip3 install owlready2
+
+WORKDIR /cab_common
+
+RUN pip3 install .
+
+
+WORKDIR /my_app
+
+CMD ["./entrypoint.sh"]
