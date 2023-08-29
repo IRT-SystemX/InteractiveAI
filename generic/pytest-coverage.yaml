@@ -13,4 +13,6 @@ variables:
         coverage_format: cobertura
         path: ${COV_CONTEXT}/coverage.xml
       junit: ${COV_CONTEXT}/report.xml
-
+  rules:
+    - if: $CI_COMMIT_BRANCH == "test-ci"
+      when: never
