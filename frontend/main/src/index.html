@@ -76,6 +76,7 @@ These two parameters are place in this file as the style should have a title par
     var traceHost;
     var tracePort = 5200;
     var assistNeverTriggered = true;
+    var jsonEventObject;
     checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
@@ -604,7 +605,7 @@ These two parameters are place in this file as the style should have a title par
     };
     function traceInHistory(traceType,useCase,data){
       var data = JSON.stringify({
-        "data": {data},
+        "data": data,
         "date": new Date(),
         "step": traceType,
         "use_case": useCase
@@ -626,7 +627,7 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function askCab(){
-      traceInHistory("ASKFORHELP",authorizedUseCase,null);
+      traceInHistory("ASKFORHELP",authorizedUseCase,{});
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
@@ -641,7 +642,7 @@ These two parameters are place in this file as the style should have a title par
       }
       }
     function applyRecommandation(){
-      traceInHistory("AWARD",authorizedUseCase,jsonEventObject);
+      traceInHistory("AWARD",authorizedUseCase,{});
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
@@ -689,7 +690,7 @@ These two parameters are place in this file as the style should have a title par
             console.log(response)
           }
       }
-      request.open("GET","/cabcontext/api/v1/contexts", true);
+      request.open("GET", host + "/cabcontext/api/v1/contexts", true);
       request.setRequestHeader("Accept","application/json");
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
@@ -955,37 +956,37 @@ These two parameters are place in this file as the style should have a title par
       <button class="sncf_button" style="margin-left: 100px" onclick="askCab()"><b>Solliciter CAB</b></button>
     </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
-      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       <span> LTTD: 5min</span>
 </div>
       <!-- <span style="border-left:2px solid lightgrey"></span> -->
       <hr>
-      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
         <span> LTTD: 5min</span>
        </div>
       <hr>
-      <div><span class="rtePrd">Parade topologique: prise de schéma au poste 28</span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Parade topologique: prise de schéma au poste 28</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       <span>LTTD: 5min</span></div>
       <hr>
 
-      <div><span class="rtePrd">Changer de bus</span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Changer de bus</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       </div>
     </div>
     <div id="opfab-div-card-template-alarm-second" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
-      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 16 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       <span> LTTD: 5min</span>
 </div>
       <!-- <span style="border-left:2px solid lightgrey"></span> -->
       <hr>
-      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 26 </span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 26 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
         <span> LTTD: 5min</span>
        </div>
       <hr>
-      <div><span class="rtePrd">Parade injection: redispatch de source de production</span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Parade injection: redispatch de source de production</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       <span>LTTD: 5min</span></div>
       <hr>
 
-      <div><span class="rtePrd">Changer de bus</span><button class="rteBtn">Appliquer Parade</button><br>
+      <div><span class="rtePrd">Changer de bus</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
       </div>
     </div>
     <div id="opfab-div-card-template-security" class="opfab-card-template-rendering" style="display:none">
@@ -994,7 +995,7 @@ These two parameters are place in this file as the style should have a title par
     <hr>
     <div>
       Action suggérée - réaliser une étude complémentaire
-      <button class="rteBtn">Utiliser l'outil d'étude</button>
+      <button onclick="applyRecommandation()" class="rteBtn">Utiliser l'outil d'étude</button>
     </div>
     </div>
     <div id="opfab-div-card-template-noparades" class="opfab-card-template-rendering" style="display:none">
