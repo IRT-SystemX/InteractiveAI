@@ -43,13 +43,13 @@ spec:
               memory: "64Mi"
           volumeMounts:
             - mountPath: /usr/share/nginx/html/opfab/web-ui.json
-              name: ui-config-web-ui
+              name: cab-ui-config-web-ui
               subPath: web-ui.json
             - mountPath: /usr/share/nginx/html/opfab/ui-menu.json
-              name: ui-config-ui-menu
+              name: cab-ui-config-ui-menu
               subPath: ui-menu.json
             - mountPath: /etc/nginx/conf.d/default.conf
-              name: nginx-conf-nginx-cors-permissive
+              name: cab-nginx-conf-nginx-cors-permissive
               subPath: default.conf
       imagePullSecrets:
         - name: regcred
@@ -59,18 +59,18 @@ spec:
             items:
               - key: web-ui.json
                 path: web-ui.json
-            name: ui-config-web-ui
-          name: ui-config-web-ui
+            name: cab-ui-config-web-ui
+          name: cab-ui-config-web-ui
         - configMap:
             items:
               - key: ui-menu.json
                 path: ui-menu.json
-            name: ui-config-ui-menu
-          name: ui-config-ui-menu
+            name: cab-ui-config-ui-menu
+          name: cab-ui-config-ui-menu
         - configMap:
             items:
               - key: nginx-cors-permissive.conf
                 path: default.conf
-            name: nginx-conf-nginx-cors-permissive
-          name: nginx-conf-nginx-cors-permissive
+            name: cab-nginx-conf-nginx-cors-permissive
+          name: cab-nginx-conf-nginx-cors-permissive
 status: {}

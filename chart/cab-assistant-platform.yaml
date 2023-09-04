@@ -6,7 +6,6 @@ services:
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
-      - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       # - FLASK_ENV=development
@@ -35,7 +34,6 @@ services:
       - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
-      - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       # - FLASK_ENV=development
@@ -97,6 +95,7 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
+      kompose.controller.type: statefulset
 
   db-postgres-event:
     image: postgres:14.7
@@ -119,6 +118,7 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
+      kompose.controller.type: statefulset
 
   db-postgres-historic:
     image: postgres:14.7
@@ -141,6 +141,7 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
+      kompose.controller.type: statefulset
 
   pgadmin:
     image: dpage/pgadmin4
@@ -168,11 +169,11 @@ services:
     image: harbor.irtsysx.fr/cab/cab-frontend:0.0.1
     restart: unless-stopped
     configs:
-      - source: ui-config-web-ui
+      - source: cab-ui-config-web-ui
         target: /usr/share/nginx/html/opfab/web-ui.json
-      - source: ui-config-ui-menu
+      - source: cab-ui-config-ui-menu
         target: /usr/share/nginx/html/opfab/ui-menu.json
-      - source: nginx-conf-nginx-cors-permissive
+      - source: cab-nginx-conf-nginx-cors-permissive
         target: /etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
@@ -201,7 +202,6 @@ services:
       - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
-      - HOST_IP=$HOST_IP
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
     command: python -m flask run --host=0.0.0.0 --reload
@@ -241,13 +241,13 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
+      kompose.controller.type: statefulset
 
   cab-recommendation:
     image: harbor.irtsysx.fr/cab/cab-recommendation:0.0.1
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
-      - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - FLASK_ENV=development
       - PYTHONPATH=/my_app
@@ -274,9 +274,9 @@ volumes:
 
 
 configs:
-  ui-config-web-ui:
+  cab-ui-config-web-ui:
     file: ../ui-config/web-ui.json
-  ui-config-ui-menu:
+  cab-ui-config-ui-menu:
     file: ../ui-config/ui-menu.json
-  nginx-conf-nginx-cors-permissive:
+  cab-nginx-conf-nginx-cors-permissive:
     file: ../config/dev/cab/nginx-cors-permissive.conf

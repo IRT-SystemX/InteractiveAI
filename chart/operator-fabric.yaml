@@ -1,0 +1,235 @@
+version: "3.8"
+
+services:
+
+  mongodb:
+    image: mongo:4.4.4-bionic
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 100M
+        reservations:
+          cpus: "0.1"
+          memory: 50M
+    labels:
+      kompose.controller.type: statefulset
+
+  rabbitmq:
+    container_name: rabbit
+    image: rabbitmq:3-management
+    hostname: rabbit
+    volumes:
+      - rabbit_persistance:/var/lib/rabbitmq/mnesia/
+    ports:
+      - "5672:5672"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 2048M
+        reservations:
+          cpus: "0.3"
+          memory: 1024M
+    labels:
+      kompose.controller.type: statefulset
+
+  #keycloak:
+    #image: jboss/keycloak:16.1.1
+    #command: -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/cab-keycloak/export -Dkeycloak.profile.feature.upload_scripts=enabled
+    #environment:
+    #- KEYCLOAK_USER=admin
+    #- KEYCLOAK_PASSWORD=admin
+    #- DB_VENDOR=H2
+    #ports:
+    #- "8080:8080"
+    #configs:
+      #- source: cab-keycloak-users
+        #target: /cab-keycloak/export/dev-users-0.json
+      #- source: cab-keycloak-realm
+        #target: /cab-keycloak/export/dev-realm.json
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "2"
+          #memory: 2048M
+        #reservations:
+          #cpus: "1"
+          #memory: 1024M
+    #labels:
+      #kompose.controller.type: statefulset
+
+  users:
+    container_name: users
+    image: "lfeoperatorfabric/of-users-service:3.11.0.RELEASE"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    ports:
+     - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+    volumes:
+      - certificates:/certificates_to_add
+      - external_config:/external-config
+    configs:
+      - source: common-docker
+        target: /config/common-docker.yml
+      - source: users-docker
+        target: /config/application.yml
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 2048M
+        reservations:
+          cpus: "0.3"
+          memory: 1024M
+    labels:
+      kompose.volume.storage-class-name: nfs
+
+  businessconfig:
+    container_name: businessconfig
+    image: "lfeoperatorfabric/of-businessconfig-service:3.11.0.RELEASE"
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+    volumes:
+      - certificates:/certificates_to_add
+      - businessconfig_storage:/businessconfig-storage
+      - external_config:/external-config
+    configs:
+      - source: common-docker
+        target: /config/common-docker.yml
+      - source: businessconfig-docker
+        target: /config/application-docker.yml
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 2048M
+        reservations:
+          cpus: "0.3"
+          memory: 1024M
+    labels:
+      kompose.volume.storage-class-name: nfs
+
+  cards-publication:
+    container_name: cards-publication
+    image: "lfeoperatorfabric/of-cards-publication-service:3.11.0.RELEASE"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    ports:
+     - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+    volumes:
+      - certificates:/certificates_to_add
+      - external_config:/external-config
+    configs:
+      - source: common-docker
+        target: /config/common-docker.yml
+      - source: cards-consultation-docker
+        target: /config/application-docker.yml
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 2048M
+        reservations:
+          cpus: "0.3"
+          memory: 1024M
+    labels:
+      kompose.volume.storage-class-name: nfs
+
+  cards-consultation:
+    container_name: cards-consultation
+    image: "lfeoperatorfabric/of-cards-consultation-service:3.11.0.RELEASE"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    ports:
+     - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+    volumes:
+      - certificates:/certificates_to_add
+      - external_config:/external-config
+    configs:
+      - source: common-docker
+        target: /config/common-docker.yml
+      - source: cards-consultation-docker
+        target: /config/application-docker.yml
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 2048M
+        reservations:
+          cpus: "0.3"
+          memory: 1024M
+    labels:
+      kompose.volume.storage-class-name: nfs
+
+  web-ui:
+    container_name: web-ui
+    image: "lfeoperatorfabric/of-web-ui:3.11.0.RELEASE"
+    ports:
+    - "80:80"
+    depends_on:
+      - users
+      - businessconfig
+      - cards-consultation
+    volumes:
+      - webapp_example:/usr/share/nginx/html/external/appExample
+    configs:
+      - source: nginx-conf-nginx-cors-permissive
+        target: /etc/nginx/conf.d/default.conf
+      - source: ui-config-web-ui
+        target: /usr/share/nginx/html/opfab/web-ui.json
+      - source: ui-config-ui-menu
+        target: /usr/share/nginx/html/opfab/ui-menu.json
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+        reservations:
+          cpus: "0.05"
+          memory: 50M
+
+volumes:
+  rabbit_persistance:
+  certificates:
+  external_config:
+  businessconfig_storage:
+  webapp_example:
+
+configs:
+  common-docker:
+    file: ../of-config/cab-docker/common-docker.yml
+  businessconfig-docker:
+    file: ../of-config/cab-docker/businessconfig-docker.yml
+  users-docker:
+    file: ../of-config/cab-docker/users-docker.yml
+  cards-consultation-docker:
+    file: ../of-config/cab-docker/cards-consultation-docker.yml
+  nginx-conf-nginx-cors-permissive:
+    file: ../of-config/cab-docker/nginx-cors-permissive.conf
+  #cab-keycloak-users:
+    #file: ../of-config/cab-keycloak/export/dev-users-0.json
+  #cab-keycloak-realm:
+    #file: ../of-config/cab-keycloak/export/dev-realm.json
+  ui-config-web-ui:
+    file: ../of-config/cab-docker/ui-config/web-ui.json
+  ui-config-ui-menu:
+    file: ../of-config/cab-docker/ui-config/ui-menu.json

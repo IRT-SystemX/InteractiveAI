@@ -3,6 +3,7 @@ kind: Service
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.controller.type: statefulset
     kompose.version: 1.30.0 (9d8dcb518)
     kompose.volume.subpath: pg-data
   creationTimestamp: null

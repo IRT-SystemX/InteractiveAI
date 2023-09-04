@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  cards-consultation-docker.yml: |-
+    spring:
+      application:
+        name: cards-consultation
+
+    checkIfUserIsAlreadyConnected: true
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: cards-consultation
+  name: cards-consultation-docker
+  

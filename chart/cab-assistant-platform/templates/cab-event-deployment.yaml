@@ -46,7 +46,6 @@ spec:
               value: http://angular-ui.cab-dev.svc.cluster.local:80
             - name: HISTORIC_SERVICE
               value: http://cab-historic.cab-dev.svc.cluster.local:5000
-            - name: HOST_IP
             - name: PYTHONPATH
               value: /code
           image: harbor.irtsysx.fr/cab/cab-event:0.0.1

@@ -2,17 +2,17 @@ apiVersion: v1
 data:
   nginx-cors-permissive.conf: |
     # docker-compose DNS used to resolved keycloak services
-    resolver 127.0.0.11 ipv6=off;
+    # resolver 127.0.0.11 ipv6=off;
     server {
         listen 80;
         server_name localhost;
         ### CUSTOMIZATION - BEGIN
         # Url of the Authentication provider
-        set $KeycloakBaseUrl "http://keycloak:8080";
+        set $KeycloakBaseUrl "https://cab-keycloak.irtsystemx.org";
         # Realm associated to OperatorFabric within the Authentication provider
         set $OperatorFabricRealm "dev";
         # base64 encoded pair of authentication in the form of 'client-id:secret-id'
-        set $ClientPairOFAuthentication "b3BmYWItY2xpZW50Om9wZmFiLWtleWNsb2FrLXNlY3JldA==" ;
+        set $ClientPairOFAuthentication "b3BmYWItY2xpZW50OlNXU3dRQnRuRDRubWNhN3gzVWxZb1lXUWtOdG1GYzY1Cg==" ;
         ### CUSTOMIZATION - END
         set $BasicValue "Basic $ClientPairOFAuthentication";
         set $KeycloakOpenIdConnect $KeycloakBaseUrl/auth/realms/$OperatorFabricRealm/protocol/openid-connect;
@@ -20,10 +20,10 @@ data:
         gzip_types application/javascript text/css;
         #   access_log /var/log/nginx/host.access.log main;
         #   enables `ng serve` mode with following default headers and avoid cors error on status other than 2xx with always
-        add_header 'Access-Control-Allow-Origin' '*' always;
-        add_header 'Access-Control-Allow-Credentials' 'true' always;
-        add_header 'Access-Control-Allow-Methods' '*' always;
-        add_header 'Access-Control-Allow-Headers' '*' always;
+      #  add_header 'Access-Control-Allow-Origin' '*' always;
+      #  add_header 'Access-Control-Allow-Credentials' 'true' always;
+      #  add_header 'Access-Control-Allow-Methods' '*' always;
+      #  add_header 'Access-Control-Allow-Headers' '*' always;
 
         location / {
             alias /usr/share/nginx/html/;
@@ -107,7 +107,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://businessconfig:8080;
+            proxy_pass http://businessconfig.cab-dev.svc.cluster.local:8080;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -128,7 +128,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://users:8080/$1;
+            proxy_pass http://users.cab-dev.svc.cluster.local:8080/$1;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -146,7 +146,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://users:8080/users;
+            proxy_pass http://users.cab-dev.svc.cluster.local:8080/users;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -164,7 +164,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://cards-consultation:8080/;
+            proxy_pass http://cards-consultation.cab-dev.svc.cluster.local:8080/;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
         location /cardspub/cards {
@@ -181,7 +181,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://cards-publication:8080/cards;
+            proxy_pass http://cards-publication.cab-dev.svc.cluster.local:8080/cards;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
         location /archives {
@@ -198,7 +198,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://cards-consultation:8080;
+            proxy_pass http://cards-consultation.cab-dev.svc.cluster.local:8080;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -215,7 +215,7 @@ data:
                 add_header 'Vary' 'Access-Control-Request-Headers';
                 return 204;
             }
-            set $externaldevices http://external-devices:8080;
+            set $externaldevices http://external-devices.cab-dev.svc.cluster.local:8080;
             proxy_set_header Host $http_host;
             proxy_pass $externaldevices/$1;
             proxy_set_header X-Forwarded-For $remote_addr;
@@ -234,7 +234,7 @@ data:
                 add_header 'Vary' 'Access-Control-Request-Headers';
                 return 204;
             }
-            set $externaldevices http://external-devices:8080;
+            set $externaldevices http://external-devices.cab-dev.svc.cluster.local:8080;
             proxy_set_header Host $http_host;
             proxy_pass $externaldevices;
             proxy_set_header X-Forwarded-For $remote_addr;
@@ -254,7 +254,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://cab_context:5000/;
+            proxy_pass http://cab-context.cab-dev.svc.cluster.local:5000/;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -272,7 +272,7 @@ data:
                 return 204;
             }
             proxy_set_header Host $http_host;
-            proxy_pass http://cab_event:5000/;
+            proxy_pass http://cab-event.cab-dev.svc.cluster.local:5000/;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -300,7 +300,7 @@ data:
             }
 
             proxy_set_header Host $http_host;
-            proxy_pass http://cab_correlation:5000/;
+            proxy_pass http://cab-correlation.cab-dev.svc.cluster.local:5000/;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -320,7 +320,7 @@ data:
             }
 
             proxy_set_header Host $http_host;
-            proxy_pass http://cab_recommendation:5000/;
+            proxy_pass http://cab-recommendation.cab-dev.svc.cluster.local:5000/;
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
@@ -334,5 +334,5 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: frontend
-  name: nginx-conf-nginx-cors-permissive
+  name: cab-nginx-conf-nginx-cors-permissive
   

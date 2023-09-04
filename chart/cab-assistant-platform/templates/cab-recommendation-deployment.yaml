@@ -42,7 +42,6 @@ spec:
               value: development
             - name: GATEWAY_SERVICE
               value: http://angular-ui.cab-dev.svc.cluster.local:80
-            - name: HOST_IP
             - name: PYTHONPATH
               value: /my_app
           image: harbor.irtsysx.fr/cab/cab-recommendation:0.0.1

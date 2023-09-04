@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   annotations:
     kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
+    kompose.controller.type: statefulset
     kompose.version: 1.30.0 (9d8dcb518)
     kompose.volume.subpath: pg-data
   creationTimestamp: null
@@ -15,14 +16,9 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: db-postgres-context
-  strategy:
-    type: Recreate
+  serviceName: db-postgres-context
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -c -f cab-assistant-platform.yaml
-        kompose.version: 1.30.0 (9d8dcb518)
-        kompose.volume.subpath: pg-data
       creationTimestamp: null
       labels:
         io.kompose.network/chart-default: "true"
@@ -60,4 +56,19 @@ spec:
         - name: postgres-context-data
           persistentVolumeClaim:
             claimName: postgres-context-data
-status: {}
+  updateStrategy: {}
+  volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        labels:
+          io.kompose.service: postgres-context-data
+        name: postgres-context-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+      status: {}
+status:
+  replicas: 0
