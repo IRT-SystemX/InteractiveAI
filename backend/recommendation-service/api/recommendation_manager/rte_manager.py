@@ -21,11 +21,11 @@ class RTEManager(AgentManager, BaseRecommendation):
         logger.info("getting parades")
         parades = self.getlistOfParadeInfo()
 
-        onto_recommendation = None
+        onto_recommendation = []
         event_data = request_data.get("event", {})
         event_id = event_data.get("event_id")
-        event_line = event_data.get("event_line")
-        event_flow = event_data.get("event_flow")
+        event_line = event_data.get("line")
+        event_flow = event_data.get("flux")
         if event_id and event_line and event_flow:
             logger.info("getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(
