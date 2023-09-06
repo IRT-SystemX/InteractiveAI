@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: frontend
+  name: web-ui
   labels:
     ingress: tls
   annotations:
@@ -15,5 +15,5 @@ spec:
           - path: /
             pathType: Prefix
             backend:
-              serviceName: frontend
+              serviceName: web-ui
               servicePort: 80

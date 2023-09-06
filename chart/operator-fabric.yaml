@@ -81,7 +81,7 @@ services:
       - source: common-docker
         target: /config/common-docker.yml
       - source: users-docker
-        target: /config/application.yml
+        target: /config/application-docker.yml
     deploy:
       resources:
         limits:
@@ -192,7 +192,7 @@ services:
     volumes:
       - webapp_example:/usr/share/nginx/html/external/appExample
     configs:
-      - source: nginx-conf-nginx-cors-permissive
+      - source: nginx-conf-nginx
         target: /etc/nginx/conf.d/default.conf
       - source: ui-config-web-ui
         target: /usr/share/nginx/html/opfab/web-ui.json
@@ -223,8 +223,8 @@ configs:
     file: ../of-config/cab-docker/users-docker.yml
   cards-consultation-docker:
     file: ../of-config/cab-docker/cards-consultation-docker.yml
-  nginx-conf-nginx-cors-permissive:
-    file: ../of-config/cab-docker/nginx-cors-permissive.conf
+  nginx-conf-nginx:
+    file: ../of-config/cab-docker/nginx.conf
   #cab-keycloak-users:
     #file: ../of-config/cab-keycloak/export/dev-users-0.json
   #cab-keycloak-realm:

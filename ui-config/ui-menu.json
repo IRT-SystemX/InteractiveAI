@@ -1,5 +1,6 @@
 {
-  "coreMenusConfiguration": [
+  "coreMenusConfiguration":
+  [
     {
       "id": "feed",
       "visible": true

@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
-      - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
+      - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
       - FLASK_APP=app:create_app('dev')
@@ -165,41 +165,41 @@ services:
     labels:
       kompose.volume.subpath: pg-data
 
-  frontend:
-    image: harbor.irtsysx.fr/cab/cab-frontend:0.0.1
-    restart: unless-stopped
-    configs:
-      - source: cab-ui-config-web-ui
-        target: /usr/share/nginx/html/opfab/web-ui.json
-      - source: cab-ui-config-ui-menu
-        target: /usr/share/nginx/html/opfab/ui-menu.json
-      - source: cab-nginx-conf-nginx-cors-permissive
-        target: /etc/nginx/conf.d/default.conf
-    ports:
-      - "80:80"
-    depends_on:
-      - cab-correlation
-      - cab-recommendation
-      - cab-event
-      - cab-context
-      - cab-historic
-    deploy:
-      resources:
-        limits:
-          cpus: "0.1"
-          memory: 100M
-        reservations:
-          cpus: "0.05"
-          memory: 50M
-    labels:
-      kompose.image-pull-secret: "regcred"
+  #frontend:
+    #image: harbor.irtsysx.fr/cab/cab-frontend:0.0.1
+    #restart: unless-stopped
+    #configs:
+      #- source: cab-ui-config-web-ui
+        #target: /usr/share/nginx/html/opfab/web-ui.json
+      #- source: cab-ui-config-ui-menu
+        #target: /usr/share/nginx/html/opfab/ui-menu.json
+      #- source: cab-nginx-conf-nginx
+        #target: /etc/nginx/conf.d/default.conf
+    #ports:
+      #- "80:80"
+    #depends_on:
+      #- cab-correlation
+      #- cab-recommendation
+      #- cab-event
+      #- cab-context
+      #- cab-historic
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: "0.1"
+          #memory: 100M
+        #reservations:
+          #cpus: "0.05"
+          #memory: 50M
+    #labels:
+      #kompose.image-pull-secret: "regcred"
 
   cab-correlation:
     image: harbor.irtsysx.fr/cab/cab-correlation:0.0.1
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
-      - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
+      - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - PYTHONPATH=/code
@@ -247,7 +247,7 @@ services:
     image: harbor.irtsysx.fr/cab/cab-recommendation:0.0.1
     restart: unless-stopped
     environment:
-      - GATEWAY_SERVICE=http://angular-ui.cab-dev.svc.cluster.local:80
+      - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - FLASK_APP=app:create_app('dev')
       - FLASK_ENV=development
       - PYTHONPATH=/my_app
@@ -273,10 +273,10 @@ volumes:
   pgadmin:
 
 
-configs:
-  cab-ui-config-web-ui:
-    file: ../ui-config/web-ui.json
-  cab-ui-config-ui-menu:
-    file: ../ui-config/ui-menu.json
-  cab-nginx-conf-nginx-cors-permissive:
-    file: ../config/dev/cab/nginx-cors-permissive.conf
+#configs:
+  #cab-ui-config-web-ui:
+    #file: ../ui-config/web-ui.json
+  #cab-ui-config-ui-menu:
+    #file: ../ui-config/ui-menu.json
+  #cab-nginx-conf-nginx:
+    #file: ../config/dev/cab/nginx.conf
