@@ -169,7 +169,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         }
       }
-
       public getRecommandationDA(title){
         var recoResponse;
         var data = JSON.stringify({
@@ -204,10 +203,12 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.addEventListener("readystatechange", function() {
         if(this.readyState === 4) {
             that.jsonContextObject = JSON.parse(this.responseText);
-            that.getRecommandationRTE();
+            if(document.getElementById("rte_assist_nominal").hidden){
+                that.getRecommandationRTE();
+            }
         }
         });
-        // xhr.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts");
+        // xhr.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts");
         xhr.open("GET", "/cabcontext/api/v1/contexts");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         xhr.send();
@@ -228,35 +229,41 @@ export class LightCardComponent implements OnInit, OnDestroy {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", "/cards/cards/"+id_card,false);
-        // xmlHttp.open("GET", "http://192.168.208.57:3200/cards/cards/"+id_card,false);
+        // xmlHttp.open("GET", "http://192.168.211.95:3200/cards/cards/"+id_card,false);
         xmlHttp.setRequestHeader("Authorization","Bearer "+ window.localStorage.token);
         xmlHttp.send(null);
         var response = JSON.parse(xmlHttp.responseText);
         var eventAttributes = response.card.data.metadata;
         console.log(eventAttributes);
         this.jsonEventObject = eventAttributes;
-
+        this.jsonEventObject.event_id = id_card;
+        console.log(this.jsonEventObject);
       }
     };
 
     public getRecommandationRTE(){
+        console.log('getRecommandationRTE')
         document.getElementById('rte_assist').innerHTML = "";
         var bodyHTML;
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function() {
           if(this.readyState === 4) {
-             var recosRTE = JSON.parse(this.responseText).ia_recommendation;
+            console.log(JSON.parse(this.responseText))
+             var recosRTE = JSON.parse(this.responseText);
              for (var reco=0;reco<recosRTE.length;reco++){
-                var LTTD = recosRTE[reco].LTTD;
-                var SousTitre = recosRTE[reco].SousTitre;
-                var Titre = recosRTE[reco].Titre;
-                bodyHTML = "<div><span class='rtePrd'>" + Titre + "</span><br>" + SousTitre + "<br>" + "LTTD: "+ LTTD + '<button class="rteBtn">Appliquer Parade</button><hr>';
+                var description = recosRTE[reco].description;
+                var agent_type = recosRTE[reco].agent_type;
+                var title = recosRTE[reco].title;
+                var actions = recosRTE[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML = "<div><span class='rtePrd'><b>" + title + "</b></span><br>" + description 
+                + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer Parade</button><hr>';
                 document.getElementById('rte_assist').innerHTML += bodyHTML;
              }
           }
         });
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
@@ -298,14 +305,16 @@ export class LightCardComponent implements OnInit, OnDestroy {
             }
          });
         if(window.location.host.includes("localhost")){
-            this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
+            this.rteUrl = "http://192.168.211.95:3200/cabcontext/api/v1/contexts";
           }
 
         if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && document.getElementById("rte_assist_nominal").hidden) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
-            this.getCardProcess();
+            if(document.getElementById("rte_assist_nominal").hidden){
+                this.getCardProcess();
+            }
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()

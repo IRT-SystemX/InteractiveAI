@@ -493,7 +493,8 @@ These two parameters are place in this file as the style should have a title par
             }
 
           }
-      }else if (selectedUseCase == "RTE"){
+      }
+      else if (selectedUseCase == "RTE"){
           if (cards[card].classList.contains("light-card-detail-selected")){
               if(assistNeverTriggered){
                 document.getElementById("rte_assist_nominal").hidden = false;
@@ -501,7 +502,7 @@ These two parameters are place in this file as the style should have a title par
               }
           }
       }
-    }
+    } 
       if (selectedUseCase == "DA"){
         setDANotifications();
         if(assistNeverTriggered){
@@ -641,8 +642,7 @@ These two parameters are place in this file as the style should have a title par
         break;
       }
       }
-    function applyRecommandation(){
-      traceInHistory("AWARD",authorizedUseCase,{});
+    function applyRecommandation(reco){
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
@@ -650,9 +650,31 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("recos_sncf").hidden = false;
         break;
         case "RTE":
-        document.getElementById("rte_assist_nominal").hidden = true;
+          confirmAction(reco)
         break;
       }
+      }
+
+      function applyRecommandationFinal(reco){
+        document.getElementById("rte_assist_nominal").hidden = true;
+          let actionRTE = sessionStorage.getItem("actions[" + reco +  "]");
+          var data = "{\"actions\" : " + actionRTE + "}";
+          var xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+          document.body.style.cursor = 'wait';
+          xhr.addEventListener("readystatechange", function() {
+            if(this.readyState === 4 && this.status == 200) {
+              console.log(this.responseText);
+              document.body.style.cursor = 'unset';
+              swalRecoSuccess();
+            }else if (this.readyState === 4 && this.status != 200){
+              swalRecoError(this.status);
+              document.body.style.cursor = 'unset';
+            }
+          });
+          xhr.open("POST", "http://192.168.209.166:5100/api/v1/recommendations");
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(data);
       }
 
       
@@ -828,6 +850,46 @@ These two parameters are place in this file as the style should have a title par
       console.log("map init OK")
     }
 
+    function confirmAction(reco){
+      Swal.fire({
+        icon: 'question',
+        title: 'Voulez vous vraiment appliquer cette parade ?',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: "Annuler",
+        confirmButtonText: "Confirmer",
+      }).then((result)=> {
+        if (result.isConfirmed){
+          traceInHistory("AWARD",authorizedUseCase,{});
+          applyRecommandationFinal(reco);
+        }
+      })
+    }
+    function swalReco(){
+      Swal.fire({
+        icon: 'info',
+        title: 'Application en cours de la parade',
+        showConfirmButton: false,
+      })
+    }
+    function swalRecoSuccess(){
+      Swal.fire({
+        icon: 'success',
+        title: 'Parade Appliquée',
+        showConfirmButton: false,
+        timer: 4500
+      })
+    }
+    function swalRecoError(err){
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur serveur (Code : '+err + ')',
+        text: "Impossible d'appliquer la parade",
+        showConfirmButton: true,
+        confirmButtonText: "Ok"
+      })
+    }
+
     function displaySwal(){
       Swal.fire({
       html:'<span style="font-size:20px">Paramétrage service corrélation</span><br>'
@@ -950,10 +1012,10 @@ These two parameters are place in this file as the style should have a title par
       </div>
       <div id="da_block_request" hidden></div>
     </div>
-    <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
-    </div>
     <div id ="rte_assist_nominal" hidden><img style="width:100%" src="assets/images/assistop_colored.png"><br>
       <button class="sncf_button" style="margin-left: 100px" onclick="askCab()"><b>Solliciter CAB</b></button>
+    </div>
+    <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
     </div>
     <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
       <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
