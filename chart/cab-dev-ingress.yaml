@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: web-ui
+  labels:
+    ingress: tls
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+spec:
+  rules:
+    - host: cab-dev.irtsystemx.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: web-ui
+              servicePort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+  labels:
+    ingress: tls
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+spec:
+  rules:
+    - host: frontend.cab-dev.irtsystemx.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: frontend
+              servicePort: 80
