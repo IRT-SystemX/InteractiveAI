@@ -26,6 +26,7 @@
     # Fail on severe vulnerabilities
     - ./trivy image --exit-code 1 --severity CRITICAL $DOCKER_REGISTRY/${IMAGE_NAME}:${IMAGE_VERSION}
   allow_failure: true
+  interruptible: true
   cache:
     paths:
       - .trivycache/

@@ -11,12 +11,8 @@ variables:
     - curl -L https://github.com/kubernetes/kompose/releases/download/v1.30.0/kompose-linux-amd64 -o kompose
     - chmod +x kompose
     - mv ./kompose /usr/local/bin/kompose
-    - pwd
   script:
-    - pwd
-    - echo "$PATH"
-    - which kompose
-    - kompose -c -f $CONTEXT/$DOCKER_COMPOSE
+    - kompose convert -c -f $CONTEXT/$DOCKER_COMPOSE
   artifacts:
     paths:
       - $CONTEXT/${DOCKER_COMPOSE::-5}
