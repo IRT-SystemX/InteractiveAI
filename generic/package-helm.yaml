@@ -19,7 +19,7 @@ variables:
   script:
     - cd ${CONTEXT}/${CHART}
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ./
-    - PACKAGE=$(ls *.tgz)
+    - PACKAGE=$(ls chart/*.tgz)
     - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
