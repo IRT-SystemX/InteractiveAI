@@ -20,11 +20,11 @@
     - wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz -O - | tar -zxvf -
   script:
     # Build report
-    - ./trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_REGISTRY/${IMAGE}:${CAB_APP_VERSION}
+    - ./trivy image --exit-code 0 --format template --template "@contrib/gitlab.tpl" -o gl-container-scanning-report.json $DOCKER_REGISTRY/${IMAGE_NAME}:${IMAGE_VERSION}
     # Print report
-    - ./trivy image --exit-code 0 --severity HIGH $DOCKER_REGISTRY/${IMAGE}:${CAB_APP_VERSION}
+    - ./trivy image --exit-code 0 --severity HIGH $DOCKER_REGISTRY/${IMAGE_NAME}:${IMAGE_VERSION}
     # Fail on severe vulnerabilities
-    - ./trivy image --exit-code 1 --severity CRITICAL $DOCKER_REGISTRY/${IMAGE}:${CAB_APP_VERSION}
+    - ./trivy image --exit-code 1 --severity CRITICAL $DOCKER_REGISTRY/${IMAGE_NAME}:${IMAGE_VERSION}
   allow_failure: true
   cache:
     paths:
