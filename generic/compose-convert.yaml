@@ -7,7 +7,7 @@ variables:
   image: debian:bookworm-slim
   interruptible: true
   before_script:
-    - apt update && apt install --no-install-recommends curl
+    - apt update && apt install -y --no-install-recommends curl
     - curl -L https://github.com/kubernetes/kompose/releases/download/v1.30.0/kompose-linux-amd64 -o kompose
     - chmod +x kompose
   script:
