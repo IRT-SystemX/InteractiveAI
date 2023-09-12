@@ -40,6 +40,5 @@ variables:
       --destination "$DOCKER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
-      when: never
     - if: $CI_COMMIT_BRANCH == "develop"
 

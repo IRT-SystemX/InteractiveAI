@@ -36,5 +36,4 @@
       container_scanning: gl-container-scanning-report.json
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
-      when: never
     - if: $CI_COMMIT_BRANCH == "develop"

@@ -19,7 +19,8 @@ variables:
   script:
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CONTEXT}/${CHART}
     - PACKAGE=$(ls ${CONTEXT}/${CHART}*.tgz)
-    - helm cm-push ${CONTEXT}/${PACKAGE} cabrepo
+    - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
+    - if: $CI_COMMIT_BRANCH == "develop"
 

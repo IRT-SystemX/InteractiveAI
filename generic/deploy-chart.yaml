@@ -12,3 +12,4 @@ variables:
     - helm upgrade -i -n ${CLUSTER_DEV_NS} ${CHART} cabrepo/${CHART}
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
+    - if: $CI_COMMIT_BRANCH == "develop"
