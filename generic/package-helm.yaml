@@ -17,7 +17,7 @@ variables:
     - helm repo add --username=${HARBOR_USER} --password=${HARBOR_PWD} cabrepo https://${DOCKER_REGISTRY}/chartrepo/cab
     - helm plugin install https://github.com/chartmuseum/helm-push
   script:
-  - echo "${CHART}"
+    - echo "${CHART}"
     - cd ${CONTEXT}
     - ls -alrth
     - ls -alrth ${CHART}
