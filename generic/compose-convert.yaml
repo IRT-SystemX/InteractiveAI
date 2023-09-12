@@ -1,0 +1,21 @@
+variables:
+  CONTEXT: "chart"
+  DOCKER_COMPOSE: "cab-assistant-platform.yaml"
+
+.kompose:
+  stage: compose-convert
+  image: debian:bookworm-slim
+  interruptible: true
+  before_script:
+    - curl -L https://github.com/kubernetes/kompose/releases/download/v1.30.0/kompose-linux-amd64 -o kompose
+    - chmod +x kompose
+  script:
+    - kompose -c -f $CONTEXT/DOCKER_COMPOSE
+  artifacts:
+    paths:
+      - $CONTEXT/${DOCKER_COMPOSE::-5}
+    expire_in: 1 day
+  rules:
+    - if: $CI_COMMIT_BRANCH == "test-ci"
+
+
