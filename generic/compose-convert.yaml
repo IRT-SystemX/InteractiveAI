@@ -16,7 +16,7 @@ variables:
     - pwd
     - echo "$PATH"
     - which kompose
-    - kompose -c -f $CONTEXT/DOCKER_COMPOSE
+    - kompose -c -f $CONTEXT/$DOCKER_COMPOSE
   artifacts:
     paths:
       - $CONTEXT/${DOCKER_COMPOSE::-5}
