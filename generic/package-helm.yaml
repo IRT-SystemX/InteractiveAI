@@ -22,7 +22,7 @@ variables:
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CONTEXT}/${CHART}
     - ls -alrth ${CONTEXT}/${CHART}/
     - PACKAGE=$(ls ${CONTEXT}/${CHART}*.tgz)
-    - echo "PACKAGE: ${PACKAGE}"
+    - echo "${PACKAGE}"
     - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
