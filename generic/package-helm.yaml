@@ -23,7 +23,9 @@ variables:
     - cd chart && PACKAGE=$(ls *.tgz) && cd ../
     - echo "${PACKAGE}"
     - tar -xzvf chart/${PACKAGE} -C /tmp
-    - cd /tmp/chart/ && tar -czvf ${PACKAGE} ${CHART}
+    - cd /tmp/chart/
+    - tar -czvf ${PACKAGE} ${CHART}
+    - pwd && ls -alrth && tar -tvf ${PACKAGE}
     - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
