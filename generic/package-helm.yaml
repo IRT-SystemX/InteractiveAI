@@ -14,12 +14,15 @@ variables:
   image: alpine/helm:3.12.2
   interruptible: true
   before_script:
+    - echo "${CONTEXT}, ${CHART}"
     - helm repo add --username=${HARBOR_USER} --password=${HARBOR_PWD} cabrepo https://${DOCKER_REGISTRY}/chartrepo/cab
     - helm plugin install https://github.com/chartmuseum/helm-push
   script:
     - cd ${CONTEXT}
+    - ls -alrth ${CHART}
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CHART}
     - ls -alrth
+    - sleep 777
     - PACKAGE=$(ls *.tgz)
     - echo "${PACKAGE}"
     - helm cm-push ${PACKAGE} cabrepo
