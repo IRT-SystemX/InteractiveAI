@@ -15,7 +15,7 @@ variables:
     name: debian:bookworm-slim
   interruptible: true
   before_script:
-    - apt update && apt install -y curl
+    - apt update && apt install -y curl git
     - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     - helm repo add --username=${HARBOR_USER} --password=${HARBOR_PWD} cabrepo https://${DOCKER_REGISTRY}/chartrepo/cab
     - helm plugin install https://github.com/chartmuseum/helm-push
