@@ -16,7 +16,7 @@ variables:
     - kompose convert -c -f $DOCKER_COMPOSE
   artifacts:
     paths:
-      - ${DOCKER_COMPOSE::-5}
+      - ${CONTEXT}/${DOCKER_COMPOSE::-5}
     expire_in: 1 day
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
