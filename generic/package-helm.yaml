@@ -20,7 +20,8 @@ variables:
   script:
     - which helm
     - pwd
-    - cp -r ${CONTEXT}/${CHART} /apps/
+    - helm version
+    - cd ${CONTEXT}
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CHART}
     - ls -alrth
     - sleep 777
