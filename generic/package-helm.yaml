@@ -12,21 +12,16 @@ variables:
 .package-helm:
   stage: package
   image:
-    name: alpine/helm:3.12.2
-    entrypoint: [""]
+    name: debian:bookworm-slim
   interruptible: true
   before_script:
-    - echo "${CONTEXT}, ${CHART}"
+    - apt update && apt install -y curl
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     - helm repo add --username=${HARBOR_USER} --password=${HARBOR_PWD} cabrepo https://${DOCKER_REGISTRY}/chartrepo/cab
     - helm plugin install https://github.com/chartmuseum/helm-push
   script:
-    - which helm
-    - pwd
-    - helm version
     - cd ${CONTEXT}
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CHART}
-    - ls -alrth
-    - sleep 777
     - PACKAGE=$(ls *.tgz)
     - echo "${PACKAGE}"
     - helm cm-push ${PACKAGE} cabrepo
