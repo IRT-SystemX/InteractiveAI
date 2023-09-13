@@ -26,6 +26,7 @@ variables:
     - cd /tmp/chart/
     - tar -czvf ${PACKAGE} ${CHART}
     - pwd && ls -alrth && tar -tvf ${PACKAGE}
+    - sleep 888
     - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
