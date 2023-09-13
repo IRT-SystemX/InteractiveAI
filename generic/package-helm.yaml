@@ -20,13 +20,8 @@ variables:
   script:
     - cd ${CONTEXT}
     - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CHART}
-    - cd chart && PACKAGE=$(ls *.tgz) && cd ../
+    - PACKAGE=$(ls *.tgz)
     - echo "${PACKAGE}"
-    - tar -xzvf chart/${PACKAGE} -C /tmp
-    - cd /tmp/chart/
-    - tar -czvf ${PACKAGE} ${CHART}
-    - pwd && ls -alrth && tar -tvf ${PACKAGE}
-    - sleep 888
     - helm cm-push ${PACKAGE} cabrepo
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"

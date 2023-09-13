@@ -12,10 +12,11 @@ variables:
     - chmod +x kompose
     - mv ./kompose /usr/local/bin/kompose
   script:
-    - kompose convert -c -f $CONTEXT/$DOCKER_COMPOSE
+    - cd ${CONTEXT}
+    - kompose convert -c -f $DOCKER_COMPOSE
   artifacts:
     paths:
-      - $CONTEXT/${DOCKER_COMPOSE::-5}
+      - ${DOCKER_COMPOSE::-5}
     expire_in: 1 day
   rules:
     - if: $CI_COMMIT_BRANCH == "test-ci"
