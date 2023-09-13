@@ -11,14 +11,16 @@ variables:
 
 .package-helm:
   stage: package
-  image:
-    name: alpine/k8s:1.28.1
+  image: alpine/helm:3.12.2
   interruptible: true
   before_script:
+    - echo "${CONTEXT}, ${CHART}"
     - helm repo add --username=${HARBOR_USER} --password=${HARBOR_PWD} cabrepo https://${DOCKER_REGISTRY}/chartrepo/cab
+    - helm plugin install https://github.com/chartmuseum/helm-push
   script:
-    - cd ${CONTEXT}
-    - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} ${CHART}
+    - cd ${CONTEXT}/${CHART}
+    - helm package --app-version ${APP_VERSION} --version ${CHART_VERSION} .
+    - ls -alrth
     - sleep 777
     - PACKAGE=$(ls *.tgz)
     - echo "${PACKAGE}"
