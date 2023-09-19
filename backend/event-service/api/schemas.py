@@ -70,6 +70,7 @@ class EventOut(Schema):
     id = Integer()
     id_event = String()
     use_case = String()
+    title = String()
     description = String()
     date = DateTime(format="iso")
     criticality = String()
