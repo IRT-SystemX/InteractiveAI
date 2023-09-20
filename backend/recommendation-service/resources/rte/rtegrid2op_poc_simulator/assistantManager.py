@@ -80,6 +80,9 @@ class AgentManager:
                     raise exc_
                 self.assistant.seed(int(assistant_seed))
                 self.nb_timestep = int(0)
+
+            # Action "do nothing"
+            self.action_do_nothing = self.env.action_space({})
         except Exception as e:
             logger.error(e)
             # exit()
@@ -231,6 +234,11 @@ class AgentManager:
                         disconnected["substation"],
                     )
                 )
+
+        # Any of the above cases, then the recommendation is most likely "Do nothing"
+        if not title and act == self.action_do_nothing :
+            title.append('Poursuivre sans rien faire')
+            description.append("Poursuite du scénario sans intervention extérieur")
 
         title = "".join(title)
         description = "".join(description)
