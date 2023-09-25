@@ -85,6 +85,7 @@ class EventIn(Schema):
 class EventOut(Schema):
     id = Integer()
     id_event = String()
+    of_uid = String()
     use_case = String()
     title = String()
     description = String()

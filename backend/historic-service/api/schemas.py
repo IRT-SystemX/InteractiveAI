@@ -6,6 +6,7 @@ from marshmallow import ValidationError, validates_schema
 
 class Event(Schema):
     id_event = String()
+    of_uid = String()
     use_case = String(required=True, validate=OneOf(
         ['RTE', 'SNCF', 'DA', 'ORANGE']))
     title = String(required=True, validate=Length(1, 255))
@@ -16,6 +17,7 @@ class Event(Schema):
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
     is_active = Boolean()
+
 
 class Solution(Schema):
     pass
