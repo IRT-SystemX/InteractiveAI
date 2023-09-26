@@ -27,6 +27,8 @@ import { SoundNotificationService } from '@ofServices/sound-notification.service
 import { DateTimeFormatterService } from '@ofServices/date-time-formatter.service';
 import { MapService } from '@ofServices/map.service';
 import $, { get } from "jquery";
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 
 @Component({
     selector: 'of-light-card',
@@ -59,6 +61,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
     emergencyClicked = false;
     jsonEventObject;
     jsonContextObject;
+    host = "";
+    bypassCondition = false;
 
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
@@ -190,7 +194,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
     
           }
         });
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -202,14 +206,18 @@ export class LightCardComponent implements OnInit, OnDestroy {
         var that = this;
         xhr.addEventListener("readystatechange", function() {
         if(this.readyState === 4) {
+            Swal.hideLoading();
+            Swal.close()
             that.jsonContextObject = JSON.parse(this.responseText);
             if(document.getElementById("rte_assist_nominal").hidden){
                 that.getRecommandationRTE();
+                
+
             }
         }
         });
         // xhr.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts");
-        xhr.open("GET", "/cabcontext/api/v1/contexts");
+        xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         xhr.send();
         
@@ -223,13 +231,13 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 this.getCard(cards[card].getAttribute("data-urlid"));
                 }
               }
+              
       }
 
     public getCard(id_card) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/cards/cards/"+id_card,false);
-        // xmlHttp.open("GET", "http://192.168.211.95:3200/cards/cards/"+id_card,false);
+        xmlHttp.open("GET", this.host + "/cards/cards/"+id_card,false);
         xmlHttp.setRequestHeader("Authorization","Bearer "+ window.localStorage.token);
         xmlHttp.send(null);
         var response = JSON.parse(xmlHttp.responseText);
@@ -249,6 +257,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function() {
           if(this.readyState === 4) {
+            Swal.hideLoading();
+            document.body.style.cursor = 'unset';
             console.log(JSON.parse(this.responseText))
              var recosRTE = JSON.parse(this.responseText);
              for (var reco=0;reco<recosRTE.length;reco++){
@@ -261,10 +271,13 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer Parade</button><hr>';
                 document.getElementById('rte_assist').innerHTML += bodyHTML;
              }
+             Swal.hideLoading();
+             Swal.close()
+
           }
         });
         // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -286,7 +299,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         });
         // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         
@@ -297,8 +310,14 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.send(JSON.stringify(recommendationBody));
         }
     
+
+
     public getCardTitle($event) {
         this.hideAllSynops();
+        Swal.hideLoading();
+        Swal.close()
+
+
         $.ajaxSetup({
             headers:{
                'Authorization': " Bearer " + this.token
@@ -306,14 +325,24 @@ export class LightCardComponent implements OnInit, OnDestroy {
          });
         if(window.location.host.includes("localhost")){
             this.rteUrl = "http://192.168.211.95:3200/cabcontext/api/v1/contexts";
+            this.host = "http://192.168.211.95:3200";
           }
 
         if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && document.getElementById("rte_assist_nominal").hidden) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
-            if(document.getElementById("rte_assist_nominal").hidden){
+            
+            if(document.getElementById("rte_assist_nominal").hidden 
+            && document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false" || this.bypassCondition){
                 this.getCardProcess();
+                
+            }else{
+
+                setTimeout(() => {
+                    this.getCardProcess();
+                    this.bypassCondition = true;
+                }, 6000);
             }
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
@@ -328,10 +357,26 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 $(".opfab-card-response-header").hide();
             });
         } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-op").hide()
+            $("#rte_assist").show()
+            
+            if(document.getElementById("rte_assist_nominal").hidden &&
+             document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false"){
+                // this.getCardProcess();
+                // Décommenter cette ligne pour obtenir des recommandations pour les event de type anticipation
+            }
+            $("#opfab-div-card-template").hide()
+            $("#opfab-div-card-template-noparades").hide()
+            $("#opfab-div-card-template-agent").hide()
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
+            setTimeout(() => {
+                Swal.hideLoading();
+                Swal.close()
+            }, 5000);
             $("#rte_assist").hide()
             $("#opfab-div-card-template-security").show()
             $("#opfab-div-card-template-op").hide()
@@ -473,7 +518,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           document.getElementById("noevent_da").hidden=true;
           document.getElementById("da_block_request").innerHTML = "";
           var xmlHttp = new XMLHttpRequest();
-          xmlHttp.open("GET", "./assets/emergency_procedures_short.json", false);
+          xmlHttp.open("GET", this.host + "./assets/emergency_procedures_short.json", false);
           // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
           xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
           xmlHttp.send(null);
@@ -499,6 +544,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
       }
       };
     public select($event) {
+        Swal.showLoading();
+
         // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994

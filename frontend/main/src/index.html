@@ -76,7 +76,22 @@ These two parameters are place in this file as the style should have a title par
     var traceHost;
     var tracePort = 5200;
     var assistNeverTriggered = true;
+
     var jsonEventObject;
+    var targetObj = {};
+    var targetProxy = new Proxy(targetObj, {
+      set: function (target, key, value) {
+        if (key == "isAcknowledging" && value == false){
+          setTimeout(() => {
+            localStorage.clear();window.location.reload()
+          }, "4000");
+
+        }
+      target[key] = value;
+      return true;
+      }
+    });
+    targetProxy.isAcknowledging = null;
     checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
@@ -498,6 +513,7 @@ These two parameters are place in this file as the style should have a title par
           if (cards[card].classList.contains("light-card-detail-selected")){
               if(assistNeverTriggered){
                 document.getElementById("rte_assist_nominal").hidden = false;
+                document.getElementById("rte_assist_nominal").setAttribute("assistNeverTriggered","false");
                 assistNeverTriggered = false;
               }
           }
@@ -582,6 +598,10 @@ These two parameters are place in this file as the style should have a title par
             var recoSNCF = JSON.parse(this.responseText).recommandation;
             console.log(JSON.parse(this.responseText))
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
+            document.body.style.cursor = 'unset';
+            swal.hideLoading()
+
+
           }
         });
         xhr.open("POST", host +  "/cab_recommendation/api/v1/recommendation");
@@ -628,7 +648,14 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function askCab(){
+      // swalAskCab();
+      swal.showLoading();
+      setTimeout(() => {
+        swal.hideLoading();
+        swal.close()
+      }, 5000);
       traceInHistory("ASKFORHELP",authorizedUseCase,{});
+      
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
@@ -850,6 +877,79 @@ These two parameters are place in this file as the style should have a title par
       console.log("map init OK")
     }
 
+    function confirmExit(){
+      Swal.fire({
+        icon: 'question',
+        title: 'Voulez vous vraiment vous déconnecter ?',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: "Annuler",
+        confirmButtonText: "Confirmer",
+      }).then((result)=> {
+        if (result.isConfirmed){
+          document.body.style.cursor = 'wait';
+          disconnectInProgress();
+          acknowledgeAllCards();
+        }
+      })
+    }
+
+    function acknowledgeAllCards(){
+
+
+
+      var cards = document.getElementsByClassName("card");
+      targetProxy.isAcknowledging = true;
+      for (var card = 0;card<cards.length;card++){
+        try {
+          getCard(cards[card].attributes["data-urlid"].value.split(".")[1]);  
+        } catch (error) {
+          console.warn(error)
+        }
+      }
+      targetProxy.isAcknowledging = false;
+
+    }
+
+    function getCard(id_event){
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+        var data = JSON.parse(this.responseText);
+        var uid = data.card.uid;
+        console.log(uid);
+        acknowledgeCard(uid);
+    }
+    });
+
+    xhr.open("GET", host + "/cards/cards/rteProcess."+id_event);
+    xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    xhr.send(); 
+}
+
+function acknowledgeCard(uid){
+  var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    var data = JSON.stringify([
+      selectedUseCase
+    ]);
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4 && this.status == 201) {
+          console.info("CARDS","card ack OK -> " + uid)
+        }
+    });
+
+    xhr.open("POST", host + "/cardspub/cards/userAcknowledgement/" + uid);
+    xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer "+ token);
+    xhr.send(data);
+    
+}
+
     function confirmAction(reco){
       Swal.fire({
         icon: 'question',
@@ -872,12 +972,24 @@ These two parameters are place in this file as the style should have a title par
         showConfirmButton: false,
       })
     }
+    function disconnectInProgress(){
+      Swal.fire({
+        title: 'Déconnexion en cours',
+        showConfirmButton: false,
+      })
+    }
     function swalRecoSuccess(){
       Swal.fire({
         icon: 'success',
         title: 'Parade Appliquée',
         showConfirmButton: false,
         timer: 4500
+      })
+    }
+    function swalAskCab(){
+      Swal.fire({
+        title: 'Choisir un event',
+        showConfirmButton: true,
       })
     }
     function swalRecoError(err){
@@ -1012,8 +1124,8 @@ These two parameters are place in this file as the style should have a title par
       </div>
       <div id="da_block_request" hidden></div>
     </div>
-    <div id ="rte_assist_nominal" hidden><img style="width:100%" src="assets/images/assistop_colored.png"><br>
-      <button class="sncf_button" style="margin-left: 100px" onclick="askCab()"><b>Solliciter CAB</b></button>
+    <div id ="rte_assist_nominal"  assistNeverTriggered="true" hidden><img style="width:100%" src="assets/images/assistop_colored.png"><br>
+      <button class="sncf_button" style="margin-left: 100px" id="askCabButton" onclick="askCab()"><b>Solliciter CAB</b></button>
     </div>
     <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
     </div>
