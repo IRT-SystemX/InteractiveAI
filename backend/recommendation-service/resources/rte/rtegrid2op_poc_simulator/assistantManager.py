@@ -237,7 +237,7 @@ class AgentManager:
 
         # Any of the above cases, then the recommendation is most likely "Do nothing"
         if not title and act == self.action_do_nothing :
-            title.append('Poursuivre sans rien faire')
+            title.append('Poursuivre')
             description.append("Poursuite du scénario sans intervention extérieur")
 
         title = "".join(title)
