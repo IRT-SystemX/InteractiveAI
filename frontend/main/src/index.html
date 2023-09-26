@@ -76,7 +76,6 @@ These two parameters are place in this file as the style should have a title par
     var traceHost;
     var tracePort = 5200;
     var assistNeverTriggered = true;
-
     var jsonEventObject;
     var targetObj = {};
     var targetProxy = new Proxy(targetObj, {
@@ -655,7 +654,7 @@ These two parameters are place in this file as the style should have a title par
         swal.close()
       }, 5000);
       traceInHistory("ASKFORHELP",authorizedUseCase,{});
-      
+
       switch(authorizedUseCase){
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
@@ -897,14 +896,14 @@ These two parameters are place in this file as the style should have a title par
     function acknowledgeAllCards(){
 
 
-
+      
       var cards = document.getElementsByClassName("card");
       targetProxy.isAcknowledging = true;
       for (var card = 0;card<cards.length;card++){
         try {
           getCard(cards[card].attributes["data-urlid"].value.split(".")[1]);  
         } catch (error) {
-          console.warn(error)
+          console.log("ERROR = " + error)
         }
       }
       targetProxy.isAcknowledging = false;
@@ -924,7 +923,7 @@ These two parameters are place in this file as the style should have a title par
     }
     });
 
-    xhr.open("GET", host + "/cards/cards/rteProcess."+id_event);
+    xhr.open("GET", host + "/cards/cards/" + selectedUseCase.toLocaleLowerCase() + "Process."+id_event);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Authorization", "Bearer " + token);
     xhr.send(); 
@@ -1061,7 +1060,7 @@ function acknowledgeCard(uid){
             <!-- <button class="sncf_button"><b>Choisir</b></button> -->
           </div>
         </div>
-        <button id="sncf_button_grey" class="sncf_button_grey" style="float:right" onclick="getRecommandations()">Je propose une solution</button>
+        <button id="sncf_button_grey" class="sncf_button_grey" style="float:right" onclick="getRecommandations()">Ajouter une solution</button>
       </div>
       <div id="sncf_solution" hidden style="margin-top: 50px">
         <input type="checkbox" id="sol1" value="sol1">
