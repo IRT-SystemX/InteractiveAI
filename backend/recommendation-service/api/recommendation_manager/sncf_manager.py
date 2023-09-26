@@ -45,14 +45,14 @@ class SNCFManager(BaseRecommendation):
             "actions": [{"transportation_plan":ai_actions}]
             }
         
-        optimal_recommendation = {
-            "title": "optimal recommendation",
-            "description": optimal_description,
-            "use_case": "SNCF",
-            "agent_type": "IA",
-            "actions": [{"transportation_plan": optimal_actions}]
-            }
+        #optimal_recommendation = {
+        #    "title": "optimal recommendation",
+        #    "description": optimal_description,
+        #    "use_case": "SNCF",
+        #    "agent_type": "IA",
+        #    "actions": [{"transportation_plan": optimal_actions}]
+        #    }
 
-        recommendation = [optimal_recommendation,ai_recommendation]
+        recommendation = [ai_recommendation]#optimal_recommendation,
 
         return recommendation
