@@ -31,10 +31,28 @@ class SNCFManager(BaseRecommendation):
         list_of_target = [[tuple(target) for target in agent_targets]
                           for agent_targets in raw_list_of_target.values()]
 
-        # hypervisor.recommend should return a list of recommendation
-        return self.hypervisor.recommend(position_agents,
-                                         direction_agents,
-                                         list_of_target,
-                                         malfunction_agent,
-                                         malfunction_position,
-                                         malfunction_delay)
+        ai_actions, ai_description = self.hypervisor.recommend(position_agents,
+                                                   direction_agents,
+                                                   list_of_target,
+                                                   malfunction_agent,
+                                                   malfunction_position,
+                                                   malfunction_delay)
+        ai_recommendation = {
+            "title": "ai recommendation",
+            "description": ai_description,
+            "use_case": "SNCF",
+            "agent_type": "IA",
+            "actions": [{"transportation_plan":ai_actions}]
+            }
+        
+        optimal_recommendation = {
+            "title": "optimal recommendation",
+            "description": optimal_description,
+            "use_case": "SNCF",
+            "agent_type": "IA",
+            "actions": [{"transportation_plan": optimal_actions}]
+            }
+
+        recommendation = [optimal_recommendation,ai_recommendation]
+
+        return recommendation
