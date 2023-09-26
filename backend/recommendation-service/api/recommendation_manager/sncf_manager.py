@@ -38,7 +38,7 @@ class SNCFManager(BaseRecommendation):
                                                    malfunction_position,
                                                    malfunction_delay)
         ai_recommendation = {
-            "title": "ai recommendation",
+            "title": "Modification de plan de transport",
             "description": ai_description,
             "use_case": "SNCF",
             "agent_type": "IA",
