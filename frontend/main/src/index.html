@@ -488,11 +488,6 @@ These two parameters are place in this file as the style should have a title par
             // carte non lue
             cards[card].style.color="white";
           }
-          else if (cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
-          && cards[card].classList.toString().includes("light-card-detail-selected")
-           || cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
-          && cards[card].classList.toString().includes("sncf-light-card-selected") ){
-          }
         }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") && cards[card].classList.toString().includes("light-card-detail")){
             cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
             cards[card].classList += " title-light-card-border-white";
@@ -594,7 +589,7 @@ These two parameters are place in this file as the style should have a title par
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function() {
           if(this.readyState === 4) {
-            var recoSNCF = JSON.parse(this.responseText).recommandation;
+            var recoSNCF = JSON.parse(this.responseText);
             console.log(JSON.parse(this.responseText))
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
             document.body.style.cursor = 'unset';
@@ -999,6 +994,16 @@ function acknowledgeCard(uid){
         showConfirmButton: true,
         confirmButtonText: "Ok"
       })
+    }
+
+    function showDesc(desc){
+      for(var desc_check = 0;desc_check<3;desc_check++){
+        if(desc_check != desc){
+          document.getElementById('descriptionRTE' + desc_check).hidden = true;
+        }
+      }
+      document.getElementById('descriptionRTE' + desc).hidden = false;
+
     }
 
     function displaySwal(){
