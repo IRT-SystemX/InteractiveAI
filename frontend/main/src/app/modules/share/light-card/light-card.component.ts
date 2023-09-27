@@ -211,8 +211,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             that.jsonContextObject = JSON.parse(this.responseText);
             if(document.getElementById("rte_assist_nominal").hidden){
                 that.getRecommandationRTE();
-                
-
             }
         }
         });
@@ -254,6 +252,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         document.getElementById('rte_assist').innerHTML = "";
         var bodyHTML;
         var xhr = new XMLHttpRequest();
+        var lightCardObject = this;
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function() {
           if(this.readyState === 4) {
@@ -267,8 +266,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 var title = recosRTE[reco].title;
                 var actions = recosRTE[reco].actions;
                 sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
-                bodyHTML = "<div><span class='rtePrd'><b>" + title + "</b></span><br>" + description 
-                + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer Parade</button><hr>';
+                bodyHTML = "<div><span class='rtePrd'><b onclick ='"+ 'showDesc(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionRTE" + reco + "' hidden>" + description + '</span>';
                 document.getElementById('rte_assist').innerHTML += bodyHTML;
              }
              Swal.hideLoading();
@@ -328,22 +327,14 @@ export class LightCardComponent implements OnInit, OnDestroy {
             this.host = "http://192.168.211.95:3200";
           }
 
-        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && document.getElementById("rte_assist_nominal").hidden) {
+        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
             
-            if(document.getElementById("rte_assist_nominal").hidden 
-            && document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false" || this.bypassCondition){
-                this.getCardProcess();
-                
-            }else{
+           
+                document.getElementById("rte_assist_nominal").hidden = false;
 
-                setTimeout(() => {
-                    this.getCardProcess();
-                    this.bypassCondition = true;
-                }, 6000);
-            }
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()

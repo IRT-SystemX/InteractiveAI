@@ -13,7 +13,11 @@
 
 <head>
   <meta charset="utf-8">
+  <script src=".\shared\js\rte_functions.js"></script>
+  <script src=".\shared\js\common_functions.js"></script>
+  <script src=".\shared\js\swal_functions.js"></script>
   <title>Assistant CAB v2</title>
+  <span id="login"></span>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -77,20 +81,7 @@ These two parameters are place in this file as the style should have a title par
     var tracePort = 5200;
     var assistNeverTriggered = true;
     var jsonEventObject;
-    var targetObj = {};
-    var targetProxy = new Proxy(targetObj, {
-      set: function (target, key, value) {
-        if (key == "isAcknowledging" && value == false){
-          setTimeout(() => {
-            localStorage.clear();window.location.reload()
-          }, "4000");
 
-        }
-      target[key] = value;
-      return true;
-      }
-    });
-    targetProxy.isAcknowledging = null;
     checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
@@ -111,6 +102,7 @@ These two parameters are place in this file as the style should have a title par
             entities = response.entities;
             groups = response.groups;
             authorizedUseCase = entities[0];
+            document.getElementById("login").innerHTML = "Logged as " + authorizedUseCase;
             return entities[0];
           }
           console.log("token checked")
@@ -418,6 +410,10 @@ These two parameters are place in this file as the style should have a title par
         }
     }
 
+    function hideAssist(){
+      document.getElementById("rte_assist_nominal").hidden = true;
+    }
+
     function setCardsSeverity() {
       if (selectedUseCase == "SNCF"){
         var severities = document.getElementsByClassName("opfab-feed-list-card-severity")
@@ -505,8 +501,10 @@ These two parameters are place in this file as the style should have a title par
       }
       else if (selectedUseCase == "RTE"){
           if (cards[card].classList.contains("light-card-detail-selected")){
+            document.getElementById("rte_assist_nominal").addEventListener("click",hideAssist);
+
               if(assistNeverTriggered){
-                document.getElementById("rte_assist_nominal").hidden = false;
+                // document.getElementById("rte_assist_nominal").hidden = false;
                 document.getElementById("rte_assist_nominal").setAttribute("assistNeverTriggered","false");
                 assistNeverTriggered = false;
               }
@@ -643,11 +641,8 @@ These two parameters are place in this file as the style should have a title par
 
     function askCab(){
       // swalAskCab();
+      console.log("ASK CAB")
       swal.showLoading();
-      setTimeout(() => {
-        swal.hideLoading();
-        swal.close()
-      }, 5000);
       traceInHistory("ASKFORHELP",authorizedUseCase,{});
 
       switch(authorizedUseCase){
@@ -660,6 +655,9 @@ These two parameters are place in this file as the style should have a title par
         break;
         case "RTE":
         document.getElementById("rte_assist_nominal").hidden = true;
+        document.getElementById("rte_assist").innerHTML = "";
+        
+        getCardProcess();
         break;
       }
       }
@@ -871,176 +869,6 @@ These two parameters are place in this file as the style should have a title par
       console.log("map init OK")
     }
 
-    function confirmExit(){
-      Swal.fire({
-        icon: 'question',
-        title: 'Voulez vous vraiment vous déconnecter ?',
-        showCancelButton: true,
-        showConfirmButton: true,
-        cancelButtonText: "Annuler",
-        confirmButtonText: "Confirmer",
-      }).then((result)=> {
-        if (result.isConfirmed){
-          document.body.style.cursor = 'wait';
-          disconnectInProgress();
-          acknowledgeAllCards();
-        }
-      })
-    }
-
-    function acknowledgeAllCards(){
-
-
-      
-      var cards = document.getElementsByClassName("card");
-      targetProxy.isAcknowledging = true;
-      for (var card = 0;card<cards.length;card++){
-        try {
-          getCard(cards[card].attributes["data-urlid"].value.split(".")[1]);  
-        } catch (error) {
-          console.log("ERROR = " + error)
-        }
-      }
-      targetProxy.isAcknowledging = false;
-
-    }
-
-    function getCard(id_event){
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.addEventListener("readystatechange", function() {
-    if(this.readyState === 4) {
-        var data = JSON.parse(this.responseText);
-        var uid = data.card.uid;
-        console.log(uid);
-        acknowledgeCard(uid);
-    }
-    });
-
-    xhr.open("GET", host + "/cards/cards/" + selectedUseCase.toLocaleLowerCase() + "Process."+id_event);
-    xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
-    xhr.setRequestHeader("Authorization", "Bearer " + token);
-    xhr.send(); 
-}
-
-function acknowledgeCard(uid){
-  var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    var data = JSON.stringify([
-      selectedUseCase
-    ]);
-    xhr.addEventListener("readystatechange", function () {
-        if (this.readyState === 4 && this.status == 201) {
-          console.info("CARDS","card ack OK -> " + uid)
-        }
-    });
-
-    xhr.open("POST", host + "/cardspub/cards/userAcknowledgement/" + uid);
-    xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Authorization", "Bearer "+ token);
-    xhr.send(data);
-    
-}
-
-    function confirmAction(reco){
-      Swal.fire({
-        icon: 'question',
-        title: 'Voulez vous vraiment appliquer cette parade ?',
-        showCancelButton: true,
-        showConfirmButton: true,
-        cancelButtonText: "Annuler",
-        confirmButtonText: "Confirmer",
-      }).then((result)=> {
-        if (result.isConfirmed){
-          traceInHistory("AWARD",authorizedUseCase,{});
-          applyRecommandationFinal(reco);
-        }
-      })
-    }
-    function swalReco(){
-      Swal.fire({
-        icon: 'info',
-        title: 'Application en cours de la parade',
-        showConfirmButton: false,
-      })
-    }
-    function disconnectInProgress(){
-      Swal.fire({
-        title: 'Déconnexion en cours',
-        showConfirmButton: false,
-      })
-    }
-    function swalRecoSuccess(){
-      Swal.fire({
-        icon: 'success',
-        title: 'Parade Appliquée',
-        showConfirmButton: false,
-        timer: 4500
-      })
-    }
-    function swalAskCab(){
-      Swal.fire({
-        title: 'Choisir un event',
-        showConfirmButton: true,
-      })
-    }
-    function swalRecoError(err){
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur serveur (Code : '+err + ')',
-        text: "Impossible d'appliquer la parade",
-        showConfirmButton: true,
-        confirmButtonText: "Ok"
-      })
-    }
-
-    function showDesc(desc){
-      for(var desc_check = 0;desc_check<3;desc_check++){
-        if(desc_check != desc){
-          document.getElementById('descriptionRTE' + desc_check).hidden = true;
-        }
-      }
-      document.getElementById('descriptionRTE' + desc).hidden = false;
-
-    }
-
-    function displaySwal(){
-      Swal.fire({
-      html:'<span style="font-size:20px">Paramétrage service corrélation</span><br>'
-      + '<div id="box_methode_calcul"><b>Choix de la méthode de calcul</b>'
-      + '<div style="width:100%;"><br><form>'
-      + '<input name="choice" type="radio"><label style="width:70%">Méthode 1</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choice" type="radio"><label style="width:70%">Méthode 2</label>'+'<img class="reduced" src="./assets/images/!.png"><br>'
-      + '</form></div><br>'
-      + '<b>Choix des KPIs</b>'
-      + '<div style="width:100%;"><br><form>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Temps de réponse</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de requêtes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre d\'erreurs 4xx-5xx</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux d\'érreurs</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '</form></div>'
-      + '</div>'
-      + '<div id="orangeTimeSelector">'
-          +'<b>Fenêtre de temps</b>'
-          +'<br>'
-          +'<input type="range" id="slider" name="temp" list="values" />'
-          +'<datalist id="values">'
-            +'<option value="15" label="15mn"></option>'
-            +'<option value="60" label="1h"></option>'
-            +'<option value="120" label="2h"></option>'
-            +'<option value="180" label="3h"></option>'
-            +'<option value="240" label="4h"></option>'
-            +'<option value="300" label="5h"></option>'
-          +'</datalist>'
-        +'</div>'
-      + '<button onclick="Swal.close();getCorrelations()">Calculer Corrélation</button>',
-      showConfirmButton: false
-    })
-  }
   </script>
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
