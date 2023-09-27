@@ -39,31 +39,6 @@ services:
     labels:
       kompose.controller.type: statefulset
 
-  #keycloak:
-    #image: jboss/keycloak:16.1.1
-    #command: -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/cab-keycloak/export -Dkeycloak.profile.feature.upload_scripts=enabled
-    #environment:
-    #- KEYCLOAK_USER=admin
-    #- KEYCLOAK_PASSWORD=admin
-    #- DB_VENDOR=H2
-    #ports:
-    #- "8080:8080"
-    #configs:
-      #- source: cab-keycloak-users
-        #target: /cab-keycloak/export/dev-users-0.json
-      #- source: cab-keycloak-realm
-        #target: /cab-keycloak/export/dev-realm.json
-    #deploy:
-      #resources:
-        #limits:
-          #cpus: "2"
-          #memory: 2048M
-        #reservations:
-          #cpus: "1"
-          #memory: 1024M
-    #labels:
-      #kompose.controller.type: statefulset
-
   users:
     container_name: users
     image: "lfeoperatorfabric/of-users-service:3.11.0.RELEASE"
@@ -73,15 +48,15 @@ services:
     ports:
      - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_PROFILES_ACTIVE: "kubernetes"
     volumes:
       - certificates:/certificates_to_add
       - external_config:/external-config
     configs:
-      - source: common-docker
-        target: /config/common-docker.yml
-      - source: users-docker
-        target: /config/application-docker.yml
+      - source: common
+        target: /config/common-kubernetes.yml
+      - source: users
+        target: /config/application-kubernetes.yml
     deploy:
       resources:
         limits:
@@ -101,16 +76,16 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_PROFILES_ACTIVE: "kubernetes"
     volumes:
       - certificates:/certificates_to_add
       - businessconfig_storage:/businessconfig-storage
       - external_config:/external-config
     configs:
-      - source: common-docker
-        target: /config/common-docker.yml
-      - source: businessconfig-docker
-        target: /config/application-docker.yml
+      - source: common
+        target: /config/common-kubernetes.yml
+      - source: businessconfig
+        target: /config/application-kubernetes.yml
     deploy:
       resources:
         limits:
@@ -131,15 +106,15 @@ services:
     ports:
      - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_PROFILES_ACTIVE: "kubernetes"
     volumes:
       - certificates:/certificates_to_add
       - external_config:/external-config
     configs:
-      - source: common-docker
-        target: /config/common-docker.yml
-      - source: cards-consultation-docker
-        target: /config/application-docker.yml
+      - source: common
+        target: /config/common-kubernetes.yml
+      - source: cards-consultation
+        target: /config/application-kubernetes.yml
     deploy:
       resources:
         limits:
@@ -160,15 +135,15 @@ services:
     ports:
      - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_PROFILES_ACTIVE: "kubernetes"
     volumes:
       - certificates:/certificates_to_add
       - external_config:/external-config
     configs:
-      - source: common-docker
-        target: /config/common-docker.yml
-      - source: cards-consultation-docker
-        target: /config/application-docker.yml
+      - source: common
+        target: /config/common-kubernetes.yml
+      - source: cards-consultation
+        target: /config/application-kubernetes.yml
     deploy:
       resources:
         limits:
@@ -215,21 +190,17 @@ volumes:
   webapp_example:
 
 configs:
-  common-docker:
-    file: ../of-config/cab-docker/common-docker.yml
-  businessconfig-docker:
-    file: ../of-config/cab-docker/businessconfig-docker.yml
-  users-docker:
-    file: ../of-config/cab-docker/users-docker.yml
-  cards-consultation-docker:
-    file: ../of-config/cab-docker/cards-consultation-docker.yml
+  common:
+    file: ../of-config/cab-docker/common-kubernetes.yml
+  businessconfig:
+    file: ../of-config/cab-docker/businessconfig-kubernetes.yml
+  users:
+    file: ../of-config/cab-docker/users-kubernetes.yml
+  cards-consultation:
+    file: ../of-config/cab-docker/cards-consultation-kubernetes.yml
   nginx-conf-nginx:
-    file: ../of-config/cab-docker/nginx.conf
-  #cab-keycloak-users:
-    #file: ../of-config/cab-keycloak/export/dev-users-0.json
-  #cab-keycloak-realm:
-    #file: ../of-config/cab-keycloak/export/dev-realm.json
+    file: ../of-config/cab-docker/nginx-kubernetes.conf
   ui-config-web-ui:
-    file: ../of-config/cab-docker/ui-config/web-ui.json
+    file: ../of-config/cab-docker/ui-config/web-ui-kubernetes.json
   ui-config-ui-menu:
-    file: ../of-config/cab-docker/ui-config/ui-menu.json
+    file: ../of-config/cab-docker/ui-config/ui-menu-kubernetes.json

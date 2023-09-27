@@ -165,34 +165,34 @@ services:
     labels:
       kompose.volume.subpath: pg-data
 
-  #frontend:
-    #image: harbor.irtsysx.fr/cab/cab-frontend:0.0.1
-    #restart: unless-stopped
-    #configs:
-      #- source: cab-ui-config-web-ui
-        #target: /usr/share/nginx/html/opfab/web-ui.json
-      #- source: cab-ui-config-ui-menu
-        #target: /usr/share/nginx/html/opfab/ui-menu.json
-      #- source: cab-nginx-conf-nginx
-        #target: /etc/nginx/conf.d/default.conf
-    #ports:
-      #- "80:80"
-    #depends_on:
-      #- cab-correlation
-      #- cab-recommendation
-      #- cab-event
-      #- cab-context
-      #- cab-historic
-    #deploy:
-      #resources:
-        #limits:
-          #cpus: "0.1"
-          #memory: 100M
-        #reservations:
-          #cpus: "0.05"
-          #memory: 50M
-    #labels:
-      #kompose.image-pull-secret: "regcred"
+  frontend:
+    image: harbor.irtsysx.fr/cab/cab-frontend:0.0.1
+    restart: unless-stopped
+    configs:
+      - source: cab-ui-config-web-ui
+        target: /usr/share/nginx/html/opfab/web-ui.json
+      - source: cab-ui-config-ui-menu
+        target: /usr/share/nginx/html/opfab/ui-menu.json
+      - source: cab-nginx-conf-nginx
+        target: /etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - cab-correlation
+      - cab-recommendation
+      - cab-event
+      - cab-context
+      - cab-historic
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100M
+        reservations:
+          cpus: "0.05"
+          memory: 50M
+    labels:
+      kompose.image-pull-secret: "regcred"
 
   cab-correlation:
     image: harbor.irtsysx.fr/cab/cab-correlation:0.0.1
@@ -273,10 +273,10 @@ volumes:
   pgadmin:
 
 
-#configs:
-  #cab-ui-config-web-ui:
-    #file: ../ui-config/web-ui.json
-  #cab-ui-config-ui-menu:
-    #file: ../ui-config/ui-menu.json
-  #cab-nginx-conf-nginx:
-    #file: ../config/dev/cab/nginx.conf
+configs:
+  cab-ui-config-web-ui:
+    file: ../ui-config/web-ui-kubernetes.json
+  cab-ui-config-ui-menu:
+    file: ../ui-config/ui-menu-kubernetes.json
+  cab-nginx-conf-nginx:
+    file: ../config/dev/cab/nginx-kubernetes.conf
