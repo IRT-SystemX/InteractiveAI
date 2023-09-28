@@ -41,7 +41,7 @@ services:
 
   users:
     container_name: users
-    image: "lfeoperatorfabric/of-users-service:3.11.0.RELEASE"
+    image: "lfeoperatorfabric/of-users-service:${IMAGE_VERSION_TAG}.RELEASE"
     depends_on:
       - mongodb
       - rabbitmq
@@ -70,7 +70,7 @@ services:
 
   businessconfig:
     container_name: businessconfig
-    image: "lfeoperatorfabric/of-businessconfig-service:3.11.0.RELEASE"
+    image: "lfeoperatorfabric/of-businessconfig-service:${IMAGE_VERSION_TAG}.RELEASE"
     depends_on:
       - mongodb
     ports:
@@ -99,7 +99,7 @@ services:
 
   cards-publication:
     container_name: cards-publication
-    image: "lfeoperatorfabric/of-cards-publication-service:3.11.0.RELEASE"
+    image: "lfeoperatorfabric/of-cards-publication-service:${IMAGE_VERSION_TAG}.RELEASE"
     depends_on:
       - mongodb
       - rabbitmq
@@ -128,7 +128,7 @@ services:
 
   cards-consultation:
     container_name: cards-consultation
-    image: "lfeoperatorfabric/of-cards-consultation-service:3.11.0.RELEASE"
+    image: "lfeoperatorfabric/of-cards-consultation-service:${IMAGE_VERSION_TAG}.RELEASE"
     depends_on:
       - mongodb
       - rabbitmq
@@ -157,7 +157,7 @@ services:
 
   web-ui:
     container_name: web-ui
-    image: "lfeoperatorfabric/of-web-ui:3.11.0.RELEASE"
+    image: "lfeoperatorfabric/of-web-ui:${IMAGE_VERSION_TAG}.RELEASE"
     ports:
     - "80:80"
     depends_on:
