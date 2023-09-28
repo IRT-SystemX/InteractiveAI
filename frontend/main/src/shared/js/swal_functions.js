@@ -75,6 +75,9 @@ function showDesc(desc) {
     }
     document.getElementById('descriptionRTE' + desc).hidden = false;
 }
+function showDescSNCF(desc) {
+    document.getElementById('descriptionSNCF' + desc).hidden = false;
+}
 function displaySwal() {
     Swal.fire({
         html: '<span style="font-size:20px">Paramétrage service corrélation</span><br>'

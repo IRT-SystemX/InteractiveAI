@@ -130,7 +130,7 @@ These two parameters are place in this file as the style should have a title par
       setTimeout(getRecoWithTimer,10000);
     }
     function getRecoWithTimer(){
-      document.getElementById("sncf_solution").hidden=false;
+      document.getElementById("sncf_solution_mock").hidden=false;
       document.getElementById("sncf_button_grey").style.cursor = 'unset';
     }
     function grantedUseCase(uc) {
@@ -445,7 +445,6 @@ These two parameters are place in this file as the style should have a title par
             try {
               getCardContent(cards[card].getAttribute("data-urlid"));
             } catch (error) {
-              console.log(error)
             }
           }
           //titre carte margé
@@ -581,19 +580,39 @@ These two parameters are place in this file as the style should have a title par
     };
 
     function getRecommandationSNCF(){
+      console.log("getRecommandationSNCF")
         document.getElementById('sncf_solution').innerHTML = "";
+        document.getElementById('recos_sncf_desc').innerHTML = ""
+        document.getElementById('sncf_solution_mock').hidden = true;
+        
         var bodyHTML;
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function() {
           if(this.readyState === 4) {
-            var recoSNCF = JSON.parse(this.responseText);
-            console.log(JSON.parse(this.responseText))
-            document.getElementById('sncf_solution').innerHTML += recoSNCF;
-            document.body.style.cursor = 'unset';
-            swal.hideLoading()
+            // document.getElementById('sncf_solution').innerHTML += recoSNCF;
+          Swal.hideLoading();
+          Swal.close();
+          document.body.style.cursor = 'unset';
+          console.log(JSON.parse(this.responseText))
+          var recos = JSON.parse(this.responseText);
+          var bodyHTML = "";
+          for (var reco=0;reco<recos.length;reco++){
+                var description = recos[reco].description;
+                var agent_type = recos[reco].agent_type;
+                var title = recos[reco].title;
+                var actions = recos[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML += "<div><span class='rtePrd'><b onclick ='"+ 'showDescSNCF(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + description.replace("\n","<br>") + '</span>';
 
+                document.getElementById('recos_sncf_desc').innerHTML += bodyHTML;
+                document.getElementById('recos_sncf_desc').innerHTML += document.getElementById("sncf_button_grey").outerHTML.replace("hidden","");
+             
+           }
+            // document.getElementById("sncf_button_grey").hidden = false;
 
+           console.log("Ready - reco")
           }
         });
         xhr.open("POST", host +  "/cab_recommendation/api/v1/recommendation");
@@ -640,8 +659,6 @@ These two parameters are place in this file as the style should have a title par
     }
 
     function askCab(){
-      // swalAskCab();
-      console.log("ASK CAB")
       swal.showLoading();
       traceInHistory("ASKFORHELP",authorizedUseCase,{});
 
@@ -649,9 +666,12 @@ These two parameters are place in this file as the style should have a title par
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
           document.getElementById("sncf_assist_full").hidden = false;
-          document.getElementById("recos_sncf").hidden = false;
-          getLastCard();
-          getRecommandationSNCF();
+          document.getElementById("recos_sncf_desc").hidden = false;
+          // getLastCard();
+          console.log("ask cab get reco")
+          // getRecommandationSNCF();
+          getCardProcessSNCF();
+
         break;
         case "RTE":
         document.getElementById("rte_assist_nominal").hidden = true;
@@ -666,7 +686,7 @@ These two parameters are place in this file as the style should have a title par
         case "SNCF":
           document.getElementById("sncf_assist_nominal").hidden = true;
           document.getElementById("sncf_assist_full").hidden = false;
-          document.getElementById("recos_sncf").hidden = false;
+          document.getElementById("recos_sncf_desc").hidden = false;
         break;
         case "RTE":
           confirmAction(reco)
@@ -887,15 +907,16 @@ These two parameters are place in this file as the style should have a title par
         </div>
         <br>
         <div>
-          <div id="recos_sncf" hidden>
+          <div id="recos_sncf_desc" hidden>
           </div>
           <div style="margin-left: 130px;margin-bottom: 5px;">
             <!-- <button class="sncf_button"><b>Choisir</b></button> -->
           </div>
         </div>
-        <button id="sncf_button_grey" class="sncf_button_grey" style="float:right" onclick="getRecommandations()">Ajouter une solution</button>
+        <button id="sncf_button_grey" hidden class="sncf_button_grey" style="float:right" onclick="getRecommandations()" >Ajouter une solution</button>
       </div>
-      <div id="sncf_solution" hidden style="margin-top: 50px">
+      <div id="sncf_solution" hidden style="margin-top: 50px"></div>
+      <div id="sncf_solution_mock" hidden style="margin-top: 50px">
         <input type="checkbox" id="sol1" value="sol1">
         <label for="sol1">Retenue TGV 7652 à Angoulême</label>
         <hr>

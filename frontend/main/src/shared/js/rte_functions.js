@@ -1,5 +1,16 @@
 
 
+function getCardProcessSNCF(){
+    swal.showLoading();
+          getContextSNCF();
+          var cards = document.getElementsByClassName("card");
+          for (var card = 0; card < cards.length; card++) {
+              if (cards[card].classList.contains("light-card-detail-selected")){
+              getCard(cards[card].getAttribute("data-urlid"));
+              }
+            }
+            
+    }
 function getCardProcess(){
     swal.showLoading();
           getContextRTE();
@@ -56,7 +67,7 @@ function getCardProcess(){
           Swal.close();
           document.body.style.cursor = 'unset';
           console.log(JSON.parse(this.responseText))
-           var recosRTE = JSON.parse(this.responseText);
+          var recosRTE = JSON.parse(this.responseText);
           var bodyHTML = "";
            for (var reco=0;reco<recosRTE.length;reco++){
               var description = recosRTE[reco].description;

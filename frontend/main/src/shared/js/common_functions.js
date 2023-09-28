@@ -64,3 +64,23 @@ function acknowledgeCard(uid) {
     xhr.send(data);
 
 }
+
+
+function getContextSNCF(){
+    //todo getContext of any usecase (nicetohave)
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function() {
+    if(this.readyState === 4) {
+        jsonContextObject = JSON.parse(this.responseText);
+        if(document.getElementById("rte_assist_nominal").hidden){
+            getRecommandationSNCF();
+            
+        }
+    }
+    });
+    xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
+    xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+    xhr.send();
+    
+  }

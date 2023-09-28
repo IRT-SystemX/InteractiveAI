@@ -220,6 +220,23 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.send();
         
       }
+      public getContextSNCF(){
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        var that = this;
+        xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            Swal.hideLoading();
+            Swal.close()
+            that.jsonContextObject = JSON.parse(this.responseText);
+        }
+        });
+        // xhr.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts");
+        xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        xhr.send();
+        
+      }
 
         public getCardProcess(){
             this.getContextRTE();
@@ -287,6 +304,46 @@ export class LightCardComponent implements OnInit, OnDestroy {
         xhr.send(JSON.stringify(recommendationBody));
         }
     public getRecommandationSNCF(){
+        console.log('getRecommandationSNCF')
+        document.getElementById('sncf_assist').innerHTML = "";
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        var lightCardObject = this;
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            Swal.hideLoading();
+            document.body.style.cursor = 'unset';
+            console.log(JSON.parse(this.responseText))
+             var recos = JSON.parse(this.responseText);
+             for (var reco=0;reco<recos.length;reco++){
+                var description = recos[reco].description;
+                var agent_type = recos[reco].agent_type;
+                var title = recos[reco].title;
+                var actions = recos[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML = "<div><span class='rtePrd'><b onclick ='"+ 'showDesc(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + description + '</span>';
+                document.getElementById('sncf_assist').innerHTML += bodyHTML;
+             }
+             Swal.hideLoading();
+             Swal.close()
+
+          }
+        });
+        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        
+        var recommendationBody = 
+          { context : this.jsonContextObject[0].data,
+            event : this.jsonEventObject
+          }
+          console.log(recommendationBody)
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    public getRecommandationSNCFold(){
         document.getElementById('sncf_solution').innerHTML = "";
         var bodyHTML;
         var xhr = new XMLHttpRequest();
@@ -479,11 +536,19 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
             document.getElementById("HYD_nominal").hidden = false;
         }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("Malaise")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            console.log(this)
+            if(document.getElementById("sncf_assist_nominal").getAttribute("triggered") == "false"){
+              document.getElementById("sncf_assist_nominal").hidden = true;
+              document.getElementById("sncf_assist_nominal").setAttribute("triggered","true");
+            }
+
+        }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("high_procedure").hidden = true;
-            document.getElementById("pdv_da").hidden = true;
             document.getElementById("noevent_da").hidden = true;
             $("#rte_assist").hide()
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
