@@ -2,7 +2,7 @@ version: "3.8"
 services:
 
   cab-context:
-    image: harbor.irtsysx.fr/cab/cab-context:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-context:${IMAGE_CONTEXT_TAG}
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
@@ -27,7 +27,7 @@ services:
       kompose.image-pull-secret: "regcred"
 
   cab-event:
-    image: harbor.irtsysx.fr/cab/cab-event:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-event:${IMAGE_EVENT_TAG}
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -54,7 +54,7 @@ services:
       kompose.image-pull-secret: "regcred"
 
   cab-historic:
-    image: harbor.irtsysx.fr/cab/cab-historic:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-historic:${IMAGE_HISTORIC_TAG}
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5432/cab-historic
     restart: unless-stopped
@@ -166,7 +166,7 @@ services:
       kompose.volume.subpath: pg-data
 
   frontend:
-    image: harbor.irtsysx.fr/cab/cab-frontend:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-frontend:${IMAGE_FRONTEND_TAG}
     restart: unless-stopped
     configs:
       - source: cab-ui-config-web-ui
@@ -195,7 +195,7 @@ services:
       kompose.image-pull-secret: "regcred"
 
   cab-correlation:
-    image: harbor.irtsysx.fr/cab/cab-correlation:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-correlation:${IMAGE_CORRELATION_TAG}
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -244,7 +244,7 @@ services:
       kompose.controller.type: statefulset
 
   cab-recommendation:
-    image: harbor.irtsysx.fr/cab/cab-recommendation:${IMAGE_VERSION_TAG}
+    image: harbor.irtsysx.fr/cab/cab-recommendation:${IMAGE_RECOMMENDATION_TAG}
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80

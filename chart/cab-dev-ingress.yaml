@@ -9,7 +9,7 @@ metadata:
     traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   rules:
-    - host: cab-dev.irtsystemx.org
+    - host: ${CAB_INGRESS_NS}.irtsystemx.org
       http:
         paths:
           - path: /
@@ -29,7 +29,7 @@ metadata:
     traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   rules:
-    - host: frontend.cab-dev.irtsystemx.org
+    - host: frontend.${CAB_INGRESS_NS}.irtsystemx.org
       http:
         paths:
           - path: /
