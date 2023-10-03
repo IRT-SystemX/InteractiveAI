@@ -1,0 +1,31 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: cab-auth
+  name: cab-auth-ns-master
+rules:
+  - apiGroups:
+      - "*"
+    resources:
+      - "*"
+    verbs:
+      - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: "RoleBinding"
+metadata:
+  name: cab-auth-ns-master-role-binding
+  namespace: cab-auth
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: "Role"
+  name: cab-auth-ns-master
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: maroua.meddeb
+    namespace: cab-auth
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: ilyes.kaanich
+    namespace: cab-auth
