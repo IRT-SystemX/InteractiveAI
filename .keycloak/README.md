@@ -44,7 +44,7 @@ The operator-fabric gives two json files that could have been used to import all
 - [dev-realm.json](of-config/cab-keycloak/export/dev-realm.json)
 - [dev-users-0](of-config/cab-keycloak/export/dev-users-0.json)
 
-The Keycloak server resources were added manually to mirror the previous embedded dev version. Check this configuration on the admin console: https://cab-keycloak.irtsystemx.org/auth/admin/.
+The Keycloak server resources were added **manually** to mirror the previous embedded dev version. Check this configuration on the **admin console**: https://cab-keycloak.irtsystemx.org/auth/admin/.
 
 - realm: `dev`
 - client: `opfab-client`
