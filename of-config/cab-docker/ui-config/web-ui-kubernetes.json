@@ -1,5 +1,5 @@
 {
-  "environmentName": "DOCKER ENV",
+  "environmentName": "KUBERNETES ENV",
   "environmentColor": "blue",
   "checkIfUrlIsLocked": true,
   "showUserEntitiesOnTopRightOfTheScreen": true,
@@ -88,7 +88,7 @@
       "expire-claim": "exp",
       "login-claim": "preferred_username"
     },
-    "logout-url": "https://cab-keycloak.irtsystemx.org/auth/realms/dev/protocol/openid-connect/logout?redirect_uri=https://cab.irtsystemx.org/ui/",
+    "logout-url": "https://cab-keycloak.irtsystemx.org/auth/realms/dev/protocol/openid-connect/logout?redirect_uri=https://cab-dev.irtsystemx.org/",
     "oauth2": {
       "client-id": "opfab-client",
       "flow": {
@@ -98,7 +98,7 @@
       }
     },
     "provider-realm": "dev",
-    "provider-url": "https://cab-keycloak.irtsystemx.org",
+    "provider-url": "https://cab-keycloak.irtsystemx.org/auth",
     "changePasswordUrl": "https://cab-keycloak.irtsystemx.org/auth/realms/dev/account/#/security/signingin"
   },
   "settings": {

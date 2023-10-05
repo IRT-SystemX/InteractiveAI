@@ -16,16 +16,16 @@ spring:
 #    consumer:
 #      group-id: opfab-command
 
-#opfab:
-  #kafka:
-    #topics:
-      #card:
-        #topicname: opfab
-      #response-card:
-        #topicname: opfab-response
-    #schema:
-      #registry:
-        #url: http://localhost:8081
+opfab:
+  kafka:
+    topics:
+      card:
+        topicname: opfab
+      response-card:
+        topicname: opfab-response
+    schema:
+      registry:
+        url: http://localhost:8081
 
 # WARNING - If you are not working on linux, you should replace the host ip address 172.17.0.1
 # for mac see https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds

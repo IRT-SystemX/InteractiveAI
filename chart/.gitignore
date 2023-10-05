@@ -1,0 +1,4 @@
+*.tgz
+*.sh
+cab-assistant-platform/
+operator-fabric/
