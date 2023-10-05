@@ -3,7 +3,7 @@ from cab_common_auth.decorators import get_use_cases, protected
 from flask import request, jsonify, abort
 from apiflask.views import MethodView
 
-from .schemas import RecommendationAsk
+from .schemas import RecommendationAsk, RecommendationOut
 from settings import logger
 
 
@@ -19,6 +19,7 @@ class HealthCheck(MethodView):
 class RecommendationView(MethodView):
 
     @api_bp.input(RecommendationAsk)
+    @api_bp.output(RecommendationOut(many=True), status_code=201)
     @protected
     def post(self, data):
         """Get recommendation"""

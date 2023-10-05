@@ -1,6 +1,6 @@
 from owlready2 import default_world, get_ontology, sync_reasoner
 from resources.rte.rtegrid2op_poc_simulator.assistantManager import \
-    AgentManager
+    AgentManager, AgentType
 from settings import logger
 
 from .base_recommendation import BaseRecommendation
@@ -17,21 +17,21 @@ class RTEManager(AgentManager, BaseRecommendation):
 
     def get_recommendation(self, request_data):
 
-        self.recommandate(request_data.get("context", {}))
+        self.recommendate(request_data.get("context", {}))
         logger.info("getting parades")
         parades = self.getlistOfParadeInfo()
 
-        onto_recommendation = None
+        onto_recommendation = []
         event_data = request_data.get("event", {})
         event_id = event_data.get("event_id")
-        event_line = event_data.get("event_line")
-        event_flow = event_data.get("event_flow")
+        event_line = event_data.get("line")
+        event_flow = event_data.get("flux")
         if event_id and event_line and event_flow:
             logger.info("getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(
                 event_id, event_line, event_flow)
-        return {"ia_recommendation": parades,
-                "onto_recommendation": onto_recommendation}
+        # both parades & onto_recommendation should be lists on the same format
+        return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_id, event_line, event_flow):
         # Loading ontology
@@ -81,10 +81,11 @@ class RTEManager(AgentManager, BaseRecommendation):
         action = str(RTE_onto_inferences.get_parents_of(set_bus_test)[0])
 
         if action == 'Onto2grid_v1.2.Change_bus_vect':
-            recommandation = "Changer le bus"
+            title = "Changer le bus"
         elif action == "Onto2grid_v1.2.Disconnect_line":
-            recommandation = "Deconnecter la ligne"
+            title = "Deconnecter la ligne"
         else:
-            recommandation = "Parade non identifiée"
+            title = "Parade non identifiée"
 
-        return recommandation
+        recommendation = {"title":title, "description":"", "use_case":"RTE", "agent_type":AgentType.onto.name, "actions":[{}]}
+        return [recommendation]
