@@ -540,6 +540,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             console.log(this)
+            document.getElementById("opfab-card-title").setAttribute("onclick","askCab()");
             if(document.getElementById("sncf_assist_nominal").getAttribute("triggered") == "false"){
               document.getElementById("sncf_assist_nominal").hidden = true;
               document.getElementById("sncf_assist_nominal").setAttribute("triggered","true");

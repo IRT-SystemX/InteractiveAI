@@ -93,6 +93,7 @@ These two parameters are place in this file as the style should have a title par
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
         host = "";
+        traceHost = "";
       }
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
@@ -667,7 +668,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("sncf_assist_nominal").hidden = true;
           document.getElementById("sncf_assist_full").hidden = false;
           document.getElementById("recos_sncf_desc").hidden = false;
-          // getLastCard();
+          getLastCard();
           console.log("ask cab get reco")
           // getRecommandationSNCF();
           getCardProcessSNCF();
@@ -687,6 +688,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("sncf_assist_nominal").hidden = true;
           document.getElementById("sncf_assist_full").hidden = false;
           document.getElementById("recos_sncf_desc").hidden = false;
+          confirmAction(reco)
         break;
         case "RTE":
           confirmAction(reco)
@@ -723,14 +725,16 @@ These two parameters are place in this file as the style should have a title par
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href=".\shared\css\timelineNG.css"> 
   <meta name="theme-color" content="#1976d2">
 </head>
 
-<body class="opfab-colors" id="bodyopfab" style="height:auto">
+<body class="opfab-colors" id="bodyopfab" style="height:auto" onload="initTimeLine()">
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src=".\shared\js\timelineNG.js"></script>
   <script>
 
     function getCoordinates(){
@@ -1035,8 +1039,18 @@ These two parameters are place in this file as the style should have a title par
     </div>
 
   </div>
-  <of-root></of-root>
+  <of-root>  
+  </of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
+  <div id="tl-container-home" hidden>
+    <div class="timeline-container">
+        <div class="timeline">
+            <div class="global-current-time-cursor">
+                <div id="current-time"></div>
+            </div> 
+            <div id="eventsForTimeLine"></div>
+        </div>
+    </div>
 </body>
 
 </html>

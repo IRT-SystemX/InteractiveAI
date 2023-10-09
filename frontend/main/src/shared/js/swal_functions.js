@@ -18,7 +18,7 @@ function confirmExit() {
 function confirmAction(reco) {
     Swal.fire({
         icon: 'question',
-        title: 'Voulez vous vraiment appliquer cette parade ?',
+        title: 'Voulez vous vraiment appliquer ?',
         showCancelButton: true,
         showConfirmButton: true,
         cancelButtonText: "Annuler",
@@ -33,7 +33,7 @@ function confirmAction(reco) {
 function swalReco() {
     Swal.fire({
         icon: 'info',
-        title: 'Application en cours de la parade',
+        title: 'Application en cours',
         showConfirmButton: false,
     })
 }
@@ -46,7 +46,7 @@ function disconnectInProgress() {
 function swalRecoSuccess() {
     Swal.fire({
         icon: 'success',
-        title: 'Parade Appliquée',
+        title: 'Recommandation Appliquée',
         showConfirmButton: false,
         timer: 4500
     })
@@ -61,7 +61,7 @@ function swalRecoError(err) {
     Swal.fire({
         icon: 'error',
         title: 'Erreur serveur (Code : ' + err + ')',
-        text: "Impossible d'appliquer la parade",
+        text: "Impossible d'appliquer la recommandation",
         showConfirmButton: true,
         confirmButtonText: "Ok"
     })

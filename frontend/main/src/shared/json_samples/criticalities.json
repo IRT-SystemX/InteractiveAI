@@ -1,0 +1,52 @@
+{
+    "criticalities": {
+        "RTE": {
+            "icon": {
+                "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+            },
+            "color": {
+                "MEDIUM": "#EC775C",
+                "HIGH": "#C81640",
+                "ROUTINE": "#009E8F"
+            }
+        },
+        "SNCF": {
+            "icon": {
+                "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+            },
+            "color": {
+                "MEDIUM": "green",
+                "HIGH": "blue",
+                "ROUTINE": "yellow"
+            }
+        },
+        "DA": {
+            "icon": {
+                "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+            },
+            "color": {
+                "MEDIUM": "yellow",
+                "HIGH": "green",
+                "ROUTINE": "blue"
+            }
+        },
+        "ORANGE": {
+            "icon": {
+                "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+            },
+            "color": {
+                "MEDIUM": "orange",
+                "HIGH": "purple",
+                "ROUTINE": "pink"
+            }
+        }
+    }
+}
