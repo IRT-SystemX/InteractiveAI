@@ -155,7 +155,7 @@ class SNCFManager(BaseRecommendation):
                                 'target_id': 0,
                                 'target_type': 'STATION'}]}]}
         
-        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême.'
+        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême."
         
         fake_recommendation = {
             "title": "Annuler l'arrêt à Poitiers",
