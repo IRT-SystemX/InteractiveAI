@@ -36,187 +36,194 @@ class SNCFManager(BaseRecommendation):
         ]
 
         """
-        ai_actions, ai_description = self.hypervisor.recommend(position_agents,
+        ai_transport_plan, ai_description, ai_title = self.hypervisor.recommend(position_agents,
                                                    direction_agents,
                                                    list_of_target,
                                                    malfunction_agent,
                                                    malfunction_position,
                                                    malfunction_delay)
         ai_recommendation = {
-            "title": "Modification de plan de transport",
+            "title": ai_title,
             "description": ai_description,
             "use_case": "SNCF",
             "agent_type": "IA",
-            "actions": [{"transportation_plan":ai_actions}]
+            "actions": [ai_transport_plan]
             }
         """
-
+        
         fake_transport_plan = {
-            "simulation_name": "bordeaux_tours_sim",
-            "targets_list": [
+            'simulation_name': 'bordeaux_tours_sim',
+            'targets_list': [
                 {
-                    "agent_id": "0",
-                    "targets": [],
-                },
-                {
-                    "agent_id": "1",
-                    "targets": [
+                    'agent_id': '0',
+                    'targets': [
                         {
-                            "passengers": 0,
-                            "target_id": 10,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 16,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 20,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 22,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 2,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 28,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 33,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 34,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 40,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 44,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 48,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 70,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 74,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 80,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 47,
+                            'target_type': 'STATION'
                         }
-                    ],
+                    ]
                 },
                 {
-                    "agent_id": "2",
-                    "targets": [
+                    'agent_id': '1',
+                    'targets': [
                         {
-                            "passengers": 0,
-                            "target_id": 10,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 6,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 16,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 12,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 20,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 16,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 22,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 18,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 2,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 2,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 28,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 24,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 33,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 29,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 34,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 30,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 40,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 36,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 44,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 40,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 48,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 44,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 70,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 66,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 73,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 70,
+                            'target_type': 'STATION'
                         },
                         {
-                            "passengers": 0,
-                            "target_id": 78,
-                            "target_type": "STATION",
-                        },
-                        {
-                            "passengers": 0,
-                            "target_id": 0,
-                            "target_type": "STATION",
+                            'passengers': 0,
+                            'target_id': 76,
+                            'target_type': 'STATION'
                         }
-                    ],
+                    ]
                 },
-            ],
+                {
+                    'agent_id': '2',
+                    'targets': [
+                        {
+                            'passengers': 0,
+                            'target_id': 6,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 12,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 16,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 18,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 2,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 24,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 29,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 30,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 36,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 40,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 44,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 66,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 69,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 74,
+                            'target_type': 'STATION'
+                        },
+                        {
+                            'passengers': 0,
+                            'target_id': 0,
+                            'target_type': 'STATION'
+                        }
+                    ]
+                }
+            ]
         }
+        
 
-        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, arrêt suivant Angoulême."
+        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV et s'arrêter à Paris.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, prochaint arrêt est St-Pierre-des-Corps."
 
         fake_recommendation = {
             "title": "Annuler l'arrêt à Poitiers",
