@@ -25,6 +25,7 @@ services:
           memory: 256M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
   cab-event:
     image: harbor.irtsysx.fr/cab/cab-event:${IMAGE_EVENT_TAG}
@@ -52,6 +53,7 @@ services:
           memory: 256M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
   cab-historic:
     image: harbor.irtsysx.fr/cab/cab-historic:${IMAGE_HISTORIC_TAG}
@@ -73,6 +75,7 @@ services:
           memory: 256M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
   db-postgres-context:
     image: postgres:14.7
@@ -193,6 +196,7 @@ services:
           memory: 50M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
   cab-correlation:
     image: harbor.irtsysx.fr/cab/cab-correlation:${IMAGE_CORRELATION_TAG}
@@ -219,6 +223,7 @@ services:
           memory: 1024M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
   db-postgres-correlation:
     image: postgres:14.7
@@ -264,6 +269,7 @@ services:
           memory: 1024M
     labels:
       kompose.image-pull-secret: "regcred"
+      kompose.image-pull-policy: "Always"
 
 volumes:
   postgres_context_data:
