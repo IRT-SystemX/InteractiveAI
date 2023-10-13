@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG PYTHON_TAG=3.11.4-slim
+ARG PYTHON_TAG=3.11.6-slim
 FROM python:${PYTHON_TAG}
 
 COPY . /cab_common/
