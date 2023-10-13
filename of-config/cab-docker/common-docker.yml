@@ -6,29 +6,25 @@ management:
         include: '*'
 spring:
   rabbitmq:
-    host: rabbitmq.cab-dev.svc.cluster.local
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest
   security:
-    provider-url: http://cab-keycloak.cab-auth.svc.cluster.local:80
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://cab-keycloak.cab-auth.svc.cluster.local:80/auth/realms/dev/protocol/openid-connect/certs
+          jwk-set-uri: http://keycloak:8080/auth/realms/dev/protocol/openid-connect/certs
   data:
     mongodb:
       database: operator-fabric
-      uri: mongodb://root:password@mongodb.cab-dev.svc.cluster.local:27017/operator-fabric?authSource=admin&authMode=scram-sha1
-
+      uri: mongodb://root:password@mongodb:27017/operator-fabric?authSource=admin&authMode=scram-sha1
 server:
   forward-headers-strategy: framework
-
 operatorfabric:
   servicesUrls:
-    users: "http://users.cab-dev.svc.cluster.local:8080"
-    businessconfig: "http://businessconfig.cab-dev.svc.cluster.local:8080"
-
+    users: "users:8080"
+    businessconfig: "businessconfig:8080"
 ### activate the following if you want to the groups or entities to come from the token and not mongo DB
 #  security:
 #    jwt:

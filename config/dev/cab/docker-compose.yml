@@ -163,7 +163,6 @@ services:
       - HISTORIC_SERVICE=http://cabhistoric:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_correlation:5432/cab-correlation
       - HOST_IP=$HOST_IP
-      - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
     command: sh -c "./entrypoint.sh"
     ports:
