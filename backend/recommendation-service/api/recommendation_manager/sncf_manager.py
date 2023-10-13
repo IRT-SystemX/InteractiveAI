@@ -26,9 +26,7 @@ class SNCFManager(BaseRecommendation):
         malfunction_position = tuple(event_data.get("agent_position"))
         malfunction_delay = event_data.get("delay")
 
-        position_agents = [
-            tuple(value) for value in raw_position_agents.values()
-        ]
+        position_agents = [tuple(value) for value in raw_position_agents.values()]
 
         list_of_target = [
             [tuple(target) for target in agent_targets]
@@ -50,118 +48,62 @@ class SNCFManager(BaseRecommendation):
             "actions": [ai_transport_plan]
             }
         """
-        
-
-
 
         fake_transport_plan = {
-            'simulation_name': 'bordeaux_tours_sim',
-            'targets_list': [{'agent_id': 0,
-                   'targets': [{'passengers': 0,
-                                'target_id': 26,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 30,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 32,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 36,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 38,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 40,
-                                'target_type': 'STATION'}]},
-                  {'agent_id': 1,
-                   'targets': [{'passengers': 0,
-                                'target_id': 4,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 8,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 10,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 2,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 16,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 20,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 22,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 24,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 26,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 30,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 32,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 36,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 38,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 40,
-                                'target_type': 'STATION'}]},
-                  {'agent_id': 2,
-                   'targets': [{'passengers': 0,
-                                'target_id': 4,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 8,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 10,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 2,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 16,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 20,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 22,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 24,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 26,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 30,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 32,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 36,
-                                'target_type': 'STATION'},
-                               {'passengers': 0,
-                                'target_id': 0,
-                                'target_type': 'STATION'}]}]}
+            "simulation_name": "bordeaux_tours_sim",
+            "targets_list": [
+                {
+                    "agent_id": 0,
+                    "targets": [
+                        {"passengers": 0, "target_id": 26, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 30, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 32, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 36, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 38, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 40, "target_type": "STATION"},
+                    ],
+                },
+                {
+                    "agent_id": 1,
+                    "targets": [
+                        {"passengers": 0, "target_id": 4, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 8, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 10, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 2, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 16, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 20, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 22, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 24, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 26, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 30, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 32, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 36, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 38, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 40, "target_type": "STATION"},
+                    ],
+                },
+                {
+                    "agent_id": 2,
+                    "targets": [
+                        {"passengers": 0, "target_id": 4, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 8, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 10, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 2, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 16, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 20, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 22, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 24, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 26, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 30, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 32, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 36, "target_type": "STATION"},
+                        {"passengers": 0, "target_id": 0, "target_type": "STATION"},
+                    ],
+                },
+            ],
+        }
 
-        
-
-        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV et s'arrêter à Paris.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, prochaint arrêt est St-Pierre-des-Corps."
+        fake_description = "Train 7652 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, le prochain arrêt est PAris.\n\nTrain 5440 : Annuler l'arrêt à la gare de Poitiers, passer par la LGV, le prochain arrêt est St-Pierre-des-Corps."
 
         fake_recommendation = {
             "title": "Annuler l'arrêt à Poitiers",
