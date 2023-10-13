@@ -80,6 +80,9 @@
         border-radius: 50%;
         top: -4px;
     }
+    [id^="timeline-point"] img {
+        margin-left: -12px;
+    }
 
     .timeline-point:hover{
         zoom: 130%;
@@ -106,15 +109,40 @@
     .global-current-time-cursor {
         position: absolute;
         top: 0;
-        width: 2px;
+        width: 4px;
         height: 100%;
         background-color: black;
         z-index: 2;
         font-weight: 600;
         margin-top: 12px;
+        
     }
     
     #current-time{
         margin-top: -20px;
         margin-left: -15px;
     }
+
+    .timeline-border{
+        box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+        border-radius: 5px;
+        margin-left: 13px;
+    }
+
+
+    @media (max-height: 768px) { 
+
+        .timeline-border{
+            min-height: 210px;
+            width: 98.5%;
+        }
+    }
+
+    @media (min-height: 900px) and  (min-width: 1800px) { 
+        .timeline-border{
+            min-height: 245px;
+            margin-top: 12px;
+            width: 98.6%;
+        }
+    }
+    

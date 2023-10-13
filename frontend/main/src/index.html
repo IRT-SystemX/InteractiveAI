@@ -81,6 +81,165 @@ These two parameters are place in this file as the style should have a title par
     var tracePort = 5200;
     var assistNeverTriggered = true;
     var jsonEventObject;
+    var dateCtx = "";
+    var myJsonSNCF = {
+    "simulation_name": "bordeaux_tours_sim",
+    "targets_list": [
+        {
+            "agent_id": 0,
+            "targets": [
+                {
+                    "target_id": 8,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 1,
+            "targets": [
+                {
+                    "target_id": 4,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 2,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 5,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 1,
+                    "passengers": 144,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 6,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 0,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 2,
+            "targets": [
+                {
+                    "target_id": 4,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 2,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 5,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 1,
+                    "passengers": 26,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 6,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 0,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        }
+    ],
+    "station_stops": [
+        {
+            "agent_id": 0,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 1,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        204,
+                        7
+                    ],
+                    "delay": 6000,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        100,
+                        6
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 2,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        204,
+                        7
+                    ],
+                    "delay": 6000,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        100,
+                        6
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 240,
+                    "target_type": "STATION"
+                }
+            ]
+        }
+    ]
+};
 
     checkTokenToMatchUseCase();
 
@@ -250,10 +409,10 @@ These two parameters are place in this file as the style should have a title par
           }, 110);
           mapSNCF();
           break;
-
       }
       document.getElementById("homescreen").style = "display:none";
       document.getElementById("assistOpTitle").hidden = false;
+      initTimeLine();
     }
 
     function getOrangeIncidents(){
@@ -540,8 +699,10 @@ These two parameters are place in this file as the style should have a title par
       xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
-      var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
-      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+      var response = JSON.parse(xmlHttp.responseText);
+      document.getElementById("ctxImg").src = "data:image/png;base64," + response[0].data.topology;
+      dateCtx = response[0].date;
+
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
@@ -577,6 +738,8 @@ These two parameters are place in this file as the style should have a title par
       var response = JSON.parse(xmlHttp.responseText);
       var trains = response[0].data.trains;
       contextSNCF = response[0].data;
+      dateCtx = response[0].date;
+
       setAndUpdateSNCFMarkersOnMap(trains);
     };
 
@@ -605,7 +768,7 @@ These two parameters are place in this file as the style should have a title par
                 var actions = recos[reco].actions;
                 sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
                 bodyHTML += "<div><span class='rtePrd'><b onclick ='"+ 'showDescSNCF(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
-                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + description.replace("\n","<br>") + '</span>';
+                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + "<u>Description</u><br>" + description.replace("\n","<br>") + '</span>';
 
                 document.getElementById('recos_sncf_desc').innerHTML += bodyHTML;
                 document.getElementById('recos_sncf_desc').innerHTML += document.getElementById("sncf_button_grey").outerHTML.replace("hidden","");
@@ -677,7 +840,6 @@ These two parameters are place in this file as the style should have a title par
         case "RTE":
         document.getElementById("rte_assist_nominal").hidden = true;
         document.getElementById("rte_assist").innerHTML = "";
-        
         getCardProcess();
         break;
       }
@@ -698,8 +860,8 @@ These two parameters are place in this file as the style should have a title par
 
       function applyRecommandationFinal(reco){
         document.getElementById("rte_assist_nominal").hidden = true;
-          let actionRTE = sessionStorage.getItem("actions[" + reco +  "]");
-          var data = "{\"actions\" : " + actionRTE + "}";
+          let action = sessionStorage.getItem("actions[" + reco +  "]");
+          var data = action;
           var xhr = new XMLHttpRequest();
           xhr.withCredentials = true;
           document.body.style.cursor = 'wait';
@@ -713,7 +875,12 @@ These two parameters are place in this file as the style should have a title par
               document.body.style.cursor = 'unset';
             }
           });
-          xhr.open("POST", "http://192.168.209.166:5100/api/v1/recommendations");
+          if (selectedUseCase =="SNCF"){
+            xhr.open("POST", "http://192.168.209.166:5000/transport_plan");
+          }
+          else{
+            xhr.open("POST", "http://192.168.209.166:5100/api/v1/recommendations");
+          }
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.send(data);
       }
@@ -729,7 +896,7 @@ These two parameters are place in this file as the style should have a title par
   <meta name="theme-color" content="#1976d2">
 </head>
 
-<body class="opfab-colors" id="bodyopfab" style="height:auto" onload="initTimeLine()">
+<body class="opfab-colors" id="bodyopfab" style="height:auto">
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
@@ -896,7 +1063,7 @@ These two parameters are place in this file as the style should have a title par
   </script>
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
-    <b id="assist" hidden>Assistance à l'opérateur</b>
+    <b id="assist" hidden style="margin-left:3px">Assistance à l'opérateur</b>
     <b id="correlation" hidden>Corrélations</b>
     <b id="dassault_title" hidden>Assistance</b>
     <div id="sncf_assist" hidden>
@@ -1043,10 +1210,11 @@ These two parameters are place in this file as the style should have a title par
   </of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
   <div id="tl-container-home" hidden>
-    <div class="timeline-container">
+    <div class="timeline-container timeline-border">
+      <div style="font-size:18px;color:grey;margin-left:3px;overflow: hidden"><b>Timeline</b></div>
         <div class="timeline">
             <div class="global-current-time-cursor">
-                <div id="current-time"></div>
+                <div id="current-time"><b></div>
             </div> 
             <div id="eventsForTimeLine"></div>
         </div>

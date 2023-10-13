@@ -6,21 +6,16 @@ var criticalities = fetch('./shared/json_samples/criticalities.json')
   .catch(error => {
     console.error('Erreur lors de la lecture du fichier JSON :', error);
   });
-
   
-function initTimeLine() {
-    console.info("TIMELINE : ", "Ready")
-}
 
 function fillTimeLine() {
+    // document.getElementById("eventsForTimeLine").innerHTML = "";
     var data = "";
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4) {
-            var cards = JSON.parse(this.responseText);
-            var eventsForTimeLine = document.getElementById("eventsForTimeLine"); // Élément HTML cible
-
+            var cards = JSON.parse(this.responseText)
             for (var card = 0; card < cards.length; card++) {
                 var criticality = cards[card].criticality;
                 var date = cards[card].date;
@@ -29,32 +24,34 @@ function fillTimeLine() {
                 var id_event = cards[card].id_event;
                 var use_case = cards[card].use_case;
                 var heure_event = time_format(new Date(date));
-                // var heure_event = "17:12";
-
-                var htmlContent = "<div hidden class='blocEvent' id='event" + card + "' style='visibility:hidden'>" + 
-                    "<div class='bloc_title'" + "style = 'background-color:"+ criticalities[use_case].color[criticality] + 
-                    ";border: 1px solid " + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
-                    " id='title" + card + "'>" + title + "</div>" + "<div class='timeline'>" +
-                    "<div class='timeline-line'><div class='timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
-                    "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
-                    "<div class='timeline-point' id='timeline-point" + card + "' style='left: calc(60.5556% - 4px);'>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
-                    "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='width: 60.5556%;color: " + criticalities[use_case].color[criticality] + "'></div></div>";
-
-                eventsForTimeLine.innerHTML += htmlContent;
-                positionnerPointSurTimeline(heure_event, card);
-                getCard(id_event, card);
+                cartToAdd = "<div hidden class='blocEvent' id='event" + card  + "'>" +
+                "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 35px;background-color:"+ criticalities[use_case].color[criticality] + 
+                ";border: 1px solid " + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
+                " id='title" + card + "'>" + title + "</div>" + "<div class='timeline'>" +
+                "<div class='timeline-line'><div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
+                "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
+                "<div class='timeline-point' id='timeline-point" + card + "' style='left: calc(60.5556% - 4px);'>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
+                "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "'></div></div>";
+                // if (document.getElementById("eventsForTimeLine").innerHTML.includes("event"+card)){
+                //     console.log("Si eventsfortimeline inclus event"+ card)
+                // }else{
+                    document.getElementById("eventsForTimeLine").innerHTML += cartToAdd;
+                    positionnerPointSurTimeline(heure_event, card);
+                    getCardForTimeline(id_event,card);
+                // }
+  
             }
-
+            
         }
     });
-
-    xhr.open("GET", host + "/cab_event/api/v1/events");
-    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    xhr.open("GET", "http://192.168.211.95:3200/cab_event/api/v1/events");
+    // xhr.open("GET", "./shared/json_samples/events.json");
+    xhr.setRequestHeader("Authorization", "Bearer "+ token);
     xhr.send(data);
 }
 
 
-function getCard(id_event,card){
+function getCardForTimeline(id_event,card){
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
@@ -69,11 +66,12 @@ function getCard(id_event,card){
         var uid = data.card.uid;
         var hasBeenAcknowledged = data.card.hasBeenAcknowledged;
         if(!hasBeenAcknowledged){
-            document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
-            document.getElementById("event"+card).style.visibility="unset";
+            // document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
             document.getElementById("event"+card).hidden=false;
         }else{
-            document.getElementById("event"+card).innerHTML = ""
+            // document.getElementById("event"+card).innerHTML = ""
+            document.getElementById("event"+card).remove();
+            console.log("suppression de l'event  " + card)
         }
     }
     });
@@ -81,6 +79,17 @@ function getCard(id_event,card){
     xhr.open("GET", host + "/cards/cards/" + selectedUseCase.toLowerCase() + "Process."+id_event);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Authorization", "Bearer " + token);
+    
+xhr.onloadend = function() {
+    if(xhr.status == 404) 
+        try {
+        document.getElementById("event"+card).remove();
+            
+        } catch (error) {
+            console.log("already removed")
+        }
+
+}
     xhr.send(); 
 }
 
@@ -98,7 +107,7 @@ function acknowledgeEvent(id_event,card){
 
     xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + id_event);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
-  xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer "+ token);
 
     xhr.send(data);
@@ -106,11 +115,35 @@ function acknowledgeEvent(id_event,card){
 }
 
 
+
+
+function initTimeLine() {
+    console.info("TIMELINE : ", "Ready");
+    document.getElementById("tl-container-home").hidden = false;
+    fillTimeLine();
+    updateGlobalCurrentTimeCursor();
+    setInterval(() => {
+            fillTimeLine();
+            updateGlobalCurrentTimeCursor();
+    }, 5000);
+}
+
+function updateGlobalCurrentTimeCursor() {
+    var globalCurrentTimeCursor = document.querySelector('.global-current-time-cursor');
+    var currentTimeDiv = document.getElementById('current-time');
+    var currentTime = new Date(dateCtx);
+    var totalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+    var positionEnPourcentage = (totalMinutes / 1440) * 100;
+    globalCurrentTimeCursor.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+    currentTimeDiv.innerHTML = "<b>" + time_format(currentTime) + "</b>";
+}
+
 function positionnerPointSurTimeline(heure, timeline_id) {
+    var positionObtenue = 0;
+
     var point = document.getElementById('timeline-point' + timeline_id);
     var highlight = document.getElementById('timeline-highlight' + timeline_id);
     var heureRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-   
     if (!heureRegex.test(heure)) {
         console.error("Format d'heure invalide. Utilisez le format HH:mm.");
         return;
@@ -119,41 +152,40 @@ function positionnerPointSurTimeline(heure, timeline_id) {
     var heureMinutes = heure.split(':');
     var heures = parseInt(heureMinutes[0]);
     var minutes = parseInt(heureMinutes[1]);
-
+    var heureActuelle = new Date();
+    var heureEvent = new Date();
+    heureEvent.setHours(heures, minutes, 0, 0);
     if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
         console.error("Heure invalide. Assurez-vous que l'heure est entre 00:00 et 23:59.");
         return;
     }
-
     var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
-    highlight.style.width = positionEnPourcentage + "%";
+    timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
+    timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
+    // // si l'heure actuelle est inférieure a la date de levenement 
+    // if (positionObtenue<=2){
+        point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+        highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+
+        // if(heureActuelle < heureEvent){
+            // highlight.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
+            // point.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
+            // positionObtenue++;
+            console.log(timelineHighlightWidth)
+            if (Math.abs(timelineHighlightWidth)<300){
+            highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+            }
+
+        // }else{
+
+            // highlight.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
+            // point.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
+            // positionObtenue++;
+        // }
+    // }   
+    
 }
-// ...
-
-function initTimeLine() {
-    console.info("TIMELINE : ", "Ready");
-    setInterval(() => {
-        fillTimeLine();
-        updateGlobalCurrentTimeCursor();
-    }, 5000);
-}
-
-// ...
-
-function updateGlobalCurrentTimeCursor() {
-    var globalCurrentTimeCursor = document.querySelector('.global-current-time-cursor');
-    var currentTimeDiv = document.getElementById('current-time');
-    var currentTime = new Date();
-    var hours = currentTime.getHours();
-    var minutes = currentTime.getMinutes();
-    var totalMinutes = hours * 60 + minutes;
-    currentTimeDiv.innerHTML = time_format(currentTime);
-    var timelineWidth = document.querySelector('.timeline').offsetWidth;
-    var cursorPosition = (totalMinutes / 1440) * timelineWidth; 
-    globalCurrentTimeCursor.style.left = cursorPosition + 'px';
-}
-
 function time_format(d) {
     hours = format_two_digits(d.getHours());
     minutes = format_two_digits(d.getMinutes());

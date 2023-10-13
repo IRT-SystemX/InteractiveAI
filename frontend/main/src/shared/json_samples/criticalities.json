@@ -19,9 +19,9 @@
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>"
             },
             "color": {
-                "MEDIUM": "green",
-                "HIGH": "blue",
-                "ROUTINE": "yellow"
+                "MEDIUM": "#E05206",
+                "HIGH": "#C30044",
+                "ROUTINE": "#E05206"
             }
         },
         "DA": {

@@ -12,12 +12,16 @@ function getCardProcessSNCF(){
             
     }
 function getCardProcess(){
-    swal.showLoading();
+          swal.showLoading();
           getContextRTE();
           var cards = document.getElementsByClassName("card");
           for (var card = 0; card < cards.length; card++) {
               if (cards[card].classList.contains("light-card-detail-selected")){
-              getCard(cards[card].getAttribute("data-urlid"));
+              try {
+                getCard(cards[card].getAttribute("data-urlid"));
+              } catch (error) {
+                console.log("carte inactive -- ignore")
+              }
               }
             }
             
@@ -57,7 +61,6 @@ function getCardProcess(){
     }
 
     function getRecommandationRTE(){
-      console.log('getRecommandationRTE')
       document.getElementById('rte_assist').html = "";
       var xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
