@@ -16,7 +16,7 @@ from flask import abort, request
 from .custom_keycloak_openid import CustomKeycloakOpenID
 from keycloak.exceptions import KeycloakError
 
-from .settings import KEYCLOAK_SERVER_URL, AUTH_DISABLED, DEFAULT_USE_CASE
+from .settings import KEYCLOAK_SERVER_URL, AUTH_DISABLED, DEFAULT_USE_CASE, logger
 
 keycloak = CustomKeycloakOpenID(
     server_url=KEYCLOAK_SERVER_URL,
@@ -59,6 +59,7 @@ def protected(f):
         try:
             _, token = token.split(" ", 1)
             introspection = keycloak.introspect(token=token)
+            logger.debug(introspection)
 
             if not introspection.get("active", False):
                 raise KeycloakError("Invalid Token")
@@ -89,6 +90,7 @@ def get_use_cases():
     try:
         _, token = token.split(" ", 1)
         introspection = keycloak.introspect(token=token)
+        logger.debug(introspection)
 
         if not introspection.get("active"):
             abort(401, "Invalid token")
