@@ -214,7 +214,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             }
         }
         });
-        // xhr.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts");
         xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         xhr.send();
@@ -231,7 +230,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             that.jsonContextObject = JSON.parse(this.responseText);
         }
         });
-        // xhr.open("GET", "http://192.168.211.95:3200/cabcontext/api/v1/contexts");
         xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
         xhr.send();
@@ -292,7 +290,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
 
           }
         });
-        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
@@ -331,7 +328,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
 
           }
         });
-        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
