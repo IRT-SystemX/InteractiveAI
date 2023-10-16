@@ -328,7 +328,7 @@ These two parameters are place in this file as the style should have a title par
 
           setInterval(() => {
             refreshCtxRTE();
-          }, 30000);
+          }, 5000);
           break;
         case "DA":
           getCoordinates();
@@ -1221,6 +1221,11 @@ These two parameters are place in this file as the style should have a title par
       <div style="font-size:18px;color:grey;margin-left:3px;overflow: hidden"><b>Timeline</b></div>
         <div class="timeline">
             <div class="global-current-time-cursor">
+              <img style='width: 17px;
+                    position: absolute;
+                    left: -6px;
+                    top: -5px;'
+              src='./assets/images/time_cursor.svg'/>
                 <div id="current-time"><b></div>
             </div> 
             <div class="timeline-line" style="
