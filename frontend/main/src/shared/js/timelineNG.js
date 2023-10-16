@@ -172,7 +172,6 @@ function positionnerPointSurTimeline(heure, timeline_id) {
     timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
     timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
     // // si l'heure actuelle est inférieure a la date de levenement 
-    // if (positionObtenue<=2){
         point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
 
@@ -180,13 +179,14 @@ function positionnerPointSurTimeline(heure, timeline_id) {
             // highlight.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // point.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // positionObtenue++;
-            console.log(timelineHighlightWidth)
+            // if (Math.abs(timelineHighlightWidth)<300 || selectedUseCase == "RTE"){
             if (Math.abs(timelineHighlightWidth)<300){
             highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
             }
-
+            // }else if (Math.abs(timelineHighlightWidth)>300) && selectedUseCase =="RTE"){
+            //     highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+            // }
         // }else{
-
             // highlight.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // point.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // positionObtenue++;

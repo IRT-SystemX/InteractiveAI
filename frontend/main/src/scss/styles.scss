@@ -688,6 +688,26 @@ label:hover{
     font-weight: bold;
     cursor: pointer;
 }
+.rteBg-alarm{
+    box-shadow: 15px 0px 9px #A70000 inset;
+    color: #A70000!important
+
+}
+.rteBg-action{
+    box-shadow: 15px 0px 9px #E05206 inset;
+    color: #E05206!important
+
+}
+.rteBg-compliant{
+    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
+    color: rgb(0,158,143)!important
+
+}
+.rteBg-information{
+    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
+    color: rgb(0,158,143)!important
+
+}
 #opfab-div-card-template-alarm{
     font-size : 12px!important;
 }
@@ -954,6 +974,7 @@ label:hover{
         width: 420px !important;
         height: 700px!important;
     }
+
     .dassault_ctx_div{
         margin-left: 405px;
     }
