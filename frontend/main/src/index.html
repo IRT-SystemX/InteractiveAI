@@ -245,9 +245,9 @@ These two parameters are place in this file as the style should have a title par
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
-        host = "http://192.168.211.95" + ":" + cabPort;
-        traceHost = "http://192.168.211.95" + ":" + tracePort;
+        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        host = "http://192.168.208.57" + ":" + cabPort;
+        traceHost = "http://192.168.208.57" + ":" + tracePort;
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
@@ -597,8 +597,8 @@ These two parameters are place in this file as the style should have a title par
       for (var card = 0; card < cards.length; card++) {
         cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
-        cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Routine ");
-        cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
+        cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Maintenance ");
+        cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Maintenance ");
         if (selectedUseCase == "SNCF"){
           if (!cards[card].classList.contains("SNCF_card")){
             cards[card].classList.add("SNCF_Card");
@@ -644,9 +644,14 @@ These two parameters are place in this file as the style should have a title par
             cards[card].style.color="white";
           }
         }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") && cards[card].classList.toString().includes("light-card-detail")){
-            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
-            cards[card].classList += " title-light-card-border-white";
-            cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
+            // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+            // cards[card].classList += " title-light-card-border-white";
+            // cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
+              cards[card].classList.add("rteBg-"+ cards[card].attributes['severity'].value)
+              cards[card].children[1].style.marginLeft = "20px";
+              cards[card].children[0].lastElementChild.firstChild.firstChild.style.marginLeft = "20px";
+              // cards[card].children[1].lastElementChild.firstChild.firstChild.style.color  = "gray";
+              
         }else if (selectedUseCase == "DA"){
           if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
             try {

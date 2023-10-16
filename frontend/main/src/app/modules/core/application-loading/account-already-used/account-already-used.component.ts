@@ -62,8 +62,8 @@ export class AccountAlreadyUsedComponent extends ApplicationLoadingStep {
         for(var card = 0; card<cards.length;card++){
             cards[card].innerHTML = cards[card].innerHTML.replace("action ","Sureté");
             cards[card].innerHTML = cards[card].innerHTML.replace("alarm ","Sureté");
-            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Routine ");
-            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Routine ");
+            cards[card].innerHTML = cards[card].innerHTML.replace("compliant ","Maintenance ");
+            cards[card].innerHTML = cards[card].innerHTML.replace("information ","Maintenance ");
             if (document.getElementById("opfab-navbar-menu-feed").innerText != 'CAB SNCF'){
                 if ( cards[card].classList.contains("light-card-detail-selected") ){
                     console.log("SEVERITY/CRITICALITY" + "light-card-detail-selected-" + $(cards[card]).attr("severity"));

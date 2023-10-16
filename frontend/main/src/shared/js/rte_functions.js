@@ -79,7 +79,7 @@ function getCardProcess(){
               var actions = recosRTE[reco].actions;
               sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
               bodyHTML = "<div><span class='rtePrd'><b onclick ='"+ 'showDesc(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
-              bodyHTML += "<span id='descriptionRTE" + reco + "' hidden>" + description + '</span>';
+              bodyHTML += "<span id='descriptionRTE" + reco + "' hidden>" + "<u>Description</u><br>" +  description + '</span>';
               document.getElementById('rte_assist').innerHTML += bodyHTML;
               
            }
