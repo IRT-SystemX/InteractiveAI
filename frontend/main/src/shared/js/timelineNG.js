@@ -179,9 +179,13 @@ function positionnerPointSurTimeline(heure, timeline_id) {
             // highlight.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // point.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // positionObtenue++;
+            // if (Math.abs(timelineHighlightWidth)<300 || selectedUseCase == "RTE"){
             if (Math.abs(timelineHighlightWidth)<300){
             highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
             }
+            // }else if (Math.abs(timelineHighlightWidth)>300) && selectedUseCase =="RTE"){
+            //     highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+            // }
         // }else{
             // highlight.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
             // point.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
