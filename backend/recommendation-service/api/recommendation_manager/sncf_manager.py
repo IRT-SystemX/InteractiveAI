@@ -1,7 +1,7 @@
 from .base_recommendation import BaseRecommendation
 from flask import current_app
 import os
-from resources.sncf import sncf_cab_recommender
+from resources.sncf.sncf_cab_recommender import SncfCabRecommender
 
 
 class SNCFManager(BaseRecommendation):
@@ -10,7 +10,7 @@ class SNCFManager(BaseRecommendation):
         super().__init__()
         self.root_path = current_app.config["ROOT_PATH"]
         
-        self.recommender = sncf_cab_recommender.SncfCabRecommender()
+        self.recommender = SncfCabRecommender()
 
     def get_recommendation(self, request_data):
         context_data = request_data.get("context", {})
