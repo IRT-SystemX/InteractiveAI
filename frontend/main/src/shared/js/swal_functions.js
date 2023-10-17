@@ -76,6 +76,15 @@ function showDesc(desc) {
     document.getElementById('descriptionRTE' + desc).hidden = false;
 }
 function showDescSNCF(desc) {
+    for (var desc_check = 0; desc_check < 3; desc_check++) {
+        try {
+            if (desc_check != desc) {
+                document.getElementById('descriptionSNCF' + desc_check).hidden = true;
+            }
+        } catch (error) {
+            
+        }
+    }
     document.getElementById('descriptionSNCF' + desc).hidden = false;
 }
 function displaySwal() {

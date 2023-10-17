@@ -245,9 +245,9 @@ These two parameters are place in this file as the style should have a title par
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
-        host = "http://192.168.208.57" + ":" + cabPort;
-        traceHost = "http://192.168.208.57" + ":" + tracePort;
+        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        host = "http://192.168.211.95" + ":" + cabPort;
+        traceHost = "http://192.168.211.95" + ":" + tracePort;
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
@@ -768,7 +768,7 @@ These two parameters are place in this file as the style should have a title par
           console.log(JSON.parse(this.responseText))
           var recos = JSON.parse(this.responseText);
           var bodyHTML = "";
-          for (var reco=0;reco<recos.length;reco++){
+          for (var reco=0;reco<recos.length;reco++){  
                 var description = recos[reco].description;
                 var agent_type = recos[reco].agent_type;
                 var title = recos[reco].title;
@@ -777,7 +777,7 @@ These two parameters are place in this file as the style should have a title par
                 bodyHTML += "<div><span class='rtePrd'><b onclick ='"+ 'showDescSNCF(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
                 bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + "<u>Description</u><br>" + description.replace("\n","<br>") + '</span>';
 
-                document.getElementById('recos_sncf_desc').innerHTML += bodyHTML;
+                document.getElementById('recos_sncf_desc').innerHTML = bodyHTML;
                 document.getElementById('recos_sncf_desc').innerHTML += document.getElementById("sncf_button_grey").outerHTML.replace("hidden","");
              
            }
