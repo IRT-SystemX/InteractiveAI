@@ -13,7 +13,10 @@ services:
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -40,7 +43,9 @@ services:
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
     command: sh -c "./entrypoint.sh"
     ports:
       - 5000:5000
@@ -59,6 +64,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_historic:5432/cab-historic
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -164,6 +173,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_correlation:5432/cab-correlation
       - HOST_IP=$HOST_IP
       - PYTHONPATH=/code
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
     command: sh -c "./entrypoint.sh"
     ports:
       - 5300:5000
@@ -200,8 +212,10 @@ services:
       - GATEWAY_SERVICE=http://angular-ui:80
       - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
-      - FLASK_ENV=development
       - PYTHONPATH=/my_app
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
