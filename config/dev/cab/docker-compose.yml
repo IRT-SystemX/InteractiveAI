@@ -64,8 +64,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_historic:5432/cab-historic
-      - FLASK_APP=app:create_app('dev')
-      - FLASK_ENV=development
+      # - FLASK_APP=app:create_app('dev')
+      # - FLASK_ENV=development
       - URL_INTROSPECT="http://frontend:80/auth/check_token"
       - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
     restart: unless-stopped
