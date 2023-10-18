@@ -8,7 +8,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     restart: unless-stopped
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
@@ -37,7 +39,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
@@ -59,6 +63,10 @@ services:
     image: ${CAB_HISTORIC_IMAGE_WITH_TAG}
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5432/cab-historic
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     restart: unless-stopped
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
@@ -208,6 +216,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
@@ -256,6 +267,8 @@ services:
       - FLASK_APP=app:create_app('dev')
       - FLASK_ENV=development
       - PYTHONPATH=/my_app
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
