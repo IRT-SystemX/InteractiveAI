@@ -216,7 +216,6 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
-      - FLASK_ENV=development
       - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
       - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
