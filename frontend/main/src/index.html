@@ -13,7 +13,11 @@
 
 <head>
   <meta charset="utf-8">
+  <script src=".\shared\js\rte_functions.js"></script>
+  <script src=".\shared\js\common_functions.js"></script>
+  <script src=".\shared\js\swal_functions.js"></script>
   <title>Assistant CAB v2</title>
+  <span id="login"></span>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,6 +50,7 @@ These two parameters are place in this file as the style should have a title par
     var selectedUseCase = "none";
     var token = window.localStorage.token;
     var opFabPort = "2002";
+    var cabPort = "3200";
     var activeUser;
     var entities;
     var groups;
@@ -60,6 +65,8 @@ These two parameters are place in this file as the style should have a title par
     var increasedLongitude = -4.09445;
     var tokenSynchronizeUrl = ""
     var msg_train = ', Jean votre superviseur, la présence d’un voyageur malade à bord nous oblige à marquer un arrêt supplémentaire en gare de  Poitiers pour permettre l’intervention des services de secours. Des informations complémentaires vous seront communiquées ultérieurement. Merci de votre attention.';
+    var msg_train2 = ', Jean votre superviseur, merci à toute personne ayant des connaissances médicales de se faire connaître auprès de la borne d’appel.';
+    var msgs_train = [msg_train,msg_train2];
     var trainIconFr = "/assets/images/icons/train_framboise.png";
     var train_ko = "/assets/images/icons/train_ko.png";
     var train_ok = "/assets/images/icons/train_ok.png";
@@ -68,60 +75,184 @@ These two parameters are place in this file as the style should have a title par
         ALARM : trainIconFr,
       } 
     var planeMarker;
-    // var sncfRecommandation = 
-    var sncfRecommandation = JSON.stringify({
-    "context": {
-      "position_agents": {
-        "0": [
-          3,
-          2
-        ],
-        "1": [
-          3,
-          2
-        ],
-        "2": [
-          3,
-          2
-        ]
-      },
-      "direction_agents": [
-        2,
-        0,
-        0
-      ],
-      "list_of_target": {
-        "0": [
-          8,
-          7
-        ],
-        "1": [
-          310,
-          7
-        ],
-        "2": [
-          8,
-          7
-        ]
-      }
-    },
-    "event": {
-      "malfunction_agent": 0,
-      "malfunction_position": [
-        9,
-        12
-      ],
-      "malfunction_delay": 15
-    }
-  });
-      checkTokenToMatchUseCase();
+    var contextSNCF;
+    var host;
+    var traceHost;
+    var tracePort = 5200;
+    var assistNeverTriggered = true;
+    var jsonEventObject;
+    var dateCtx = new Date();
+    var myJsonSNCF = {
+    "simulation_name": "bordeaux_tours_sim",
+    "targets_list": [
+        {
+            "agent_id": 0,
+            "targets": [
+                {
+                    "target_id": 8,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 1,
+            "targets": [
+                {
+                    "target_id": 4,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 2,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 5,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 1,
+                    "passengers": 144,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 6,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 0,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 2,
+            "targets": [
+                {
+                    "target_id": 4,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 2,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 5,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 1,
+                    "passengers": 26,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 6,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_id": 0,
+                    "passengers": 0,
+                    "target_type": "STATION"
+                }
+            ]
+        }
+    ],
+    "station_stops": [
+        {
+            "agent_id": 0,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 1,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        204,
+                        7
+                    ],
+                    "delay": 6000,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        100,
+                        6
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                }
+            ]
+        },
+        {
+            "agent_id": 2,
+            "targets": [
+                {
+                    "target_coordinate": [
+                        204,
+                        7
+                    ],
+                    "delay": 6000,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        100,
+                        6
+                    ],
+                    "delay": 180,
+                    "target_type": "STATION"
+                },
+                {
+                    "target_coordinate": [
+                        8,
+                        7
+                    ],
+                    "delay": 240,
+                    "target_type": "STATION"
+                }
+            ]
+        }
+    ]
+};
+
+    checkTokenToMatchUseCase();
 
     function checkTokenToMatchUseCase(){
       if(window.location.host.includes("localhost")){
-        tokenSynchronizeUrl = "http://192.168.208.57" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        tokenSynchronizeUrl = "http://192.168.211.95" + ":" + opFabPort + "/users/users/synchronizeWithToken";
+        host = "http://192.168.211.95" + ":" + cabPort;
+        traceHost = "http://192.168.211.95" + ":" + tracePort;
       }
       else{
         tokenSynchronizeUrl = "/users/users/synchronizeWithToken";
+        host = "";
+        traceHost = "";
       }
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
@@ -131,6 +262,7 @@ These two parameters are place in this file as the style should have a title par
             entities = response.entities;
             groups = response.groups;
             authorizedUseCase = entities[0];
+            document.getElementById("login").innerHTML = "Logged as " + authorizedUseCase;
             return entities[0];
           }
           console.log("token checked")
@@ -152,13 +284,13 @@ These two parameters are place in this file as the style should have a title par
         alert("Error: You're not allowed to access this environment")
       }
     }
-
+   
     function getRecommandations(){
       document.getElementById("sncf_button_grey").style.cursor = 'wait';
       setTimeout(getRecoWithTimer,10000);
     }
     function getRecoWithTimer(){
-      document.getElementById("sncf_solution").hidden=false;
+      document.getElementById("sncf_solution_mock").hidden=false;
       document.getElementById("sncf_button_grey").style.cursor = 'unset';
     }
     function grantedUseCase(uc) {
@@ -180,6 +312,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("ctx_div").classList.add("orange_theme");
           document.getElementById("ctx_div").classList.add("rte_ctx_div");
           document.getElementById("opfab-card-list").classList.add("rteNotifs");
+          document.getElementById("opfab-card-list").classList.add("opfab-card-list-RTE");
           document.getElementById("feed-content").classList.add("rteNotifs");
           document.getElementById("ctxImg").classList.add("rte_ctxImg");
           document.getElementById("assistOpTitle").style.top = "80px";
@@ -188,14 +321,18 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("empty_block").hidden = true;
           document.getElementById("ctxImg").hidden = false;
           document.getElementById("map").hidden = true;
+          document.getElementById("notifs_RTE").hidden = false;
+          document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Alertes");
+          document.getElementsByClassName("timeline-container")[0].style.width = "96.6%"
+    
+
           setInterval(() => {
             refreshCtxRTE();
-          }, 30000);
+          }, 5000);
           break;
         case "DA":
           getCoordinates();
           document.getElementById("dassault_div").hidden = false;
-          document.getElementById("dassault_assist").hidden = false;
           document.getElementById("dassault_title").hidden = false;
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
@@ -258,7 +395,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.color = "white"
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           // document.getElementById("ctx_div").style.marginLeft = "440px";
-          document.getElementById("sncf_assist").hidden = false;
           document.getElementById("sncf_assist_nominal").hidden = false;
           document.getElementById("assist").hidden = false;
           document.getElementById("assistOpTitle").classList += " sncf assist_sncf assistOpTitle";
@@ -275,10 +411,10 @@ These two parameters are place in this file as the style should have a title par
           }, 110);
           mapSNCF();
           break;
-
       }
       document.getElementById("homescreen").style = "display:none";
       document.getElementById("assistOpTitle").hidden = false;
+      initTimeLine();
     }
 
     function getOrangeIncidents(){
@@ -319,20 +455,31 @@ These two parameters are place in this file as the style should have a title par
         case "incident":
           document.getElementById("map").hidden = true;
           document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
           document.getElementById("sncf_incident_infos").hidden=false;
           document.getElementById("history").hidden=false;
           document.getElementById("incident").classList.remove("toBlink");
           break;
         case "materiel":
           document.getElementById("map").hidden = true;
-          document.getElementById("sncf_ctx").hidden=false;
+          document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=false;
           document.getElementById("sncf_incident_infos").hidden=true;
           document.getElementById("history").hidden=true;
           document.getElementById("materiel").classList.remove("toBlink");
           break;
+        case "voyageurs":
+          document.getElementById("map").hidden = true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
+          document.getElementById("sncf_ctx").hidden=false;
+          document.getElementById("sncf_incident_infos").hidden=true;
+          document.getElementById("history").hidden=true;
+          document.getElementById("voyageurs").classList.remove("toBlink");
+          break;
         case "carte":
           document.getElementById("map").hidden = false;
           document.getElementById("sncf_ctx").hidden=true;
+          document.getElementById("sncf_ctx_materiel").hidden=true;
           document.getElementById("history").hidden=true;
           document.getElementById("sncf_incident_infos").hidden=true;
           break;
@@ -395,7 +542,6 @@ These two parameters are place in this file as the style should have a title par
             try {
               setSeverityForDA();
             } catch (error) {
-              
             }
     }
     if (selectedUseCase!= "DA"){
@@ -407,7 +553,9 @@ These two parameters are place in this file as the style should have a title par
     function setCardsForDA() {
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
-          cards[card].classList += " DA_Card light-card-detail-unselected-DA-MED";
+          if (!cards[card].classList.contains("DA_Card") || !cards[card].classList.contains("light-card-detail-unselected-DA-MED")){
+            cards[card].classList += " DA_Card light-card-detail-unselected-DA-MED";
+          }
         }
       }
           
@@ -422,6 +570,10 @@ These two parameters are place in this file as the style should have a title par
         for(var desc = 0;descs.length;desc++){
             descs[desc].textContent="";
         }
+    }
+
+    function hideAssist(){
+      document.getElementById("rte_assist_nominal").hidden = true;
     }
 
     function setCardsSeverity() {
@@ -447,15 +599,14 @@ These two parameters are place in this file as the style should have a title par
       for (var card = 0; card < cards.length; card++) {
         cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
-        cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Routine ");
-        cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Routine ");
+        cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Maintenance ");
+        cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Maintenance ");
         if (selectedUseCase == "SNCF"){
           if (!cards[card].classList.contains("SNCF_card")){
             cards[card].classList.add("SNCF_Card");
             try {
               getCardContent(cards[card].getAttribute("data-urlid"));
             } catch (error) {
-              console.log(error)
             }
           }
           //titre carte margé
@@ -472,17 +623,15 @@ These two parameters are place in this file as the style should have a title par
               cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.add("sncfCard");
               cards[card].classList.remove("sncfCardNotSelected");
-              cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100"
+              cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100";
+              if(assistNeverTriggered){
+                document.getElementById("sncf_assist").hidden = false;
+                assistNeverTriggered = false;
+              }
           }
           if (cards[card].classList.toString().includes("light-card-detail-unselected")){
             //carte selectionée classe SNCF
               cards[card].classList.remove("sncf-light-card-selected");
-              try {
-                
-              } catch (error) {
-                
-              }
-            
             try {
               cards[card].classList.add("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.remove("sncfCard");
@@ -496,62 +645,75 @@ These two parameters are place in this file as the style should have a title par
             // carte non lue
             cards[card].style.color="white";
           }
-          else if (cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
-          && cards[card].classList.toString().includes("light-card-detail-selected")
-           || cards[card].classList.toString().includes("light-card-background-"+ cards[card].attributes['severity'].value) 
-          && cards[card].classList.toString().includes("sncf-light-card-selected") ){
-            // retrait du background si carte selectionnée
-            // cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
-            // cards[card].classList.add("sncf-border-" + cards[card].attributes['severity'].value);
-            // cards[card].classList.add("sncf-light-card-selected");
-            // cards[card].classList.remove("light-card-detail-selected");
-          }
-        }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") ){
-            cards[card].classList += " title-light-card-border-" + cards[card].attributes['severity'].value;
-            cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
+        }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") && cards[card].classList.toString().includes("light-card-detail")){
+            // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+            // cards[card].classList += " title-light-card-border-white";
+            // cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
+              cards[card].classList.add("rteBg-"+ cards[card].attributes['severity'].value)
+              cards[card].children[1].style.marginLeft = "20px";
+              cards[card].children[0].lastElementChild.firstChild.firstChild.style.marginLeft = "20px";
+              // cards[card].children[1].lastElementChild.firstChild.firstChild.style.color  = "gray";
+              
         }else if (selectedUseCase == "DA"){
-          if (!cards[card].classList.toString().includes("light-card-background")){
-            cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+          if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
+            try {
+              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
+            } catch (error) {
+              //nothing to catch, normal behavior 
+            }
+
           }
       }
-    }
+      else if (selectedUseCase == "RTE"){
+          if (cards[card].classList.contains("light-card-detail-selected")){
+            document.getElementById("rte_assist_nominal").addEventListener("click",hideAssist);
+
+              if(assistNeverTriggered){
+                // document.getElementById("rte_assist_nominal").hidden = false;
+                document.getElementById("rte_assist_nominal").setAttribute("assistNeverTriggered","false");
+                assistNeverTriggered = false;
+              }
+          }
+      }
+    } 
       if (selectedUseCase == "DA"){
         setDANotifications();
+        if(assistNeverTriggered){
+          document.getElementById("dassault_assist").hidden = false;
+          assistNeverTriggered = false;
+        }
       }
     }
     function getCardContent(id_card) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/cards/cards/"+id_card,false);
-        // xmlHttp.open("GET", "http://192.168.208.57:3200/cards/cards/"+id_card,false);
+        xmlHttp.open("GET", host + "/cards/cards/"+id_card,false);
         xmlHttp.setRequestHeader("Authorization","Bearer "+token);
         xmlHttp.send(null);
         var response = JSON.parse(xmlHttp.responseText);
         lastTrain = response.card.data.metadata.id_train;
         lastSeverity = response.card.severity;
-        console.log(response)
         updateTrainStatus(lastTrain,lastSeverity)
       }
     };
 
     function updateTrainStatus(id_train,severity){
       markers[id_train]._icon.src = SNCFseverities[severity]+"?time=" + new Date().getTime();
-      console.log(markers[id_train])
-      console.log(SNCFseverities[severity] + " pour le train " + id_train)
     }
     function refreshCtxRTE() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
-      var response = JSON.parse(xmlHttp.responseText)[0].data.topology;
-      document.getElementById("ctxImg").src = "data:image/png;base64," + response;
+      var response = JSON.parse(xmlHttp.responseText);
+      document.getElementById("ctxImg").src = "data:image/png;base64," + response[0].data.topology;
+      dateCtx = response[0].date;
+
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -559,8 +721,7 @@ These two parameters are place in this file as the style should have a title par
     };
     function getCorrelations() {
       var xmlHttp = new XMLHttpRequest();
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cab_correlation/api/v1/correlation?size=1", false);
-      xmlHttp.open("GET", "/cab_correlation/api/v1/correlation?size=1", false);
+      xmlHttp.open("GET", host + "/cab_correlation/api/v1/correlation?size=1", false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
@@ -578,53 +739,167 @@ These two parameters are place in this file as the style should have a title par
 
     function refreshCtxSNCF() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
-      // xmlHttp.open("GET", "http://192.168.208.57:3200/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
       var trains = response[0].data.trains;
+      contextSNCF = response[0].data;
+      dateCtx = response[0].date;
+
       setAndUpdateSNCFMarkersOnMap(trains);
     };
 
-    function getRecommandationSNCF() {
-      var recommandations;
-      var xmlHttp = new XMLHttpRequest();
-      xmlHttp.addEventListener("readystatechange", function() {
-      if(this.readyState === 4) {
-        recommandations = JSON.parse(this.responseText).recommendation;
-        document.getElementById("assistOpTitle").style.overflowY = "scroll";
-        Object.keys(recommandations).forEach(function(k){
-          document.getElementById("recos_sncf").innerHTML += recommandations[k] + '<hr>'; 
-      });
+    function getRecommandationSNCF(){
+      console.log("getRecommandationSNCF")
+        document.getElementById('sncf_solution').innerHTML = "";
+        document.getElementById('recos_sncf_desc').innerHTML = ""
+        document.getElementById('sncf_solution_mock').hidden = true;
+        
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            // document.getElementById('sncf_solution').innerHTML += recoSNCF;
+          Swal.hideLoading();
+          Swal.close();
+          document.body.style.cursor = 'unset';
+          console.log(JSON.parse(this.responseText))
+          var recos = JSON.parse(this.responseText);
+          var bodyHTML = "";
+          for (var reco=0;reco<recos.length;reco++){  
+                var description = recos[reco].description;
+                var agent_type = recos[reco].agent_type;
+                var title = recos[reco].title;
+                var actions = recos[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML += "<div><span class='rtePrd'><b onclick ='"+ 'showDescSNCF(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + "<u>Description</u><br>" + description.replace("\n","<br>") + '</span>';
 
-        // 
-      }
-      });
-      xmlHttp.open("GET", "/cab_recommendation/api/v1/recommendation");
-      // xmlHttp.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
-      xmlHttp.setRequestHeader("Authorization","Bearer "+token);
-      xmlHttp.setRequestHeader("Content-Type","application/json");
-      xmlHttp.send(sncfRecommandation);
+                document.getElementById('recos_sncf_desc').innerHTML = bodyHTML;
+                document.getElementById('recos_sncf_desc').innerHTML += document.getElementById("sncf_button_grey").outerHTML.replace("hidden","");
+             
+           }
+            // document.getElementById("sncf_button_grey").hidden = false;
+
+           console.log("Ready - reco")
+          }
+        });
+        xhr.open("POST", host +  "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        var recommendationBody = 
+          { context : contextSNCF,
+            event : jsonEventObject
+          }
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    
+    function getLastCard() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", host + "/cards/cards/"+ document.getElementsByClassName("card")[0].getAttribute("data-urlid"),false);
+        xmlHttp.setRequestHeader("Authorization","Bearer "+ window.localStorage.token);
+        xmlHttp.send(null);
+        var response = JSON.parse(xmlHttp.responseText);
+        var eventAttributes = response.card.data.metadata;
+        console.log(eventAttributes);
+        jsonEventObject = eventAttributes;
     };
+    function traceInHistory(traceType,useCase,data){
+      var data = JSON.stringify({
+        "data": data,
+        "date": new Date(),
+        "step": traceType,
+        "use_case": useCase
+      });
 
-     
-    
-    
-    function askCab(){
-      
-      document.getElementById("sncf_assist_nominal").hidden = true;
-      document.getElementById("sncf_assist_full").hidden = false;
-      document.getElementById("recos_sncf").hidden = false;
-      getRecommandationSNCF();
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
 
+      xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+          console.info("TRACE",this.responseText);
+        }
+      });
+
+      xhr.open("POST", traceHost + "/api/v1/traces");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(data);
+      console.log(data)
     }
+
+    function askCab(){
+      swal.showLoading();
+      traceInHistory("ASKFORHELP",authorizedUseCase,{});
+
+      switch(authorizedUseCase){
+        case "SNCF":
+          document.getElementById("sncf_assist_nominal").hidden = true;
+          document.getElementById("sncf_assist_full").hidden = false;
+          document.getElementById("recos_sncf_desc").hidden = false;
+          getLastCard();
+          console.log("ask cab get reco")
+          // getRecommandationSNCF();
+          getCardProcessSNCF();
+
+        break;
+        case "RTE":
+        document.getElementById("rte_assist_nominal").hidden = true;
+        document.getElementById("rte_assist").innerHTML = "";
+        getCardProcess();
+        break;
+      }
+      }
+    function applyRecommandation(reco){
+      switch(authorizedUseCase){
+        case "SNCF":
+          document.getElementById("sncf_assist_nominal").hidden = true;
+          document.getElementById("sncf_assist_full").hidden = false;
+          document.getElementById("recos_sncf_desc").hidden = false;
+          confirmAction(reco)
+        break;
+        case "RTE":
+          confirmAction(reco)
+        break;
+      }
+      }
+
+      function applyRecommandationFinal(reco){
+        document.getElementById("rte_assist_nominal").hidden = true;
+          let action = sessionStorage.getItem("actions[" + reco +  "]");
+          var data = action;
+          var xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+          document.body.style.cursor = 'wait';
+          xhr.addEventListener("readystatechange", function() {
+            if(this.readyState === 4 && this.status == 200) {
+              console.log(this.responseText);
+              document.body.style.cursor = 'unset';
+              swalRecoSuccess();
+            }else if (this.readyState === 4 && this.status != 200){
+              swalRecoError(this.status);
+              document.body.style.cursor = 'unset';
+            }
+          });
+          if (selectedUseCase =="SNCF"){
+            xhr.open("POST", "http://192.168.209.166:5000/transport_plan");
+          }
+          else{
+            xhr.open("POST", "http://192.168.209.166:5100/api/v1/recommendations");
+          }
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.send(data);
+      }
+
+      
   </script>
 
 
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href=".\shared\css\timelineNG.css"> 
   <meta name="theme-color" content="#1976d2">
 </head>
 
@@ -633,6 +908,7 @@ These two parameters are place in this file as the style should have a title par
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src=".\shared\js\timelineNG.js"></script>
   <script>
 
     function getCoordinates(){
@@ -653,18 +929,18 @@ These two parameters are place in this file as the style should have a title par
             console.log(response)
           }
       }
-      request.open("GET","/cabcontext/api/v1/contexts", true);
+      request.open("GET", host + "/cabcontext/api/v1/contexts", true);
       request.setRequestHeader("Accept","application/json");
       request.setRequestHeader("Authorization","Bearer "+token);
       request.send();
     }
 
     function mapSNCF(){
-      mapZoom = 8;
+      mapZoom = 6;
           initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
           railwayLayer = "https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png";
-          defaultLatitude = 46.580224;
-          defaultLongitude = 0.340375;
+          defaultLatitude = 44.837789;
+          defaultLongitude = -0.57918;
           map = L.map('map', {
             center: [defaultLatitude, defaultLongitude],
             zoom: mapZoom
@@ -724,15 +1000,35 @@ These two parameters are place in this file as the style should have a title par
       nb_passengers_onboard = markers[markerTitle].attributes.nb_passengers_onboard;
       speed = markers[markerTitle].attributes.speed;
       map.setView([e.sourceTarget._latlng.lat,e.sourceTarget._latlng.lng],13)
-      document.getElementById("sncf_ctx").innerHTML = '<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
-      + "Vitesse : " + speed + "km/h" +"<br>"
-      + "Direction : Massy TGV" + "<br>"
-      + "Voyageurs à bord : " + nb_passengers_onboard
+      document.getElementById("sncf_ctx").innerHTML = 
+      
+      "<div id='data_train'>"
+        +'<div id="train_infos">' + "TGV n° : " + markerTitle +"<br>"
+        + "Vitesse : " + speed + "km/h" +"<br>"
+        + "Direction : N/A" + "<br>"
+        + "Voyageurs à bord  " + nb_passengers_onboard +"<br>"
+        + "Voyageurs voiture  <br>"
+        + "Température int. <br> "
       + "</div>"
+      + '<div id="sncf_indice">'
+      +'<img id="img_indice" src="assets\/images\/rame_indice.png">'
+      +'</div></div>'
       + "<span style='margin-top:5px'><b>Communication avec la rame </b></span>"
-      + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span style="margin-left:5px;border: 1px solid">' + 
-        'Chers clients  du train '+ markerTitle + msg_train + '</span></div>';
+      + '<div id="train_welcome"><img src="assets\/images\/train_passengers.png"><span id="txt_passengers" style="margin-left:5px;border: 1px solid">' + 
+        'Chers clients  du train '+ markerTitle + msgs_train[Math.floor(Math.random() * (1 - 0 + 1) + 0)] + '</span></div>';
+        
+      document.getElementById("sncf_ctx_materiel").innerHTML =
+      '<b>Etat de la râme </b><br> '+
+      '<div id="train_infos">'
+      // + "TGV n° : " + markerTitle +"<br>"
+      + "Point kilométrique : " + 'N/A' +"<br>"
+      + "Vitesse : " + speed + "km/h" +"<br>"
+      + "Prochain arrêt : N/A" + "<br>"
+      + "Destination : N/A" + "<br>"
+      + "Voyageurs à bord : " + nb_passengers_onboard
+      + "</div>";
       document.getElementById("materiel").classList.add("toBlink");
+      document.getElementById("voyageurs").classList.add("toBlink");
       markers[markerTitle].bindPopup(markerOptions.title + "<br> Vitesse: " + speed + " km/h" );
       
     }
@@ -771,45 +1067,10 @@ These two parameters are place in this file as the style should have a title par
       console.log("map init OK")
     }
 
-    function displaySwal(){
-      Swal.fire({
-      html:'<span style="font-size:20px">Paramétrage service corrélation</span><br>'
-      + '<div id="box_methode_calcul"><b>Choix de la méthode de calcul</b>'
-      + '<div style="width:100%;"><br><form>'
-      + '<input name="choice" type="radio"><label style="width:70%">Méthode 1</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choice" type="radio"><label style="width:70%">Méthode 2</label>'+'<img class="reduced" src="./assets/images/!.png"><br>'
-      + '</form></div><br>'
-      + '<b>Choix des KPIs</b>'
-      + '<div style="width:100%;"><br><form>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Temps de réponse</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre de requêtes</label>'+'<img class="reduced" src="./assets/images/!.png">'+'<br><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Nombre d\'erreurs 4xx-5xx</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux de pages lentes</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '<input name="choiceKPI" type="radio"><label style="width:70%">Taux d\'érreurs</label>'+'<img class="reduced" src="./assets/images/!.png"><hr>'
-      + '</form></div>'
-      + '</div>'
-      + '<div id="orangeTimeSelector">'
-          +'<b>Fenêtre de temps</b>'
-          +'<br>'
-          +'<input type="range" id="slider" name="temp" list="values" />'
-          +'<datalist id="values">'
-            +'<option value="15" label="15mn"></option>'
-            +'<option value="60" label="1h"></option>'
-            +'<option value="120" label="2h"></option>'
-            +'<option value="180" label="3h"></option>'
-            +'<option value="240" label="4h"></option>'
-            +'<option value="300" label="5h"></option>'
-          +'</datalist>'
-        +'</div>'
-      + '<button onclick="Swal.close();getCorrelations()">Calculer Corrélation</button>',
-      showConfirmButton: false
-    })
-  }
   </script>
   <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
-    <b id="assist" hidden>Assistance à l'opérateur</b>
+    <b id="assist" hidden style="margin-left:3px">Assistance à l'opérateur</b>
     <b id="correlation" hidden>Corrélations</b>
     <b id="dassault_title" hidden>Assistance</b>
     <div id="sncf_assist" hidden>
@@ -824,15 +1085,16 @@ These two parameters are place in this file as the style should have a title par
         </div>
         <br>
         <div>
-          <div id="recos_sncf" hidden>
+          <div id="recos_sncf_desc" hidden>
           </div>
           <div style="margin-left: 130px;margin-bottom: 5px;">
             <!-- <button class="sncf_button"><b>Choisir</b></button> -->
           </div>
         </div>
-        <button id="sncf_button_grey" class="sncf_button_grey" style="float:right" onclick="getRecommandations()">Je propose une solution</button>
+        <button id="sncf_button_grey" hidden class="sncf_button_grey" style="float:right" onclick="getRecommandations()" >Ajouter une solution</button>
       </div>
-      <div id="sncf_solution" hidden style="margin-top: 50px">
+      <div id="sncf_solution" hidden style="margin-top: 50px"></div>
+      <div id="sncf_solution_mock" hidden style="margin-top: 50px">
         <input type="checkbox" id="sol1" value="sol1">
         <label for="sol1">Retenue TGV 7652 à Angoulême</label>
         <hr>
@@ -893,16 +1155,44 @@ These two parameters are place in this file as the style should have a title par
       </div>
       <div id="da_block_request" hidden></div>
     </div>
-    <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;max-height:480px;font-size: 13px;width: 520px;">
-      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Passage à 2 noeuds  LTTD: 15min</span></div>
+    <div id ="rte_assist_nominal"  assistNeverTriggered="true" hidden><img style="width:100%" src="assets/images/assistop_colored.png"><br>
+      <button class="sncf_button" style="margin-left: 100px" id="askCabButton" onclick="askCab()"><b>Solliciter CAB</b></button>
+    </div>
+    <div id = "rte_assist" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
+    </div>
+    <div id="opfab-div-card-template-alarm" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 26 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      <span> LTTD: 5min</span>
+</div>
       <!-- <span style="border-left:2px solid lightgrey"></span> -->
       <hr>
-      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 12 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Ouverture départ vers poste 11  LTTD: 10min</span></div>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 16 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+        <span> LTTD: 5min</span>
+       </div>
       <hr>
-      <div><span class="rtePrd">Parade injection : Effacement de 30% de l'éolien au poste 16 </span><button class="rteBtn">Appliquer Parade</button><br>
-      <span>Production à la baisse LTTD: 15min</span></div>
+      <div><span class="rtePrd">Parade topologique: prise de schéma au poste 28</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      <span>LTTD: 5min</span></div>
+      <hr>
+
+      <div><span class="rtePrd">Changer de bus</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      </div>
+    </div>
+    <div id="opfab-div-card-template-alarm-second" class="opfab-card-template-rendering" style="display:none;font-size: 13px;width: 520px;">
+      <b style="color:black">Parades</b><br><div><span class="rtePrd">Parade topologique: prise de schéma au poste 16 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      <span> LTTD: 5min</span>
+</div>
+      <!-- <span style="border-left:2px solid lightgrey"></span> -->
+      <hr>
+      <div><span class="rtePrd">Parade topologique : Prise de schéma au poste 26 </span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+        <span> LTTD: 5min</span>
+       </div>
+      <hr>
+      <div><span class="rtePrd">Parade injection: redispatch de source de production</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      <span>LTTD: 5min</span></div>
+      <hr>
+
+      <div><span class="rtePrd">Changer de bus</span><button onclick="applyRecommandation()" class="rteBtn">Appliquer Parade</button><br>
+      </div>
     </div>
     <div id="opfab-div-card-template-security" class="opfab-card-template-rendering" style="display:none">
     <b style="color:black">Parades</b><br>
@@ -910,7 +1200,7 @@ These two parameters are place in this file as the style should have a title par
     <hr>
     <div>
       Action suggérée - réaliser une étude complémentaire
-      <button class="rteBtn">Utiliser l'outil d'étude</button>
+      <button onclick="applyRecommandation()" class="rteBtn">Utiliser l'outil d'étude</button>
     </div>
     </div>
     <div id="opfab-div-card-template-noparades" class="opfab-card-template-rendering" style="display:none">
@@ -923,8 +1213,31 @@ These two parameters are place in this file as the style should have a title par
     </div>
 
   </div>
-  <of-root></of-root>
+  <of-root>  
+  </of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
+  <div id="tl-container-home" hidden>
+    <div class="timeline-container timeline-border">
+      <div style="font-size:18px;color:grey;margin-left:3px;overflow: hidden"><b>Timeline</b></div>
+        <div class="timeline">
+            <div class="global-current-time-cursor">
+              <img style='width: 17px;
+                    position: absolute;
+                    left: -6px;
+                    top: -5px;'
+              src='./assets/images/time_cursor.svg'/>
+                <div id="current-time"><b></div>
+            </div> 
+            <div class="timeline-line" style="
+            border-top: solid;
+            opacity: 40%;
+            margin-top: 4px;
+            padding: 2px;
+"><div class="" 'timeline-hour'="" style="left: 0;margin-top: -5px;"></div><div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
+</div><div class="timeline-hour" style="left: 50%;margin-top: -5px;"> 12:00</div><div class="timeline-hour" style="left: 75%;margin-top: -5px;">18:00</div><div class="timeline-hour" style="right: 0;"></div></div>
+            <div id="eventsForTimeLine"></div>
+        </div>
+    </div>
 </body>
 
 </html>

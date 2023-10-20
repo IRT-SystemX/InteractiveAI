@@ -8,7 +8,7 @@
 
 <div id="container-cl" style="display:flex;">
   <!-- <div id="ctx_div" class="ctx" style="position:relative;"><b>Contexte</b> -->
-  <div id="ctx_div" class="ctx" style="height:100%"><b>Contexte</b>
+  <div id="ctx_div" class="ctx" style="height:100%;"><b style="margin-left:3px">Contexte</b>
     <div id="empty_block" style="width: 710px"></div>
     <div id="rte_checkboxes"
       style="background-color: var(--opfab-navbar-color-hover); max-width: 15%; position:absolute" hidden>
@@ -83,6 +83,9 @@
       <button id="materiel" class="button sncfBtn" onclick="selectSNCFCtx('materiel')">
         <b>Matériel</b>
       </button>
+      <button id="voyageurs" class="button sncfBtn" onclick="selectSNCFCtx('voyageurs')">
+        <b>Voyageurs</b>
+      </button>
       <button id="carte" class="button sncfBtn" onclick="selectSNCFCtx('carte')">
         <b>Carte</b>
       </button>
@@ -95,6 +98,7 @@
     <div id="map">
     </div>
     <div id="sncf_ctx" hidden></div>
+    <div id="sncf_ctx_materiel" hidden></div>
     <div id="sncf_incident_infos" style="display:flex" hidden></div>
     <img id="history" src="assets/images/history.png" hidden>
     
@@ -115,6 +119,7 @@
           </of-light-card>
         </div>
       </div>
+     
     <div id="orange_incidents" hidden><b>Incident sur 
       <button id="btnApp" class="orange_button orange_button_orange" 
       onclick="document.getElementById('canari').onclick();orangeCtx();
@@ -161,7 +166,7 @@
     <div *ngIf="! hideAckAllCardsFeature && !!lightCards && lightCards.length" class="opfab-ack-all-cards">
     </div>
     <div id="notifs_DA" style="width:97%" hidden>
-      <div style="font-size:15px;color:grey;"><b>Notifications</b></div>
+      <div style="font-size:15px;color:grey;margin-left:3px"><b>Notifications</b></div>
       <div
         class="card light-card-background-action light-card-border-action light-card-detail title-light-card-border-action light-card-detail-unselected light-card-detail-unread DA_Card light-card-detail-unselected"
         style="margin-top: 5px">
@@ -184,6 +189,36 @@
 
   </div>
 </div>
+<div id="notifs_RTE" style="width:98%" hidden>
+  <hr>
+    <div style="font-size:18px;color:grey;margin-left:3px"><b>Notifications</b></div>
+    <div
+      class="card rteBg-compliant"
+      style="margin-top: 5px;margin-left: 7px;" >
+      <div style="display: grid; grid-template-columns: auto auto; margin-top: 2px;color:black">
+        <p class="card-title" style="margin-left: 5px; color:gray;margin-left: 20px;">
+          <span _ngcontent-snq-c114="" class="opfab-feed-list-card-severity" style="
+    position: absolute;right: 0px;
+">Maintenance<img _ngcontent-snq-c114="" id="opfab-card-icon" src="assets\images\opfab-bg-sev-information-icon.png"></span>
+          <span id="opfab-feed-list-card-title"><b>Consignation #1</b></span><br>
+          Retrait de ligne id 40
+        </p>
+      </div>
+    </div>
+    <div
+      class="card rteBg-compliant"
+      style="margin-top: 5px;margin-left: 7px;" >
+      <div style="display: grid; grid-template-columns: auto auto; color:black">
+        <p class="card-title" style="margin-left: 5px; color:gray;margin-left: 20px;">
+          <span _ngcontent-snq-c114="" class="opfab-feed-list-card-severity" style="
+    position: absolute;right: 0px;
+      ">Maintenance<img _ngcontent-snq-c114="" id="opfab-card-icon" src="assets\images\opfab-bg-sev-information-icon.png"></span>
+          <span id="opfab-feed-list-card-title"><b>Consignation #2</b></span><br>
+          Retour de ligne id 14
+        </p>
+      </div>
+    </div>
+  </div>
 <div id="dassaultBar" class="bar dassaultBar" hidden></div>
 <div id="dassaultBar2" class="bar dassaultBar2" hidden></div>
 

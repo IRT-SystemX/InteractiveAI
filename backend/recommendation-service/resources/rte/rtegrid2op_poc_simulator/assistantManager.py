@@ -13,18 +13,27 @@ import os
 import json
 from settings import logger
 import numpy as np
+from flask import current_app
+from enum import Enum
 
+class AgentType(Enum):
+    onto = 1
+    IA = 2
 
 class AgentManager:
     def __init__(self):
         try:
             # Load RTE simulator configuration
-            abs_path = "/code/resources/rte/rtegrid2op_poc_simulator/"
+            self.root_path = current_app.config['ROOT_PATH']
+            abs_path = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
+
             config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
 
             # grid2op Environment and observation definition and loading
-            self.env = grid2op.make(
-                config_assistant['env_name'], backend=bkClass())
+            env_name = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
+            self.env = grid2op.make(env_name, backend=bkClass())
             self.env.seed(config_assistant['env_seed'])
             # Search scenario with provided name
             for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
@@ -42,7 +51,8 @@ class AgentManager:
                 self.previous_step = self.obs.current_step
 
             # assistant definition and loading
-            assistant_path = config_assistant['assistant_path']
+            assistant_path = os.path.join(
+                self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
             assistant_seed = config_assistant['assistant_seed']
 
             # lazy loading
@@ -67,37 +77,40 @@ class AgentManager:
                         msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
                         raise RuntimeError(msg_)
                 except Exception as exc_:
-                    raise
+                    raise exc_
                 self.assistant.seed(int(assistant_seed))
                 self.nb_timestep = int(0)
+
+            # Action "do nothing"
+            self.action_do_nothing = self.env.action_space({})
         except Exception as e:
             logger.error(e)
-            exit()
+            # exit()
 
     def get_nbOfTimestepSinceLastObs(self, obs_dict):
         self.nb_timestep = int(obs_dict.get("current_step")[
                                0]) - int(self.previous_step)
         return self.nb_timestep
 
-    def recommandate(self, obs_dict, n_actions=3):
+    def recommendate(self, obs_dict, n_actions=3):
         self.get_nbOfTimestepSinceLastObs(obs_dict)
         if self.nb_timestep > 0:
             self.env.fast_forward_chronics(self.nb_timestep)
             self.previous_step = obs_dict.get("current_step")[0]
         self.obs = self.env.get_obs()
         self.obs.from_json(obs_dict)
-        self.recommandations = self.assistant.make_recommandations(
+        self.recommendations = self.assistant.make_recommandations(
             self.obs, n_actions)
-        return self.recommandations
+        return self.recommendations
 
     def getParadeInfo(self, act):
-        Titre = []
-        sousTitre = []
+        title = []
+        description = []
         impact = act.impact_on_objects()
 
         # redispatch
         if act._modif_redispatch:
-            Titre.append(
+            title.append(
                 "Parade injection: redispatch de source de production"
             )
             cpt = 0
@@ -106,23 +119,23 @@ class AgentManager:
                     gen_name = act.name_gen[gen_idx]
                     r_amount = act._redispatch[gen_idx]
                     if cpt > 0:
-                        sousTitre.append(", ")
+                        description.append(", ")
                     cpt = 1
-                    sousTitre.append(
+                    description.append(
                         '"{}" de {:.2f} MW'.format(gen_name, r_amount))
 
         # storage
         if act._modif_storage:
-            Titre.append("Parade stockage")
+            title.append("Parade stockage")
             cpt = 0
             for stor_idx in range(act.n_storage):
                 amount_ = act._storage_power[stor_idx]
                 if np.isfinite(amount_) and amount_ != 0.0:
                     name_ = act.name_storage[stor_idx]
                     if cpt > 0:
-                        sousTitre.append(", ")
+                        description.append(", ")
                     cpt = 1
-                    sousTitre.append('Demande à l\'unité "{}" de {} {:.2f} MW (setpoint: {:.2f} MW)'
+                    description.append('Demande à l\'unité "{}" de {} {:.2f} MW (setpoint: {:.2f} MW)'
                                      "".format(
                                          name_,
                                          "charger" if amount_ > 0.0 else "decharger",
@@ -133,34 +146,34 @@ class AgentManager:
 
         # curtailment
         if act._modif_curtailment:
-            Titre.append("Parade injection")
+            title.append("Parade injection")
             cpt = 0
             for gen_idx in range(act.n_gen):
                 amount_ = act._curtail[gen_idx]
                 if np.isfinite(amount_) and amount_ != -1.0:
                     name_ = act.name_gen[gen_idx]
                     if cpt > 0:
-                        sousTitre.append(", ")
+                        description.append(", ")
                     cpt = 1
-                    sousTitre.append('Limiter l\'unité "{}" à {:.1f}% de sa capacité max (setpoint: {:.3f})'
+                    description.append('Limiter l\'unité "{}" à {:.1f}% de sa capacité max (setpoint: {:.3f})'
                                      "".format(name_, 100.0 * amount_, amount_)
                                      )
 
         # force line status
         force_line_impact = impact["force_line"]
         if force_line_impact["changed"]:
-            Titre.append(
+            title.append(
                 'Parade topologique: connection/deconnection de ligne')
             reconnections = force_line_impact["reconnections"]
             if reconnections["count"] > 0:
-                sousTitre.append("Reconnection de {} lignes ({})".format(
+                description.append("Reconnection de {} lignes ({})".format(
                     reconnections["count"], reconnections["powerlines"]
                 )
                 )
 
             disconnections = force_line_impact["disconnections"]
             if disconnections["count"] > 0:
-                sousTitre.append("Déconnection de {} lignes ({})".format(
+                description.append("Déconnection de {} lignes ({})".format(
                     disconnections["count"], disconnections["powerlines"]
                 )
                 )
@@ -168,8 +181,8 @@ class AgentManager:
         # swtich line status
         swith_line_impact = impact["switch_line"]
         if swith_line_impact["changed"]:
-            Titre.append('Parade topologique: changer l\'état d\'une ligne')
-            sousTitre.append(
+            title.append('Parade topologique: changer l\'état d\'une ligne')
+            description.append(
                 "Changer le statut de {} lignes ({})".format(
                     swith_line_impact["count"], swith_line_impact["powerlines"]
                 )
@@ -178,11 +191,11 @@ class AgentManager:
         # topology
         bus_switch_impact = impact["topology"]["bus_switch"]
         if len(bus_switch_impact) > 0:
-            Titre.append(
+            title.append(
                 'Parade topologique: prise de schéma au poste ' + str(switch["substation"]))
-            sousTitre.append("Changement de bus:")
+            description.append("Changement de bus:")
             for switch in bus_switch_impact:
-                sousTitre.append(
+                description.append(
                     "\t \t - Switch bus de {} id {} [au poste {}]".format(
                         switch["object_type"], switch["object_id"], switch["substation"]
                     )
@@ -191,16 +204,16 @@ class AgentManager:
         assigned_bus_impact = impact["topology"]["assigned_bus"]
         disconnect_bus_impact = impact["topology"]["disconnect_bus"]
         if len(assigned_bus_impact) > 0 or len(disconnect_bus_impact) > 0:
-            Titre.append('Parade topologique: prise de schéma au poste ' +
+            title.append('Parade topologique: prise de schéma au poste ' +
                          str(assigned_bus_impact[0]["substation"]))
             if assigned_bus_impact:
-                sousTitre.append("")
+                description.append("")
             cpt = 0
             for assigned in assigned_bus_impact:
                 if cpt > 0:
-                    sousTitre.append(", ")
+                    description.append(", ")
                 cpt = 1
-                sousTitre.append(
+                description.append(
                     " Assigner le bus {} à {} id {}".format(
                         assigned["bus"],
                         assigned["object_type"],
@@ -208,13 +221,13 @@ class AgentManager:
                     )
                 )
             if disconnect_bus_impact:
-                sousTitre.append("")
+                description.append("")
             cpt = 0
             for disconnected in disconnect_bus_impact:
                 if cpt > 0:
-                    sousTitre.append(", ")
+                    description.append(", ")
                 cpt = 1
-                sousTitre.append(
+                description.append(
                     "Déconnecter {} id {} \t".format(
                         disconnected["object_type"],
                         disconnected["object_id"],
@@ -222,24 +235,29 @@ class AgentManager:
                     )
                 )
 
-        Titre = "".join(Titre)
-        sousTitre = "".join(sousTitre)
-        return {"Titre": Titre, "SousTitre": sousTitre, "LTTD": "5 min"}
+        # Any of the above cases, then the recommendation is most likely "Do nothing"
+        if not title and act == self.action_do_nothing :
+            title.append('Poursuivre')
+            description.append("Poursuite du scénario sans intervention extérieur")
+
+        title = "".join(title)
+        description = "".join(description)
+        return {"title":title, "description":description, "use_case":"RTE", "agent_type":AgentType.IA.name, "actions":[act.to_json()]}
 
     def getlistOfParadeInfo(self):
-        listOfAct_dict = []
-        for rec in self.recommandations:
+        list_of_act_dict = []
+        for rec in self.recommendations:
             act, max_forecasted_rho_0 = rec
             act_dict = self.getParadeInfo(act)
-            listOfAct_dict.append(act_dict)
-        return listOfAct_dict
+            list_of_act_dict.append(act_dict)
+        return list_of_act_dict
 
 
 if __name__ == '__main__':
     # Parameters for this example
     iteration_in_cab = range(10)
     event_received = False
-    Context_received = False
+    context_received = False
 
     # Init (must be used in CAB)
     agentM = AgentManager()
@@ -261,11 +279,11 @@ if __name__ == '__main__':
 
         if event_received and context_received:
             # Main calls to use in CAB in this same order any time both an event and a context is received
-            nbOfTimestep = agentM.get_nbOfTimestepSinceLastObs(obs_dict)
-            recommandation = agentM.recommandate(obs_dict)
+            nb_of_timestep = agentM.get_nbOfTimestepSinceLastObs(obs_dict)
+            recommendation = agentM.recommendate(obs_dict)
             parades = agentM.getlistOfParadeInfo()
 
             # Test for this example (Should be remove)
-            print("nbOfTimestep = ", nbOfTimestep)
-            print("recommandation = ", recommandation)
+            print("nb_of_timestep = ", nb_of_timestep)
+            print("recommendation = ", recommendation)
             print("parades = ", parades)

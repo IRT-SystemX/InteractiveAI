@@ -1,19 +1,17 @@
 from apiflask import APIBlueprint
-from cab_common_auth.decorators import protected
+from cab_common_auth.decorators import get_use_cases, protected
 from flask import request
-from flask.views import MethodView
+from apiflask.views import MethodView
 
-from .context_manager import ContextManager
 from .schemas import ContextIn, ContextOut
 
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
-context_manager = ContextManager()
 
 
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {"message": "Ok"}
 
 
 class Context(MethodView):
@@ -22,7 +20,14 @@ class Context(MethodView):
     @protected
     def get(self, date):
         """Get a context"""
-        return context_manager.get_context_with_date(date)
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
+        use_cases = get_use_cases()
+        context_list = []
+        for use_case in use_cases:
+            context_manager = use_case_factory.get_context_manager(use_case)
+            context_list.append(context_manager.get_context_with_date(date))
+        return context_list
 
 
 class Contexts(MethodView):
@@ -31,17 +36,32 @@ class Contexts(MethodView):
     @protected
     def get(self):
         """Get all contexts"""
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         date_query_param = request.args.get('date')
-        if date_query_param:
-            return context_manager.get_contexts_with_date(date_query_param)
+        use_cases = get_use_cases()
+        context_list = []
 
-        return context_manager.get_context()
+        for use_case in use_cases:
+            context_manager = use_case_factory.get_context_manager(use_case)
+            if date_query_param:
+                context = context_manager.get_contexts_with_date(
+                    date_query_param)
+            else:
+                context = context_manager.get_context()
+            context_list.append(context)
+
+        return context_list
 
     @api_bp.input(ContextIn)
     @api_bp.output(ContextOut, status_code=201)
     @protected
     def post(self, data):
         """Add an context"""
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
+        use_case = data.get("use_case")
+        context_manager = use_case_factory.get_context_manager(use_case)
         return context_manager.set_context(data)
 
 

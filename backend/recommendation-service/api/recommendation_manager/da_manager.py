@@ -2,12 +2,18 @@ from owlready2 import default_world, get_ontology
 from settings import logger
 
 from .base_recommendation import BaseRecommendation
+from flask import current_app
+import os
 
 
 class DAManager(BaseRecommendation):
 
     def __init__(self):
-        self.owl_file_path = "/code/resources/da/ontology/AlarmsOntoDA.owl"
+
+        self.root_path = current_app.config['ROOT_PATH']
+        self.owl_file_path = os.path.join(
+            self.root_path, "resources/da/ontology/AlarmsOntoDA.owl")
+        print(self.owl_file_path)
         super().__init__()
 
     def get_recommendation(self, request_data):

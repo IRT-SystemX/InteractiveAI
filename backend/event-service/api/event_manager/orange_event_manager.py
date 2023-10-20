@@ -6,4 +6,3 @@ class OrangeEventManager(BaseEventManager):
         super().__init__()
         self.use_case = "ORANGE"
         self.use_case_process = "orangeProcess"
-        

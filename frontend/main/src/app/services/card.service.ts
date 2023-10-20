@@ -115,6 +115,9 @@ export class CardService {
                 next: (operation) => {
                     switch (operation.type) {
                         case CardOperationType.ADD:
+                            setTimeout(() => {
+                                document.getElementById("eventsForTimeLine").innerHTML = "";
+                            }, 30000);
                             cards = $(".card");
                             this.logger.info(
                                 'CardService - Receive card to add id=' +

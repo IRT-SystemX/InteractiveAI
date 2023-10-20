@@ -27,6 +27,8 @@ import { SoundNotificationService } from '@ofServices/sound-notification.service
 import { DateTimeFormatterService } from '@ofServices/date-time-formatter.service';
 import { MapService } from '@ofServices/map.service';
 import $, { get } from "jquery";
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 
 @Component({
     selector: 'of-light-card',
@@ -57,6 +59,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
     rteUrl = "/cabcontext/api/v1/contexts";
     token = window.localStorage.token;
     emergencyClicked = false;
+    jsonEventObject;
+    jsonContextObject;
+    host = "";
+    bypassCondition = false;
+
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -166,7 +173,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         }
       }
-
       public getRecommandationDA(title){
         var recoResponse;
         var data = JSON.stringify({
@@ -188,27 +194,222 @@ export class LightCardComponent implements OnInit, OnDestroy {
     
           }
         });
-        xhr.open("POST", "/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(data);
       }
+      public getContextRTE(){
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        var that = this;
+        xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            Swal.hideLoading();
+            Swal.close()
+            that.jsonContextObject = JSON.parse(this.responseText);
+            if(document.getElementById("rte_assist_nominal").hidden){
+                that.getRecommandationRTE();
+            }
+        }
+        });
+        xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        xhr.send();
+        
+      }
+      public getContextSNCF(){
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        var that = this;
+        xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            Swal.hideLoading();
+            Swal.close()
+            that.jsonContextObject = JSON.parse(this.responseText);
+        }
+        });
+        xhr.open("GET", this.host + "/cabcontext/api/v1/contexts");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        xhr.send();
+        
+      }
+
+        public getCardProcess(){
+            this.getContextRTE();
+            var cards = document.getElementsByClassName("card");
+            for (var card = 0; card < cards.length; card++) {
+                if (cards[card].classList.contains("light-card-detail-selected")){
+                this.getCard(cards[card].getAttribute("data-urlid"));
+                }
+              }
+              
+      }
+
+    public getCard(id_card) {
+      if (id_card != null){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", this.host + "/cards/cards/"+id_card,false);
+        xmlHttp.setRequestHeader("Authorization","Bearer "+ window.localStorage.token);
+        xmlHttp.send(null);
+        var response = JSON.parse(xmlHttp.responseText);
+        var eventAttributes = response.card.data.metadata;
+        console.log(eventAttributes);
+        this.jsonEventObject = eventAttributes;
+        this.jsonEventObject.event_id = id_card;
+        console.log(this.jsonEventObject);
+      }
+    };
+
+    public getRecommandationRTE(){
+        console.log('getRecommandationRTE')
+        document.getElementById('rte_assist').innerHTML = "";
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        var lightCardObject = this;
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            Swal.hideLoading();
+            document.body.style.cursor = 'unset';
+            console.log(JSON.parse(this.responseText))
+             var recosRTE = JSON.parse(this.responseText);
+             for (var reco=0;reco<recosRTE.length;reco++){
+                var description = recosRTE[reco].description;
+                var agent_type = recosRTE[reco].agent_type;
+                var title = recosRTE[reco].title;
+                var actions = recosRTE[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML = "<div><span class='rtePrd'><b onclick ='"+ 'showDesc(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionRTE" + reco + "' hidden>" + description + '</span>';
+                document.getElementById('rte_assist').innerHTML += bodyHTML;
+             }
+             Swal.hideLoading();
+             Swal.close()
+
+          }
+        });
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        
+        var recommendationBody = 
+          { context : this.jsonContextObject[0].data.observation,
+            event : this.jsonEventObject
+          }
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    public getRecommandationSNCF(){
+        console.log('getRecommandationSNCF')
+        document.getElementById('sncf_assist').innerHTML = "";
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        var lightCardObject = this;
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            Swal.hideLoading();
+            document.body.style.cursor = 'unset';
+            console.log(JSON.parse(this.responseText))
+             var recos = JSON.parse(this.responseText);
+             for (var reco=0;reco<recos.length;reco++){
+                var description = recos[reco].description;
+                var agent_type = recos[reco].agent_type;
+                var title = recos[reco].title;
+                var actions = recos[reco].actions;
+                sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+                bodyHTML = "<div><span class='rtePrd'><b onclick ='"+ 'showDesc(' + reco + ')' + " '>" + title + "</b></span><br>" + '<button onclick="applyRecommandation(' +reco+ ')"' + 'class="rteBtn">Appliquer</button><hr>';
+                bodyHTML += "<span id='descriptionSNCF" + reco + "' hidden>" + description + '</span>';
+                document.getElementById('sncf_assist').innerHTML += bodyHTML;
+             }
+             Swal.hideLoading();
+             Swal.close()
+
+          }
+        });
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        
+        var recommendationBody = 
+          { context : this.jsonContextObject[0].data,
+            event : this.jsonEventObject
+          }
+          console.log(recommendationBody)
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    public getRecommandationSNCFold(){
+        document.getElementById('sncf_solution').innerHTML = "";
+        var bodyHTML;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.addEventListener("readystatechange", function() {
+          if(this.readyState === 4) {
+            var recoSNCF = JSON.parse(this.responseText)[0].data;
+            document.getElementById('sncf_solution').innerHTML += recoSNCF;
+          }
+        });
+        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+        
+        var recommendationBody = 
+          { context : this.jsonContextObject[0].data.observation,
+            event : this.jsonEventObject
+          }
+        xhr.send(JSON.stringify(recommendationBody));
+        }
+    
+
+
     public getCardTitle($event) {
         this.hideAllSynops();
+        Swal.hideLoading();
+        Swal.close()
+
+
         $.ajaxSetup({
             headers:{
                'Authorization': " Bearer " + this.token
             }
          });
         if(window.location.host.includes("localhost")){
-            this.rteUrl = "http://192.168.208.57:3200/cabcontext/api/v1/contexts";
+            this.rteUrl = "http://192.168.211.95:3200/cabcontext/api/v1/contexts";
+            this.host = "http://192.168.211.95:3200";
           }
 
-        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge") && !document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
+        if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")) {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
-            $("#opfab-div-card-template-alarm").show()
+            $("#rte_assist").show()
+            
+           
+                document.getElementById("rte_assist_nominal").hidden = false;
+
+            $("#opfab-div-card-template").hide()
+            $("#opfab-div-card-template-noparades").hide()
+            $("#opfab-div-card-template-agent").hide()
+            $.ajaxSetup({
+                headers:{
+                   'Authorization': " Bearer " + this.token
+                }
+             });
+            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
+                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                $(".opfab-card-response-header").hide();
+            });
+        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
+            $("#opfab-div-card-template-security").hide()
+            $("#opfab-div-card-template-op").hide()
+            $("#rte_assist").show()
+            
+            if(document.getElementById("rte_assist_nominal").hidden &&
+             document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false"){
+                // this.getCardProcess();
+                // Décommenter cette ligne pour obtenir des recommandations pour les event de type anticipation
+            }
             $("#opfab-div-card-template").hide()
             $("#opfab-div-card-template-noparades").hide()
             $("#opfab-div-card-template-agent").hide()
@@ -216,11 +417,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Risque sur aléa")) {
-            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-                $(".opfab-card-response-header").hide();
-            });
+            setTimeout(() => {
+                Swal.hideLoading();
+                Swal.close()
+            }, 5000);
+            $("#rte_assist").hide()
             $("#opfab-div-card-template-security").show()
             $("#opfab-div-card-template-op").hide()
             $("#opfab-div-card-template-alarm").hide()
@@ -228,28 +429,23 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-agent").hide()
         }
         else if (document.getElementById("opfab-card-title").innerHTML.includes("Alerte Agent")) {
+            $.ajaxSetup({
+                headers:{
+                   'Authorization': " Bearer " + this.token
+                }
+             });
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
             });
             $("#opfab-div-card-template-agent").show()
+            $("#rte_assist").hide()
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#opfab-div-card-template-alarm").hide()
             $("#opfab-div-card-template-noparades").hide()
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Surcharge")
-            && document.getElementById("opfab-card-title").innerHTML.includes("54_58_154")) {
-            $("#opfab-div-card-template-security").hide()
-            $("#opfab-div-card-template-op").hide()
-            $("#opfab-div-card-template-alarm").show()
-            $("#opfab-div-card-template").hide()
-            $("#opfab-div-card-template-noparades").hide()
-            $("#opfab-div-card-template-agent").hide()
-            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-                $(".opfab-card-response-header").hide();
-            });
-        } else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+        
+    }else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
             $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
                 $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
                 $(".opfab-card-response-header").hide();
@@ -336,12 +532,22 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
             document.getElementById("HYD_nominal").hidden = false;
         }
+         else if (document.getElementById("opfab-card-title").innerHTML.includes("Malaise")) {
+            $(".opfab-card-response-header").hide();
+            $("#opfab-card-detail-footer").hide();
+            console.log(this)
+            document.getElementById("opfab-card-title").setAttribute("onclick","askCab()");
+            if(document.getElementById("sncf_assist_nominal").getAttribute("triggered") == "false"){
+              document.getElementById("sncf_assist_nominal").hidden = true;
+              document.getElementById("sncf_assist_nominal").setAttribute("triggered","true");
+            }
+
+        }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("high_procedure").hidden = true;
-            document.getElementById("pdv_da").hidden = true;
             document.getElementById("noevent_da").hidden = true;
+            $("#rte_assist").hide()
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
             document.getElementById("sncf_incident_infos").innerHTML 
             = 
@@ -365,7 +571,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           document.getElementById("noevent_da").hidden=true;
           document.getElementById("da_block_request").innerHTML = "";
           var xmlHttp = new XMLHttpRequest();
-          xmlHttp.open("GET", "./assets/emergency_procedures_short.json", false);
+          xmlHttp.open("GET", this.host + "./assets/emergency_procedures_short.json", false);
           // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
           xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
           xmlHttp.send(null);
@@ -391,6 +597,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
       }
       };
     public select($event) {
+        Swal.showLoading();
+
         // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
@@ -405,35 +613,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.getCardTitle($event)
         }, 1000);
-        // if(card.includes("Surcharge")){
-        //     $("#opfab-div-card-template-security").hide()
-        //     $("#opfab-div-card-template-op").hide()
-        //     $("#opfab-div-card-template-alarm").show()
-        //     $("#opfab-div-card-template").hide()
-        //     $("#opfab-div-card-template-noparades").hide()
-
-        //     $.get( this.rteUrl + "?time=" + +new Date().getTime(), function( data ) {
-        //        $("#ctxImg").attr("src","data:image/png;base64,"+data[0].data.topology)
-        //        $(".opfab-card-response-header").hide();
-        //       });
-        //     }else if(card.includes("Routine")) {
-        //         $("#opfab-div-card-template").hide()
-        //         $("#opfab-div-card-template-op").show()
-        //         $("#opfab-div-card-template-security").hide()
-        //         $("#opfab-div-card-template-alarm").hide()
-        //         $("#opfab-div-card-template-noparades").hide()
-        //     }else if(card.includes("Risque sur aléa")){
-        //         $("#opfab-div-card-template-security").show()
-        //         $("#opfab-div-card-template-op").hide()
-        //         $("#opfab-div-card-template-alarm").hide()
-        //         $("#opfab-div-card-template-noparades").hide()
-        //         }else if (card.includes("Surcharge de ligne") && card.includes("54_58_154")){
-        //             $("#opfab-div-card-template-noparades").show()
-        //             $("#opfab-div-card-template-security").hide()
-        //             $("#opfab-div-card-template-op").hide()
-        //             $("#opfab-div-card-template-alarm").hide()
-
-        //         }
     }
 
 

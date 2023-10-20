@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, Float, Integer, String, Boolean
+from apiflask.fields import DateTime, Dict, Float, Integer, String, Boolean, List
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
@@ -17,7 +17,14 @@ class MetadataRTE(Metadata):
 
 
 class MetadataSNCF(Metadata):
-    pass
+    agent_id = String()
+    event_type = String()
+    agent_position = List(Integer())
+    delay = Integer()
+    id_train = String()
+    malfunction_stop_position = List(Integer())
+    num_rame = String()
+    tmp_rame = String()
 
 
 class MetadataOrange(Metadata):
@@ -25,7 +32,8 @@ class MetadataOrange(Metadata):
 
 
 class MetadataDA(Metadata):
-    pass
+    event_type = String()
+    system = String()
 
 
 class EventIn(Schema):
@@ -39,29 +47,30 @@ class EventIn(Schema):
     data = Dict()
     is_active = Boolean()
 
+    @property
+    def _metadata_loaders(self):
+        return {
+            'RTE': MetadataRTE,
+            'SNCF': MetadataSNCF,
+            'ORANGE': MetadataOrange,
+            'DA': MetadataDA,
+        }
+
     @validates_schema
     def validate_metadata(self, data, **kwargs):
         use_case = data.get("use_case")
         metadata = data.get("data")
-        if use_case == "RTE":
-            MetadataRTE().load(metadata)
-        elif use_case == "SNCF":
-            # MetadataSNCF().load(metadata)
-            pass
-        elif use_case == "ORANGE":
-            # MetadataOrange().load(metadata)
-            pass
-        elif use_case == "DA":
-            # MetadataDA().load(metadata)
-            pass
-        else:
-            raise ValidationError("Invalid use case")
+        if use_case in self._metadata_loaders:
+            self._metadata_loaders[use_case]().load(metadata)
+            return
+        raise ValidationError("Invalid use case")
 
 
 class EventOut(Schema):
     id = Integer()
     id_event = String()
     use_case = String()
+    title = String()
     description = String()
     date = DateTime(format="iso")
     criticality = String()

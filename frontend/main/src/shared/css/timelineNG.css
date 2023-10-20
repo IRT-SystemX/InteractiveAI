@@ -1,0 +1,149 @@
+#newTimeline{
+    width:85%;
+}
+#eventsForTimeLine{
+    width: 100%;
+}
+.blocEvent{
+    width: 100%;
+    display:flex;
+}
+.bloc_title{
+    border: 2px solid gray;
+    flex: 15%;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    color: white;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+.line {
+    width: 85%;
+    margin:5px 0;
+    height:2px;
+    background:
+        repeating-linear-gradient(90deg,white 0 9px,gray 0 21px)
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+    
+    .timeline {
+        position: relative;
+        /* max-width: 800px;
+        margin: 0 auto; */
+        padding: 20px;
+        flex: 85%;
+    }
+    
+    .timeline-line {
+        position: relative;
+        border-top: 2px dashed #C6C6C6
+    }
+    
+    .timeline-hour {
+        position: absolute;
+        top: -15px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    .timeline-hour:first-child {
+        left: 0;
+    }
+    
+    .timeline-hour:nth-child(2) {
+        left: 25%;
+    }
+    
+    .timeline-hour:nth-child(3) {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-hour:nth-child(4) {
+        left: 75%;
+        transform: translateX(-100%);
+    }
+    
+    .timeline-hour:last-child {
+        right: 0;
+        transform: translateX(-100%);
+    }
+    
+    .timeline-point {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        color: gray;
+        font-weight: bold;
+        border-radius: 50%;
+        top: -4px;
+    }
+    [id^="timeline-point"] img {
+        margin-left: -12px;
+    }
+
+    .timeline-point:hover{
+        zoom: 130%;
+    }
+    
+    .timeline-highlight {
+        border: 4px solid;
+        border-radius: 15px;
+        opacity: 0.4;
+        margin-top: -5px;
+    }
+
+
+    .timeline-container {
+        position: relative;
+    }
+    
+    .timeline {
+        width: 100%;
+
+        position: relative;
+    }
+    
+    .global-current-time-cursor {
+        position: absolute;
+        top: 0;
+        width: 4px;
+        /* height: 100%; */
+        min-height: 95%;
+        background-color: black;
+        z-index: 2;
+        font-weight: 600;
+        margin-top: 12px;
+        
+    }
+    
+    #current-time{
+        margin-top: -20px;
+        margin-left: -15px;
+    }
+
+    .timeline-border{
+        box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+        border-radius: 5px;
+        margin-left: 13px;
+    }
+
+
+    @media (max-height: 768px) { 
+
+        .timeline-border{
+            min-height: 210px;
+            width: 98.5%;
+        }
+    }
+
+    @media (min-height: 900px) and  (min-width: 1800px) { 
+        .timeline-border{
+            min-height: 245px;
+            margin-top: 12px;
+            width: 98.6%;
+        }
+    }
+    

@@ -1,0 +1,29 @@
+import pytest
+from ..cab_common_auth.custom_keycloak_openid import CustomKeycloakOpenID
+from ..cab_common_auth.decorators import keycloak, protected, get_use_cases
+
+VALID_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODYyMjU5NjYsImlhdCI6MTY4NTYyMTE2NiwianRpIjoiYTQ3OTMyYmYtOTUxZC00YWU4LWJkZGUtNTdmMTc5MDQyYTYwIiwiaXNzIjoiaHR0cDovLzE3Mi4xNy4wLjE6MzIwMC9hdXRoL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoic25jZl91c2VyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjJjZGVlYWE0LTNkOWUtNGZkMS05NjA0LTFkYjY1MDdkNjE2OCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjJjZGVlYWE0LTNkOWUtNGZkMS05NjA0LTFkYjY1MDdkNjE2OCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic25jZl91c2VyIiwiZW50aXRpZXNJZCI6IlNOQ0YifQ.M0wTHfv3aI29i8LVSt6B3IEfwR9KVqHxatuUxI1EW2DJTcXdnm7hnvNRJN4yETwYmt8qbIpI3hdcQ5C39RGjbaMBsfSwO9SWonzP-E3hV-o-Jww1ZmoCy-kel9ODWaktvMnGY3SpS2hzs-XH2MOx0If2EC9e37heFyg0gTig0SU5DJikvoLQHE02OvztfqYKKYiMPJjzMgnYrMjF7H6J8Kb_w2UAgtVVZyqnlWeuLn2KMjlU9u_iK1BcWfRxj6jH2my3Usd78NBwqfSTKVI-ZTGjp0oVgm7HHyTDwOmOF95EI9Y6s28NIfIHLc53c-cu6AA9G_6CA-ZtqWbpf6L9AQ"
+
+
+def test_custom_keycloak_openid_introspect(
+    mock_keycloak_openid, mock_keycloak_introspect
+):
+    # Write test cases for the introspect method of CustomKeycloakOpenID
+    token = VALID_TOKEN
+    result = mock_keycloak_openid.introspect(token)
+    assert result.get("active") is True
+
+
+def test_custom_keycloak_openid_introspect_error(
+    mock_keycloak_openid, mock_keycloak_introspect_error
+):
+    # Write test cases to handle error scenarios during introspection
+    token = "invalid_token"
+    with pytest.raises(Exception):
+        mock_keycloak_openid.introspect(token)
+
+
+# def test_get_use_cases(mock_get_use_cases):
+#     # Write test cases for the get_use_cases function
+#     # ...
+#     pass

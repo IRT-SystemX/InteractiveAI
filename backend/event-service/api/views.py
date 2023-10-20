@@ -2,30 +2,18 @@
 
 from apiflask import APIBlueprint
 from cab_common_auth.decorators import get_use_cases, protected
-from flask.views import MethodView
 
+from apiflask.views import MethodView
 
 from .models import EventModel
 from .schemas import EventIn, EventOut
-from .utils import UseCaseFactory
-from .event_manager.rte_event_manager import RTEEventManager
-from .event_manager.da_event_manager import DAEventManager
-from .event_manager.orange_event_manager import OrangeEventManager
-from .event_manager.sncf_event_manager import SNCFEventManager
-
-
 api_bp = APIBlueprint("event-api", __name__, url_prefix="/api/v1")
-factory = UseCaseFactory()
-factory.register_use_case('DA', DAEventManager())
-factory.register_use_case('RTE', RTEEventManager())
-factory.register_use_case('ORANGE', OrangeEventManager())
-factory.register_use_case('SNCF', SNCFEventManager())
 
 
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {"message": "Ok"}
 
 
 class Events(MethodView):
@@ -42,8 +30,11 @@ class Events(MethodView):
     @protected
     def post(self, data):
         """Add an event"""
+        from flask import current_app
+
+        use_case_factory = current_app.use_case_factory
         use_case = data["use_case"]
-        event_manager = factory.get_event_manager(use_case)
+        event_manager = use_case_factory.get_event_manager(use_case)
         event = event_manager.create_event(data)
         return event
 

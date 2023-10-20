@@ -12,6 +12,7 @@
 .light-card-detail {
     color: var(--opfab-lightcard-detail-textcolor);
     min-height:70px;
+    margin-left: 8px;
 }
 
 .light-card-detail-selected {
@@ -52,6 +53,10 @@
     background-color: var(--opfab-lightcard-detail-bgcolor);
 }
 .light-card-background-action {
+    cursor: pointer;
+    background-color: #EC775C;
+}
+.light-card-background-action_DA {
     cursor: pointer;
     background-color: #FFD2004D;
 }
@@ -125,6 +130,9 @@
 .title-light-card-border-information{
    color: $sev-information;
 }
+.title-light-card-border-white{
+    color:white
+}
 
 .card:hover {
     box-shadow: var(--opfab-card-shadow);
@@ -184,7 +192,7 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
-    color:grey;
+    // color:white;
 }
 
 .light-card-detail-selected span{

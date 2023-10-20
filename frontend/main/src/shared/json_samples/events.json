@@ -1,0 +1,108 @@
+[
+    {
+        "criticality": "MEDIUM",
+        "data": {
+            "event_type": "anticipation",
+            "flux": 205.2,
+            "line": "62_63_160"
+        },
+        "date": "2023-09-14T09:46:57.983925",
+        "description": "Lignes impactées ['48_49_135', '48_50_136', '55_56_146', '49_56_147', '55_57_148', '50_57_149', '58_59_155', '58_60_156'], charge max 205.2%",
+        "id_event": "3bde1a12-2bf1-410f-8405-229ccd050faf",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "MEDIUM",
+        "data": {
+            "event_type": "anticipation",
+            "flux": 114.1,
+            "line": "48_50_136"
+        },
+        "date": "2023-09-14T09:46:58.153528",
+        "description": "Lignes impactées ['48_49_135', '55_56_146', '49_56_147', '55_57_148', '54_58_154'], charge max 114.1%",
+        "id_event": "3d305a5a-0663-428b-9906-9a3902b9eb4b",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "MEDIUM",
+        "data": {
+            "event_type": "anticipation",
+            "flux": 101.6,
+            "line": "48_53_141"
+        },
+        "date": "2023-09-14T09:46:58.323655",
+        "description": "Lignes impactées ['55_56_146', '49_56_147', '55_57_148', '50_57_149'], charge max 101.6%",
+        "id_event": "70955011-f0ef-4b62-9a76-bb2b92d24ff1",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "HIGH",
+        "data": {
+            "event_type": "KPI",
+            "flux": 100.8,
+            "line": "54_58_154"
+        },
+        "date": "2023-09-14T09:48:15.601019",
+        "description": "Attention la ligne 54_58_154 est en surcharge de 100.8%",
+        "id_event": "c25674a6-b26c-4c3b-a1fc-4a39a34e9d18",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "ROUTINE",
+        "data": {
+            "event_type": "KPI",
+            "flux": 456.36,
+            "line": "1_2_3",
+            "zone": "Ouest"
+        },
+        "date": "2023-08-27T19:16:44.408216",
+        "description": "this is a description",
+        "id_event": "515e756a-9093-4c0d-a2b8-917ebd3b315f",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "HIGH",
+        "data": {
+            "event_type": "KPI",
+            "flux": 46.36,
+            "line": "1_3",
+            "zone": "Ouest"
+        },
+        "date": "2023-08-27T19:26:28.766512",
+        "description": "this is a description",
+        "id_event": "bb128713-7a01-4c35-98d4-3bad85f98501",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "HIGH",
+        "data": {
+            "event_type": "KPI",
+            "flux": 100.1,
+            "line": "58_60_156"
+        },
+        "date": "2012-01-04T12:45:00",
+        "description": "Attention la ligne 58_60_156 est en surcharge de 100.1%",
+        "id_event": "d4e3d7c6-871a-495d-a8d4-f051c45568cf",
+        "is_active": false,
+        "use_case": "RTE"
+    },
+    {
+        "criticality": "MEDIUM",
+        "data": {
+            "event_type": "anticipation",
+            "flux": 205.2,
+            "line": "62_58_180"
+        },
+        "date": "2023-09-14T09:46:57.681653",
+        "description": "Lignes impactées ['48_49_135', '48_50_136', '55_56_146', '49_56_147', '55_57_148', '50_57_149', '58_59_155', '58_60_156'], charge max 205.2%",
+        "id_event": "74ad074a-4069-4fba-8160-1beb27772263",
+        "is_active": false,
+        "use_case": "RTE"
+    }
+]

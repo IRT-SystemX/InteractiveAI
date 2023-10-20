@@ -1,32 +1,25 @@
 from apiflask import APIBlueprint
 from cab_common_auth.decorators import get_use_cases, protected
 from flask import request, jsonify, abort
-from flask.views import MethodView
+from apiflask.views import MethodView
 
-from .schemas import RecommendationAsk
+from .schemas import RecommendationAsk, RecommendationOut
 from settings import logger
-from .utils import UseCaseFactory
-from .recommendation_manager.da_manager import DAManager
-from .recommendation_manager.rte_manager import RTEManager
-from .recommendation_manager.sncf_manager import SNCFManager
 
 
 api_bp = APIBlueprint("recommendation-api", __name__, url_prefix="/api/v1")
-factory = UseCaseFactory()
-factory.register_use_case('DA', DAManager())
-factory.register_use_case('RTE', RTEManager())
-factory.register_use_case('SNCF', SNCFManager())
 
 
 class HealthCheck(MethodView):
 
     def get(self):
-        return
+        return {"message": "Ok"}
 
 
 class RecommendationView(MethodView):
 
     @api_bp.input(RecommendationAsk)
+    @api_bp.output(RecommendationOut(many=True), status_code=201)
     @protected
     def post(self, data):
         """Get recommendation"""
@@ -39,9 +32,10 @@ class RecommendationView(MethodView):
             use_case_name = request_use_case
         else:
             use_case_name = token_use_case_list[0]
-
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         # Create an instance of the appropriate use case class using the factory
-        use_case = factory.get_use_case(use_case_name)
+        use_case = use_case_factory.get_use_case(use_case_name)
 
         # Call the appropriate method on the use case
         result = use_case.get_recommendation(data)
