@@ -2,13 +2,15 @@ version: "3.8"
 services:
 
   cab-context:
-    image: harbor.irtsysx.fr/cab/cab-context:${IMAGE_CONTEXT_TAG}
+    image: ${CAB_CONTEXT_IMAGE_WITH_TAG}
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     restart: unless-stopped
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
@@ -28,7 +30,7 @@ services:
       kompose.image-pull-policy: "Always"
 
   cab-event:
-    image: harbor.irtsysx.fr/cab/cab-event:${IMAGE_EVENT_TAG}
+    image: ${CAB_EVENT_IMAGE_WITH_TAG}
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -37,7 +39,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
-      # - FLASK_ENV=development
+      - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
@@ -56,9 +60,13 @@ services:
       kompose.image-pull-policy: "Always"
 
   cab-historic:
-    image: harbor.irtsysx.fr/cab/cab-historic:${IMAGE_HISTORIC_TAG}
+    image: ${CAB_HISTORIC_IMAGE_WITH_TAG}
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5432/cab-historic
+      # - FLASK_APP=app:create_app('dev')
+      # - FLASK_ENV=development
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     restart: unless-stopped
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
@@ -169,7 +177,7 @@ services:
       kompose.volume.subpath: pg-data
 
   frontend:
-    image: harbor.irtsysx.fr/cab/cab-frontend:${IMAGE_FRONTEND_TAG}
+    image: ${CAB_FRONTEND_IMAGE_WITH_TAG}
     restart: unless-stopped
     configs:
       - source: cab-ui-config-web-ui
@@ -199,7 +207,7 @@ services:
       kompose.image-pull-policy: "Always"
 
   cab-correlation:
-    image: harbor.irtsysx.fr/cab/cab-correlation:${IMAGE_CORRELATION_TAG}
+    image: ${CAB_CORRELATION_IMAGE_WITH_TAG}
     restart: unless-stopped
     environment:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
@@ -208,6 +216,8 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
@@ -249,13 +259,15 @@ services:
       kompose.controller.type: statefulset
 
   cab-recommendation:
-    image: harbor.irtsysx.fr/cab/cab-recommendation:${IMAGE_RECOMMENDATION_TAG}
+    image: ${CAB_RECOMMENDATION_IMAGE_WITH_TAG}
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - FLASK_APP=app:create_app('dev')
       - FLASK_ENV=development
       - PYTHONPATH=/my_app
+      - URL_INTROSPECT="http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://web-ui.cab-dev.svc.cluster.local:80/auth/"
     command: python -m flask run --host=0.0.0.0 --reload
     ports:
       - 5000
