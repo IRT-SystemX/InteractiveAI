@@ -345,12 +345,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-          document.getElementById("of_timeline").style.backgroundColor = "black";
+          document.getElementById("tl-box").style.position = "fixed";
+          document.getElementById("tl-box").style.bottom = "0";
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
           document.getElementById("notifs_DA").hidden = false;
           document.getElementById("opfab-feed-filter-btn-filter").hidden = true;
           document.getElementById("da_block_request").hidden = false;
-          document.getElementById("of_timeline").style.zIndex = 5;
           document.getElementById("map").classList += " map_da";
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
           setInterval(() => {
@@ -366,7 +366,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
           document.getElementById("opfab-navbar-menu-feed").style.color = "white";
-          setTimeout(getOrangeIncidents,20000);
+          // mock poc v1/2 setTimeout(getOrangeIncidents,20000);
           document.getElementById("map").hidden = true;
           document.getElementById("correlation").hidden = false;
           document.getElementById("orange_assist").hidden = false;
@@ -539,10 +539,7 @@ These two parameters are place in this file as the style should have a title par
               setDescsForDA();
             } catch (error) {
             }
-            try {
-              setSeverityForDA();
-            } catch (error) {
-            }
+
     }
     if (selectedUseCase!= "DA"){
       setInterval(() => {
@@ -559,12 +556,6 @@ These two parameters are place in this file as the style should have a title par
         }
       }
           
-    function setSeverityForDA() {
-      var severities = document.getElementsByClassName("card-severity")
-      for(var severity = 0;severities.length;severity++){
-            severities[severity].textContent="";
-        }
-      }
     function setDescsForDA() {
         var descs = document.getElementsByClassName("p-1");
         for(var desc = 0;descs.length;desc++){
@@ -580,40 +571,37 @@ These two parameters are place in this file as the style should have a title par
       if (selectedUseCase == "SNCF"){
         var severities = document.getElementsByClassName("opfab-feed-list-card-severity")
         for (var severity = 0; severity < severities.length; severity++) {
-           severities[severity].hidden = true
           }
           var descs = document.getElementsByClassName("p-1");
          var titles = document.getElementsByClassName("card-title")
-         for (var titleSncf = 0; titleSncf < titles.length; titleSncf++) {
-          titles[titleSncf].style.marginLeft = '40px'
-        }
-        for(var desc = 0;descs.length;desc++){
-          try {
-          descs[desc].hidden = true;
-          } catch (error) {
-            break;
-          }
-        }
+
       }
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
+        event_start_date = getCardContent(cards[card].getAttribute("data-urlid"),false,true);
+        event_start_date_formated = new Date (event_start_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
         cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Maintenance ");
         cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Maintenance ");
+        cards[card].children[0].style.marginLeft = "20px";
+        // cards[card].innerHTML += "<button onclick='acknowledgeEvent(" + cards[card].getAttribute("data-urlid").toString() + ",0)'> trashIcon </button>"
+        try {
+          cards[card].children[1].style.marginLeft = "20px";
+        } catch (error) {
+          console.info("Description disabled")
+        }
+
         if (selectedUseCase == "SNCF"){
+          cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.png", "assets\\images\\impact_sncf.svg");
+
           if (!cards[card].classList.contains("SNCF_card")){
             cards[card].classList.add("SNCF_Card");
             try {
               getCardContent(cards[card].getAttribute("data-urlid"));
+              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",getCardContent(cards[card].getAttribute("data-urlid"),true));
             } catch (error) {
             }
-          }
-          //titre carte margé
-          if (innerWidth > 1800){
-            cards[card].children[0].style.marginLeft = '80px'
-          }else{
-            cards[card].children[0].style.marginLeft = '60px'
           }
 
           if (cards[card].classList.contains("light-card-detail-selected")){
@@ -622,7 +610,6 @@ These two parameters are place in this file as the style should have a title par
               cards[card].classList.add("sncf-border-" + cards[card].attributes['severity'].value);
               cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.add("sncfCard");
-              cards[card].classList.remove("sncfCardNotSelected");
               cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100";
               if(assistNeverTriggered){
                 document.getElementById("sncf_assist").hidden = false;
@@ -635,7 +622,7 @@ These two parameters are place in this file as the style should have a title par
             try {
               cards[card].classList.add("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.remove("sncfCard");
-              cards[card].classList.add("sncfCardNotSelected");
+              // cards[card].classList.add("sncfCardNotSelected");
               cards[card].classList.remove("sncf-border-" + cards[card].attributes['severity'].value);
               } catch (error) {
                 console.info("non concerné, sncf")
@@ -650,17 +637,32 @@ These two parameters are place in this file as the style should have a title par
             // cards[card].classList += " title-light-card-border-white";
             // cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
               cards[card].classList.add("rteBg-"+ cards[card].attributes['severity'].value)
-              cards[card].children[1].style.marginLeft = "20px";
-              cards[card].children[0].lastElementChild.firstChild.firstChild.style.marginLeft = "20px";
               // cards[card].children[1].lastElementChild.firstChild.firstChild.style.color  = "gray";
               
         }else if (selectedUseCase == "DA"){
           if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
             try {
-              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
-              cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
+              cards[card].classList.add("daBg-"+ cards[card].attributes['severity'].value)
+              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",event_start_date_formated);
+              cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",event_start_date_formated);
+              // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
+              // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
             } catch (error) {
               //nothing to catch, normal behavior 
+            }
+          }
+        }else if (selectedUseCase == "ORANGE"){
+          if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
+            try {
+              cards[card].classList.add("orangeBg-"+ cards[card].attributes['severity'].value)
+              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",event_start_date_formated);
+              cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",event_start_date_formated);
+              cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.png", "assets\\images\\opfab-bg-sev-alarm-icon.png");
+              cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-information-icon.png", "assets\\images\\icon _solve_.png");
+
+            } catch (error) {
+              //nothing to catch, normal behavior 
+              console.log(error)
             }
 
           }
@@ -685,7 +687,7 @@ These two parameters are place in this file as the style should have a title par
         }
       }
     }
-    function getCardContent(id_card) {
+    function getCardContent(id_card,hasCustomSeverity,getEventTime) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", host + "/cards/cards/"+id_card,false);
@@ -694,6 +696,13 @@ These two parameters are place in this file as the style should have a title par
         var response = JSON.parse(xmlHttp.responseText);
         lastTrain = response.card.data.metadata.id_train;
         lastSeverity = response.card.severity;
+        if(hasCustomSeverity){
+          //get event_type instead of card severity [sncf] 
+          return response.card.data.metadata.event_type;
+        }
+        if(getEventTime){
+          return response.card.startDate;
+        }
         updateTrainStatus(lastTrain,lastSeverity)
       }
     };
@@ -848,6 +857,10 @@ These two parameters are place in this file as the style should have a title par
         document.getElementById("rte_assist_nominal").hidden = true;
         document.getElementById("rte_assist").innerHTML = "";
         getCardProcess();
+        break;
+        case "DA":
+        // console.log(this)
+        //todo intégration service reco
         break;
       }
       }
@@ -1217,9 +1230,9 @@ These two parameters are place in this file as the style should have a title par
   </of-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
   <div id="tl-container-home" hidden>
-    <div class="timeline-container timeline-border">
+    <div id ="tl-box" class="timeline-container timeline-border">
       <div style="font-size:18px;color:grey;margin-left:3px;overflow: hidden"><b>Timeline</b></div>
-        <div class="timeline">
+        <div class="timeline" id="timelineNG">
             <div class="global-current-time-cursor">
               <img style='width: 17px;
                     position: absolute;
@@ -1228,10 +1241,9 @@ These two parameters are place in this file as the style should have a title par
               src='./assets/images/time_cursor.svg'/>
                 <div id="current-time"><b></div>
             </div> 
-            <div class="timeline-line" style="
+            <div id="timeline-line" class="timeline-line" style="
             border-top: solid;
-            opacity: 40%;
-            margin-top: 4px;
+            margin-top: 15px;
             padding: 2px;
 "><div class="" 'timeline-hour'="" style="left: 0;margin-top: -5px;"></div><div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
 </div><div class="timeline-hour" style="left: 50%;margin-top: -5px;"> 12:00</div><div class="timeline-hour" style="left: 75%;margin-top: -5px;">18:00</div><div class="timeline-hour" style="right: 0;"></div></div>

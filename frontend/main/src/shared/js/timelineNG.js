@@ -41,6 +41,28 @@ function fillTimeLine() {
                     getCardForTimeline(id_event,card);
   
             }
+
+            var events = document.getElementsByClassName("blocEvent")
+
+
+for (var event = 0; event<events.length;event++)
+{
+if (!document.getElementsByClassName("blocEvent")[event].hidden){
+    console.log("visible")
+console.log(document.getElementsByClassName("blocEvent")[event])
+document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon'>"
+document.getElementById("event" + [event] + "icon").src = document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
+// document.getElementById("event" + [event] + "icon").src = document.getElementsByClassName("timeline-point")[event].children[0].src
+document.getElementById("event" + [event] + "icon").style.left = document.getElementsByClassName("timeline-point")[event].style.left
+document.getElementById("event" + [event] + "icon").style.position = "absolute"
+document.getElementById("event" + [event] + "icon").style.marginTop = "-25px"
+document.getElementById("event" + [event] + "icon").style.marginLeft = "-8px"
+
+
+
+}
+    
+}
             
         }
     });
@@ -67,6 +89,20 @@ function getCardForTimeline(id_event,card){
         var hasBeenAcknowledged = data.card.hasBeenAcknowledged;
         if(!hasBeenAcknowledged){
             // document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
+            // document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
+            // cards[card].innerHTML += 
+            try {
+                cardName = 'opfab-feed-light-card-' + selectedUseCase.toLowerCase() + 'Process-' + document.querySelector('#event'+card+' [event_id]').getAttribute("event_id")
+                console.log(cardName)
+                // document.getElementById(cardName).innerHTML += "<button onclick='acknowledgeEvent('" + uid + "','" + card + ")'> trashIcon </button>"
+                // document.getElementById(cardName).innerHTML += '<button onclick="acknowledgeEvent(\'' + uid + '\', \'' + card + '\')">trashIcon</button>';
+                if ( document.getElementById(cardName).querySelector(".imgBin") == null){
+                    document.getElementById(cardName).innerHTML += '<img class="imgBin" src="assets/images/trashIcon.svg" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + card + '\', \'' + id_event + '\')">';
+                }
+            } catch (error) {
+                console.log("Cant find matching id "+ cardName);
+                
+            }
             try {
                 document.getElementById("event"+card).hidden=false;
             } catch (error) {
@@ -97,7 +133,7 @@ xhr.onloadend = function() {
     xhr.send(); 
 }
 
-function acknowledgeEvent(id_event,card){
+function acknowledgeEvent(uid,card,id_event){
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
     var data = JSON.stringify([
@@ -106,10 +142,13 @@ function acknowledgeEvent(id_event,card){
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === 4 && this.status == 201) {
             document.getElementById("event"+card).style.display = 'none';
+            document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLocaleLowerCase() + "Process-" + id_event).remove();
+            document.getElementById("event"+card+"icon").remove();
+            console.log("event"+card+"icon")
+
         }
     });
-
-    xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + id_event);
+    xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer "+ token);

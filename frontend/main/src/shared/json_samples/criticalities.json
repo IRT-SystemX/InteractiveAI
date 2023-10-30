@@ -14,13 +14,13 @@
         },
         "SNCF": {
             "icon": {
-                "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "MEDIUM": "<img src='./assets/images/sncf_delay.png'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>"
             },
             "color": {
-                "MEDIUM": "#E05206",
-                "HIGH": "#C30044",
+                "MEDIUM": "#DAAA00",
+                "HIGH": "#DC582A",
                 "ROUTINE": "#E05206"
             }
         },
@@ -31,8 +31,8 @@
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>"
             },
             "color": {
-                "MEDIUM": "yellow",
-                "HIGH": "green",
+                "MEDIUM": "#E05206",
+                "HIGH": "#A70000",
                 "ROUTINE": "blue"
             }
         },
@@ -40,12 +40,14 @@
             "icon": {
                 "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "COMPLIANT": "<img src='./assets/images/red_alarm.svg'/>",
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>"
             },
             "color": {
-                "MEDIUM": "orange",
-                "HIGH": "purple",
-                "ROUTINE": "pink"
+                "MEDIUM": "#FF7900",
+                "HIGH": "#FF7900",
+                "COMPLIANT": "#FF7900",
+                "ROUTINE": "#50BE87"
             }
         }
     }

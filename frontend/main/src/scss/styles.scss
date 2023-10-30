@@ -688,6 +688,15 @@ label:hover{
     font-weight: bold;
     cursor: pointer;
 }
+.daBg-alarm{
+    box-shadow: 15px 0px 9px #A70000 inset;
+}
+.daBg-action{
+    box-shadow: 15px 0px 9px #E05206 inset;
+}
+.daBg-compliant{
+    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
+}
 .rteBg-alarm{
     box-shadow: 15px 0px 9px #A70000 inset;
     color: #A70000!important
@@ -706,6 +715,26 @@ label:hover{
 .rteBg-information{
     box-shadow: 15px 0px 9px rgb(0,158,143) inset;
     color: rgb(0,158,143)!important
+
+}
+.orangeBg-action{
+    box-shadow: 15px 0px 9px #FF7900 inset;
+    color: #FF7900!important
+
+}
+.orangeBg-information{
+    box-shadow: 15px 0px 9px #50BE87 inset;
+    color: #50BE87!important
+
+}
+.orangeBg-compliant{
+    box-shadow: 15px 0px 9px #50BE87 inset;
+    color: #50BE87!important
+
+}
+.orangeBg-routine{
+    box-shadow: 15px 0px 9px #50BE87 inset;
+    color: #50BE87!important
 
 }
 #opfab-div-card-template-alarm{
@@ -889,11 +918,11 @@ label:hover{
         width: 77%!important;
     }
     #dassaultBar{
-        height: 905px;
+        height: 790px;
         margin-left: 350px
     }
     #dassaultBar2{
-        height: 905px;
+        height: 790px;
         margin-left: 1050px;
     }
     #assistOpTitle{
@@ -979,11 +1008,11 @@ label:hover{
         margin-left: 405px;
     }
     #dassaultBar{
-        height: 905px;
+        height: 790px;
         margin-left: 392px;
     }
     #dassaultBar2{
-        height: 905px;
+        height: 790px;
         margin-left: 1500px
     }
     .map_da{

@@ -64,16 +64,28 @@
     cursor: pointer;
     background-color: #A70000;
 }
-.sncf-light-card-background-action {
-    cursor: pointer;
-    background-color: #E05206;
-    color:white;
-}
+
 .sncf-light-card-background-alarm {
-    cursor: pointer;
-    background-color: #C30044;
-    color:white;
+    box-shadow: 15px 0px 9px #A70000 inset;
+    color: #DC582A!important
+
 }
+.sncf-light-card-background-action{
+    box-shadow: 15px 0px 9px #E05206 inset;
+    color: #DAAA00!important
+
+}
+
+// .sncf-light-card-background-action {
+//     cursor: pointer;
+//     background-color: #E05206;
+//     color:white;
+// }
+// .sncf-light-card-background-alarm {
+//     cursor: pointer;
+//     background-color: #C30044;
+//     color:white;
+// }
 .sncf-light-card-background-compliant {
     cursor: pointer;
     background-color: #E05206;
@@ -85,7 +97,7 @@
     color:white;
 }
 .sncf-border-alarm{
-    border-color: #C30044;
+    border-color: #DC582A;
     border-width: 4px;
 }
 .sncf-border-action{
