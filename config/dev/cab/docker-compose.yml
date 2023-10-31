@@ -178,9 +178,13 @@ services:
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
       # - FLASK_ENV=development
-      - URL_INTROSPECT=http://frontend:80/auth/check_token
-      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
-      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - CONTEXT_URL=http://cabcontext:5000
+      - EVENT_URL=http://cabevent:5000
+      - CAB_USERNAME=publisher_test
+      - CAB_PASSWORD=test
+
     command: sh -c "./entrypoint.sh"
     ports:
       - 5300:5000
@@ -190,6 +194,8 @@ services:
       - cab-docker_default
     depends_on:
       - db_postgres_correlation
+      - cabevent
+      - cabcontext
 
   db_postgres_correlation:
     container_name: db_postgres_correlation
