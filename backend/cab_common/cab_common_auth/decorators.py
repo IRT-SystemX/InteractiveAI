@@ -16,13 +16,19 @@ from flask import abort, request
 from .custom_keycloak_openid import CustomKeycloakOpenID
 from keycloak.exceptions import KeycloakError
 
-from .settings import KEYCLOAK_SERVER_URL, AUTH_DISABLED, DEFAULT_USE_CASE, logger
+from .settings import (
+    KEYCLOAK_SERVER_URL,
+    AUTH_DISABLED,
+    DEFAULT_USE_CASE,
+    OPFAB_CLIENT_SECRET,
+    logger,
+)
 
 keycloak = CustomKeycloakOpenID(
     server_url=KEYCLOAK_SERVER_URL,
     client_id="opfab-client",
     realm_name="dev",
-    client_secret_key="opfab-keycloak-secret",
+    client_secret_key=OPFAB_CLIENT_SECRET,
 )
 
 
@@ -90,7 +96,7 @@ def get_use_cases():
     try:
         _, token = token.split(" ", 1)
         introspection = keycloak.introspect(token=token)
-        logger.debug(introspection)
+        logger.info(introspection)
 
         if not introspection.get("active"):
             abort(401, "Invalid token")

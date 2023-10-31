@@ -14,8 +14,9 @@ services:
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
-      - URL_INTROSPECT="http://frontend:80/auth/check_token"
-      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
 
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
@@ -44,8 +45,9 @@ services:
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
-      - URL_INTROSPECT="http://frontend:80/auth/check_token"
-      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
     command: sh -c "./entrypoint.sh"
     ports:
       - 5000:5000
@@ -66,8 +68,9 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_historic:5432/cab-historic
       # - FLASK_APP=app:create_app('dev')
       # - FLASK_ENV=development
-      - URL_INTROSPECT="http://frontend:80/auth/check_token"
-      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -175,8 +178,9 @@ services:
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev')
       # - FLASK_ENV=development
-      - URL_INTROSPECT="http://frontend:80/auth/check_token"
-      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
     command: sh -c "./entrypoint.sh"
     ports:
       - 5300:5000
@@ -215,8 +219,9 @@ services:
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/my_app
       - FLASK_ENV=development
-      - URL_INTROSPECT="http://frontend:80/auth/check_token"
-      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
