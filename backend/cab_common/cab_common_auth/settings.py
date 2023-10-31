@@ -13,6 +13,7 @@ KEYCLOAK_SERVER_URL = os.getenv(
 
 AUTH_DISABLED = os.getenv("AUTH_DISABLED", "").lower() in ["true", "1"]
 DEFAULT_USE_CASE = os.getenv("DEFAULT_USE_CASE")
+OPFAB_CLIENT_SECRET = os.getenv("OPFAB_CLIENT_SECRET")
 
 DEFAULT_LOGGING = {
     "version": 1,
