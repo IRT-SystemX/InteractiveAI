@@ -18,10 +18,10 @@ function fillTimeLine() {
             var cards = JSON.parse(this.responseText)
             for (var card = 0; card < cards.length; card++) {
                 var criticality = cards[card].criticality;
-                if (criticality == "HIGH" && newCriticalityReady){
-                        newCriticalityReady = false;
-                            document.getElementById("eventsForTimeLine").innerHTML = "";
-                }
+                // if (criticality == "HIGH" && newCriticalityReady){
+                //         newCriticalityReady = false;
+                //             document.getElementById("eventsForTimeLine").innerHTML = "";
+                // }
                 var date = cards[card].date;
                 var title = cards[card].title;
                 var description = cards[card].description;
@@ -34,12 +34,12 @@ function fillTimeLine() {
                 " id='title" + card + "'>" + title + "</div>" + "<div class='timeline'>" +
                 "<div class='timeline-line'><div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
                 "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
-                "<div class='timeline-point' id='timeline-point" + card + "' style='left: calc(60.5556% - 4px);'>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
+                "<div class='timeline-point' id='timeline-point" + card + "' '>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
+                "<div class='timeline-point' id='timeline-point-end" + card + "'>"+ "<img src='assets/images/icon _flag_.png'>" + "</div>" +
                 "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "'></div></div>";
                     document.getElementById("eventsForTimeLine").innerHTML += cartToAdd;
                     positionnerPointSurTimeline(heure_event, card);
                     getCardForTimeline(id_event,card);
-  
             }
 
             var events = document.getElementsByClassName("blocEvent")
@@ -186,7 +186,6 @@ function updateGlobalCurrentTimeCursor() {
 }
 
 function positionnerPointSurTimeline(heure, timeline_id) {
-    var positionObtenue = 0;
 
     var point = document.getElementById('timeline-point' + timeline_id);
     var highlight = document.getElementById('timeline-highlight' + timeline_id);
@@ -208,30 +207,44 @@ function positionnerPointSurTimeline(heure, timeline_id) {
     }
     var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
-    timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
-    timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
+    var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
+    var timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
     // // si l'heure actuelle est inférieure a la date de levenement 
         point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
 
         // if(heureActuelle < heureEvent){
-            // highlight.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
-            // point.style.left = document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left - document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
-            // positionObtenue++;
-            // if (Math.abs(timelineHighlightWidth)<300 || selectedUseCase == "RTE"){
             if (Math.abs(timelineHighlightWidth)<300){
             highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
             }
-            // }else if (Math.abs(timelineHighlightWidth)>300) && selectedUseCase =="RTE"){
-            //     highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
-            // }
-        // }else{
-            // highlight.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
-            // point.style.left = parseInt(timelinePointMarginLeft) + document.getElementById("timeline-point" + timeline_id).offsetWidth + "px";
-            // positionObtenue++;
-        // }
-    // }   
     
+}
+function positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
+
+    console.log("positionner cette heure custom" + heure)
+    var point = document.getElementById('timeline-point-end' + timeline_id);
+    var heureRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!heureRegex.test(heure)) {
+        console.error("Format d'heure invalide. Utilisez le format HH:mm.");
+        return;
+    }
+    var highlight = document.getElementById('timeline-highlight' + timeline_id);
+
+    var heureMinutes = heure.split(':');
+    var heures = parseInt(heureMinutes[0]);
+    var minutes = parseInt(heureMinutes[1]);
+    var heureActuelle = new Date();
+    var heureEvent = new Date();
+    heureEvent.setHours(heures, minutes, 0, 0);
+    if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
+        console.error("Heure invalide. Assurez-vous que l'heure est entre 00:00 et 23:59.");
+        return;
+    }
+    var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
+    highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+
+    var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
+    point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
 }
 function time_format(d) {
     hours = format_two_digits(d.getHours());

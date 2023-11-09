@@ -80,6 +80,15 @@
         border-radius: 50%;
         top: -4px;
     }
+    .timeline-point-end {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        color: gray;
+        font-weight: bold;
+        border-radius: 50%;
+        top: -4px;
+    }
     [id^="timeline-point"] img {
         margin-left: -12px;
     }

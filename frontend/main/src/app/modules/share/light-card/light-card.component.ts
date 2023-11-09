@@ -195,7 +195,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         });
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(data);
@@ -350,7 +350,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
           }
         });
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
+        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
@@ -384,6 +384,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
+            document.getElementById("nominal_assist").hidden = true;
+
             
            
                 document.getElementById("rte_assist_nominal").hidden = false;
@@ -404,6 +406,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
+            document.getElementById("nominal_assist").hidden = true;
+
             
             if(document.getElementById("rte_assist_nominal").hidden &&
              document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false"){
@@ -445,18 +449,23 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-alarm").hide()
             $("#opfab-div-card-template-noparades").hide()
         
-    }else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
-            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-                $(".opfab-card-response-header").hide();
-            });
-            $("#opfab-div-card-template").hide()
-            $("#opfab-div-card-template-op").show()
-            $("#opfab-div-card-template-security").hide()
-            $("#opfab-div-card-template-alarm").hide()
-            $("#opfab-div-card-template-noparades").hide()
-            $("#opfab-div-card-template-agent").hide()
-        }
+    }
+          else if (document.getElementById("opfab-card-title").innerHTML.includes("Application")) {
+            document.getElementById("nominal_assist").hidden = true;
+            document.getElementById("orange_assist").hidden = false;
+      }
+          else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+                      $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
+                          $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                          $(".opfab-card-response-header").hide();
+                      });
+                      $("#opfab-div-card-template").hide()
+                      $("#opfab-div-card-template-op").show()
+                      $("#opfab-div-card-template-security").hide()
+                      $("#opfab-div-card-template-alarm").hide()
+                      $("#opfab-div-card-template-noparades").hide()
+                      $("#opfab-div-card-template-agent").hide()
+                  }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("FAULT")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();

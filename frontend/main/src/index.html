@@ -339,7 +339,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("feed-content").style.position = "absolute";
           document.getElementById("feed-content").classList.add("feed-content_optimized")
           document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
-          document.getElementById("assistOpTitle").style.overflowY = "scroll";
           document.getElementById("assistOpTitle").style.top = "80px";
           document.getElementById("opfab-card-list").style.overflowY = "hidden";
           document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
@@ -354,7 +353,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("map").classList += " map_da";
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
           setInterval(() => {
-            refreshCtxDA();
+            // refreshCtxDA();
           }, 110);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
@@ -369,7 +368,6 @@ These two parameters are place in this file as the style should have a title par
           // mock poc v1/2 setTimeout(getOrangeIncidents,20000);
           document.getElementById("map").hidden = true;
           document.getElementById("correlation").hidden = false;
-          document.getElementById("orange_assist").hidden = false;
           document.getElementById("orange_ctx").hidden = false;
           document.getElementById("assistOpTitle").classList.add("orange_theme");
           document.getElementById("assistOpTitle").classList.add("assist_sncf");
@@ -412,6 +410,7 @@ These two parameters are place in this file as the style should have a title par
           mapSNCF();
           break;
       }
+      document.getElementById("nominal_assist").hidden = false;
       document.getElementById("homescreen").style = "display:none";
       document.getElementById("assistOpTitle").hidden = false;
       initTimeLine();
@@ -578,8 +577,27 @@ These two parameters are place in this file as the style should have a title par
       }
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
-        event_start_date = getCardContent(cards[card].getAttribute("data-urlid"),false,true);
+        event_start_date = getCardContent(cards[card].getAttribute("data-urlid"),false,true,false);
+        event_end_date = getCardContent(cards[card].getAttribute("data-urlid"),false,false,true);
         event_start_date_formated = new Date (event_start_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+        event_end_date_formated = new Date (event_end_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+        var event_end_date_plus_5_hours = new Date(event_end_date).getTime() + 5 * 60 * 60 * 1000;
+        var event_end_date_plus_5_hours_formated = new Date(event_end_date_plus_5_hours).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        event_end_date_formated = event_end_date_plus_5_hours_formated;
+        console.log(event_end_date_plus_5_hours_formated + "event_end_date_plus_5_hours_formated")
+        //positionner point sur timeline END DATE
+        // hack pour obtenir l'id de la ligne de timeline associée à l'event
+        try {
+          card_timeline = document.querySelector('[event_id="' + cards[card].getAttribute("data-urlid").replace(selectedUseCase.toLowerCase()+"Process.","")
+        + '"]').getAttribute("id").match(/\d+/)[0]
+        //positionnerEndPoint
+        // positionnerPointSurTimeline(event_end_date_plus_5_hours_formated, card_timeline);
+        if(event_end_date){
+          positionnerPointFinDateEventSurTimeline(event_end_date_plus_5_hours_formated,card_timeline)
+        }
+        } catch (error) {
+        }
+
         cards[card].innerHTML = cards[card].innerHTML.replace("action ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
         cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Maintenance ");
@@ -599,7 +617,7 @@ These two parameters are place in this file as the style should have a title par
             cards[card].classList.add("SNCF_Card");
             try {
               getCardContent(cards[card].getAttribute("data-urlid"));
-              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",getCardContent(cards[card].getAttribute("data-urlid"),true));
+              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",getCardContent(cards[card].getAttribute("data-urlid"),true,false,false));
             } catch (error) {
             }
           }
@@ -639,24 +657,17 @@ These two parameters are place in this file as the style should have a title par
               cards[card].classList.add("rteBg-"+ cards[card].attributes['severity'].value)
               // cards[card].children[1].lastElementChild.firstChild.firstChild.style.color  = "gray";
               
-        }else if (selectedUseCase == "DA"){
-          if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
-            try {
-              cards[card].classList.add("daBg-"+ cards[card].attributes['severity'].value)
-              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",event_start_date_formated);
-              cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",event_start_date_formated);
-              // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
-              // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value + "_DA";
-            } catch (error) {
-              //nothing to catch, normal behavior 
-            }
-          }
-        }else if (selectedUseCase == "ORANGE"){
+        }
+        else if (selectedUseCase == "ORANGE" || selectedUseCase == "DA"){
           if (!cards[card].classList.toString().includes("light-card-background") && cards[card].classList.toString().includes("light-card-detail")){
             try {
               cards[card].classList.add("orangeBg-"+ cards[card].attributes['severity'].value)
-              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",event_start_date_formated);
-              cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",event_start_date_formated);
+              var card_hour = event_start_date_formated;
+              if(event_end_date){
+                card_hour = event_end_date_formated;
+              }
+              cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",card_hour);
+              cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",card_hour);
               cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.png", "assets\\images\\opfab-bg-sev-alarm-icon.png");
               cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-information-icon.png", "assets\\images\\icon _solve_.png");
 
@@ -687,7 +698,7 @@ These two parameters are place in this file as the style should have a title par
         }
       }
     }
-    function getCardContent(id_card,hasCustomSeverity,getEventTime) {
+    function getCardContent(id_card,hasCustomSeverity,getEventTime,getEventTimeEnd) {
       if (id_card != null){
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", host + "/cards/cards/"+id_card,false);
@@ -701,6 +712,10 @@ These two parameters are place in this file as the style should have a title par
           return response.card.data.metadata.event_type;
         }
         if(getEventTime){
+          return response.card.startDate;
+        }
+        if(getEventTimeEnd){
+          // return response.card.endDate; -> waiting this attribute to be available from API
           return response.card.startDate;
         }
         updateTrainStatus(lastTrain,lastSeverity)
@@ -1116,6 +1131,7 @@ These two parameters are place in this file as the style should have a title par
         <hr>
       </div>
     </div>
+    <div id="nominal_assist" hidden><img src="assets/images/cab_frame.png"><br><b>Bonjour ! </b><br>Je suis votre assistant bidirectionnel.</div>
     <div id="orange_assist" hidden>
       <div id="orange_headers" style="display:flex">
         <div><button id="canari" class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
@@ -1158,7 +1174,7 @@ These two parameters are place in this file as the style should have a title par
     </div>
     <div id="dassault_assist" hidden>
       <div id="da_bloc_content">
-        <div class = "da_assist" id="noevent_da"> <img src='assets/images/no_event_da.png'></div>
+        <!-- <div class = "da_assist" id="noevent_da"> <img src='assets/images/no_event_da.png'></div> -->
           <div class = "da_assist" id="high_procedure" hidden>
             <img src="assets\images\endofprocedure_da.png">
           </div>
