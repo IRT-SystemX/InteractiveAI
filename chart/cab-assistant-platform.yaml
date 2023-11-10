@@ -218,7 +218,7 @@ services:
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
       - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
       - PYTHONPATH=/code
-      - FLASK_APP=app:create_app('dev')
+      - FLASK_APP=app:create_app('dev', scheduler=True)
       - URL_INTROSPECT=http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://web-ui.cab-dev.svc.cluster.local:80/auth/
       - OPFAB_CLIENT_SECRET=${OPFAB_CLIENT_SECRET}
