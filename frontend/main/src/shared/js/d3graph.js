@@ -1,11 +1,47 @@
 import * as d3 from "d3";
+import graph from "./graph.json";
+
+const config = {
+  width: 1190,
+  height: 600,
+  margin: { y: 30, x: 50 },
+  distance: 800,
+  strength: -800,
+  radius: { default: 20, hover: 30 },
+  kpi: "composite.ratio_pl",
+  transition: 200,
+};
+
+function opfabToD3(graph, attr, linkFilterCallback = (value) => true) {
+  const nodes = Object.keys(graph)
+    .filter((k) => k.includes(attr))
+    .map((k, i) => ({
+      id: k,
+      data: Object.keys(graph[k])
+        .filter((l) => l.includes(attr) && graph[k][l])
+        .map((l) => ({ [l]: graph[k][l] })),
+    }));
+  let links = [];
+  for (const node of nodes) {
+    links = [
+      ...links,
+      ...node.data
+        .map((k) => ({
+          source: node.id,
+          target: Object.keys(k)[0],
+          force: Object.values(k)[0],
+        }))
+        .filter((value, index) => linkFilterCallback(value, index)),
+    ];
+  }
+  return { nodes, links };
+}
+
+function minmax(value, max, min = 0) {
+  return Math.min(Math.max(min, value), max);
+}
 
 export function setup() {
-  // Declare the chart dimensions and margins.
-  const width = 640;
-  const height = 400;
-  const margin = { top: 30, right: 80, bottom: 30, left: 30 };
-
   //create a simulation for an array of nodes, and compose the desired forces.
   let simulation = d3
     .forceSimulation()
@@ -15,8 +51,8 @@ export function setup() {
         .forceLink() // This force provides links between nodes
         .id((d) => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
     )
-    .force("charge", d3.forceManyBody().strength(-500)) // This adds repulsion (if it's negative) between nodes.
-    .force("center", d3.forceCenter(width / 2, height / 2)); // This force attracts nodes to the center of the svg area
+    .force("charge", d3.forceManyBody().strength(config.strength)) // This adds repulsion (if it's negative) between nodes.
+    .force("center", d3.forceCenter(config.width / 2, config.height / 2)); // This force attracts nodes to the center of the svg area
 
   var tooltip = d3
     .select("body")
@@ -27,66 +63,12 @@ export function setup() {
   const svg = d3
     .select(orange_ctx_container)
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    .attr("width", config.width)
+    .attr("height", config.height)
+    .append("g");
 
   //create dummy data
-  const dataset = {
-    nodes: [
-      {
-        id: 1,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic1.png",
-        size: 50,
-      },
-      {
-        id: 2,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic2.png",
-        size: 35,
-      },
-      {
-        id: 3,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic3.png",
-        size: 55,
-      },
-      {
-        id: 4,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic4.png",
-        size: 45,
-      },
-      {
-        id: 5,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic5.png",
-        size: 52,
-      },
-      {
-        id: 6,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic6.png",
-        size: 51,
-      },
-      {
-        id: 7,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic9.png",
-        size: 60,
-      },
-      {
-        id: 8,
-        img: "https://raw.githubusercontent.com/jienagu/Picture_gif_Personal_Web/master/network_pic10.png",
-        size: 60,
-      },
-    ],
-    links: [
-      { source: 7, target: 1 },
-      { source: 7, target: 6 },
-      { source: 7, target: 2 },
-      { source: 7, target: 3 },
-      { source: 7, target: 8 },
-      { source: 8, target: 4 },
-      { source: 8, target: 5 },
-      { source: 8, target: 6 },
-    ],
-  };
+  const dataset = opfabToD3(graph[0].data, config.kpi, (v) => v.force > 0.3);
 
   // Initialize the links
   const link = svg
@@ -96,53 +78,54 @@ export function setup() {
     .data(dataset.links)
     .enter()
     .append("line")
-    .style("stroke-width", 2.5);
+    .style("stroke", (d) =>
+      d.force > 0 ? d3.interpolateReds(d.force) : d3.interpolateBlues(-d.force)
+    );
 
   // Initialize the nodes
   // add hover over effect
   const node = svg
     .append("g")
     .attr("class", "nodes")
-    .selectAll("image")
+    .selectAll("g")
     .data(dataset.nodes)
     .enter()
-    .append("image")
-    .attr("xlink:href", function (d) {
-      return d.img;
-    })
-    .attr("width", function (d) {
-      return d.size + 5;
-    })
-    .attr("height", function (d) {
-      return d.size + 5;
-    })
+    .append("g")
+    .attr("transform", (d) => `translate(${d.x},${d.y})`)
     .on("mouseover", function (d) {
       d3.select(this)
+        .select("circle")
         .transition()
-        .duration(350)
-        .attr("width", 70)
-        .attr("height", 70);
+        .duration(config.transition)
+        .attr("r", config.radius.hover)
+        .style("fill", "#a00");
     })
     .on("mouseout", function (d) {
       d3.select(this)
+        .select("circle")
         .transition()
-        .duration(350)
-        .attr("width", function (d) {
-          return d.size;
-        })
-        .attr("height", function (d) {
-          return d.size;
-        });
+        .duration(config.transition)
+        .attr("r", config.radius.default)
+        .style("fill", "#000");
     })
     .on("mouseover.tooltip", function (event, d) {
-      tooltip.transition().duration(300).style("opacity", 0.8);
+      tooltip.transition().duration(config.transition).style("opacity", 0.8);
       tooltip
-        .text(`ID: ${d.id}\nSize: ${d.size}`)
+        .text(
+          `ID: ${d.id.split(".")[0]}\nLinks:\n${d.data
+            .map(
+              (value) =>
+                `${Object.keys(value)[0].split(".")[0]}: ${Object.values(
+                  value
+                )[0].toFixed(5)}`
+            )
+            .join("\n")}`
+        )
         .style("left", event.pageX + "px")
         .style("top", event.pageY + 10 + "px");
     })
     .on("mouseout.tooltip", function () {
-      tooltip.transition().duration(100).style("opacity", 0);
+      tooltip.transition().duration(config.transition).style("opacity", 0);
     })
     .on("mousemove", function (event) {
       tooltip
@@ -157,6 +140,14 @@ export function setup() {
         .on("end", dragended) //end - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
 
+  node.append("circle").attr("r", (d) => config.radius.default);
+  //  text-anchor="middle" fill="white" font-size="10px" font-family="Arial" dy=".3em"
+  node
+    .append("text")
+    .attr("class", "label")
+    .attr("dy", ".3em")
+    .text((d) => d.id.split(".")[0]);
+
   //Listen for tick events to render the nodes as they update in your Canvas or SVG.
   simulation
     .nodes(dataset.nodes) //sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
@@ -168,22 +159,33 @@ export function setup() {
   // vx - the node’s current x-velocity
   // vy - the node’s current y-velocity
 
-  simulation
-    .force("link")
-    .links(dataset.links)
-    .distance(function () {
-      return 100;
-    });
+  simulation.force("link").links(dataset.links).distance(distance);
 
   // This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
   function ticked() {
     link
-      .attr("x1", (d) => d.source.x)
-      .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => d.target.x)
-      .attr("y2", (d) => d.target.y);
+      .attr("x1", (d) =>
+        minmax(d.source.x, config.width - config.margin.x, config.margin.x)
+      )
+      .attr("y1", (d) =>
+        minmax(d.source.y, config.height - config.margin.y, config.margin.y)
+      )
+      .attr("x2", (d) =>
+        minmax(d.target.x, config.width - config.margin.x, config.margin.x)
+      )
+      .attr("y2", (d) =>
+        minmax(d.target.y, config.height - config.margin.y, config.margin.y)
+      );
 
-    node.attr("x", (d) => d.x - 25).attr("y", (d) => d.y - 25);
+    node.attr(
+      "transform",
+      (d) =>
+        `translate(${minmax(
+          d.x,
+          config.width - config.margin.x,
+          config.margin.x
+        )},${minmax(d.y, config.height - config.margin.y, config.margin.y)})`
+    );
   }
   //create zoom handler
   var zoom_handler = d3.zoom().on("zoom", zoom_actions);
