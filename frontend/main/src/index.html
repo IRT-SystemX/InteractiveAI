@@ -16,7 +16,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.1</title>
+  <title>Assistant CAB v3.0.2</title>
   <span id="login"></span>
   <base href="/">
 
@@ -578,13 +578,13 @@ These two parameters are place in this file as the style should have a title par
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
         event_start_date = getCardContent(cards[card].getAttribute("data-urlid"),false,true,false);
-        event_end_date = getCardContent(cards[card].getAttribute("data-urlid"),false,false,true);
+        event_end_date = null;
+        // event_end_date = getCardContent(cards[card].getAttribute("data-urlid"),false,false,true);
         event_start_date_formated = new Date (event_start_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
         event_end_date_formated = new Date (event_end_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
         var event_end_date_plus_5_hours = new Date(event_end_date).getTime() + 5 * 60 * 60 * 1000;
         var event_end_date_plus_5_hours_formated = new Date(event_end_date_plus_5_hours).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         event_end_date_formated = event_end_date_plus_5_hours_formated;
-        console.log(event_end_date_plus_5_hours_formated + "event_end_date_plus_5_hours_formated")
         //positionner point sur timeline END DATE
         // hack pour obtenir l'id de la ligne de timeline associée à l'event
         try {
@@ -607,7 +607,6 @@ These two parameters are place in this file as the style should have a title par
         try {
           cards[card].children[1].style.marginLeft = "20px";
         } catch (error) {
-          console.info("Description disabled")
         }
 
         if (selectedUseCase == "SNCF"){
@@ -643,7 +642,6 @@ These two parameters are place in this file as the style should have a title par
               // cards[card].classList.add("sncfCardNotSelected");
               cards[card].classList.remove("sncf-border-" + cards[card].attributes['severity'].value);
               } catch (error) {
-                console.info("non concerné, sncf")
               }
           }
           if(cards[card].classList.toString().includes("light-card-detail-unread")){

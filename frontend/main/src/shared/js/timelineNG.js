@@ -23,11 +23,14 @@ function fillTimeLine() {
                 //             document.getElementById("eventsForTimeLine").innerHTML = "";
                 // }
                 var date = cards[card].date;
+                var end_date = cards[card].end_date;
                 var title = cards[card].title;
                 var description = cards[card].description;
                 var id_event = cards[card].id_event;
                 var use_case = cards[card].use_case;
                 var heure_event = time_format(new Date(date));
+                // var heure_event_fin = time_format(new Date(end_date));
+                var heure_event_fin = null;
                 cartToAdd = "<div hidden class='blocEvent' id='event" + card  + "'>" +
                 "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 35px;background-color:"+ criticalities[use_case].color[criticality] + 
                 ";border: 1px solid " + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
@@ -35,35 +38,39 @@ function fillTimeLine() {
                 "<div class='timeline-line'><div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
                 "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
                 "<div class='timeline-point' id='timeline-point" + card + "' '>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
-                "<div class='timeline-point' id='timeline-point-end" + card + "'>"+ "<img src='assets/images/icon _flag_.png'>" + "</div>" +
-                "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "'></div></div>";
+                "<div class='timeline-point-end' id='timeline-point-end" + card + "'>"+ "<img src='assets/images/done.png'>" + "</div>" +
+                "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "' hidden></div></div>";
                     document.getElementById("eventsForTimeLine").innerHTML += cartToAdd;
-                    positionnerPointSurTimeline(heure_event, card);
-                    getCardForTimeline(id_event,card);
+                    positionnerPointSurTimeline(heure_event, card, heure_event_fin);
+                    if(document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLowerCase() + "Process-" + id_event)){
+                        getCardForTimeline(id_event,card);
+                    }
             }
 
             var events = document.getElementsByClassName("blocEvent")
+                for (var event = 0; event<events.length;event++){
+                    if (!document.getElementsByClassName("blocEvent")[event].hidden){
+                        console.log(document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event]))
+                    document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon'>"
+                    document.getElementById("event" + [event] + "icon").src = document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
+                    document.getElementById("event" + [event] + "icon").style.left = document.getElementsByClassName("timeline-point")[event].style.left
+                    document.getElementById("event" + [event] + "icon").style.position = "absolute"
+                    document.getElementById("event" + [event] + "icon").style.marginTop = "-25px"
+                    document.getElementById("event" + [event] + "icon").style.marginLeft = "-8px"
+                    
+                    
+                    if(heure_event_fin){
+                        document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon_end'>"
+                        document.getElementById("event" + [event] + "icon_end").src = document.getElementById("timeline-point-end"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
+                        document.getElementById("event" + [event] + "icon_end").style.left = document.getElementById("timeline-point-end"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).style.left
+                        document.getElementById("event" + [event] + "icon_end").style.position = "absolute"
+                        document.getElementById("event" + [event] + "icon_end").style.marginTop = "-25px"
+                        document.getElementById("event" + [event] + "icon_end").style.marginLeft = "-8px"
+                        console.log(document.getElementsByClassName("blocEvent")[event])
+                    }
 
-
-for (var event = 0; event<events.length;event++)
-{
-if (!document.getElementsByClassName("blocEvent")[event].hidden){
-    console.log("visible")
-console.log(document.getElementsByClassName("blocEvent")[event])
-document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon'>"
-document.getElementById("event" + [event] + "icon").src = document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
-// document.getElementById("event" + [event] + "icon").src = document.getElementsByClassName("timeline-point")[event].children[0].src
-document.getElementById("event" + [event] + "icon").style.left = document.getElementsByClassName("timeline-point")[event].style.left
-document.getElementById("event" + [event] + "icon").style.position = "absolute"
-document.getElementById("event" + [event] + "icon").style.marginTop = "-25px"
-document.getElementById("event" + [event] + "icon").style.marginLeft = "-8px"
-
-
-
-}
-    
-}
-            
+                }
+                }
         }
     });
     xhr.open("GET", host + "/cab_event/api/v1/events"+"?time="+new Date().getTime());
@@ -185,7 +192,7 @@ function updateGlobalCurrentTimeCursor() {
     currentTimeDiv.innerHTML = "<b>" + time_format(currentTime) + "</b>";
 }
 
-function positionnerPointSurTimeline(heure, timeline_id) {
+function positionnerPointSurTimeline(heure, timeline_id, end_date) {
 
     var point = document.getElementById('timeline-point' + timeline_id);
     var highlight = document.getElementById('timeline-highlight' + timeline_id);
@@ -209,19 +216,16 @@ function positionnerPointSurTimeline(heure, timeline_id) {
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
     var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
     var timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
-    // // si l'heure actuelle est inférieure a la date de levenement 
         point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
-
-        // if(heureActuelle < heureEvent){
-            if (Math.abs(timelineHighlightWidth)<300){
-            highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
-            }
+        highlight.hidden = false;
+    if(!end_date){
+        highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+    }
     
 }
 function positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
 
-    console.log("positionner cette heure custom" + heure)
     var point = document.getElementById('timeline-point-end' + timeline_id);
     var heureRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
     if (!heureRegex.test(heure)) {
@@ -242,7 +246,7 @@ function positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
     }
     var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
     highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
-
+    highlight.hidden = false;
     var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
 }

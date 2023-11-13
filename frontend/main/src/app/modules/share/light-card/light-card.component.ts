@@ -550,6 +550,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
               document.getElementById("sncf_assist_nominal").hidden = true;
               document.getElementById("sncf_assist_nominal").setAttribute("triggered","true");
             }
+            document.getElementById("nominal_assist").hidden = true;
 
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {

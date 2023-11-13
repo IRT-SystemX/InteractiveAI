@@ -722,6 +722,11 @@ label:hover{
     color: #FF7900!important
 
 }
+.orangeBg-alarm{
+    box-shadow: 15px 0px 9px #FF0000 inset;
+    color: #FF0000!important
+
+}
 .orangeBg-information{
     box-shadow: 15px 0px 9px #50BE87 inset;
     color: #50BE87!important
@@ -1103,7 +1108,6 @@ label:hover{
     color:black!important
   }
   .sncfCard{
-    background: url(../assets/images/!.png);
     background-size: 30px;
     background-repeat: no-repeat;
     background-position-x: 60px;
