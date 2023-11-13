@@ -239,6 +239,7 @@
       "firstName": "",
       "lastName": "",
       "attributes": {
+        "entitiesId": ["SNCF;ORANGE;DA;RTE"],
         "groups": ["Dispatcher;ReadOnly;Supervisor"]
       },
       "credentials": [
