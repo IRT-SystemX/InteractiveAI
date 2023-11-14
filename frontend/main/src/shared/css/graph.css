@@ -3,36 +3,51 @@
   transition: 0.2s;
 }
 
+.nodes circle,
+.tooltip {
+  transition: 0.1s;
+}
+
 .nodes text {
   text-anchor: middle;
   fill: #fff;
   font-size: 0.6em;
   font-weight: bold;
-  transition: 0.2s;
 }
 
 .nodes circle {
   fill: #000;
-  transition: 0.2s;
+  stroke: #f00;
+  stroke-width: 0;
+  paint-order: stroke;
+}
+
+#orange_ctx_container svg {
+  cursor: grab;
+}
+
+#orange_ctx_container svg:active {
+  cursor: grabbing;
 }
 
 .nodes g {
-  cursor: grab;
+  cursor: pointer;
 }
 
 .nodes g:active {
   cursor: grabbing;
 }
 
-div.tooltip {
+.tooltip {
   position: absolute;
-  background-color: white;
+  background-color: #000;
+  color: #fff;
+  font-family: monospace;
   padding: 4px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   white-space-collapse: preserve;
-  transition: 0.5s;
 }
 
 #orange_ctx_container svg {
