@@ -334,4 +334,8 @@ export function setup() {
   }
 }
 
-function changeThreshold(value) {}
+export function setThreshold(value) {
+  config.threshold = value;
+  orange_ctx_container.innerHTML = "";
+  setup();
+}

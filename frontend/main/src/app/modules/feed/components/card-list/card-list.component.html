@@ -92,6 +92,21 @@
     </div>
     <div id="orange_ctx" hidden>
       <button class="orange_button_theme stats_tab">Graphe Réseau</button>
+        Seuil de corrélation minimum&nbsp;:
+        <input type="range" list="tickmarks" (change)="changeThreshold($event)" min="0" max="1" step="0.1" value="0"/>
+        <datalist id="tickmarks">
+          <option value="0"></option>
+          <option value="0.1"></option>
+          <option value="0.2"></option>
+          <option value="0.3"></option>
+          <option value="0.4"></option>
+          <option value="0.5"></option>
+          <option value="0.6"></option>
+          <option value="0.7"></option>
+          <option value="0.8"></option>
+          <option value="0.9"></option>
+          <option value="1"></option>
+        </datalist>
       <!-- <button class="orange_button_theme stats_tab">Corrélation Statistiques</button> -->
       <div id="orange_ctx_container"></div>
     </div>
