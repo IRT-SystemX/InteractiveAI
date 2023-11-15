@@ -1,33 +1,52 @@
-#orange_ctx_container {
+#orange_ctx {
   --duration: 0.3s;
-  --node-color: #fff;
-  --node-background: #000;
-  --node-focus: #f00;
+  --unit: 4px;
+  --white-900: #fff;
+  --black-100: #282a36;
+  --black-500: #44475a;
+  --black-900: #6272a4;
+  --red-100: #a00;
+  --red-500: #f55;
+  --orange-100: #ff8400;
+  --orange-500: #ffb86c;
+}
+
+#orange_ctx_container {
+  position: relative;
 }
 
 #orange_ctx_container * {
   user-select: none;
 }
 
-#orange_ctx_container svg {
+#orange_chart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  pointer-events: none;
+}
+
+#orange_ctx_container #orange_graph {
   height: 100%;
   width: 100%;
   cursor: grab;
   overscroll-behavior: none;
 }
 
-#orange_ctx_container svg:active {
+#orange_ctx_container #orange_graph:active {
   cursor: grabbing;
 }
 
 .tooltip {
   position: absolute;
-  background-color: var(--node-background);
-  color: var(--node-color);
+  background-color: var(--black-500);
+  color: var(--white-900);
+  border: var(--unit) solid var(--black-100);
   font-family: monospace;
-  padding: 4px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  padding: var(--unit);
+  border-radius: calc(var(--unit) * 2);
   pointer-events: none;
   white-space-collapse: preserve;
 }
@@ -44,6 +63,9 @@
 
 .node {
   cursor: pointer;
+  --node-text: var(--white-900);
+  --node-fill: var(--black-500);
+  --node-stroke: var(--black-100);
 }
 
 .node:active {
@@ -52,32 +74,33 @@
 
 .node text {
   text-anchor: middle;
-  fill: var(--node-color);
+  fill: var(--node-text);
   font-size: 0.6em;
   font-weight: bold;
 }
 
 .node circle {
-  fill: var(--node-background);
-  stroke: var(--node-color);
-  stroke-width: 0;
+  fill: var(--node-fill);
+  stroke: var(--node-stroke);
+  stroke-width: calc(var(--unit) * 2);
   paint-order: stroke;
 }
 
-.node:hover circle {
-  fill: var(--node-focus);
+.node:hover {
+  --node-stroke: var(--black-500);
+  --node-fill: var(--black-900);
 }
 
-svg:has(.active) .node:not(.active),
-svg:has(.active) .link:not(.active) {
+#orange_graph:has(.active) .node:not(.active),
+#orange_graph:has(.active) .link:not(.active) {
   opacity: 0;
 }
 
-svg:has(.hover) .node:not(.active) {
+#orange_graph:has(.hover) .node:not(.active) {
   opacity: 0.3;
 }
 
-svg:has(.hover) .link:not(.active) {
+#orange_graph:has(.hover) .link:not(.active) {
   opacity: 0.1;
 }
 
@@ -86,11 +109,19 @@ svg:has(.hover) .link:not(.active) {
   z-index: 1000;
 }
 
-.node.focus circle {
-  stroke: var(--node-focus);
-  stroke-width: 20;
+.node.focus {
+  --node-stroke: var(--red-100);
+  --node-fill: var(--red-500);
+  animation: warning var(--duration) infinite alternate;
 }
 
 .link {
   stroke-width: 3;
+}
+
+@keyframes warning {
+  to {
+    --node-stroke: var(--orange-100);
+    --node-fill: var(--orange-500);
+  }
 }

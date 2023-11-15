@@ -5,10 +5,10 @@ const config = {
   // Dimensions of the viewport
   width: 1190,
   height: 600,
-  margin: { y: 20, x: 20 },
+  margin: { y: 24, x: 24 },
   threshold: 0,
   force: { min: 0, max: 600 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
-  radius: { default: 20, active: 30 }, // Radius of nodes in default and active state
+  radius: 20, // Radius of nodes in default and active state
   kpi: "nb_err", // What KPI is being looked at
   transition: 200, // Transition duration
 };
@@ -53,16 +53,67 @@ function coeffToColor(coefficient) {
   return d3.interpolateSpectral(1 - relativeToThreshold(coefficient));
 }
 
+function setupChart() {
+  const svg = d3
+    .select(orange_ctx_container)
+    .append("svg")
+    .attr("id", "orange_chart")
+    .attr("width", config.width / 4)
+    .attr("height", 50);
+  // Charts
+  const chart = svg
+    .append("g")
+    .attr("transform", `translate(${config.margin.x},${config.margin.y})`)
+    .call(
+      d3
+        .axisTop(
+          d3
+            .scaleLinear([config.threshold, 1], d3.interpolateSpectral)
+            .range([0, config.width / 4])
+        )
+        .ticks(8)
+    );
+  chart
+    .append("rect")
+    .attr("width", config.width / 4)
+    .attr("height", 16)
+    .style("fill", "url(#linear-gradient)");
+  svg
+    .append("defs")
+    .append("linearGradient")
+    .attr("id", "linear-gradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
+    .attr("y2", "0%")
+    .selectAll("stop")
+    .data([
+      { offset: "0%", color: d3.interpolateSpectral(1) },
+      { offset: "25%", color: d3.interpolateSpectral(0.75) },
+      { offset: "50%", color: d3.interpolateSpectral(0.5) },
+      { offset: "75%", color: d3.interpolateSpectral(0.25) },
+      { offset: "100%", color: d3.interpolateSpectral(0) },
+    ])
+    .enter()
+    .append("stop")
+    .attr("offset", function (d) {
+      return d.offset;
+    })
+    .attr("stop-color", function (d) {
+      return d.color;
+    });
+}
+
 export function setup() {
   // Create a simulation for an array of nodes, and compose the desired forces.
   let simulation = d3
     .forceSimulation()
-    .force("repulsion", d3.forceCollide(config.radius.active)) // This adds repulsion (if it's negative) between nodes.
-    .force("center", d3.forceCenter(config.width / 2, config.height / 2)); // This force attracts nodes to the center of the svg area
+    .force("repulsion", d3.forceCollide(config.radius * 2)) // Adds repulsion between nodes.
+    .force("center", d3.forceCenter(config.width / 2, config.height / 2)); // Attracts nodes to the center of the svg area
 
   // Tooltip
   const tooltip = d3
-    .select(orange_ctx_container)
+    .select(orange_ctx)
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
@@ -73,13 +124,10 @@ export function setup() {
     .append("svg")
     .attr("width", config.width)
     .attr("height", config.height)
+    .attr("id", "orange_graph")
     .append("g");
 
-  // Charts
-  svg
-    .append("g")
-    .attr("transform", `translate(${config.width / 2},${config.height - config.margin.y})`)
-    .call(d3.axisBottom(d3.scaleDiverging([-1, 0, 1], d3.interpolateSpectral)));
+  const chart = setupChart();
 
   // Create data
   const dataset = opfabToD3(
@@ -149,7 +197,7 @@ export function setup() {
       links.attr("class", "link");
     })
     .on("mouseover.tooltip", function (event, d) {
-      tooltip.style("opacity", 0.8);
+      tooltip.style("opacity", 0.9);
       tooltip
         .html(
           `<b>${d.id.split(".")[0]}</b>\nCorrelations:\n${Object.keys(d.data)
@@ -166,16 +214,16 @@ export function setup() {
             )
             .join("\n")}`
         )
-        .style("left", event.pageX + config.radius.default + "px")
-        .style("top", event.pageY + config.radius.default + "px");
+        .style("left", event.pageX + config.radius + "px")
+        .style("top", event.pageY + config.radius + "px");
     })
     .on("mouseout.tooltip", function () {
       tooltip.style("opacity", 0);
     })
     .on("mousemove", function (event) {
       tooltip
-        .style("left", event.pageX + config.radius.default + "px")
-        .style("top", event.pageY + config.radius.default + "px");
+        .style("left", event.pageX + config.radius + "px")
+        .style("top", event.pageY + config.radius + "px");
     })
     .call(
       d3
@@ -185,7 +233,7 @@ export function setup() {
         .on("end", dragended) // End - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
 
-  nodes.append("circle").attr("r", (d) => config.radius.default);
+  nodes.append("circle").attr("r", (d) => config.radius);
   nodes
     .append("text")
     .attr("class", "label")
@@ -212,11 +260,8 @@ export function setup() {
         (link) =>
           config.force.max -
           ((config.force.max - config.force.min) *
-            // Use square root or logarithm for less "agressive" distances
             Math.log(relativeToThreshold(link.coefficient) + 1)) /
             Math.log(2)
-        // Math.sqrt(relativeToThreshold(link.coefficient))
-        // relativeToThreshold(link.coefficient)
       )
       .id((d) => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
   );
@@ -288,3 +333,5 @@ export function setup() {
     d.fy = null;
   }
 }
+
+function changeThreshold(value) {}
