@@ -1,47 +1,29 @@
-.links line {
-  stroke-width: 2;
-  transition: 0.2s;
+#orange_ctx_container {
+  --duration: 0.3s;
+  --node-color: #fff;
+  --node-background: #000;
+  --node-focus: #f00;
 }
 
-.nodes circle,
-.tooltip {
-  transition: 0.1s;
-}
-
-.nodes text {
-  text-anchor: middle;
-  fill: #fff;
-  font-size: 0.6em;
-  font-weight: bold;
-}
-
-.nodes circle {
-  fill: #000;
-  stroke: #f00;
-  stroke-width: 0;
-  paint-order: stroke;
+#orange_ctx_container * {
+  user-select: none;
 }
 
 #orange_ctx_container svg {
+  height: 100%;
+  width: 100%;
   cursor: grab;
+  overscroll-behavior: none;
 }
 
 #orange_ctx_container svg:active {
   cursor: grabbing;
 }
 
-.nodes g {
-  cursor: pointer;
-}
-
-.nodes g:active {
-  cursor: grabbing;
-}
-
 .tooltip {
   position: absolute;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--node-background);
+  color: var(--node-color);
   font-family: monospace;
   padding: 4px;
   border-radius: 8px;
@@ -50,7 +32,65 @@
   white-space-collapse: preserve;
 }
 
-#orange_ctx_container svg {
-  height: 100%;
-  width: 100%;
+.node *,
+.link {
+  transition: var(--duration);
+}
+
+.node,
+.tooltip {
+  transition: opacity var(--duration);
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node:active {
+  cursor: grabbing;
+}
+
+.node text {
+  text-anchor: middle;
+  fill: var(--node-color);
+  font-size: 0.6em;
+  font-weight: bold;
+}
+
+.node circle {
+  fill: var(--node-background);
+  stroke: var(--node-color);
+  stroke-width: 0;
+  paint-order: stroke;
+}
+
+.node:hover circle {
+  fill: var(--node-focus);
+}
+
+svg:has(.active) .node:not(.active),
+svg:has(.active) .link:not(.active) {
+  opacity: 0;
+}
+
+svg:has(.hover) .node:not(.active) {
+  opacity: 0.3;
+}
+
+svg:has(.hover) .link:not(.active) {
+  opacity: 0.1;
+}
+
+.node.active,
+.link.active {
+  z-index: 1000;
+}
+
+.node.focus circle {
+  stroke: var(--node-focus);
+  stroke-width: 20;
+}
+
+.link {
+  stroke-width: 3;
 }

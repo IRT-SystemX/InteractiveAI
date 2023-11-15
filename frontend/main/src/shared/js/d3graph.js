@@ -5,10 +5,9 @@ const config = {
   // Dimensions of the viewport
   width: 1190,
   height: 600,
-  margin: { y: 30, x: 50 },
-  threshold: 0.1,
-  distance: 500, // Max distance between two linked nodes
-  force: { min: 0, max: 500 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
+  margin: { y: 20, x: 20 },
+  threshold: 0,
+  force: { min: 0, max: 600 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
   radius: { default: 20, active: 30 }, // Radius of nodes in default and active state
   kpi: "nb_err", // What KPI is being looked at
   transition: 200, // Transition duration
@@ -23,20 +22,21 @@ function opfabToD3(graph, kpi, linkFilterCallback = (value) => true) {
         Object.entries(graph[k]).filter(([key]) => key.includes(config.kpi))
       ),
     }));
-  let links = [];
-  for (const node of nodes) {
-    links = [
-      ...links,
-      ...Object.keys(node.data)
-        .map((k) => ({
-          source: node.id,
-          target: k,
-          coefficient: node.data[k],
-        }))
-        .filter((value, index) => linkFilterCallback(value, index)),
-    ];
-  }
-  return { nodes, links };
+  let links = nodes.flatMap((node) =>
+    Object.keys(node.data)
+      .map((k) => ({
+        source: node.id,
+        target: k,
+        coefficient: node.data[k],
+      }))
+      .filter((link) => linkFilterCallback(link) && link.source !== link.target)
+  );
+  return {
+    nodes: nodes.filter((node) =>
+      links.find((value) => value.source === node.id)
+    ),
+    links,
+  };
 }
 
 function minmax(value, max = 1, min = 0) {
@@ -61,8 +61,8 @@ export function setup() {
     .force("center", d3.forceCenter(config.width / 2, config.height / 2)); // This force attracts nodes to the center of the svg area
 
   // Tooltip
-  var tooltip = d3
-    .select("body")
+  const tooltip = d3
+    .select(orange_ctx_container)
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
@@ -75,6 +75,12 @@ export function setup() {
     .attr("height", config.height)
     .append("g");
 
+  // Charts
+  svg
+    .append("g")
+    .attr("transform", `translate(${config.width / 2},${config.height - config.margin.y})`)
+    .call(d3.axisBottom(d3.scaleDiverging([-1, 0, 1], d3.interpolateSpectral)));
+
   // Create data
   const dataset = opfabToD3(
     graph[0].data,
@@ -85,53 +91,69 @@ export function setup() {
   console.debug(dataset);
 
   // Initialize the links
-  const link = svg
+  const links = svg
     .append("g")
     .attr("class", "links")
     .selectAll("line")
     .data(dataset.links)
     .enter()
     .append("line")
+    .attr("class", "link")
     .style("stroke", (d) => coeffToColor(d.coefficient));
 
   // Initialize the nodes
-  const node = svg
+  const nodes = svg
     .append("g")
     .attr("class", "nodes")
     .selectAll("g")
     .data(dataset.nodes)
     .enter()
     .append("g")
-    .on("click", (_, d) => {
-      node.style("opacity", 1);
-      link.style("opacity", 1);
-      node
-        .filter((node) => !relativeToThreshold(d.data[node.id]))
-        .style("opacity", 0);
-      link
-        .filter(
-          (node) =>
-            !(node.source.id === d.id && relativeToThreshold(node.coefficient))
-        )
-        .style("opacity", 0);
+    .attr("class", "node")
+    .on("click", function (_, d) {
+      if (d3.select(this).classed("focus")) {
+        nodes.attr("class", "node");
+        links.attr("class", "link");
+        svg.classed("focus", false);
+        return;
+      }
+      svg.classed("focus", true);
+      nodes.attr("class", (node) => {
+        if (node.id === d.id) return "node active focus";
+        if (relativeToThreshold(d.data[node.id])) return "node active";
+        return "node";
+      });
+      links.attr("class", (link) => {
+        if (link.source.id === d.id && relativeToThreshold(link.coefficient))
+          return "link active";
+        return "link";
+      });
     })
-    // Hover effect
-    .on("mouseover", function (d) {
-      d3.select(this).select("circle").transition().style("stroke-width", "10");
+    .on("mouseenter", (_, d) => {
+      if (svg.classed("focus")) return;
+      nodes.attr("class", (node) => {
+        if (node.id === d.id) return "node active hover";
+        if (relativeToThreshold(d.data[node.id])) return "node active";
+        return "node";
+      });
+      links.attr("class", (link) => {
+        if (link.source.id === d.id && relativeToThreshold(link.coefficient))
+          return "link active";
+        return "link";
+      });
     })
-    .on("mouseout", function (d) {
-      d3.select(this)
-        .select("circle")
-        .transition()
-        .attr("r", config.radius.default)
-        .style("stroke-width", "0");
+    .on("mouseleave", function (_, d) {
+      if (svg.classed("focus")) return;
+
+      nodes.attr("class", "node");
+      links.attr("class", "link");
     })
     .on("mouseover.tooltip", function (event, d) {
-      tooltip.transition().style("opacity", 0.8);
+      tooltip.style("opacity", 0.8);
       tooltip
         .html(
           `<b>${d.id.split(".")[0]}</b>\nCorrelations:\n${Object.keys(d.data)
-            .filter((key) => d.id !== key)
+            .filter((key) => d.id !== key && relativeToThreshold(d.data[key]))
             .map(
               (key) =>
                 `${key.split(".")[0]}: <b style="color:${coeffToColor(
@@ -144,16 +166,16 @@ export function setup() {
             )
             .join("\n")}`
         )
-        .style("left", event.pageX + "px")
-        .style("top", event.pageY + 10 + "px");
+        .style("left", event.pageX + config.radius.default + "px")
+        .style("top", event.pageY + config.radius.default + "px");
     })
     .on("mouseout.tooltip", function () {
-      tooltip.transition().style("opacity", 0);
+      tooltip.style("opacity", 0);
     })
     .on("mousemove", function (event) {
       tooltip
-        .style("left", event.pageX + "px")
-        .style("top", event.pageY + 10 + "px");
+        .style("left", event.pageX + config.radius.default + "px")
+        .style("top", event.pageY + config.radius.default + "px");
     })
     .call(
       d3
@@ -163,9 +185,8 @@ export function setup() {
         .on("end", dragended) // End - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
 
-  node.append("circle").attr("r", (d) => config.radius.default);
-  //  text-anchor="middle" fill="white" font-size="10px" font-family="Arial" dy=".3em"
-  node
+  nodes.append("circle").attr("r", (d) => config.radius.default);
+  nodes
     .append("text")
     .attr("class", "label")
     .attr("dy", ".3em")
@@ -186,20 +207,23 @@ export function setup() {
     "link",
     d3
       .forceLink() // This force provides links between nodes
-
       .links(dataset.links)
       .distance(
         (link) =>
           config.force.max -
-          (config.force.max - config.force.min) *
-            relativeToThreshold(link.coefficient)
+          ((config.force.max - config.force.min) *
+            // Use square root or logarithm for less "agressive" distances
+            Math.log(relativeToThreshold(link.coefficient) + 1)) /
+            Math.log(2)
+        // Math.sqrt(relativeToThreshold(link.coefficient))
+        // relativeToThreshold(link.coefficient)
       )
       .id((d) => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
   );
 
   // This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
   function ticked() {
-    link
+    links
       .attr("x1", (d) =>
         minmax(d.source.x, config.width - config.margin.x, config.margin.x)
       )
@@ -213,7 +237,7 @@ export function setup() {
         minmax(d.target.y, config.height - config.margin.y, config.margin.y)
       );
 
-    node.attr(
+    nodes.attr(
       "transform",
       (d) =>
         `translate(${minmax(
@@ -223,8 +247,16 @@ export function setup() {
         )},${minmax(d.y, config.height - config.margin.y, config.margin.y)})`
     );
   }
+
   // Create zoom handler
-  var zoom_handler = d3.zoom().on("zoom", zoom_actions);
+  const zoom_handler = d3
+    .zoom()
+    .scaleExtent([1, Infinity])
+    .translateExtent([
+      [0, 0],
+      [config.width, config.height],
+    ])
+    .on("zoom", zoom_actions);
 
   // Specify what to do when zoom event listener is triggered
   function zoom_actions(event) {
@@ -233,7 +265,7 @@ export function setup() {
 
   // Add zoom behaviour to the svg element
   // Same as svg.call(zoom_handler);
-  zoom_handler(svg);
+  zoom_handler(d3.select(orange_ctx_container));
 
   // When the drag gesture starts, the targeted node is fixed to the pointer
   // The simulation is temporarily “heated” during interaction by setting the target alpha to a non-zero value.
