@@ -10,6 +10,7 @@ from apiflask import APIFlask
 
 from config import DevConfig, ProdConfig, TestConfig
 from settings import logger
+from flask_migrate import Migrate
 
 config_mapping = {
     'dev': DevConfig,
@@ -23,6 +24,9 @@ def create_app(config_mode):
     app = APIFlask("event-service")
     app.register_blueprint(api_bp)
     app.config.from_object(config_mapping.get(config_mode, DevConfig))
+    # Initialize Flask-Migrate
+    migrate = Migrate(app, db)
+
     # Create the application context
     app_ctx = app.app_context()
     app_ctx.push()

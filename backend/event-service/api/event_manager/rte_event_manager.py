@@ -36,7 +36,7 @@ class RTEEventManager(BaseEventManager):
         # Create a new card (notification)
         card_pub_client = CardPubClient()
         severity = self.severity_map[data.get("criticality")]
-        date = data.get("date", datetime.now())
+        date = data.get("start_date", datetime.now())
         timestamp_date = int(round((date).timestamp()*1000))
         data["date"] = timestamp_date
 

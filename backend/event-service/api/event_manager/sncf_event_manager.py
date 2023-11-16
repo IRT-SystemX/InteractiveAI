@@ -34,7 +34,7 @@ class SNCFEventManager(BaseEventManager):
         event_id = self.get_event_id(data)
         data["id_event"] = str(event_id)
         logger.info(event_id)
-        date = data.get("date", datetime.now())
+        date = data.get("start_date", datetime.now())
         # Create a new card (notification)
         self.create_card(date, data)
         # Trace in histric service

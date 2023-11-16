@@ -10,7 +10,8 @@ class Event(Schema):
         ['RTE', 'SNCF', 'DA', 'ORANGE']))
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
-    date = DateTime(format="iso")
+    start_date = DateTime(format="iso")
+    end_date = DateTime(format="iso")
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
