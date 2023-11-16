@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import graph from "./graph.json";
 
 const config = {
   // Dimensions of the viewport
@@ -9,18 +8,15 @@ const config = {
   threshold: 0,
   force: { min: 0, max: 600 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
   radius: 20, // Radius of nodes in default and active state
-  kpi: "nb_err", // What KPI is being looked at
+  kpi: "", // What KPI is being looked at
   transition: 200, // Transition duration
 };
 
-export const ctx = { statuses: {} };
+const ctx = { statuses: {} };
 
-window.config = config;
-window.ctx = ctx;
-
-function opfabToD3(graph, kpi, linkFilterCallback = (value) => true) {
+export function opfabToD3(graph) {
   const nodes = Object.keys(graph)
-    .filter((k) => k.includes(kpi)) // Filter by KPI
+    .filter((k) => k.includes(config.kpi)) // Filter by KPI
     .map((k, i) => ({
       id: k.split(".")[0],
       data: Object.fromEntries(
@@ -37,7 +33,11 @@ function opfabToD3(graph, kpi, linkFilterCallback = (value) => true) {
         target: k.split(".")[0],
         coefficient: node.data[k],
       }))
-      .filter((link) => linkFilterCallback(link) && link.source !== link.target)
+      .filter(
+        (link) =>
+          Math.abs(link.coefficient) > config.threshold &&
+          link.source !== link.target
+      )
   );
   return {
     nodes: nodes.filter((node) =>
@@ -112,7 +112,8 @@ function setupChart() {
     });
 }
 
-export function setup() {
+export function setup(dataset) {
+  orange_ctx_container.innerHTML = "";
   // Create a simulation for an array of nodes, and compose the desired forces.
   ctx.simulation = d3
     .forceSimulation()
@@ -138,13 +139,7 @@ export function setup() {
   setupChart();
 
   // Create data
-  ctx.dataset = opfabToD3(
-    graph[0].data,
-    config.kpi,
-    (value) => Math.abs(value.coefficient) > config.threshold
-  );
-
-  console.debug(ctx.dataset);
+  ctx.dataset = dataset;
 
   // Initialize the links
   ctx.links = ctx.svg
@@ -357,12 +352,44 @@ export function setup() {
 
 export function setThreshold(value) {
   config.threshold = value;
-  orange_ctx_container.innerHTML = "";
-  setup();
+  setup(opfabToD3(ctx.data));
 }
 
 export function setStatus(node, severity) {
   if (ctx.statuses[node]) ctx.statuses[node].push(severity);
   else ctx.statuses[node] = [severity];
-  if (ctx.nodes) ctx.nodes.filter((d) => d.id === node).classed(severity, true);
+  ctx.nodes?.filter((d) => d.id === node).classed(severity, true);
+}
+
+export async function setCorrelation(target, kpi, severity) {
+  orange_ctx_container.innerHTML = "Loading";
+  await fetch(
+    "http://192.168.211.95:3200/cab_correlation/api/v1/correlation?size=1",
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      ctx.data = response[0].data
+      config.kpi = kpi;
+      setup(opfabToD3(ctx.data));
+    })
+    .catch((err) => console.error(err));
+  setStatus(target, severity);
+  console.log(ctx.dataset.nodes.find((data) => data.id === target));
+  ctx.svg.classed("focus", true);
+  ctx.nodes.classed("active", (node) => node.id === target);
+  ctx.nodes.classed("focus", (node) => node.id === target);
+  ctx.nodes.classed("active", (node) =>
+    relativeToThreshold(
+      ctx.dataset.nodes.find((data) => data.id === target)?.data[node.id]
+    )
+  );
+  ctx.links.classed(
+    "active",
+    (link) => link.source.id === target && relativeToThreshold(link.coefficient)
+  );
 }

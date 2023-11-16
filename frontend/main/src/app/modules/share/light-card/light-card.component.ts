@@ -28,7 +28,7 @@ import { DateTimeFormatterService } from '@ofServices/date-time-formatter.servic
 import { MapService } from '@ofServices/map.service';
 import $, { get } from "jquery";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import {setCorrelation} from "shared/js/d3graph.js"
 
 @Component({
     selector: 'of-light-card',
@@ -598,6 +598,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
       };
     public select($event) {
         Swal.showLoading();
+        setCorrelation(this.lightCard.titleTranslated, this.lightCard.summaryTranslated, this.lightCard.severity);
 
         // var card = $event.path[2].firstChild.offsetParent.outerText;
         $event.stopPropagation();
