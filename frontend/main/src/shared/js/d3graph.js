@@ -13,20 +13,28 @@ const config = {
   transition: 200, // Transition duration
 };
 
+export const ctx = { statuses: {} };
+
+window.config = config;
+window.ctx = ctx;
+
 function opfabToD3(graph, kpi, linkFilterCallback = (value) => true) {
   const nodes = Object.keys(graph)
     .filter((k) => k.includes(kpi)) // Filter by KPI
     .map((k, i) => ({
-      id: k,
+      id: k.split(".")[0],
       data: Object.fromEntries(
-        Object.entries(graph[k]).filter(([key]) => key.includes(config.kpi))
+        Object.entries(graph[k])
+          .filter(([key]) => key.includes(config.kpi))
+          .map(([key, value]) => [key.split(".")[0], value])
       ),
+      status: [],
     }));
   let links = nodes.flatMap((node) =>
     Object.keys(node.data)
       .map((k) => ({
         source: node.id,
-        target: k,
+        target: k.split(".")[0],
         coefficient: node.data[k],
       }))
       .filter((link) => linkFilterCallback(link) && link.source !== link.target)
@@ -61,7 +69,7 @@ function setupChart() {
     .attr("width", config.width / 4)
     .attr("height", 50);
   // Charts
-  const chart = svg
+  ctx.chart = svg
     .append("g")
     .attr("transform", `translate(${config.margin.x},${config.margin.y})`)
     .call(
@@ -73,7 +81,7 @@ function setupChart() {
         )
         .ticks(8)
     );
-  chart
+  ctx.chart
     .append("rect")
     .attr("width", config.width / 4)
     .attr("height", 16)
@@ -106,20 +114,20 @@ function setupChart() {
 
 export function setup() {
   // Create a simulation for an array of nodes, and compose the desired forces.
-  let simulation = d3
+  ctx.simulation = d3
     .forceSimulation()
     .force("repulsion", d3.forceCollide(config.radius * 2)) // Adds repulsion between nodes.
     .force("center", d3.forceCenter(config.width / 2, config.height / 2)); // Attracts nodes to the center of the svg area
 
   // Tooltip
-  const tooltip = d3
+  ctx.tooltip = d3
     .select(orange_ctx)
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
   // Main SVG
-  const svg = d3
+  ctx.svg = d3
     .select(orange_ctx_container)
     .append("svg")
     .attr("width", config.width)
@@ -127,84 +135,86 @@ export function setup() {
     .attr("id", "orange_graph")
     .append("g");
 
-  const chart = setupChart();
+  setupChart();
 
   // Create data
-  const dataset = opfabToD3(
+  ctx.dataset = opfabToD3(
     graph[0].data,
     config.kpi,
     (value) => Math.abs(value.coefficient) > config.threshold
   );
 
-  console.debug(dataset);
+  console.debug(ctx.dataset);
 
   // Initialize the links
-  const links = svg
+  ctx.links = ctx.svg
     .append("g")
     .attr("class", "links")
     .selectAll("line")
-    .data(dataset.links)
+    .data(ctx.dataset.links)
     .enter()
     .append("line")
     .attr("class", "link")
     .style("stroke", (d) => coeffToColor(d.coefficient));
 
   // Initialize the nodes
-  const nodes = svg
+  ctx.nodes = ctx.svg
     .append("g")
     .attr("class", "nodes")
     .selectAll("g")
-    .data(dataset.nodes)
+    .data(ctx.dataset.nodes)
     .enter()
     .append("g")
-    .attr("class", "node")
+    .attr("class", (d) => "node " + ctx.statuses[d.id]?.join(" "))
     .on("click", function (_, d) {
       if (d3.select(this).classed("focus")) {
-        nodes.attr("class", "node");
-        links.attr("class", "link");
-        svg.classed("focus", false);
+        ctx.nodes.classed("active", false);
+        ctx.nodes.classed("focus", false);
+        ctx.links.classed("active", false);
+        ctx.svg.classed("focus", false);
         return;
       }
-      svg.classed("focus", true);
-      nodes.attr("class", (node) => {
-        if (node.id === d.id) return "node active focus";
-        if (relativeToThreshold(d.data[node.id])) return "node active";
-        return "node";
-      });
-      links.attr("class", (link) => {
-        if (link.source.id === d.id && relativeToThreshold(link.coefficient))
-          return "link active";
-        return "link";
-      });
+      ctx.svg.classed("focus", true);
+      ctx.nodes.classed("active", (node) => node.id === d.id);
+      ctx.nodes.classed("focus", (node) => node.id === d.id);
+      ctx.nodes.classed("active", (node) =>
+        relativeToThreshold(d.data[node.id])
+      );
+      ctx.links.classed(
+        "active",
+        (link) =>
+          link.source.id === d.id && relativeToThreshold(link.coefficient)
+      );
     })
     .on("mouseenter", (_, d) => {
-      if (svg.classed("focus")) return;
-      nodes.attr("class", (node) => {
-        if (node.id === d.id) return "node active hover";
-        if (relativeToThreshold(d.data[node.id])) return "node active";
-        return "node";
-      });
-      links.attr("class", (link) => {
-        if (link.source.id === d.id && relativeToThreshold(link.coefficient))
-          return "link active";
-        return "link";
-      });
+      if (ctx.svg.classed("focus")) return;
+
+      ctx.nodes.classed("active", (node) => node.id === d.id);
+      ctx.nodes.classed("hover", (node) => node.id === d.id);
+      ctx.nodes.classed("active", (node) =>
+        relativeToThreshold(d.data[node.id])
+      );
+      ctx.links.classed(
+        "active",
+        (link) =>
+          link.source.id === d.id && relativeToThreshold(link.coefficient)
+      );
     })
     .on("mouseleave", function (_, d) {
-      if (svg.classed("focus")) return;
-
-      nodes.attr("class", "node");
-      links.attr("class", "link");
+      ctx.nodes.classed("hover", false);
+      if (ctx.svg.classed("focus")) return;
+      ctx.nodes.classed("active", false);
+      ctx.links.classed("active", false);
     })
     .on("mouseover.tooltip", function (event, d) {
-      tooltip.style("opacity", 0.9);
-      tooltip
+      ctx.tooltip.style("opacity", 0.9);
+      ctx.tooltip
         .html(
-          `<b>${d.id.split(".")[0]}</b>\nCorrelations:\n${Object.keys(d.data)
+          `<b>${d.id}</b>\nCorrelations:\n${Object.keys(d.data)
             .filter((key) => d.id !== key && relativeToThreshold(d.data[key]))
             .map(
               (key) =>
-                `${key.split(".")[0]}: <b style="color:${coeffToColor(
+                `${key}: <b style="color:${coeffToColor(
                   d.data[key]
                 )};font-weight:${
                   relativeToThreshold(d.data[key]) * 1000
@@ -218,10 +228,10 @@ export function setup() {
         .style("top", event.pageY + config.radius + "px");
     })
     .on("mouseout.tooltip", function () {
-      tooltip.style("opacity", 0);
+      ctx.tooltip.style("opacity", 0);
     })
     .on("mousemove", function (event) {
-      tooltip
+      ctx.tooltip
         .style("left", event.pageX + config.radius + "px")
         .style("top", event.pageY + config.radius + "px");
     })
@@ -233,16 +243,27 @@ export function setup() {
         .on("end", dragended) // End - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
 
-  nodes.append("circle").attr("r", (d) => config.radius);
-  nodes
+  // Leave focus mode on click outside
+  d3.select(orange_ctx_container).on("click", function (event) {
+    if (ctx.svg.classed("focus") && event.target.id === "orange_graph") {
+      ctx.nodes.classed("active", false);
+      ctx.nodes.classed("focus", false);
+      ctx.nodes.classed("hover", false);
+      ctx.links.classed("active", false);
+      ctx.svg.classed("focus", false);
+    }
+  });
+
+  ctx.nodes.append("circle").attr("r", (d) => config.radius);
+  ctx.nodes
     .append("text")
     .attr("class", "label")
     .attr("dy", ".3em")
-    .text((d) => d.id.split(".")[0]);
+    .text((d) => d.id);
 
   // Listen for tick events to render the nodes as they update in your Canvas or SVG.
-  simulation
-    .nodes(dataset.nodes) // Sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
+  ctx.simulation
+    .nodes(ctx.dataset.nodes) // Sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
     .on("tick", ticked); // Use simulation.on to listen for tick events as the simulation runs.
   // After this, Each node must be an object. The following properties are assigned by the simulation:
   // index - the node’s zero-based index into nodes
@@ -251,11 +272,11 @@ export function setup() {
   // vx - the node’s current x-velocity
   // vy - the node’s current y-velocity
 
-  simulation.force(
+  ctx.simulation.force(
     "link",
     d3
       .forceLink() // This force provides links between nodes
-      .links(dataset.links)
+      .links(ctx.dataset.links)
       .distance(
         (link) =>
           config.force.max -
@@ -268,7 +289,7 @@ export function setup() {
 
   // This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
   function ticked() {
-    links
+    ctx.links
       .attr("x1", (d) =>
         minmax(d.source.x, config.width - config.margin.x, config.margin.x)
       )
@@ -282,7 +303,7 @@ export function setup() {
         minmax(d.target.y, config.height - config.margin.y, config.margin.y)
       );
 
-    nodes.attr(
+    ctx.nodes.attr(
       "transform",
       (d) =>
         `translate(${minmax(
@@ -305,7 +326,7 @@ export function setup() {
 
   // Specify what to do when zoom event listener is triggered
   function zoom_actions(event) {
-    svg.attr("transform", event.transform);
+    ctx.svg.attr("transform", event.transform);
   }
 
   // Add zoom behaviour to the svg element
@@ -315,7 +336,7 @@ export function setup() {
   // When the drag gesture starts, the targeted node is fixed to the pointer
   // The simulation is temporarily “heated” during interaction by setting the target alpha to a non-zero value.
   function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart(); // Sets the current target alpha to the specified number in the range [0,1].
+    if (!event.active) ctx.simulation.alphaTarget(0.3).restart(); // Sets the current target alpha to the specified number in the range [0,1].
     d.fy = d.y; // Fx - the node’s fixed x-position. Original is null.
     d.fx = d.x; // Fy - the node’s fixed y-position. Original is null.
   }
@@ -328,7 +349,7 @@ export function setup() {
 
   // The targeted node is released when the gesture ends
   function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
+    if (!event.active) ctx.simulation.alphaTarget(0);
     d.fx = null;
     d.fy = null;
   }
@@ -338,4 +359,10 @@ export function setThreshold(value) {
   config.threshold = value;
   orange_ctx_container.innerHTML = "";
   setup();
+}
+
+export function setStatus(node, severity) {
+  if (ctx.statuses[node]) ctx.statuses[node].push(severity);
+  else ctx.statuses[node] = [severity];
+  if (ctx.nodes) ctx.nodes.filter((d) => d.id === node).classed(severity, true);
 }

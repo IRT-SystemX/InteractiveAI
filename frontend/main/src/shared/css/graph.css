@@ -9,6 +9,8 @@
   --red-500: #f55;
   --orange-100: #ff8400;
   --orange-500: #ffb86c;
+  --green-100: #05ad2f;
+  --green-500: #50fa7b;
 }
 
 #orange_ctx_container {
@@ -112,14 +114,28 @@
 .node.focus {
   --node-stroke: var(--red-100);
   --node-fill: var(--red-500);
-  animation: warning var(--duration) infinite alternate;
+}
+
+.node.ROUTINE {
+  animation: ROUTINE var(--duration) infinite alternate;
+}
+
+.node.ACTION {
+  animation: ACTION var(--duration) infinite alternate;
 }
 
 .link {
   stroke-width: 3;
 }
 
-@keyframes warning {
+@keyframes ACTION {
+  to {
+    --node-stroke: var(--orange-100);
+    --node-fill: var(--orange-500);
+  }
+}
+
+@keyframes ROUTINE {
   to {
     --node-stroke: var(--orange-100);
     --node-fill: var(--orange-500);
