@@ -42,8 +42,9 @@ class BaseEventManager:
         card_pub_client = CardPubClient()
         severity = self.severity_map[data.get("criticality")]
 
-        timestamp_start_date = int(round((start_date).timestamp() * 1000))
+        timestamp_start_date = int(round(start_date.timestamp() * 1000))
         data["start_date"] = timestamp_start_date
+
         timestamp_end_date = None
         if end_date:
             timestamp_end_date = int(round((end_date).timestamp() * 1000))
