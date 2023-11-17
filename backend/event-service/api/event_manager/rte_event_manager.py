@@ -36,9 +36,15 @@ class RTEEventManager(BaseEventManager):
         # Create a new card (notification)
         card_pub_client = CardPubClient()
         severity = self.severity_map[data.get("criticality")]
-        date = data.get("date", datetime.now())
-        timestamp_date = int(round((date).timestamp()*1000))
-        data["date"] = timestamp_date
+        start_date = data.get("start_date", datetime.now())
+        timestamp_start_date = int(round(start_date.timestamp()*1000))
+        data["start_date"] = timestamp_start_date
+
+        end_date = data.get("end_date")
+        timestamp_end_date = None
+        if end_date:
+            timestamp_end_date = int(round((end_date).timestamp() * 1000))
+            data["end_date"] = timestamp_end_date
 
         card_payload = {
             "publisher": "publisher_test",
@@ -48,7 +54,8 @@ class RTEEventManager(BaseEventManager):
             "state": "messageState",
             "entityRecipients": [self.use_case],
             "severity": severity,
-            "startDate": timestamp_date,
+            "startDate": timestamp_start_date,
+            "endDate": timestamp_end_date,
             "summary": {
                 "key": self.use_case_process + ".summary",
                 "parameters": {"summary": data["description"]}
@@ -64,13 +71,8 @@ class RTEEventManager(BaseEventManager):
 
         card_pub_client.create_card(card_payload)
         # Trace in histric service
-        historic_client = HistoricClient()
-        data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-        historic_client.create_trace(data)
-        data["date"] = date
+        self.trace_event(start_date, end_date, data)
 
         # Save event to database
-        event = EventModel(**data)
-        db.session.merge(event)
-        db.session.commit()
+        event = self.save_event_db(data)
         return event

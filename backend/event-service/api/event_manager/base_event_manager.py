@@ -14,11 +14,10 @@ class BaseEventManager:
             "HIGH": "ALARM",
             "MEDIUM": "ACTION",
             "LOW": "COMPLIANT",
-            "ROUTINE": "INFORMATION"
+            "ROUTINE": "INFORMATION",
         }
 
     def get_event_id(self):
-
         event_id = uuid.uuid4()
         logger.debug(f"Genrating event_id: {event_id}")
         return str(event_id)
@@ -30,18 +29,25 @@ class BaseEventManager:
         db.session.commit()
         return data
 
-    def trace_event(self, date, data):
+    def trace_event(self, start_date, end_date, data):
         historic_client = HistoricClient()
-        data["date"] = date.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+        data["start_date"] = start_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+        if end_date:
+            data["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
         historic_client.create_trace(data)
-        data["date"] = date
+        data["start_date"] = start_date
+        data["end_date"] = end_date
 
-    def create_card(self, date, data):
+    def create_card(self, start_date, end_date, data):
         card_pub_client = CardPubClient()
         severity = self.severity_map[data.get("criticality")]
 
-        timestamp_date = int(round((date).timestamp()*1000))
-        data["date"] = timestamp_date
+        timestamp_start_date = int(round((start_date).timestamp() * 1000))
+        data["start_date"] = timestamp_start_date
+        timestamp_end_date = None
+        if end_date:
+            timestamp_end_date = int(round((end_date).timestamp() * 1000))
+            data["end_date"] = timestamp_end_date
 
         card_payload = {
             "publisher": "publisher_test",
@@ -51,18 +57,17 @@ class BaseEventManager:
             "state": "messageState",
             "entityRecipients": [self.use_case],
             "severity": severity,
-            "startDate": timestamp_date,
+            "startDate": timestamp_start_date,
+            "endDate": timestamp_end_date,
             "summary": {
                 "key": self.use_case_process + ".summary",
-                "parameters": {"summary": data["description"]}
+                "parameters": {"summary": data["description"]},
             },
             "title": {
                 "key": self.use_case_process + ".title",
-                "parameters": {"title": data["title"]}
+                "parameters": {"title": data["title"]},
             },
-            "data": {
-                "metadata": data["data"]
-            }
+            "data": {"metadata": data["data"]},
         }
 
         card_pub_client.create_card(card_payload)
@@ -70,11 +75,12 @@ class BaseEventManager:
     def create_event(self, data):
         event_id = self.get_event_id()
         data["id_event"] = str(event_id)
-        date = data.get("date", datetime.now())
+        start_date = data.get("start_date", datetime.now())
+        end_date = data.get("end_date")
         # Create a new card (notification)
-        self.create_card(date, data)
+        self.create_card(start_date, end_date, data)
         # Trace in histric service
-        self.trace_event(date, data)
+        self.trace_event(start_date, end_date, data)
 
         # Save event to database
         event = self.save_event_db(data)

@@ -170,7 +170,7 @@ def create_events(client, rte_auth_mocker):
             use_case='RTE',
             title='Test Event 1',
             description='This is a test event',
-            date=datetime.now(),
+            start_date=datetime.now(),
             criticality='HIGH',
             data={'event_type': 'KPI'}
         )
@@ -179,7 +179,7 @@ def create_events(client, rte_auth_mocker):
             use_case='DA',
             title='Test Event 2',
             description='This is another test event',
-            date=datetime.now(),
+            start_date=datetime.now(),
             criticality='LOW',
             data={'category': 'test'}
         )
