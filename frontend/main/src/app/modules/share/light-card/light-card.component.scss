@@ -66,14 +66,15 @@
 }
 
 .sncf-light-card-background-alarm {
-    box-shadow: 15px 0px 9px #A70000 inset;
-    color: #DC582A!important
+    box-shadow: 15px 0px 0px #A70000 inset;
+    color: #DC582A!important;
+    border: 2px solid #DC582A!important;
 
 }
 .sncf-light-card-background-action{
-    box-shadow: 15px 0px 9px #E05206 inset;
-    color: #DAAA00!important
-
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
+    color: #DAAA00!important;
 }
 
 // .sncf-light-card-background-action {
@@ -152,7 +153,7 @@
 }
 
 .card-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -204,7 +205,7 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
-    // color:white;
+    font-size: 12px;
 }
 
 .light-card-detail-selected span{

@@ -7,7 +7,6 @@
 <!-- This file is part of the OperatorFabric project.                      -->
 
 
-<!-- class="card light-card-detail light-card-border-{{lightCard.severity.toString()|lowercase}} title-light-card-border-{{lightCard.severity.toString()|lowercase}}" -->
 <div id="opfab-feed-light-card-{{lightCard.process}}-{{lightCard.processInstanceId}}"
      attr.data-urlId="{{lightCard.process}}.{{lightCard.processInstanceId}}"
      class="card light-card-detail"
@@ -26,7 +25,7 @@
                 </p>
                 <p class="card-severity ">
                     <span class="opfab-feed-list-card-severity">{{lightCard.severity.toString()|lowercase}} 
-                        <img id="opfab-card-icon" src="assets\images\opfab-bg-sev-{{lightCard.severity.toString()|lowercase}}-icon.png"></span>
+                        <img id="opfab-card-icon" src="assets\images\opfab-bg-sev-{{lightCard.severity.toString()|lowercase}}-icon.svg"></span>
                 <div style="text-align: right;padding-right: 5px;">
                     <div>
                         <ng-template #tipHasAResponseFromYourEntity>

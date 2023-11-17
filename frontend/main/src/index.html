@@ -16,7 +16,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.2</title>
+  <title>Assistant CAB v3.0.3</title>
   <span id="login"></span>
   <base href="/">
 
@@ -280,6 +280,7 @@ These two parameters are place in this file as the style should have a title par
     function selectUseCase(uc){
       if (uc == authorizedUseCase){
         grantedUseCase(authorizedUseCase);
+        setCardsSeverity();
       }else{
         alert("Error: You're not allowed to access this environment")
       }
@@ -301,6 +302,7 @@ These two parameters are place in this file as the style should have a title par
       console.log(uc + " selected as use case");
       switch (uc) {
         case "RTE":
+          document.getElementById("usecase_hidden").text = "CAB RTE";
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
           document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
@@ -323,15 +325,15 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("map").hidden = true;
           document.getElementById("notifs_RTE").hidden = false;
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Alertes");
-          document.getElementsByClassName("timeline-container")[0].style.width = "96.6%"
     
 
           setInterval(() => {
             refreshCtxRTE();
-          }, 5000);
+          }, 15000);
           break;
         case "DA":
           getCoordinates();
+          document.getElementById("usecase_hidden").text = "CAB DA";
           document.getElementById("dassault_div").hidden = false;
           document.getElementById("dassault_title").hidden = false;
           document.getElementById("dassaultBar").hidden = false;
@@ -348,6 +350,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("tl-box").style.bottom = "0";
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
           document.getElementById("notifs_DA").hidden = false;
+          document.getElementById("fake_notifs_DA").hidden = false;
           document.getElementById("opfab-feed-filter-btn-filter").hidden = true;
           document.getElementById("da_block_request").hidden = false;
           document.getElementById("map").classList += " map_da";
@@ -360,10 +363,11 @@ These two parameters are place in this file as the style should have a title par
           // mapDA();
           break;
         case "ORANGE":
-          document.getElementById("opfab-navbar-menu-feed").text = "CAB Orange";
+          
+          document.getElementById("usecase_hidden").text = "CAB Orange";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
-          document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
+          // document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
           document.getElementById("opfab-navbar-menu-feed").style.color = "white";
           // mock poc v1/2 setTimeout(getOrangeIncidents,20000);
           document.getElementById("map").hidden = true;
@@ -373,7 +377,6 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("assistOpTitle").classList.add("assist_sncf");
           document.getElementById("assistOpTitle").classList.add("assistOpTitle");
           document.getElementById("assistOpTitle").style.top = "80px";
-          document.getElementById("assistOpTitle").style.overflow = "scroll";
           document.getElementById("feed-content").style.position = "absolute";
           document.getElementById("feed-content").style.marginTop = "0px";
           document.getElementById("feed-content").classList.add("orange_theme");
@@ -384,12 +387,16 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("assistOpTitle").classList.add("sncf");
           document.getElementById("assistOpTitle").classList.add("assist_orange_overflow_override");
           document.getElementById("feed-content").classList.add("sncf");
-          document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Incidents");
+          document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Anomalies");
+          setTimeout(() => {
+            //to predefine filter
+            document.getElementById("opfab-sort-form").querySelectorAll("label")[2].querySelector(".opfab-radio-button-checkmark").click()
+          }, 5000);
           break;
         case "SNCF":
-          document.getElementById("opfab-navbar-menu-feed").text = "CAB SNCF";
+          document.getElementById("usecase_hidden").text = "CAB SNCF";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
-          document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#009AA6"
+          // document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#009AA6"
           document.getElementById("opfab-navbar-menu-feed").style.color = "white"
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           // document.getElementById("ctx_div").style.marginLeft = "440px";
@@ -540,12 +547,6 @@ These two parameters are place in this file as the style should have a title par
             }
 
     }
-    if (selectedUseCase!= "DA"){
-      setInterval(() => {
-        setCardsSeverity();
-      }, 3000);
-    }
-
     function setCardsForDA() {
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
@@ -585,6 +586,11 @@ These two parameters are place in this file as the style should have a title par
         var event_end_date_plus_5_hours = new Date(event_end_date).getTime() + 5 * 60 * 60 * 1000;
         var event_end_date_plus_5_hours_formated = new Date(event_end_date_plus_5_hours).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         event_end_date_formated = event_end_date_plus_5_hours_formated;
+        try {
+          cards[card].querySelector(".p-1").style.color = "grey";
+        } catch (error) {
+        }
+
         //positionner point sur timeline END DATE
         // hack pour obtenir l'id de la ligne de timeline associée à l'event
         try {
@@ -592,9 +598,9 @@ These two parameters are place in this file as the style should have a title par
         + '"]').getAttribute("id").match(/\d+/)[0]
         //positionnerEndPoint
         // positionnerPointSurTimeline(event_end_date_plus_5_hours_formated, card_timeline);
-        if(event_end_date){
-          positionnerPointFinDateEventSurTimeline(event_end_date_plus_5_hours_formated,card_timeline)
-        }
+        // if(event_end_date){
+        //   positionnerPointFinDateEventSurTimeline(event_end_date_plus_5_hours_formated,card_timeline)
+        // }
         } catch (error) {
         }
 
@@ -610,7 +616,7 @@ These two parameters are place in this file as the style should have a title par
         }
 
         if (selectedUseCase == "SNCF"){
-          cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.png", "assets\\images\\impact_sncf.svg");
+          cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.svg", "assets\\images\\impact_sncf.svg");
 
           if (!cards[card].classList.contains("SNCF_card")){
             cards[card].classList.add("SNCF_Card");
@@ -628,6 +634,7 @@ These two parameters are place in this file as the style should have a title par
               cards[card].classList.remove("sncf-light-card-background-" + cards[card].attributes['severity'].value);
               cards[card].classList.add("sncfCard");
               cards[card].children[0].children[0].children[0].children[0].style.fontWeight = "100";
+              console.log(cards[card].querySelector(".card-title").style.fontWeight = "100")
               if(assistNeverTriggered){
                 document.getElementById("sncf_assist").hidden = false;
                 assistNeverTriggered = false;
@@ -649,11 +656,7 @@ These two parameters are place in this file as the style should have a title par
             cards[card].style.color="white";
           }
         }else if (selectedUseCase == "RTE" && !cards[card].classList.toString().includes("light-card-border") && cards[card].classList.toString().includes("light-card-detail")){
-            // cards[card].classList += " light-card-background-" + cards[card].attributes['severity'].value;
-            // cards[card].classList += " title-light-card-border-white";
-            // cards[card].classList += " light-card-border-" + cards[card].attributes['severity'].value;
               cards[card].classList.add("rteBg-"+ cards[card].attributes['severity'].value)
-              // cards[card].children[1].lastElementChild.firstChild.firstChild.style.color  = "gray";
               
         }
         else if (selectedUseCase == "ORANGE" || selectedUseCase == "DA"){
@@ -666,7 +669,7 @@ These two parameters are place in this file as the style should have a title par
               }
               cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",card_hour);
               cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",card_hour);
-              cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.png", "assets\\images\\opfab-bg-sev-alarm-icon.png");
+              cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.svg", "assets\\images\\opfab-bg-sev-alarm-icon.png");
               cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-information-icon.png", "assets\\images\\icon _solve_.png");
 
             } catch (error) {
@@ -1094,9 +1097,13 @@ These two parameters are place in this file as the style should have a title par
     }
 
   </script>
-  <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;top: 90px;" hidden>
+  <div id="usecase_hidden" hidden></div>
+  <button id="updateSeverity" onclick="setCardsSeverity()" hidden></button>
+  <button id="updateTimeLine" onclick="fillTimeLine()" hidden></button>
+  
+  <div id="assistOpTitle" style="font-size: 18px; color: var(--opfab-text-color);position: absolute;top: 90px;" hidden>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
-    <b id="assist" hidden style="margin-left:3px">Assistance à l'opérateur</b>
+    <b id="assist" hidden style="margin-left:3px;color:var(--opfab-text-color)">Assistance à l'opérateur</b>
     <b id="correlation" hidden>Corrélations</b>
     <b id="dassault_title" hidden>Assistance</b>
     <div id="sncf_assist" hidden>
@@ -1129,7 +1136,17 @@ These two parameters are place in this file as the style should have a title par
         <hr>
       </div>
     </div>
-    <div id="nominal_assist" hidden><img src="assets/images/cab_frame.png"><br><b>Bonjour ! </b><br>Je suis votre assistant bidirectionnel.</div>
+    <div id="nominal_assist" hidden>
+      <img src="assets/images/cab_frame.png"><br>
+      <b>Bonjour ! </b>
+      <br>Je suis votre assistant bidirectionnel.
+      <div id="nominal_assist_chat">
+        <div id="userInput">Comment puis-je vous aider ? <img src="assets/images/mic.svg"> </div>
+        <div>
+          <img style="margin-left:10px;width:100%" src="assets/images/Icon CAB.svg">
+        </div>
+      </div>
+    </div>
     <div id="orange_assist" hidden>
       <div id="orange_headers" style="display:flex">
         <div><button id="canari" class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
@@ -1245,14 +1262,15 @@ These two parameters are place in this file as the style should have a title par
   <noscript>Please enable JavaScript to continue using this application.</noscript>
   <div id="tl-container-home" hidden>
     <div id ="tl-box" class="timeline-container timeline-border">
-      <div style="font-size:18px;color:grey;margin-left:3px;overflow: hidden"><b>Timeline</b></div>
+      <div style="font-size:18px;color:var(--opfab-text-color);margin-left:3px;overflow: hidden"><b>Timeline</b></div>
         <div class="timeline" id="timelineNG">
             <div class="global-current-time-cursor">
               <img style='width: 17px;
                     position: absolute;
                     left: -6px;
-                    top: -5px;'
-              src='./assets/images/time_cursor.svg'/>
+                    top: -5px;
+                    color:rgb(114,114,114)'
+              src='./assets/images/time_cursor.png'/>
                 <div id="current-time"><b></div>
             </div> 
             <div id="timeline-line" class="timeline-line" style="
@@ -1261,7 +1279,7 @@ These two parameters are place in this file as the style should have a title par
             padding: 2px;
 "><div class="" 'timeline-hour'="" style="left: 0;margin-top: -5px;"></div><div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
 </div><div class="timeline-hour" style="left: 50%;margin-top: -5px;"> 12:00</div><div class="timeline-hour" style="left: 75%;margin-top: -5px;">18:00</div><div class="timeline-hour" style="right: 0;"></div></div>
-            <div id="eventsForTimeLine"></div>
+            <div id="eventsForTimeLine" hidden></div>
         </div>
     </div>
 </body>

@@ -470,7 +470,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = false;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("pdv_da").hidden = true;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ENG1")) {
@@ -478,7 +477,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("da_block_request").hidden = true;
             this.getRecommandationDA(document.getElementById("opfab-card-title").innerText);
             document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
@@ -500,7 +498,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("ECS_nominal").setAttribute("src",document.getElementById("ECS").getAttribute("src"));
             document.getElementById("ECS").hidden = false;
             this.getEmergencyPlan();
@@ -508,7 +505,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ELEC")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
@@ -517,7 +513,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ENGINE")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
@@ -526,7 +521,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("FUEL")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
@@ -535,7 +529,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("HYD")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
@@ -556,7 +549,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("noevent_da").hidden = true;
             $("#rte_assist").hide()
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
             document.getElementById("sncf_incident_infos").innerHTML 
@@ -608,8 +600,17 @@ export class LightCardComponent implements OnInit, OnDestroy {
       };
     public select($event) {
         Swal.showLoading();
-
-        // var card = $event.path[2].firstChild.offsetParent.outerText;
+        var element = $event.srcElement;
+        while (element && !element.classList.contains('card')) {
+          console.log((element));
+          element = element.parentElement;
+      }
+      // Vérifie si l'élément avec la classe 'card' a été trouvé
+      if (element && element.classList.contains('card')) {
+        console.log(element)
+          element.classList.add('hasBeenRead');
+          element.querySelector(".card-title").classList.add("hasBeenRead")
+      }
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();

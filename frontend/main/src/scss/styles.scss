@@ -301,6 +301,14 @@ select.form-control[multiple] {
     background-color: var(--opfab-bgcolor);
 }
 
+#cabTitle{
+    font-size: 32px;
+    position: absolute;
+    left: 50%;
+    color:var(--opfab-text-color);
+    background-color: var(--opfab-bgcolor);
+}
+
 html,
 body {
     height: 100%;
@@ -393,9 +401,10 @@ body {
         color: var(--opfab-text-color);
         margin-top: -10px;
         margin-bottom: -10px;
+        background-color: var(--opfab-popover-bgcolor);
     }
     .arrow::after {
-        border-right-color: var(--opfab-popover-bgcolor);
+        border-right-color: var(--opfab-feedbar-icon-hover-color);
     }
 }
 
@@ -658,6 +667,8 @@ label:hover{
 
 .DA_Card{
     min-height: 31px!important;
+    color: white!important;
+    background-color: black!important;
 }
 .SNCF_Card{
     min-height: 54px !important
@@ -689,57 +700,66 @@ label:hover{
     cursor: pointer;
 }
 .daBg-alarm{
-    box-shadow: 15px 0px 9px #A70000 inset;
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
 }
 .daBg-action{
-    box-shadow: 15px 0px 9px #E05206 inset;
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
 }
 .daBg-compliant{
-    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
 }
 .rteBg-alarm{
-    box-shadow: 15px 0px 9px #A70000 inset;
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
     color: #A70000!important
 
 }
 .rteBg-action{
-    box-shadow: 15px 0px 9px #E05206 inset;
-    color: #E05206!important
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
 
 }
 .rteBg-compliant{
-    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
-    color: rgb(0,158,143)!important
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+
+}
+.da-compliant{
+    box-shadow: 15px 0px 0px white inset;
+    border: 2px solid white;
 
 }
 .rteBg-information{
-    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
-    color: rgb(0,158,143)!important
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
 
 }
 .orangeBg-action{
-    box-shadow: 15px 0px 9px #FF7900 inset;
-    color: #FF7900!important
+    box-shadow: 15px 0px 0px #FF7900 inset;
+    border: 2px solid #FF7900;
 
 }
 .orangeBg-alarm{
-    box-shadow: 15px 0px 9px #FF0000 inset;
-    color: #FF0000!important
+    box-shadow: 15px 0px 0px #FF0000 inset;
+    border: 2px solid #FF0000;
 
 }
 .orangeBg-information{
-    box-shadow: 15px 0px 9px #50BE87 inset;
-    color: #50BE87!important
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
 
 }
 .orangeBg-compliant{
-    box-shadow: 15px 0px 9px #50BE87 inset;
-    color: #50BE87!important
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
 
 }
 .orangeBg-routine{
-    box-shadow: 15px 0px 9px #50BE87 inset;
-    color: #50BE87!important
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
 
 }
 #opfab-div-card-template-alarm{
@@ -778,6 +798,17 @@ label:hover{
 }
 #dassaultBar,#dassaultBar2{
     margin-top: -44px;
+}
+#sncfControl{
+    display: flex;
+}
+#sncfControl button{
+    color: var(--opfab-text-color);
+}
+.imgBin{
+    margin-left: 20px;
+    margin-top: -7px;
+    margin-bottom: 5px;
 }
 @media (max-height: 768px) { //random laptop
     .sncf{
@@ -977,7 +1008,7 @@ label:hover{
         margin-left: 450px;
     }
     #img_indice{
-        width: 150%;
+        width: 120%;
     }
     #notifContainer{
         width: 400px!important;
@@ -986,11 +1017,11 @@ label:hover{
         width:350px;
     }
     .sncf_ctx_div{
-        margin-left: 360px;
-        min-width: 1190px
+        margin-left: 410px!important;
+        min-width: 1090px;
     }
     .feed-content_override{
-        width: 350px!important;
+        width: 400px!important;
     }
     .rte_ctx_div{
         margin-left: 432px;
@@ -1027,7 +1058,7 @@ label:hover{
         width:1078px!important;
     }
     .map_sncf{
-        width: 1185px !important;
+        width: 1090px !important;
         height: 56vh!important;
     }
     #da_uc_btn {
@@ -1042,22 +1073,20 @@ label:hover{
     .assist_orange{
         width:350px; 
     }
-    .assist_orange_overflow_override{
-        overflow: scroll!important;
-    }
     .assist_rte{
         margin-left: 1160px;
         height: 726px;
     }
     #assistOpTitle{
-        width:326px!important;
+        width:370px!important;
         overflow-y: hidden;
     }
     .assistOpTitle{
-        left:1580px;
+        left: 1535px;
     }
     .assistOpTitleDA{
         left: 1540px;
+        height:700px
     }
     .assistOpTitle_rte{
         height: 700px;
@@ -1069,14 +1098,11 @@ label:hover{
         max-height: 455px;
         overflow-y: auto!important;
     }
-    #sncfControl{
-        display: flex;
-    }
     #sncf_ctx{
         margin-top : 10px;
     }
     #orange_ctx_container{
-        margin-left: 300px;
+        margin-left: 210px;
     }
     #train_infos{
         max-height: 200px;
@@ -1102,6 +1128,11 @@ label:hover{
     right: 0px;
     z-index: 2;
     cursor: pointer;
+  }
+
+  .hasBeenRead{
+    color: gray;
+    font-weight: normal!important;
   }
 
   .sncf-light-card-selected span{
@@ -1283,4 +1314,21 @@ input[type="range"] {
     text-align: center;
     color: #00A3FF;
     margin-top: 270px;
+}
+
+#nominal_assist_chat{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+}
+
+#userInput {
+    border: 1px solid #00A3FF;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    color:gray;
 }

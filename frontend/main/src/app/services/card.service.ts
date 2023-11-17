@@ -117,7 +117,8 @@ export class CardService {
                         case CardOperationType.ADD:
                             setTimeout(() => {
                                 document.getElementById("eventsForTimeLine").innerHTML = "";
-                            }, 30000);
+                            $("#updateSeverity").click()
+                            }, 2000);
                             cards = $(".card");
                             this.logger.info(
                                 'CardService - Receive card to add id=' +

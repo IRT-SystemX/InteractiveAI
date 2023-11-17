@@ -18,10 +18,6 @@ function fillTimeLine() {
             var cards = JSON.parse(this.responseText)
             for (var card = 0; card < cards.length; card++) {
                 var criticality = cards[card].criticality;
-                // if (criticality == "HIGH" && newCriticalityReady){
-                //         newCriticalityReady = false;
-                //             document.getElementById("eventsForTimeLine").innerHTML = "";
-                // }
                 var date = cards[card].date;
                 var end_date = cards[card].end_date;
                 var title = cards[card].title;
@@ -31,42 +27,44 @@ function fillTimeLine() {
                 var heure_event = time_format(new Date(date));
                 // var heure_event_fin = time_format(new Date(end_date));
                 var heure_event_fin = null;
-                cartToAdd = "<div hidden class='blocEvent' id='event" + card  + "'>" +
-                "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 35px;background-color:"+ criticalities[use_case].color[criticality] + 
-                ";border: 1px solid " + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
-                " id='title" + card + "'>" + title + "</div>" + "<div class='timeline'>" +
-                "<div class='timeline-line'><div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
-                "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
-                "<div class='timeline-point' id='timeline-point" + card + "' '>" + heure_event + criticalities[use_case].icon[criticality] + "</div>" +
-                "<div class='timeline-point-end' id='timeline-point-end" + card + "'>"+ "<img src='assets/images/done.png'>" + "</div>" +
-                "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "' hidden></div></div>";
-                    document.getElementById("eventsForTimeLine").innerHTML += cartToAdd;
-                    positionnerPointSurTimeline(heure_event, card, heure_event_fin);
+                // var heure_event_fin = "17:30";
+                var id_bloc_event = document.getElementById("event" + card)
+
                     if(document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLowerCase() + "Process-" + id_event)){
+                        cardToAdd = "<div hidden class='blocEvent' id='event" + card  + "'>" +
+                        "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 35px;background-color:white;color:"+ criticalities[use_case].color[criticality] + 
+                        ";border: 1px solid " + criticalities[use_case].color[criticality] + ';box-shadow: -4px 0px 0px ' + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
+                        " id='title" + card + "'>" + "<div>"+title +"</div>" + "<div style='position:absolute;right:0px;'>"+criticalities[use_case].icon[criticality] + "</div>" + "</div>" + "<div class='timeline'>" +
+                        "<div class='timeline-line'><d<div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
+                        "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
+                        "<div class='timeline-point tl-point' id='timeline-point" + card + "' '>" + "<span class='tl_hour'>" + heure_event + "</span>" + criticalities[use_case].icon[criticality] + "</div>" +
+                        // "<div class='timeline-point-end' id='timeline-point-end" + card + "'>"+ heure_event_fin + "<img src='assets/images/done.png'>" + "</div>" +
+                        "<div class='timeline-point-end tl-point' id='timeline-point-end" + card + "'>" + (heure_event_fin !== null ? "<span class='tl_hour'>" + heure_event_fin + "</span><img src='assets/images/done.png'>" : "") + "</div>" +
+                        "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "' hidden></div></div>";
+                        document.getElementById("eventsForTimeLine").innerHTML += cardToAdd;
+                        positionnerPointSurTimeline(heure_event, card, heure_event_fin)
                         getCardForTimeline(id_event,card);
                     }
             }
-
             var events = document.getElementsByClassName("blocEvent")
                 for (var event = 0; event<events.length;event++){
-                    if (!document.getElementsByClassName("blocEvent")[event].hidden){
-                        console.log(document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event]))
-                    document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon'>"
-                    document.getElementById("event" + [event] + "icon").src = document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
+                    var id_image_top_event = document.getElementById("event" + [event] + "icon")
+                    if (!document.getElementsByClassName("blocEvent")[event].hidden && !id_image_top_event){
+                    document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon'>";
+                    document.getElementById("event" + [event] + "icon").src = document.getElementById("timeline-point"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).querySelector("img").src
                     document.getElementById("event" + [event] + "icon").style.left = document.getElementsByClassName("timeline-point")[event].style.left
                     document.getElementById("event" + [event] + "icon").style.position = "absolute"
                     document.getElementById("event" + [event] + "icon").style.marginTop = "-25px"
-                    document.getElementById("event" + [event] + "icon").style.marginLeft = "-8px"
-                    
+                    document.getElementById("event" + [event] + "icon").style.marginLeft = "-2px"
                     
                     if(heure_event_fin){
                         document.getElementById("timeline-line").innerHTML += "<img id='event" + [event] + "icon_end'>"
-                        document.getElementById("event" + [event] + "icon_end").src = document.getElementById("timeline-point-end"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).children[0].src
+                        document.getElementById("event" + [event] + "icon_end").src = document.getElementById("timeline-point-end"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).querySelector("img").src
                         document.getElementById("event" + [event] + "icon_end").style.left = document.getElementById("timeline-point-end"+document.getElementsByClassName("blocEvent")[event].id.match(/\d+/)[0]).style.left
                         document.getElementById("event" + [event] + "icon_end").style.position = "absolute"
                         document.getElementById("event" + [event] + "icon_end").style.marginTop = "-25px"
                         document.getElementById("event" + [event] + "icon_end").style.marginLeft = "-8px"
-                        console.log(document.getElementsByClassName("blocEvent")[event])
+
                     }
 
                 }
@@ -74,7 +72,6 @@ function fillTimeLine() {
         }
     });
     xhr.open("GET", host + "/cab_event/api/v1/events"+"?time="+new Date().getTime());
-    // xhr.open("GET", "./shared/json_samples/events.json");
     xhr.setRequestHeader("Authorization", "Bearer "+ token);
     xhr.send(data);
 }
@@ -100,9 +97,6 @@ function getCardForTimeline(id_event,card){
             // cards[card].innerHTML += 
             try {
                 cardName = 'opfab-feed-light-card-' + selectedUseCase.toLowerCase() + 'Process-' + document.querySelector('#event'+card+' [event_id]').getAttribute("event_id")
-                console.log(cardName)
-                // document.getElementById(cardName).innerHTML += "<button onclick='acknowledgeEvent('" + uid + "','" + card + ")'> trashIcon </button>"
-                // document.getElementById(cardName).innerHTML += '<button onclick="acknowledgeEvent(\'' + uid + '\', \'' + card + '\')">trashIcon</button>';
                 if ( document.getElementById(cardName).querySelector(".imgBin") == null){
                     document.getElementById(cardName).innerHTML += '<img class="imgBin" src="assets/images/trashIcon.svg" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + card + '\', \'' + id_event + '\')">';
                 }
@@ -152,7 +146,6 @@ function acknowledgeEvent(uid,card,id_event){
             document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLocaleLowerCase() + "Process-" + id_event).remove();
             document.getElementById("event"+card+"icon").remove();
             console.log("event"+card+"icon")
-
         }
     });
     xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
@@ -174,6 +167,7 @@ function initTimeLine() {
     updateGlobalCurrentTimeCursor();
     setInterval(() => {
             fillTimeLine();
+            document.getElementById("eventsForTimeLine").hidden = false
             updateGlobalCurrentTimeCursor();
     }, 5000);
 }
@@ -215,13 +209,18 @@ function positionnerPointSurTimeline(heure, timeline_id, end_date) {
     var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
     var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
+    var end_timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
     var timelinePointMarginLeft = document.getElementById("timeline-point" + timeline_id).getBoundingClientRect().left;
         point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlight.hidden = false;
-    if(!end_date){
+    if(end_date){
+        positionnerPointFinDateEventSurTimeline(end_date,timeline_id)
+        highlight.style.width = Math.abs(end_timelineHighlightWidth) + "px";
+    }else{
         highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
     }
+
     
 }
 function positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
@@ -249,6 +248,7 @@ function positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
     highlight.hidden = false;
     var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
     point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+    point.style.marginLeft = "-12px";
 }
 function time_format(d) {
     hours = format_two_digits(d.getHours());
