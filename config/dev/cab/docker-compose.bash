@@ -25,4 +25,4 @@ fi
 
 echo "HOST_IP=${HOST_IP}" > .env
 
-docker-compose up --build -d
+docker-compose up -d

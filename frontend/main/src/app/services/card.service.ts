@@ -37,6 +37,7 @@ import {LogOption, OpfabLoggerService} from './logs/opfab-logger.service';
 import packageInfo from '../../../package.json';
 import {SoundNotificationService} from './sound-notification.service';
 import $ from "jquery";
+import {setStatus} from "shared/js/d3graph.js"
 
 @Injectable({
     providedIn: 'root'
@@ -128,6 +129,9 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
+                            if(operation.card.entityRecipients.includes('ORANGE')){
+                                setStatus(operation.card.titleTranslated, operation.card.severity)
+                            }
 
                             if (operation.card.id === this.selectedCardId)
                                 this.store.dispatch(new LoadCardAction({id: operation.card.id}));
