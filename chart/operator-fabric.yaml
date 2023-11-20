@@ -164,8 +164,6 @@ services:
       - users
       - businessconfig
       - cards-consultation
-    volumes:
-      - webapp_example:/usr/share/nginx/html/external/appExample
     configs:
       - source: nginx-conf-nginx
         target: /etc/nginx/conf.d/default.conf
@@ -187,7 +185,6 @@ volumes:
   certificates:
   external_config:
   businessconfig_storage:
-  webapp_example:
 
 configs:
   common:
