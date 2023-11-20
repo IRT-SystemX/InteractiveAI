@@ -32,9 +32,9 @@ function fillTimeLine() {
 
                     if(document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLowerCase() + "Process-" + id_event)){
                         cardToAdd = "<div hidden class='blocEvent' id='event" + card  + "'>" +
-                        "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 35px;background-color:white;color:"+ criticalities[use_case].color[criticality] + 
+                        "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 40px;background-color:var(--opfab-bgcolor);color:"+ criticalities[use_case].color[criticality] + 
                         ";border: 1px solid " + criticalities[use_case].color[criticality] + ';box-shadow: -4px 0px 0px ' + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
-                        " id='title" + card + "'>" + "<div>"+title +"</div>" + "<div style='position:absolute;right:0px;'>"+criticalities[use_case].icon[criticality] + "</div>" + "</div>" + "<div class='timeline'>" +
+                        " id='title" + card + "'>" + "<div>"+title +"</div>" + "<div style='position:absolute;right:0px;'>"+criticalities[use_case].icon.timeline[criticality] + "</div>" + "</div>" + "<div class='timeline'>" +
                         "<div class='timeline-line'><d<div class 'timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
                         "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
                         "<div class='timeline-point tl-point' id='timeline-point" + card + "' '>" + "<span class='tl_hour'>" + heure_event + "</span>" + criticalities[use_case].icon[criticality] + "</div>" +
@@ -97,8 +97,9 @@ function getCardForTimeline(id_event,card){
             // cards[card].innerHTML += 
             try {
                 cardName = 'opfab-feed-light-card-' + selectedUseCase.toLowerCase() + 'Process-' + document.querySelector('#event'+card+' [event_id]').getAttribute("event_id")
-                if ( document.getElementById(cardName).querySelector(".imgBin") == null){
-                    document.getElementById(cardName).innerHTML += '<img class="imgBin" src="assets/images/trashIcon.svg" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + card + '\', \'' + id_event + '\')">';
+                if (document.getElementById(cardName).querySelector(".imgBin") == null) {
+                    var trashIconSrc = selectedUseCase !== "DA" ? "assets/images/trashIcon.svg" : "assets/images/trashIconDA.svg";
+                    document.getElementById(cardName).innerHTML += '<img class="imgBin" src="' + trashIconSrc + '" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + card + '\', \'' + id_event + '\')">';
                 }
             } catch (error) {
                 console.log("Cant find matching id "+ cardName);
@@ -175,7 +176,7 @@ function initTimeLine() {
 function updateGlobalCurrentTimeCursor() {
     var globalCurrentTimeCursor = document.querySelector('.global-current-time-cursor');
     var currentTimeDiv = document.getElementById('current-time');
-    if (selectedUseCase == "RTE"){
+    if (selectedUseCase == "RTE" ||selectedUseCase == "ORANGE" ){
         var currentTime = new Date();
     }else{
         var currentTime = new Date(dateCtx);

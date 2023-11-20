@@ -157,9 +157,11 @@
 
     @media (min-height: 900px) and  (min-width: 1800px) { 
         .timeline-border{
-            min-height: 245px;
+            height: 245px!important;
+            max-height: 245px;
             margin-top: 12px;
             width: 98.8%;
+            overflow-x: hidden;
         }
     }
     

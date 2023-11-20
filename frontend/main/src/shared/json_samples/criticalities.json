@@ -4,7 +4,12 @@
             "icon": {
                 "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "timeline": {
+                    "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                }
             },
             "color": {
                 "MEDIUM": "#EC775C",
@@ -16,7 +21,12 @@
             "icon": {
                 "MEDIUM": "<img src='./assets/images/sncf_delay.png'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "timeline": {
+                    "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                }
             },
             "color": {
                 "MEDIUM": "#DAAA00",
@@ -28,7 +38,12 @@
             "icon": {
                 "MEDIUM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "timeline": {
+                    "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                }
             },
             "color": {
                 "MEDIUM": "#E05206",
@@ -41,7 +56,12 @@
                 "MEDIUM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "COMPLIANT": "<img src='./assets/images/red_alarm.svg'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "timeline": {
+                    "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                }
             },
             "color": {
                 "MEDIUM": "#FF7900",

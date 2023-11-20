@@ -16,7 +16,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.3</title>
+  <title>Assistant CAB v3.0.4</title>
   <span id="login"></span>
   <base href="/">
 
@@ -263,6 +263,7 @@ These two parameters are place in this file as the style should have a title par
             groups = response.groups;
             authorizedUseCase = entities[0];
             document.getElementById("login").innerHTML = "Logged as " + authorizedUseCase;
+            document.getElementById("login").style.color = "black";
             return entities[0];
           }
           console.log("token checked")
@@ -389,8 +390,9 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("feed-content").classList.add("sncf");
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Anomalies");
           setTimeout(() => {
-            //to predefine filter
-            document.getElementById("opfab-sort-form").querySelectorAll("label")[2].querySelector(".opfab-radio-button-checkmark").click()
+            document.getElementById("opfab-feed-filter-btn-sort").click()
+            document.getElementById("ngb-popover-2").hidden = true;
+            document.getElementById("opfab-feed-filter-severity").click()
           }, 5000);
           break;
         case "SNCF":
@@ -664,9 +666,6 @@ These two parameters are place in this file as the style should have a title par
             try {
               cards[card].classList.add("orangeBg-"+ cards[card].attributes['severity'].value)
               var card_hour = event_start_date_formated;
-              if(event_end_date){
-                card_hour = event_end_date_formated;
-              }
               cards[card].innerHTML = cards[card].innerHTML.replace("Sureté",card_hour);
               cards[card].innerHTML = cards[card].innerHTML.replace("Maintenance ",card_hour);
               cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.svg", "assets\\images\\opfab-bg-sev-alarm-icon.png");

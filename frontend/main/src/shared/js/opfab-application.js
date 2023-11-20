@@ -60,7 +60,7 @@ const opfabStyle = {
         --opfab-timeline-button-text-color: #49494a;
         --opfab-timeline-button-selected-bgcolor: #49494a;
         --opfab-timeline-button-selected-text-color: #fcfdfd;
-        --opfab-lightcard-detail-bgcolor: #F3F2F1;
+        --opfab-lightcard-detail-bgcolor: white;
         --opfab-lightcard-detail-textcolor: black;
         --opfab-lightcard-detail-border-color: #cccccc;
         --opfab-lightcard-detail-selected-bgcolor: #E1E1E1;
@@ -123,7 +123,7 @@ const opfabStyle = {
         --opfab-timeline-button-text-color: #49494a;
         --opfab-timeline-button-selected-bgcolor: #49494a;
         --opfab-timeline-button-selected-text-color: #fcfdfd;
-        --opfab-lightcard-detail-bgcolor: #F3F2F1;
+        --opfab-lightcard-detail-bgcolor: black;
         --opfab-lightcard-detail-textcolor: black;
         --opfab-lightcard-detail-border-color: #cccccc;
         --opfab-lightcard-detail-selected-bgcolor: #E1E1E1;
