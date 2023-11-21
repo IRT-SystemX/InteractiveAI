@@ -125,6 +125,12 @@
     <!-- <div style="height:25px"> </div> -->
 
     <div id="opfab-card-list" class="opfab-card-list" style="width:100%">
+      <div class = "empty_event_list in_feed" id="noevent_da" hidden> 
+        No content
+      </div>
+      <div class = "empty_event_list in_feed" id="noevent_orange" hidden> 
+        Aucun événement
+      </div>
       <div class="row" *ngFor="let currentLightCard of lightCards">
         <div class="col-12" style="padding-right: 20px;margin-bottom: 10px;">
           <of-light-card [lightCard]="currentLightCard" [open]="(currentLightCard.id === (selection|async)) ||
@@ -231,17 +237,23 @@
       </div>
     </div>
   </div>
-<div id="fake_notifs_DA" style="width:98%;margin-top: 500px;" hidden>
+<div id="fake_notifs_DA" style="width:98%;position:absolute;top: 500px;" hidden>
     <div style="font-size:18px;color:var(--opfab-text-color);margin-left:3px"><b>Notifications</b></div>
+    <div class = "empty_event_list" id="noevent_da_second" style="left: 40%;position: absolute;top: 125px;"> 
+      No content
+    </div>
     <div
       class="card da-compliant"
-      style="margin-top: 5px;margin-left: 7px;" >
+      id="da-fake-card"
+      style="margin-top: 5px;margin-left: 7px;" hidden>
+      
       <div style="display: grid; grid-template-columns: auto auto; margin-top: 2px;color:black">
         <p class="card-title" style="margin-left: 5px; color:white">
           <span _ngcontent-snq-c114="" class="opfab-feed-list-card-severity" style="position: absolute;right: 0px;">14:10<img _ngcontent-snq-c114="" id="opfab-card-icon" style="margin-left: 3px;" src="assets\images\info.svg"></span>
           <span id="opfab-feed-list-card-title"><b style="color:white">PUT ON OXYGEN MASK</b></span><br>
         </p>
       </div>
+      
       <img class="imgBin" src="assets/images/trashIconDA.svg" width="10%">
     </div>
   </div>

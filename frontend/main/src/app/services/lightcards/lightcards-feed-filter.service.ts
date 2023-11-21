@@ -18,6 +18,7 @@ import {GroupedCardsService} from '@ofServices/grouped-cards.service';
 import {ConfigService} from '@ofServices/config.service';
 import {LogOption, OpfabLoggerService} from '@ofServices/logs/opfab-logger.service';
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -92,6 +93,10 @@ export class LightCardsFeedFilterService {
             )
             .subscribe((lightCards) => {
                 this.logger.debug('Number of cards visible after filtering : ' +  lightCards.length ,LogOption.LOCAL_AND_REMOTE);
+                if (lightCards.length >= 1){
+                    document.getElementById("noevent_da").hidden = true;
+                    document.getElementById("noevent_orange").hidden = true;
+                }
                 this.filteredLightCards.next(lightCards);
             });
     }

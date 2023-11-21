@@ -56,11 +56,11 @@
                 "MEDIUM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "COMPLIANT": "<img src='./assets/images/red_alarm.svg'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>",
                 "timeline": {
                     "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
-                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
-                    "ROUTINE": "<img src='./assets/images/routine.svg'/>"
+                    "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.svg'/>",
+                    "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>"
                 }
             },
             "color": {

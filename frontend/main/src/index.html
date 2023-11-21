@@ -16,7 +16,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.4</title>
+  <title>Assistant CAB v3.0.5</title>
   <span id="login"></span>
   <base href="/">
 
@@ -352,6 +352,8 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
           document.getElementById("notifs_DA").hidden = false;
           document.getElementById("fake_notifs_DA").hidden = false;
+          document.getElementById("noevent_da").hidden = false;
+          // mettre un timer qui affiche cette notif en même temps que celel qui apparait
           document.getElementById("opfab-feed-filter-btn-filter").hidden = true;
           document.getElementById("da_block_request").hidden = false;
           document.getElementById("map").classList += " map_da";
@@ -374,6 +376,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("map").hidden = true;
           document.getElementById("correlation").hidden = false;
           document.getElementById("orange_ctx").hidden = false;
+          document.getElementById("noevent_orange").hidden = false;
           document.getElementById("assistOpTitle").classList.add("orange_theme");
           document.getElementById("assistOpTitle").classList.add("assist_sncf");
           document.getElementById("assistOpTitle").classList.add("assistOpTitle");
@@ -419,7 +422,11 @@ These two parameters are place in this file as the style should have a title par
           mapSNCF();
           break;
       }
-      document.getElementById("nominal_assist").hidden = false;
+      if(selectedUseCase != "DA"){
+        document.getElementById("nominal_assist").hidden = false;
+      }else{
+        document.getElementById("nominal_assist_en").hidden = false;
+      }
       document.getElementById("homescreen").style = "display:none";
       document.getElementById("assistOpTitle").hidden = false;
       initTimeLine();
@@ -1146,6 +1153,17 @@ These two parameters are place in this file as the style should have a title par
         </div>
       </div>
     </div>
+    <div id="nominal_assist_en" hidden>
+      <img src="assets/images/cab_frame.png"><br>
+      <b>Hello ! </b>
+      <br>I am CAB, your bidirectional assistant.
+      <div id="nominal_assist_chat">
+        <div id="userInput">How can I help you? <img src="assets/images/mic.svg"> </div>
+        <div>
+          <img style="margin-left:10px;width:100%" src="assets/images/Icon CAB.svg">
+        </div>
+      </div>
+    </div>
     <div id="orange_assist" hidden>
       <div id="orange_headers" style="display:flex">
         <div><button id="canari" class="orange_button_theme histo_tab canari" onclick='document.getElementById("stats_temps").hidden=true;document.getElementById("correlation_app_y").hidden=false'>Historique CANARI</button></div>
@@ -1188,7 +1206,6 @@ These two parameters are place in this file as the style should have a title par
     </div>
     <div id="dassault_assist" hidden>
       <div id="da_bloc_content">
-        <!-- <div class = "da_assist" id="noevent_da"> <img src='assets/images/no_event_da.png'></div> -->
           <div class = "da_assist" id="high_procedure" hidden>
             <img src="assets\images\endofprocedure_da.png">
           </div>
@@ -1276,7 +1293,7 @@ These two parameters are place in this file as the style should have a title par
             border-top: solid;
             margin-top: 15px;
             padding: 2px;
-"><div class="" 'timeline-hour'="" style="left: 0;margin-top: -5px;"></div><div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
+"><div class="timeline-hour" style="left: 0;margin-top: -5px;"></div><div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
 </div><div class="timeline-hour" style="left: 50%;margin-top: -5px;"> 12:00</div><div class="timeline-hour" style="left: 75%;margin-top: -5px;">18:00</div><div class="timeline-hour" style="right: 0;"></div></div>
             <div id="eventsForTimeLine" hidden></div>
         </div>

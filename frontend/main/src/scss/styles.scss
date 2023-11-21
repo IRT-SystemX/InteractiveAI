@@ -670,12 +670,20 @@ label:hover{
     color: white!important;
     background-color: black!important;
 }
+.empty_event_list{
+    color:lightgray;
+}
 .SNCF_Card{
     min-height: 54px !important
 }
 .sncf{
     box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
     border-radius: 5px;
+}
+.in_feed{
+    left: 40%;
+    position: absolute;
+    margin-top: 50%;
 }
 
 .choose-uc-img{
@@ -1325,6 +1333,18 @@ input[type="range"] {
     bottom: 0px;
     display: flex;
 }
+#nominal_assist_en{
+    text-align: center;
+    color: #00A3FF;
+    margin-top: 270px;
+}
+
+#nominal_assist_en_chat{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+}
 
 #userInput {
     border: 1px solid #00A3FF;
@@ -1334,4 +1354,5 @@ input[type="range"] {
     margin-left: 8px;
     margin-bottom: 8px;
     color:gray;
+    min-width: 300px;
 }

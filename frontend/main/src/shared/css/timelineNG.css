@@ -84,7 +84,6 @@
     }
 
     [id^="timeline-point"] img {
-        margin-left: -4px;
         margin-top: -25px;
     }
     [id^="timeline-point"] {

@@ -195,7 +195,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         });
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
-        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(data);
@@ -350,7 +349,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
           }
         });
-        // xhr.open("POST", "http://192.168.211.95:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
