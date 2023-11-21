@@ -15,6 +15,7 @@ export const environment = {
     production: false,
     urls: {
         authentication: '',
+        host: 'localhost:3200/',
         auth: 'localhost:3200/auth',
         cards: 'localhost:3200/cards',
         cardspub: 'localhost:3200/cardspub',
