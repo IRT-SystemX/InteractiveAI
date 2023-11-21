@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import {environment} from '@env/environment';
 
 const config = {
   // Dimensions of the viewport
@@ -364,7 +365,7 @@ export function setStatus(node, severity) {
 export async function setCorrelation(target, kpi, severity) {
   orange_ctx_container.innerHTML = "Loading";
   await fetch(
-    "http://192.168.211.95:3200/cab_correlation/api/v1/correlation?size=1",
+    `${environment.urls.host}cab_correlation/api/v1/correlation?size=1`,
     {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -377,7 +378,7 @@ export async function setCorrelation(target, kpi, severity) {
       config.kpi = kpi;
       setup(opfabToD3(ctx.data));
     })
-    .catch((err) => console.error(err));
+    .catch((err) => orange_ctx_container.innerHTML = "Failed");
   setStatus(target, severity);
   console.log(ctx.dataset.nodes.find((data) => data.id === target));
   ctx.svg.classed("focus", true);
