@@ -171,10 +171,9 @@ export function setup(dataset) {
         return;
       }
       ctx.svg.classed("focus", true);
-      ctx.nodes.classed("active", (node) => node.id === d.id);
       ctx.nodes.classed("focus", (node) => node.id === d.id);
       ctx.nodes.classed("active", (node) =>
-        relativeToThreshold(d.data[node.id])
+        relativeToThreshold(d.data[node.id]) || node.id === d.id
       );
       ctx.links.classed(
         "active",
@@ -183,12 +182,12 @@ export function setup(dataset) {
       );
     })
     .on("mouseenter", (_, d) => {
+      ctx.nodes.classed("hover", (node) => node.id === d.id);
       if (ctx.svg.classed("focus")) return;
 
-      ctx.nodes.classed("active", (node) => node.id === d.id);
-      ctx.nodes.classed("hover", (node) => node.id === d.id);
+      ctx.svg.classed("hover", true);
       ctx.nodes.classed("active", (node) =>
-        relativeToThreshold(d.data[node.id])
+        relativeToThreshold(d.data[node.id]) || node.id === d.id
       );
       ctx.links.classed(
         "active",
@@ -197,6 +196,7 @@ export function setup(dataset) {
       );
     })
     .on("mouseleave", function (_, d) {
+      ctx.svg.classed("hover", false);
       ctx.nodes.classed("hover", false);
       if (ctx.svg.classed("focus")) return;
       ctx.nodes.classed("active", false);
