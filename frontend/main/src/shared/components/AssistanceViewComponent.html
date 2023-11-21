@@ -3,22 +3,27 @@
     <h1>Assistance</h1>
   </header>
   <main>
-    <img src="../src/assets/images/cab_frame.png" alt="Logo" class="logo" />
+    <img src="../../assets/images/cab_frame.png" alt="Logo" class="logo" />
     <div>
       <div speech-bubble pbottom aleft style="--bbColor: #eee">
         Anomalie sur <strong>Application X</strong> détectée. Souhaitez-vous de l'aide pour traiter l'événement ?
       </div>
     </div>
-    <div class="row"><button type="button">Consulter l'historique d'application</button><img src="../src/assets/images/info.svg" class="icon" /></div>
+    <div class="row"><button type="button">Consulter l'historique d'application</button><img src="../../assets/images/info.svg" class="icon" /></div>
     <div class="row">
-      <button type="button" class="action">Calculer des corrélations</button><img src="../src/assets/images/info.svg" class="icon" />
+      <button type="button" class="action" onclick="correlate()">Calculer des corrélations</button><img src="../../assets/images/info.svg" class="icon" />
     </div>
   </main>
   <footer>
-    <input type="text" placeholder="Comment puis-je vous aider ?" /><img src="../src/assets/images/cab_frame.png" alt="Logo" class="logo" />
+    <input type="text" placeholder="Comment puis-je vous aider ?" /><img src="../../assets/images/cab_frame.png" alt="Logo" class="logo" />
   </footer>
 </div>
-<script></script>
+<script>
+    async function correlate(){
+     const data = await fetch(`./shared/components/CorrelationComponent.html`)
+     assistOpTitle.innerHTML = data;   
+    }
+</script>
 <style>
   body {
     font-family: sans-serif;
