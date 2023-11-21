@@ -1,5 +1,6 @@
 from owlready2 import default_world, get_ontology
 from settings import logger
+from resources.da.da_cab_recommander import DaCabRecommander
 
 from .base_recommendation import BaseRecommendation
 from flask import current_app
@@ -13,20 +14,41 @@ class DAManager(BaseRecommendation):
         self.root_path = current_app.config['ROOT_PATH']
         self.owl_file_path = os.path.join(
             self.root_path, "resources/da/ontology/AlarmsOntoDA.owl")
-        print(self.owl_file_path)
+        self.recommender = DaCabRecommander()
+
         super().__init__()
 
     def get_recommendation(self, request_data):
-        onto_recommendation = None
+        context_data = request_data.get("context", {})
         event_data = request_data.get("event", {})
-        event_type = event_data.get("event_type")
+        derouting_plans, titles, descriptions = self.recommender.recommend(context_data,event_data)
+        
+        combined_fake_recommendations = [
+        {
+            'title': title,
+            'description': description,
+            'use_case': 'DA',
+            'agent_type': 'IA',
+            'actions': [derouting_plan]
+        }
+        for title, description, derouting_plan in zip(titles, descriptions, derouting_plans)
+        ]
 
-        if event_type:
-            logger.info("getting ontology recommendation")
-            onto_recommendation = self.get_procedure(
-                event_type)
+        return combined_fake_recommendations
 
-        return {"da_recommendation": onto_recommendation}
+        
+
+    # def get_recommendation(self, request_data):
+    #     onto_recommendation = None
+    #     event_data = request_data.get("event", {})
+    #     event_type = event_data.get("event_type")
+
+    #     if event_type:
+    #         logger.info("getting ontology recommendation")
+    #         onto_recommendation = self.get_procedure(
+    #             event_type)
+
+    #     return {"da_recommendation": onto_recommendation}
 
     def get_procedure(self, event_type):
         minSpeed = 180
