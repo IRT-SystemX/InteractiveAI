@@ -936,6 +936,10 @@ These two parameters are place in this file as the style should have a title par
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href=".\shared\css\timelineNG.css"> 
   <meta name="theme-color" content="#1976d2">
+
+  <!--Custom components-->
+  <script src="./shared/components/AssistanceView/component.js" defer></script>
+  <script src="./shared/components/CorrelationView/component.js" defer></script>
 </head>
 
 <body class="opfab-colors" id="bodyopfab" style="height:auto">
@@ -1108,6 +1112,8 @@ These two parameters are place in this file as the style should have a title par
   <button id="updateTimeLine" onclick="fillTimeLine()" hidden></button>
   
   <div id="assistOpTitle" style="font-size: 18px; color: var(--opfab-text-color);position: absolute;top: 90px;" hidden>
+    <assistance-component></assistance-component>
+    <correlation-component hidden></correlation-component>
   <!-- <div id="assistOpTitle" style="font-size: 18px; color: grey;position: absolute;left: 1178px;top: 90px;" hidden> -->
     <b id="assist" hidden style="margin-left:3px;color:var(--opfab-text-color)">Assistance à l'opérateur</b>
     <b id="correlation" hidden>Corrélations</b>
