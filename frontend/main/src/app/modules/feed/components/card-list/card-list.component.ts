@@ -60,7 +60,7 @@ export class CardListComponent implements AfterViewChecked, OnInit {
     ngOnInit(): void {
         this.domCardListElement = document.getElementById('opfab-card-list');
         this.hideAckAllCardsFeature = this.configService.getConfigValue('feed.card.hideAckAllCardsFeature', true);
-        setup({nodes: Array.from(Array(28).keys()).map((i) => ({id: `App_${(i+1).toString(10).padStart(2,"0")}`, data: [], status: []})), links: [] })
+        setup({nodes: Array.from(Array(28).keys()).map((i) => ({id: i+1, data: [], status: []})), links: [] })
     }
 
     ngAfterViewChecked() {

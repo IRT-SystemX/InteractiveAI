@@ -32,6 +32,16 @@ class CorrelationComponent extends HTMLElement {
       }
     );
     this.data = await res.json();
+    if (!this.data[0].data) {
+      orange_ctx_container.innerHTML = 'Failed';
+      return;
+    }
+    setCorrelation(
+      this.data[0].data,
+      this.event.card.data.metadata.id_app,
+      this.event.card.data.metadata.bad_kpi,
+      this.event.card.severity
+    );
   }
   setSize(event) {
     this.size = event.target.value;
