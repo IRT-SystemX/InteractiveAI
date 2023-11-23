@@ -1,4 +1,5 @@
 class AssistanceComponent extends HTMLElement {
+  static event;
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -16,9 +17,22 @@ class AssistanceComponent extends HTMLElement {
   }
 
   correlate() {
-    // Implement the correlate functionality here
     this.hidden = true;
     document.getElementsByTagName('correlation-component')[0].hidden = false;
+    document.getElementsByTagName('correlation-component')[0].getCorrelation();
+  }
+
+  static async showAssistanceView(id) {
+    document.getElementsByTagName('correlation-component')[0].hidden = true;
+    document.getElementsByTagName('assistance-component')[0].hidden = false;
+    // Get data for card clicked
+    const res = await fetch(`${host}/cards/cards/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    this.event = await res.json();
+    document.getElementsByTagName('assistance-component')[0].shadowRoot.getElementById('app-id').innerText = this.event.card.data.metadata.id_app;
   }
 }
 

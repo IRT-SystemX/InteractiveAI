@@ -598,7 +598,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
       };
     public select($event) {
         Swal.showLoading();
-        setCorrelation(this.lightCard.titleTranslated, this.lightCard.summaryTranslated, this.lightCard.severity);
+        // @ts-expect-error
+        AssistanceComponent.showAssistanceView(this.lightCard.id);
         var element = $event.srcElement;
         while (element && !element.classList.contains('card')) {
           console.log((element));

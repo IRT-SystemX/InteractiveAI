@@ -3,8 +3,8 @@ import {environment} from '@env/environment';
 
 const config = {
   // Dimensions of the viewport
-  width: 1190,
-  height: 600,
+  width: 1090,
+  height: 680,
   margin: { y: 24, x: 24 },
   threshold: 0,
   force: { min: 0, max: 600 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
