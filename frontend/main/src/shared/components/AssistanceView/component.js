@@ -19,7 +19,7 @@ class AssistanceComponent extends HTMLElement {
   correlate() {
     this.hidden = true;
     document.getElementsByTagName('correlation-component')[0].hidden = false;
-    document.getElementsByTagName('correlation-component')[0].getCorrelation();
+    document.getElementsByTagName('correlation-component')[0].getCorrelation(true);
   }
 
   static async showAssistanceView(id) {

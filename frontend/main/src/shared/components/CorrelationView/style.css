@@ -45,7 +45,7 @@ h1 {
   align-items: center;
   justify-content: space-between;
 }
-.correlations {
+#correlations {
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -56,38 +56,12 @@ h1 {
   width: 16px;
   margin-left: 8px;
 }
-.correlation-row {
-  display: flex;
-  border-radius: 8px;
-  background: var(--primary);
-  --primary: #4bb4e6;
-}
-.correlation-row > * {
-  border: 1px solid var(--primary);
-  height: 36px;
-  border-radius: 8px;
-  display: flex;
-  padding: 4px 10px;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-}
-.correlation-row .label {
-  background: #fff;
-  flex: 1;
-  border: 1px solid var(--primary);
-}
-.correlation-row .value {
-  background: var(--primary);
-  color: #fff;
-  width: 48px;
-  justify-content: center;
-}
-button {
+#correlations-more {
   place-self: end;
   background: transparent;
   border: none;
   color: #4bb4e6;
+  margin: 8px;
 }
 
 footer {

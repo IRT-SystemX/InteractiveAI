@@ -15,12 +15,7 @@ const config = {
 const ctx = { statuses: {} };
 
 export function opfabToD3(graph) {
-  const nodes = Object.keys(graph).flatMap((k) =>
-    Object.keys(graph[k]).map((node) => ({
-      id: +/App_(\d+).*/.exec(node)[1],
-      status: [],
-    }))
-  );
+  const nodes = Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [] }));
   const links = Object.keys(graph).flatMap((source) =>
     Object.keys(graph[source]).map((target) => ({
       source: +/App_(\d+).*/.exec(source)[1],
@@ -57,7 +52,7 @@ function setupChart() {
   ctx.chart = svg
     .append('g')
     .attr('transform', `translate(${config.margin.x},${config.margin.y})`)
-    .call(d3.axisTop(d3.scaleLinear([config.threshold, 1], d3.interpolateSpectral).range([0, config.width / 4])).ticks(8));
+    .call(d3.axisTop(d3.scaleLinear([config.threshold, 100], d3.interpolateSpectral).range([0, config.width / 4])).ticks(8));
   ctx.chart
     .append('rect')
     .attr('width', config.width / 4)
@@ -285,7 +280,7 @@ export async function setCorrelation(data, target, kpi, severity) {
 
   ctx.data = data;
   config.kpi = kpi;
-  console.log(target,kpi,severity)
+  console.log(target, kpi, severity);
   setup(opfabToD3(ctx.data));
   setStatus(target, severity);
 }
