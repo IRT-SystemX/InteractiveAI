@@ -113,7 +113,7 @@ services:
     configs:
       - source: common
         target: /config/common-kubernetes.yml
-      - source: cards-consultation
+      - source: cards-publication
         target: /config/application-kubernetes.yml
     deploy:
       resources:
@@ -195,6 +195,8 @@ configs:
     file: ../of-config/cab-docker/users-kubernetes.yml
   cards-consultation:
     file: ../of-config/cab-docker/cards-consultation-kubernetes.yml
+  cards-publication:
+    file: ../of-config/cab-docker/cards-publication-kubernetes.yml
   nginx-conf-nginx:
     file: ../of-config/cab-docker/nginx-kubernetes.conf
   ui-config-web-ui:
