@@ -41,49 +41,6 @@ function coeffToColor(coefficient) {
   return d3.interpolateSpectral(1 - relativeToThreshold(coefficient));
 }
 
-function setupChart() {
-  const svg = d3
-    .select(orange_ctx_container)
-    .append('svg')
-    .attr('id', 'orange_chart')
-    .attr('width', config.width / 4)
-    .attr('height', 50);
-  // Charts
-  ctx.chart = svg
-    .append('g')
-    .attr('transform', `translate(${config.margin.x},${config.margin.y})`)
-    .call(d3.axisTop(d3.scaleLinear([config.threshold, 100], d3.interpolateSpectral).range([0, config.width / 4])).ticks(8));
-  ctx.chart
-    .append('rect')
-    .attr('width', config.width / 4)
-    .attr('height', 16)
-    .style('fill', 'url(#linear-gradient)');
-  svg
-    .append('defs')
-    .append('linearGradient')
-    .attr('id', 'linear-gradient')
-    .attr('x1', '0%')
-    .attr('y1', '0%')
-    .attr('x2', '100%')
-    .attr('y2', '0%')
-    .selectAll('stop')
-    .data([
-      { offset: '0%', color: d3.interpolateSpectral(1) },
-      { offset: '25%', color: d3.interpolateSpectral(0.75) },
-      { offset: '50%', color: d3.interpolateSpectral(0.5) },
-      { offset: '75%', color: d3.interpolateSpectral(0.25) },
-      { offset: '100%', color: d3.interpolateSpectral(0) },
-    ])
-    .enter()
-    .append('stop')
-    .attr('offset', function (d) {
-      return d.offset;
-    })
-    .attr('stop-color', function (d) {
-      return d.color;
-    });
-}
-
 export function setup(dataset) {
   orange_ctx_container.innerHTML = '';
   // Create a simulation for an array of nodes, and compose the desired forces.
@@ -103,8 +60,6 @@ export function setup(dataset) {
     .attr('height', config.height)
     .attr('id', 'orange_graph')
     .append('g');
-
-  setupChart();
 
   // Create data
   ctx.dataset = dataset;
