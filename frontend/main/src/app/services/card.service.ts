@@ -118,9 +118,21 @@ export class CardService {
                         case CardOperationType.ADD:
                             setTimeout(() => {
                                 document.getElementById("eventsForTimeLine").innerHTML = "";
-                                $("#updateSeverity").click()
+                                if(document.getElementById('usecase_hidden').innerText != "CAB Orange"){
+                                    $("#updateSeverity").click()
+                                }
                             }, 2000);
                             cards = $(".card");
+                            setTimeout(() => {
+                                if (document.getElementById('usecase_hidden').innerText === "CAB DA" && document.getElementById("noevent_da").hidden){ 
+                                    document.getElementById("noevent_da").hidden = true;
+                                    document.getElementById("noevent_da_second").hidden = true;
+                                    document.getElementById("da-fake-card").hidden = false;
+                                    document.getElementById("fake-card-content-da").innerHTML += document.querySelector(".opfab-feed-list-card-severity")?.textContent;
+                                    $("#setPolylineColor").click();
+
+                                }
+                            }, 5000);
                             this.logger.info(
                                 'CardService - Receive card to add id=' +
                                     operation.card.id +
