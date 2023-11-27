@@ -19,59 +19,61 @@
       <label style="margin-left:5px">Parade</label>
     </div>
     <div id="dassault_div" class="btn-group" style="position:absolute;z-index:1" hidden>
-      <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte')">
-        Card
+      <button id="btnCarte" class="button" onclick="selectDassaultCtx('carte',event)">
+        Map
       </button><br>
-      <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique')">
+      <button id="btnSyn" class="button" onclick="selectDassaultCtx('synoptique',event)">
         Synoptic
       </button><br>
-      <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances')">
+      <button id="btnDep" class="button" onclick="selectDassaultCtx('dependances',event)">
         Dependencies
       </button>
     </div>
     <img id="ctxImg"  src="assets\images\ctx.png" hidden>
     <div id="carte" class="imgMarged" hidden></div>
-    <div id="synoptique" class="imgMarged btn-group btn-group-synoptic btn-group_synoptic"
+    <div id="synoptique" class="imgMarged btn-group-synoptic"
       src="assets\images\dassault_synoptique.png" style="max-width: 15%; position: absolute;" hidden>
-      <button id="stat" class="button" onclick="hideAllSynops();displayStats('STAT')">
+      <button id="stat" class="button" style="border-top-left-radius: 5px;border-bottom-left-radius: 5px;" 
+      onclick="hideAllSynops();displayStats('STAT',event)">
         STAT
       </button><br>
-      <button id="eng" class="button" onclick="hideAllSynops();displayStats('ENG')">
+      <button id="eng" class="button" onclick="hideAllSynops();displayStats('ENG',event)">
         ENG
       </button><br>
-      <button id="elec" class="button" onclick="hideAllSynops();displayStats('ELEC')">
+      <button id="elec" class="button" onclick="hideAllSynops();displayStats('ELEC',event)">
         ELEC
       </button>
-      <button id="fuel" class="button" onclick="hideAllSynops();displayStats('FUEL')">
+      <button id="fuel" class="button" onclick="hideAllSynops();displayStats('FUEL',event)">
         FUEL
       </button><br>
-      <button id="hyd" class="button" onclick="hideAllSynops();displayStats('HYD')">
+      <button id="hyd" class="button" onclick="hideAllSynops();displayStats('HYD',event)">
         HYD
       </button><br>
-      <button id="ecs" class="button" onclick="hideAllSynops();displayStats('ECS')">
+      <button id="ecs" class="button" onclick="hideAllSynops();displayStats('ECS',event)">
         ECS
       </button>
-      <button id="bld" class="button" onclick="hideAllSynops();displayStats('BLD')">
+      <button id="bld" class="button" onclick="hideAllSynops();displayStats('BLD',event)">
         BLD
       </button><br>
-      <button id="test" class="button" onclick="hideAllSynops();displayStats('TEST')">
+      <button id="test" class="button" style="border-top-right-radius: 5px;border-bottom-right-radius: 5px;"
+      onclick="hideAllSynops();displayStats('TEST',event)">
         TEST
       </button><br>
     </div>
     <div id="synoptic_back" hidden>
-      <img id = "ECS" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ECS_cabin-alt-too-high.png' hidden>
-      <img id = "ENGINE" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ENGINE-eng1-out.png' hidden>
-      <img id = "FUEL" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/FUEL-eng1-out.png' hidden>
-      <img id = "ELEC" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC-gen1+2+3-fault.png' hidden>
-      <img id = "HYD" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/HYD-eng1-out.png' hidden>
-      <img id = "STATUS_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/STATUS_nominal.png' hidden>
-      <img id = "ECS_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ECS_nominal.png' hidden>
-      <img id = "ELEC_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ELEC_nominal.png' hidden>
-      <img id = "FUEL_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/FUEL_nominal.png' hidden>
-      <img id = "HYD_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/HYD_nominal.png' hidden>
-      <img id = "BLEED_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/BLEED_nominal.png' hidden>
-      <img id = "TEST_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/TEST_nominal.png' hidden>
-      <img id = "ENGINE_nominal" class ='imgMarged daSyn' style='margin-top: 30px' src='assets/images/ENGINE_nominal.png' hidden>
+      <img id = "ECS" class ='imgMarged daSyn' src='assets/images/ECS_cabin-alt-too-high.png' hidden>
+      <img id = "ENGINE" class ='imgMarged daSyn' src='assets/images/ENGINE-eng1-out.png' hidden>
+      <img id = "FUEL" class ='imgMarged daSyn' src='assets/images/FUEL-eng1-out.png' hidden>
+      <img id = "ELEC" class ='imgMarged daSyn' src='assets/images/ELEC-gen1+2+3-fault.png' hidden>
+      <img id = "HYD" class ='imgMarged daSyn' src='assets/images/HYD-eng1-out.png' hidden>
+      <img id = "STATUS_nominal" class ='imgMarged daSyn' src='assets/images/STATUS_nominal.png' hidden>
+      <img id = "ECS_nominal" class ='imgMarged daSyn' src='assets/images/ECS_nominal.png' hidden>
+      <img id = "ELEC_nominal" class ='imgMarged daSyn' src='assets/images/ELEC_nominal.png' hidden>
+      <img id = "FUEL_nominal" class ='imgMarged daSyn' src='assets/images/FUEL_nominal.png' hidden>
+      <img id = "HYD_nominal" class ='imgMarged daSyn' src='assets/images/HYD_nominal.png' hidden>
+      <img id = "BLEED_nominal" class ='imgMarged daSyn' src='assets/images/BLEED_nominal.png' hidden>
+      <img id = "TEST_nominal" class ='imgMarged daSyn' src='assets/images/TEST_nominal.png' hidden>
+      <img id = "ENGINE_nominal" class ='imgMarged daSyn' src='assets/images/ENGINE_nominal.png' hidden>
     </div>
 
     <img id="dependances" class="imgMarged" src="assets\images\dassault_dependances.png" hidden>
@@ -239,7 +241,7 @@
   </div>
 <div id="fake_notifs_DA" style="width:98%;position:absolute;top: 500px;" hidden>
     <div style="font-size:18px;color:var(--opfab-text-color);margin-left:3px"><b>Notifications</b></div>
-    <div class = "empty_event_list" id="noevent_da_second" style="left: 40%;position: absolute;top: 125px;"> 
+    <div class = "empty_event_list" id="noevent_da_second" style="left: 40%;position: absolute;top: 125px"> 
       No content
     </div>
     <div
@@ -249,12 +251,12 @@
       
       <div style="display: grid; grid-template-columns: auto auto; margin-top: 2px;color:black">
         <p class="card-title" style="margin-left: 5px; color:white">
-          <span _ngcontent-snq-c114="" class="opfab-feed-list-card-severity" style="position: absolute;right: 0px;">14:10<img _ngcontent-snq-c114="" id="opfab-card-icon" style="margin-left: 3px;" src="assets\images\info.svg"></span>
+          <span _ngcontent-snq-c114="" id ="fake-card-content-da" class="opfab-feed-list-card-severity" style="position: absolute;right: 0px;"><img id="opfab-card-icon" style="margin-left: 3px;float: right;" src="assets\images\info.svg"></span>
           <span id="opfab-feed-list-card-title"><b style="color:white">PUT ON OXYGEN MASK</b></span><br>
         </p>
       </div>
       
-      <img class="imgBin" src="assets/images/trashIconDA.svg" width="10%">
+      <img class="imgBin" src="assets/images/trashIconDA.svg" onclick="this.parentElement.remove()" width="10%">
     </div>
   </div>
 <div id="dassaultBar" class="bar dassaultBar" hidden></div>

@@ -41,7 +41,7 @@
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>",
                 "timeline": {
                     "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
-                    "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                     "ROUTINE": "<img src='./assets/images/routine.svg'/>"
                 }
             },

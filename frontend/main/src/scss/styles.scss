@@ -656,11 +656,8 @@ tag-input {
 .choose-uc-img:hover{
     //TBD background-image: url("../assets/images/bouton DA nominal.png");
   }
-#opfab-card-icon{
-    filter: drop-shadow(1px 0px 4px white);
-}
 
-label:hover{
+  label:hover{
     font-weight: bold;
     color: var(--bs-blue);
 }
@@ -820,6 +817,7 @@ label:hover{
     margin-left: 20px;
     margin-top: -7px;
     margin-bottom: 5px;
+    cursor:pointer;
 }
 @media (max-height: 768px) { //random laptop
     .sncf{
@@ -956,17 +954,22 @@ label:hover{
         max-width: 608px;
     }
     .dassault_ctx_div{
-        margin-left: 370px
+        margin-left: 345px;
+    }
+    .btn-group-synoptic{
+        margin-left: 25px!important;
+        margin-top: 80px;
     }
     #synoptique{
-        font-size: 12px;
+        font-size: 15px;
     }
     #synoptic_back{
-        width: 77%!important;
+        width: 97%!important;
+        margin-top: 55px;
     }
     #dassaultBar{
         height: 790px;
-        margin-left: 350px
+        margin-left: 326px;
     }
     #dassaultBar2{
         height: 790px;
@@ -980,6 +983,7 @@ label:hover{
     }
     .assistOpTitleDA{
         left:1087px;
+        height:700px
     }
     .assist_rte{
         margin-left: 875px;
@@ -1053,6 +1057,7 @@ label:hover{
 
     .dassault_ctx_div{
         margin-left: 405px;
+
     }
     #dassaultBar{
         height: 790px;
@@ -1076,7 +1081,11 @@ label:hover{
         margin-left: 185px;
     }
     #synoptic_back{
-        width: 91%!important;
+        width: 104%!important;
+        background-color: black;
+        border-radius: 11px;
+        margin-top: 70px;
+        margin-left: 20px;
     }
     .assist_sncf{
         width:350px; 
@@ -1356,3 +1365,10 @@ input[type="range"] {
     color:gray;
     min-width: 300px;
 }
+.marker-tooltip {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }

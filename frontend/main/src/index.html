@@ -16,7 +16,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.5</title>
+  <title>Assistant CAB v3.0.6</title>
   <span id="login"></span>
   <base href="/">
 
@@ -62,6 +62,7 @@ These two parameters are place in this file as the style should have a title par
     var map;
     var sncfMarker;
     var markers = {};
+    var markersDA = [];
     var increasedLongitude = -4.09445;
     var tokenSynchronizeUrl = ""
     var msg_train = ', Jean votre superviseur, la présence d’un voyageur malade à bord nous oblige à marquer un arrêt supplémentaire en gare de  Poitiers pour permettre l’intervention des services de secours. Des informations complémentaires vous seront communiquées ultérieurement. Merci de votre attention.';
@@ -303,7 +304,7 @@ These two parameters are place in this file as the style should have a title par
       console.log(uc + " selected as use case");
       switch (uc) {
         case "RTE":
-          document.getElementById("usecase_hidden").text = "CAB RTE";
+          document.getElementById("usecase_hidden").innerText = "CAB RTE";
           document.getElementById("rte_checkboxes").hidden = false;
           document.getElementById("assist").hidden = false;
           document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
@@ -333,10 +334,8 @@ These two parameters are place in this file as the style should have a title par
           }, 15000);
           break;
         case "DA":
-          getCoordinates();
-          document.getElementById("usecase_hidden").text = "CAB DA";
+          document.getElementById("usecase_hidden").innerText = "CAB DA";
           document.getElementById("dassault_div").hidden = false;
-          document.getElementById("dassault_title").hidden = false;
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
           document.getElementById("feed-content").style.position = "absolute";
@@ -344,11 +343,12 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("assistOpTitle").classList.add("assistOpTitleDA");
           document.getElementById("assistOpTitle").style.top = "80px";
           document.getElementById("opfab-card-list").style.overflowY = "hidden";
-          document.getElementById("opfab-navbar-menu-feed").text = "CAB Dassault";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           document.getElementById("tl-box").style.position = "fixed";
           document.getElementById("tl-box").style.bottom = "0";
+          document.getElementById("tl-box").style.width = "100%";
+          document.getElementById("tl-box").style.marginTop = "100px";
           document.getElementById("ctx_div").classList += " dassault_ctx_div";
           document.getElementById("notifs_DA").hidden = false;
           document.getElementById("fake_notifs_DA").hidden = false;
@@ -359,22 +359,21 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("map").classList += " map_da";
           document.getElementById("notifContainer").innerHTML = document.getElementById("notifContainer").innerHTML.replace("Notifications","Failures");
           setInterval(() => {
-            // refreshCtxDA();
-          }, 110);
+            refreshCtxDA();
+          }, 5000);
           opfabStyle.setCss(opfabStyle.NIGHT_STYLE);
           setDANotifications();
           // mapDA();
           break;
         case "ORANGE":
           
-          document.getElementById("usecase_hidden").text = "CAB Orange";
+          document.getElementById("usecase_hidden").innerText = "CAB Orange";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           document.getElementById("opfab-navbar-menu-feed").style.borderBottomStyle = "none";
           // document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#4BB4E6"; //couleur topbar
           document.getElementById("opfab-navbar-menu-feed").style.color = "white";
           // mock poc v1/2 setTimeout(getOrangeIncidents,20000);
           document.getElementById("map").hidden = true;
-          document.getElementById("correlation").hidden = false;
           document.getElementById("orange_ctx").hidden = false;
           document.getElementById("noevent_orange").hidden = false;
           document.getElementById("assistOpTitle").classList.add("orange_theme");
@@ -399,7 +398,7 @@ These two parameters are place in this file as the style should have a title par
           }, 5000);
           break;
         case "SNCF":
-          document.getElementById("usecase_hidden").text = "CAB SNCF";
+          document.getElementById("usecase_hidden").innerText = "CAB SNCF";
           document.getElementById("opfab-navbar-menu-menu1").text = "";
           // document.getElementsByClassName('opfab-navbar')[0].style.backgroundColor = "#009AA6"
           document.getElementById("opfab-navbar-menu-feed").style.color = "white"
@@ -435,7 +434,9 @@ These two parameters are place in this file as the style should have a title par
     function getOrangeIncidents(){
       document.getElementById("orange_incidents").hidden = false;
     }
-    function selectDassaultCtx(type) {
+    function selectDassaultCtx(type,event) {
+      document.querySelectorAll("#dassault_div button.btn-group-active").forEach(bouton => bouton.classList.remove("btn-group-active"));
+      event.srcElement.classList.add("btn-group-active");
       switch (type) {
         case "dependances":
           document.getElementById("dependances").hidden = false;
@@ -502,8 +503,10 @@ These two parameters are place in this file as the style should have a title par
       }
     }
     
-    function displayStats(value){
+    function displayStats(value,event){
       hideAllSynops()
+      document.querySelectorAll("#synoptique button.btn-group-synoptic-active").forEach(bouton => bouton.classList.remove("btn-group-synoptic-active"));
+      event.srcElement.classList.add("btn-group-synoptic-active");
       switch (value){
         case 'STAT':
           document.getElementById("STATUS_nominal").hidden = false;
@@ -529,7 +532,7 @@ These two parameters are place in this file as the style should have a title par
         case 'ENG':
           document.getElementById("ENGINE_nominal").hidden = false;
           break;
-      }
+        }
     }
 
     function hideAllSynops(){
@@ -588,8 +591,7 @@ These two parameters are place in this file as the style should have a title par
       var cards = document.getElementsByClassName("card");
       for (var card = 0; card < cards.length; card++) {
         event_start_date = getCardContent(cards[card].getAttribute("data-urlid"),false,true,false);
-        event_end_date = null;
-        // event_end_date = getCardContent(cards[card].getAttribute("data-urlid"),false,false,true);
+        event_end_date = getCardContent(cards[card].getAttribute("data-urlid"),false,false,true);
         event_start_date_formated = new Date (event_start_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
         event_end_date_formated = new Date (event_end_date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
         var event_end_date_plus_5_hours = new Date(event_end_date).getTime() + 5 * 60 * 60 * 1000;
@@ -744,11 +746,14 @@ These two parameters are place in this file as the style should have a title par
     };
     function refreshCtxDA() {
       var xmlHttp = new XMLHttpRequest();
-      xmlHttp.open("GET", host + "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
+      var CTX_URL_MOCK = "http://localhost:4200/shared/json_samples/da_ctx.json";
+      var CTX_URL = host + "/cabcontext/api/v1/contexts";
+      xmlHttp.open("GET", CTX_URL + "?time=" + new Date().getTime(), false);
       xmlHttp.setRequestHeader("Authorization","Bearer "+token);
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
-      setAndUpdateDAMarkersOnMap(response[0].data)
+      setAndUpdateDAMarkersOnMap(response[0].data);
+      
     };
     function getCorrelations() {
       var xmlHttp = new XMLHttpRequest();
@@ -946,30 +951,92 @@ These two parameters are place in this file as the style should have a title par
   <script src=".\shared\js\timelineNG.js"></script>
   <script>
 
-    function getCoordinates(){
+    function getMarkersCoordinates(){
+      var CTX_URL_MOCK = "http://localhost:4200/shared/json_samples/da_ctx.json";
+      var CTX_URL = "/cabcontext/api/v1/contexts";
       var request = new XMLHttpRequest();
       request.onreadystatechange= function () {
           if (request.readyState==4) {
             try {
-            response = JSON.parse(request.responseText)
-            //temporary fix for coordinates
-              latitude = response[0].data.Latitude;
-              longitude = response[0].data.Longitude;
-              altitude = response[0].data.Altitude;
-            } catch (error) {
-              latitude = 47.9948;
-              longitude = -4.09245;
-            }
-          
-            console.log(response)
-          }
-      }
-      request.open("GET", host + "/cabcontext/api/v1/contexts", true);
-      request.setRequestHeader("Accept","application/json");
-      request.setRequestHeader("Authorization","Bearer "+token);
-      request.send();
-    }
+              var response = JSON.parse(request.responseText)[0];
+              latitude = response.data.Latitude;
+              longitude = response.data.Longitude;
+              altitude = response.data.Altitude;
+              destination = response.data.ApDest;
+              dest_lat = destination.aplat;
+              dest_lon = destination.aplon;
 
+            destMarker = new L.Marker([dest_lat, dest_lon]);
+            destMarker.addTo(map);
+            destMarker.bindTooltip(destination.apname, { permanent: true, direction: 'bottom', className: 'dest-tooltip' });
+    
+            response.data.wpList.forEach(function (marker, index, array) {
+
+              var customIcon = L.icon({
+                iconUrl: './assets/images/Ellipse.svg',
+                iconSize: [20, 20]
+               });
+
+              var wp = new L.Marker([marker.wplat, marker.wplon], {
+                id: marker.wpidx,
+                icon: customIcon, 
+              });
+              wp.bindTooltip(marker.wpid, { permanent: true, direction: 'top', className: 'marker-tooltip' });
+              
+              wp.addTo(map).bindPopup(marker.wpid);
+
+              markersDA.push(wp);
+
+              if (index < array.length - 1) {
+                setTimeout(function () {
+                  connectMarkers(marker.wpidx, array[index + 1].wpidx);
+                }, 100 * index);
+              }
+              
+            });
+              var lastWp = markersDA[markersDA.length - 1].getLatLng();
+              var destLatLng = destMarker.getLatLng();
+              var latlngs = [lastWp, destLatLng];
+              var polyline = L.polyline(latlngs, { color: 'gray', weight: 10}).addTo(map);
+              
+
+            } catch (error) {
+                console.log(error);
+                latitude = 47.9948;
+                longitude = -4.09245;
+            }
+            
+            }
+            };
+
+            request.open("GET", CTX_URL, true);
+            request.setRequestHeader("Accept", "application/json");
+            request.setRequestHeader("Authorization", "Bearer " + token);
+            request.send();
+            }
+
+            
+    function connectMarkers(markerId1, markerId2) {
+      try {
+
+
+        var marker1 = markersDA.find(marker => marker.options.id === markerId1);
+        var marker2 = markersDA.find(marker => marker.options.id === markerId2);
+
+        if (!marker1 || !marker2) {
+          throw new Error('Les marqueurs avec les IDs fournis ne sont pas trouvés.');
+        }
+
+        var latlngs = [
+          [marker1.getLatLng().lat, marker1.getLatLng().lng],
+          [marker2.getLatLng().lat, marker2.getLatLng().lng],
+        ];
+        console.log(marker1)
+        var polyline = L.polyline(latlngs, { color: 'gray', weight: 10  }).addTo(map);
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
     function mapSNCF(){
       mapZoom = 6;
           initialLayer = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
@@ -988,8 +1055,8 @@ These two parameters are place in this file as the style should have a title par
       mapZoom = 8;
           mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
           if(latitude === undefined || longitude === undefined){
-              latitude = 47.9948;
-              longitude = -4.09245;
+            Latitude = 4.15;
+            Longitude = 50.7717;
           }
           map = L.map('map', {
             center: [latitude,longitude],
@@ -1024,6 +1091,14 @@ These two parameters are place in this file as the style should have a title par
           }
       });
 }
+
+  function setPolylineColor(color){
+    map.eachLayer(function(layer) {
+    if (layer instanceof L.Polyline) {
+      layer.setStyle({ color: color });
+    }
+  });
+  }
     function setAndUpdateDAMarkersOnMap(data) {
       planeMarker.setLatLng([data.Latitude, data.Longitude]);
     }
@@ -1074,19 +1149,18 @@ These two parameters are place in this file as the style should have a title par
         case 'Dassault':
           mapZoom = 8;
           mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
-          // valers par défaut si pas de contexte
           if(latitude === undefined || longitude === undefined){
-              latitude = 47.9948;
-              longitude = -4.09245;
+            latitude = 5.797222;
+            longitude = 48.311667;
           }
-          var map = L.map('map', {
+          map = L.map('map', {
             center: [latitude,longitude],
             zoom: mapZoom
           });
           L.tileLayer(mapLayer, {
           }).addTo(map);
           let planeIcon = {
-            iconUrl: "assets/images/plane_40x40.png",
+            iconUrl: "assets/images/Iconmetro-airplane.svg",
             iconSize: [40, 40]
           }
           let myIcon3 = L.icon(planeIcon);
@@ -1100,10 +1174,12 @@ These two parameters are place in this file as the style should have a title par
           break;
       }
       console.log("map init OK")
+      getMarkersCoordinates();
     }
 
   </script>
   <div id="usecase_hidden" hidden></div>
+  <button id="setPolylineColor" onclick="setPolylineColor('red')" hidden></button>
   <button id="updateSeverity" onclick="setCardsSeverity()" hidden></button>
   <button id="updateTimeLine" onclick="fillTimeLine()" hidden></button>
   

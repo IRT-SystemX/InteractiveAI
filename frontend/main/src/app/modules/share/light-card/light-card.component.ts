@@ -592,13 +592,15 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("assistOpTitle").style.overflowY = "scroll";
             this.emergencyClicked = true;
       }else{
-        document.getElementById("da_block_request").hidden = true;
-        document.getElementById("assistOpTitle").style.overflowY = "hidden";
+        // document.getElementById("da_block_request").hidden = true;
+        // document.getElementById("assistOpTitle").style.overflowY = "hidden";
       }
       };
     public select($event) {
+        document.getElementById("nominal_assist_en").hidden = true;
         Swal.showLoading();
-        setCorrelation(this.lightCard.titleTranslated, this.lightCard.summaryTranslated, this.lightCard.severity);
+        document.getElementById('usecase_hidden').innerText === "CAB Orange" && setCorrelation(this.lightCard.titleTranslated, this.lightCard.summaryTranslated, this.lightCard.severity);
+        document.getElementById('usecase_hidden').innerText === "CAB DA" && this.getEmergencyPlan();
         var element = $event.srcElement;
         while (element && !element.classList.contains('card')) {
           console.log((element));
