@@ -33,6 +33,16 @@ h1 {
   flex-direction: column;
   overflow: hidden;
 }
+#size-value {
+  text-align: center;
+  color: #4BB4E6;
+}
+#number-correlations {
+  color: #4BB4E6;
+}
+h2 {
+  text-align: center;
+}
 #correlation-component main > *:not(:last-child) {
   margin-bottom: 8px;
 }
@@ -50,7 +60,7 @@ h1 {
   flex-direction: column;
   overflow: auto;
   flex: 1;
-  gap: 8px;
+  gap: 4px;
 }
 .icon {
   width: 16px;

@@ -2,6 +2,7 @@
   --duration: 0.3s;
   --unit: 4px;
   --white-900: #fff;
+  --white-800: #f6f6f6;
   --white-500: #999;
   --black-100: #000;
   --red-500: #f55;
@@ -42,10 +43,10 @@
   position: absolute;
   background-color: var(--white-900);
   color: var(--blue-500);
-  border: var(--unit) solid var(--blue-500);
+  border: 1px solid var(--white-500);
   font-family: monospace;
   padding: var(--unit);
-  border-radius: calc(var(--unit) * 2);
+  border-radius: var(--unit);
   pointer-events: none;
   white-space-collapse: preserve;
 }
@@ -117,5 +118,10 @@
 
 .link {
   stroke-width: 12;
+  stroke: var(--white-800);
   cursor: pointer;
+}
+
+.link:hover {
+  stroke: var(--blue-500);
 }

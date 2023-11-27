@@ -4,7 +4,6 @@
   border-radius: 8px;
   background: var(--primary);
   --primary: #4bb4e6;
-  margin-bottom: 8px;
 }
 .correlation-row > * {
   border: 1px solid var(--primary);

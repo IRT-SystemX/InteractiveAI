@@ -32,7 +32,7 @@ class AssistanceComponent extends HTMLElement {
       },
     });
     this.event = await res.json();
-    document.getElementsByTagName('assistance-component')[0].shadowRoot.getElementById('app-id').innerText = this.event.card.data.metadata.id_app;
+    document.getElementsByTagName('assistance-component')[0].shadowRoot.getElementById('app-id').innerText = +this.event.card.data.metadata.id_app;
   }
 }
 

@@ -6,7 +6,7 @@ const config = {
   height: 680,
   margin: { y: 24, x: 24 },
   threshold: 0,
-  force: { min: 0, max: 300 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
+  force: { min: 100, max: 500 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
   radius: 20, // Radius of nodes in default and active state
   kpi: '', // What KPI is being looked at
   transition: 200, // Transition duration
@@ -14,17 +14,18 @@ const config = {
 
 const ctx = { statuses: {} };
 
-export function opfabToD3(graph) {
-  const nodes = Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [] }));
-  const links = Object.keys(graph).flatMap((source) =>
-    Object.keys(graph[source]).map((target) => ({
-      source: +/App_(\d+).*/.exec(source)[1],
-      target: +/App_(\d+).*/.exec(target)[1],
-      coefficient: graph[source][target] / 100,
-    }))
-  );
+export function opfabToD3(data, source) {
+  const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1]))].map((value) => ({ id: value, status: [] }));
+  const links = data.slice(0, 5).map(([key, value]) => ({
+    source: +source,
+    target: +/App_(\d+).*/.exec(key)[1],
+    coefficient: value / 100,
+    rank: 1,
+    type: /App_\d+\.KPI\.(.*)/.exec(key)[1],
+  }));
+  console.debug(nodes, links);
   return {
-    nodes,
+    nodes: [...nodes, { id: +source, status: [] }],
     links,
   };
 }
@@ -73,7 +74,6 @@ export function setup(dataset) {
     .enter()
     .append('line')
     .attr('class', 'link')
-    .style('stroke', (d) => coeffToColor(d.coefficient))
     .on('mouseover.tooltip', function (event, d) {
       ctx.tooltip.style('opacity', 0.9);
       ctx.tooltip
@@ -157,9 +157,7 @@ export function setup(dataset) {
     d3
       .forceLink() // This force provides links between nodes
       .links(ctx.dataset.links)
-      .distance(
-        (link) => config.force.max - ((config.force.max - config.force.min) * Math.log(relativeToThreshold(link.coefficient) + 1)) / Math.log(2)
-      )
+      .distance((link) => config.force.min * link.rank)
       .id((d) => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
   );
 
@@ -230,14 +228,13 @@ export function setStatus(node, severity) {
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
 }
 
-export async function setCorrelation(data, target, kpi, severity) {
+export async function setCorrelation(data, source, kpi, severity) {
   orange_ctx_container.innerHTML = 'Loading';
 
   ctx.data = data;
   config.kpi = kpi;
-  console.log(target, kpi, severity);
-  setup(opfabToD3(ctx.data));
-  setStatus(target, severity);
+  setup(opfabToD3(ctx.data, source));
+  setStatus(source, severity);
 }
 
 window.setCorrelation = setCorrelation;
