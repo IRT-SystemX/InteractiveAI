@@ -8,7 +8,7 @@
   --red-500: #f55;
   --blue-500: #4bb4e6;
   --orange-500: #ff7900;
-  --green-500: #50fa7b;
+  --green-500: #009E8F;
 }
 
 #orange_ctx_container {
@@ -42,7 +42,7 @@
 .tooltip {
   position: absolute;
   background-color: var(--white-900);
-  color: var(--blue-500);
+  color: var(--black-100);
   font-size: 1.2em;
   border: 1px solid var(--white-500);
   padding: var(--unit);
@@ -104,7 +104,7 @@
   --node-fill: var(--white-800);
 }
 
-.node.ROUTINE {
+.node.INFORMATION {
   --node-stroke: var(--green-500);
   --node-text: var(--green-500);
 }

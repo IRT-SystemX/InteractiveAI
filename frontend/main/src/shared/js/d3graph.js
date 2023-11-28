@@ -11,13 +11,21 @@ const config = {
 const ctx = { statuses: {} };
 
 export function opfabToD3(data, source, shown) {
-  const links = data.slice(0, shown).map(([key, value], index) => ({
-    source: +source,
-    target: +/App_(\d+).*/.exec(key)[1],
-    coefficient: value / 100,
-    rank: Math.floor(index / 5) + 1,
-    kpi: /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2],
-  }));
+  const links = data.slice(0, shown).reduce((acc, [key, value], index) => {
+    const target = +/App_(\d+).*/.exec(key)[1];
+    console.debug('slt', acc);
+    const link = acc.find((link) => link.source === +source && link.target === target);
+    if (link) {
+      link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2], value]);
+      return acc;
+    }
+    return acc.concat({
+      source: +source,
+      target,
+      rank: Math.floor(index / 5) + 1,
+      data: [[/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2], value]],
+    });
+  }, []);
 
   const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1])), +source].map((key) => ({
     id: key,
@@ -79,7 +87,9 @@ export function setup(data) {
     .on('mouseover.tooltip', function (event, d) {
       ctx.tooltip.style('opacity', 0.9);
       ctx.tooltip
-        .html(`<img slot="icon" src="./assets/images/kpi/${d.kpi}.svg">&nbsp;${t(d.kpi)} à ${Math.round(d.coefficient * 100)}%`)
+        .html(
+          d.data.map(([kpi, value]) => `<img slot="icon" src="./assets/images/kpi/${kpi}.svg">&nbsp;${t(kpi)} à ${Math.round(value)}%`).join('\n')
+        )
         .style('left', event.pageX + 20 + 'px')
         .style('top', event.pageY + 20 + 'px');
     })
@@ -157,9 +167,11 @@ export function setup(data) {
 }
 
 export function setStatus(node, severity) {
-  if (ctx.statuses[node]) ctx.statuses[node].push(severity);
-  else ctx.statuses[node] = [severity];
+  if (ctx.statuses[node]) {
+    ctx.statuses[node].push(severity);
+  } else ctx.statuses[node] = [severity];
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
+  if (severity === 'INFORMATION') ctx.nodes?.filter((d) => d.id === +node).classed('ACTION', false);
 }
 
 export function showLink(source, target) {
