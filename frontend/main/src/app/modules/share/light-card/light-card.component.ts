@@ -599,15 +599,9 @@ export class LightCardComponent implements OnInit, OnDestroy {
     public select($event) {
         document.getElementById("nominal_assist_en").hidden = true;
         Swal.showLoading();
-<<<<<<< 5cd1ede966051f7d2d63ca4128b858600e310b89
         document.getElementById('usecase_hidden').innerText === "CAB Orange" && // @ts-expect-error
         AssistanceComponent.showAssistanceView(this.lightCard.id);
         document.getElementById('usecase_hidden').innerText === "CAB DA" && this.getEmergencyPlan();
-=======
-        document.getElementById('usecase_hidden').innerText === "CAB Orange" && setCorrelation(this.lightCard.titleTranslated, this.lightCard.summaryTranslated, this.lightCard.severity);
-        document.getElementById('usecase_hidden').innerText === "CAB DA" && (this.getEmergencyPlan(),document.getElementById('btnSyn').click());
-
->>>>>>> db6112a3e0350224d08f68e5d6fdc43d9adbffda
         var element = $event.srcElement;
         while (element && !element.classList.contains('card')) {
           console.log((element));
