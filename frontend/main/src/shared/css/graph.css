@@ -63,9 +63,9 @@
 
 .node {
   cursor: pointer;
-  --node-text: var(--blue-500);
+  --node-text: var(--white-500);
   --node-fill: var(--white-900);
-  --node-stroke: var(--blue-500);
+  --node-stroke: var(--white-500);
 }
 
 .node:active {
@@ -87,13 +87,8 @@
 }
 
 .node:hover {
-  --node-stroke: var(--red-500);
-  --node-text: var(--red-500);
-}
-
-#orange_graph:has(.active) .node:not(.active),
-#orange_graph:has(.active) .link:not(.active) {
-  opacity: 0;
+  --node-text: var(--blue-500);
+  --node-stroke: var(--blue-500);
 }
 
 .node.active {

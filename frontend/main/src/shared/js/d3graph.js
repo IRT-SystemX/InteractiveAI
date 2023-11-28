@@ -5,41 +5,37 @@ const config = {
   width: 1090,
   height: 680,
   margin: { y: 24, x: 24 },
-  threshold: 0,
   force: { min: 100, max: 500 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
   radius: 20, // Radius of nodes in default and active state
-  kpi: '', // What KPI is being looked at
   transition: 200, // Transition duration
 };
 
 const ctx = { statuses: {} };
 
-export function opfabToD3(data, source) {
-  const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1]))].map((value) => ({ id: value, status: [] }));
-  const links = data.slice(0, 5).map(([key, value]) => ({
+export function opfabToD3(data, source, shown) {
+  const links = data.slice(0, shown).map(([key, value], index) => ({
     source: +source,
     target: +/App_(\d+).*/.exec(key)[1],
     coefficient: value / 100,
-    rank: 1,
-    type: /App_\d+\.KPI\.(.*)/.exec(key)[1],
+    rank: Math.floor(index / 5) + 1,
+    type: /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2],
   }));
-  console.debug(nodes, links);
+
+  const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1])), +source].map((key) => ({
+    id: key,
+    status: links.find((link) => link.target === key) ? ['active'] : [],
+  }));
+  for (const link of links) {
+    setStatus(link.target, 'active');
+  }
   return {
-    nodes: [...nodes, { id: +source, status: [] }],
+    nodes,
     links,
   };
 }
 
 function minmax(value, max = 1, min = 0) {
   return Math.min(Math.max(min, value), max);
-}
-
-function relativeToThreshold(coefficient) {
-  return minmax((Math.abs(coefficient) - config.threshold) / (1 - config.threshold));
-}
-
-function coeffToColor(coefficient) {
-  return d3.interpolateSpectral(1 - relativeToThreshold(coefficient));
 }
 
 export function setup(dataset) {
@@ -97,24 +93,6 @@ export function setup(dataset) {
     .enter()
     .append('g')
     .attr('class', (d) => 'node ' + ctx.statuses[d.id]?.join(' '))
-    .on('click', function (_, d) {
-      if (d3.select(this).classed('focus')) {
-        ctx.nodes.classed('active', false);
-        ctx.nodes.classed('focus', false);
-        ctx.links.classed('active', false);
-        ctx.svg.classed('focus', false);
-        return;
-      }
-      ctx.svg.classed('focus', true);
-      ctx.nodes.classed('focus', (node) => node.id === d.id);
-      console.log(ctx.dataset.links);
-      ctx.nodes.classed(
-        'active',
-        (node) =>
-          relativeToThreshold(ctx.dataset.links.find((link) => link.source.id === d.id && link.target.id === node.id).coefficient) || node.id === d.id
-      );
-      ctx.links.classed('active', (link) => relativeToThreshold(link.coefficient));
-    })
     .call(
       d3
         .drag() // Sets the event listener for the specified typenames and returns the drag behavior.
@@ -122,17 +100,6 @@ export function setup(dataset) {
         .on('drag', dragged) // Drag - after an active pointer moves (on mousemove or touchmove).
         .on('end', dragended) // End - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
     );
-
-  // Leave focus mode on click outside
-  d3.select(orange_ctx_container).on('click', function (event) {
-    if (ctx.svg.classed('focus') && event.target.id === 'orange_graph') {
-      ctx.nodes.classed('active', false);
-      ctx.nodes.classed('focus', false);
-      ctx.nodes.classed('hover', false);
-      ctx.links.classed('active', false);
-      ctx.svg.classed('focus', false);
-    }
-  });
 
   ctx.nodes.append('circle').attr('r', (d) => config.radius);
   ctx.nodes
@@ -217,23 +184,18 @@ export function setup(dataset) {
   }
 }
 
-export function setThreshold(value) {
-  config.threshold = value;
-  setup(opfabToD3(ctx.data));
-}
-
 export function setStatus(node, severity) {
   if (ctx.statuses[node]) ctx.statuses[node].push(severity);
   else ctx.statuses[node] = [severity];
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
 }
 
-export async function setCorrelation(data, source, kpi, severity) {
+export async function setCorrelation(data, source, shown, kpi, severity) {
   orange_ctx_container.innerHTML = 'Loading';
 
   ctx.data = data;
   config.kpi = kpi;
-  setup(opfabToD3(ctx.data, source));
+  setup(opfabToD3(ctx.data, source, shown));
   setStatus(source, severity);
 }
 

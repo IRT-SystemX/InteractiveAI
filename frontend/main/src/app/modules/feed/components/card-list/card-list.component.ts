@@ -24,7 +24,7 @@ import {UserService} from '@ofServices/user.service';
 import {UserWithPerimeters} from '@ofModel/userWithPerimeters.model';
 import {EntitiesService} from '@ofServices/entities.service';
 import {GroupedCardsService} from '@ofServices/grouped-cards.service';
-import {setup, setThreshold, opfabToD3} from 'shared/js/d3graph.js'
+import {setup} from 'shared/js/d3graph.js'
 
 @Component({
     selector: 'of-card-list',
@@ -140,9 +140,5 @@ export class CardListComponent implements AfterViewChecked, OnInit {
 
     isCardInGroup(selected: string, id: string) {
         return this.groupedCardsService.isCardInGroup(selected, id);
-    }
-
-    changeThreshold(event){
-        setThreshold(event.target.value);
     }
 }
