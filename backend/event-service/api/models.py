@@ -5,6 +5,7 @@ db = SQLAlchemy()
 
 class EventModel(db.Model):
     id_event = db.Column(db.String, primary_key=True)
+    of_uid = db.Column(db.String())
     use_case = db.Column(db.String(10))
     title = db.Column(db.String(255))
     description = db.Column(db.String(255))

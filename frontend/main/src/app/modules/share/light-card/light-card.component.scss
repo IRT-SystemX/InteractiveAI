@@ -30,13 +30,11 @@
 }
 
 .light-card-detail-selected-action {
-    background-color: $sev-action;
     margin-right: 0px;
     transition: margin 0.3s;
 }
 
 .light-card-detail-selected-compliant {
-    background-color: $sev-compliant;
     margin-right: 0px;
     transition: margin 0.3s;
 }
@@ -53,7 +51,6 @@
 }
 .light-card-background-action {
     cursor: pointer;
-    background-color: #EC775C;
 }
 .light-card-background-action_DA {
     cursor: pointer;
@@ -205,8 +202,4 @@
 #opfab-selected-card-summary {
     word-break: normal;
     font-size: 12px;
-}
-
-.light-card-detail-selected span{
-    color:white;
 }

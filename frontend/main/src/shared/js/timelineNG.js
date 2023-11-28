@@ -38,13 +38,19 @@ function fillTimeLine() {
                         "<div class='timeline-line'><d<div class='timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
                         "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
                         "<div class='timeline-point tl-point' id='timeline-point" + card + "'>" 
-                        + "<span class='tl_hour'>" + heure_event + "</span>" 
+                        + "<span class='tl_hour' start_date='" + heure_event + "'>" + heure_event + "</span>" 
                         + criticalities[use_case].icon[criticality] + "</div>" +
                         "<div class='timeline-point-end tl-point' id='timeline-point-end" + card + "'>" + (heure_event_fin !== null ? "<span class='tl_hour'>" + heure_event_fin + "</span><img src='assets/images/done.png'>" : "") + "</div>" +
                         "<div class='timeline-highlight' id='timeline-highlight" + card + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "' hidden></div></div>";
                         document.getElementById("eventsForTimeLine").innerHTML += cardToAdd;
                         positionnerPointSurTimeline(heure_event, card, heure_event_fin)
                         getCardForTimeline(id_event,card);
+                        if (selectedUseCase == "ORANGE" || selectedUseCase == "DA") {
+                            var lightCard = document.getElementById(`opfab-feed-light-card-${selectedUseCase.toLowerCase()}Process-${id_event}`);
+                            var listCardSeverity = lightCard.querySelector(".opfab-feed-list-card-severity");
+                            listCardSeverity.innerHTML = listCardSeverity.innerHTML.replace("Sureté",
+                            document.querySelector(`[event_id="${id_event}"]`).parentElement.querySelector(".tl_hour").innerHTML);
+                          }                          
                     }
             }
             events = document.getElementsByClassName("blocEvent")
@@ -82,7 +88,6 @@ function fillTimeLine() {
 function getCardForTimeline(id_event,card){
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
-
     xhr.addEventListener("readystatechange", function() {
     if(this.readyState === 4) {
         try {
@@ -94,11 +99,9 @@ function getCardForTimeline(id_event,card){
         var uid = data.card.uid;
         var hasBeenAcknowledged = data.card.hasBeenAcknowledged;
         if(!hasBeenAcknowledged){
-            // document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
-            // document.getElementById("event"+card).setAttribute("onclick","acknowledgeEvent('" + uid + "','" + card + "')");
-            // cards[card].innerHTML += 
             try {
-                cardName = 'opfab-feed-light-card-' + selectedUseCase.toLowerCase() + 'Process-' + document.querySelector('#event'+card+' [event_id]').getAttribute("event_id")
+                cardName = 'opfab-feed-light-card-' + selectedUseCase.toLowerCase() + 'Process-' + 
+                document.querySelector('#event'+card+' [event_id]').getAttribute("event_id")
                 if (document.getElementById(cardName).querySelector(".imgBin") == null) {
                     var trashIconSrc = selectedUseCase !== "DA" ? "assets/images/trashIcon.svg" : "assets/images/trashIconDA.svg";
                     document.getElementById(cardName).innerHTML += '<img class="imgBin" src="' + trashIconSrc + '" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + card + '\', \'' + id_event + '\')">';
@@ -113,7 +116,6 @@ function getCardForTimeline(id_event,card){
                 console.log("Unknown element")
             }
         }else{
-            // document.getElementById("event"+card).innerHTML = ""
             document.getElementById("event"+card).remove();
             console.log("suppression de l'event  " + card)
         }
@@ -124,16 +126,16 @@ function getCardForTimeline(id_event,card){
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Authorization", "Bearer " + token);
     
-xhr.onloadend = function() {
-    if(xhr.status == 404) 
-        try {
-        document.getElementById("event"+card).remove();
-            
-        } catch (error) {
-            console.log("already removed")
-        }
+    xhr.onloadend = function() {
+        if(xhr.status == 404) 
+            try {
+            document.getElementById("event"+card).remove();
+                
+            } catch (error) {
+                console.log("already removed")
+            }
 
-}
+    }
     xhr.send(); 
 }
 
@@ -153,6 +155,7 @@ function acknowledgeEvent(uid,card,id_event){
         }
     });
     xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
+    // xhr.open("POST", window.location.hostname + "/cardspub/cards/userAcknowledgement/" + uid);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer "+ token);
@@ -168,11 +171,13 @@ function initTimeLine() {
     console.info("TIMELINE : ", "Ready");
     document.getElementById("tl-container-home").hidden = false;
     updateGlobalCurrentTimeCursor();
+    fillTimeLine();
     setInterval(() => {
             fillTimeLine();
             updateHighlights();
             document.getElementById("eventsForTimeLine").hidden = false
             updateGlobalCurrentTimeCursor();
+            setCardsSeverity();
     }, 5000);
 }
 
