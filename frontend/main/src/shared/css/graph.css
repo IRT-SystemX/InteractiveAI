@@ -31,7 +31,7 @@
 #orange_ctx_container #orange_graph {
   height: 100%;
   width: 100%;
-  cursor: grab;
+  cursor: move;
   overscroll-behavior: none;
 }
 
@@ -43,6 +43,7 @@
   position: absolute;
   background-color: var(--white-900);
   color: var(--blue-500);
+  font-size: 1.2em;
   border: 1px solid var(--white-500);
   padding: var(--unit);
   border-radius: var(--unit);
@@ -61,10 +62,12 @@
 }
 
 .node {
-  cursor: pointer;
+  cursor: grab;
   --node-text: var(--white-500);
   --node-fill: var(--white-900);
   --node-stroke: var(--white-500);
+  --stroke-width: var(--unit);
+  --font-size: 1.2em;
 }
 
 .node:active {
@@ -74,14 +77,14 @@
 .node text {
   text-anchor: middle;
   fill: var(--node-text);
-  font-size: 0.6em;
+  font-size: var(--font-size);
   font-weight: bold;
 }
 
 .node circle {
   fill: var(--node-fill);
   stroke: var(--node-stroke);
-  stroke-width: var(--unit);
+  stroke-width: var(--stroke-width);
   paint-order: stroke;
 }
 
@@ -96,8 +99,9 @@
 }
 
 .node.focus {
-  --node-stroke: var(--red-500);
-  --node-text: var(--red-500);
+  --stroke-width: calc(var(--unit) * 2);
+  --font-size: 1.6em;
+  --node-fill: var(--white-800);
 }
 
 .node.ROUTINE {

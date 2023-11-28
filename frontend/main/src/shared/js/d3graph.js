@@ -4,10 +4,8 @@ const config = {
   // Dimensions of the viewport
   width: 1090,
   height: 680,
-  margin: { y: 24, x: 24 },
-  force: { min: 100, max: 500 }, // Max (not correlated) and min (highly correlated) distance based on their correlation coefficient
-  radius: 20, // Radius of nodes in default and active state
-  transition: 200, // Transition duration
+  force: 100,
+  radius: 50,
 };
 
 const ctx = { statuses: {} };
@@ -23,6 +21,7 @@ export function opfabToD3(data, source, shown) {
 
   const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1])), +source].map((key) => ({
     id: key,
+    selected: key === +source,
     status: links.find((link) => link.target === key) ? ['active'] : [],
   }));
 
@@ -54,10 +53,6 @@ function t(kpi) {
   return kpi;
 }
 
-function minmax(value, max = 1, min = 0) {
-  return Math.min(Math.max(min, value), max);
-}
-
 export function setup(data) {
   orange_ctx_container.innerHTML = '';
 
@@ -84,15 +79,15 @@ export function setup(data) {
     .on('mouseover.tooltip', function (event, d) {
       ctx.tooltip.style('opacity', 0.9);
       ctx.tooltip
-        .html(`<img slot="icon" src="./assets/images/kpi/${d.kpi}.svg">&nbsp;${t(d.kpi)} ${Math.round(d.coefficient * 100)}%`)
-        .style('left', event.pageX + config.radius + 'px')
-        .style('top', event.pageY + config.radius + 'px');
+        .html(`<img slot="icon" src="./assets/images/kpi/${d.kpi}.svg">&nbsp;${t(d.kpi)} à ${Math.round(d.coefficient * 100)}%`)
+        .style('left', event.pageX + 20 + 'px')
+        .style('top', event.pageY + 20 + 'px');
     })
     .on('mouseout.tooltip', function () {
       ctx.tooltip.style('opacity', 0);
     })
     .on('mousemove', function (event) {
-      ctx.tooltip.style('left', event.pageX + config.radius + 'px').style('top', event.pageY + config.radius + 'px');
+      ctx.tooltip.style('left', event.pageX + 20 + 'px').style('top', event.pageY + 20 + 'px');
     });
 
   ctx.nodes = ctx.svg
@@ -103,6 +98,7 @@ export function setup(data) {
     .enter()
     .append('g')
     .attr('class', (d) => 'node ' + ctx.statuses[d.id]?.join(' '))
+    .classed('focus', (d) => d.selected)
     .call(
       d3
         .drag()
@@ -121,7 +117,7 @@ export function setup(data) {
           d.fy = null;
         })
     );
-  ctx.nodes.append('circle').attr('r', (d) => config.radius);
+  ctx.nodes.append('circle').attr('r', (d) => (d.selected ? config.radius * 1.5 : config.radius));
   ctx.nodes
     .append('text')
     .attr('class', 'label')
@@ -130,21 +126,17 @@ export function setup(data) {
 
   ctx.simulation = d3
     .forceSimulation()
-    .force('repulsion', d3.forceCollide(config.radius * 3))
+    .force('repulsion', d3.forceCollide(config.radius * 2))
     .force('center', d3.forceCenter(config.width / 2, config.height / 2));
 
   ctx.simulation.nodes(ctx.data.nodes).on('tick', () => {
     ctx.links
-      .attr('x1', (d) => minmax(d.source.x, config.width - config.margin.x, config.margin.x))
-      .attr('y1', (d) => minmax(d.source.y, config.height - config.margin.y, config.margin.y))
-      .attr('x2', (d) => minmax(d.target.x, config.width - config.margin.x, config.margin.x))
-      .attr('y2', (d) => minmax(d.target.y, config.height - config.margin.y, config.margin.y));
+      .attr('x1', (d) => d.source.x)
+      .attr('y1', (d) => d.source.y)
+      .attr('x2', (d) => d.target.x)
+      .attr('y2', (d) => d.target.y);
 
-    ctx.nodes.attr(
-      'transform',
-      (d) =>
-        `translate(${minmax(d.x, config.width - config.margin.x, config.margin.x)},${minmax(d.y, config.height - config.margin.y, config.margin.y)})`
-    );
+    ctx.nodes.attr('transform', (d) => `translate(${d.x},${d.y})`);
   });
 
   ctx.simulation.force(
@@ -152,17 +144,13 @@ export function setup(data) {
     d3
       .forceLink()
       .links(ctx.data.links)
-      .distance((link) => config.force.min * link.rank)
+      .distance((link) => config.force * link.rank)
       .id((d) => d.id)
   );
 
   const zoom_handler = d3
     .zoom()
-    .scaleExtent([1, Infinity])
-    .translateExtent([
-      [0, 0],
-      [config.width, config.height],
-    ])
+    .scaleExtent([0.1, Infinity])
     .on('zoom', (event) => ctx.svg.attr('transform', event.transform));
 
   zoom_handler(d3.select(orange_ctx_container));
