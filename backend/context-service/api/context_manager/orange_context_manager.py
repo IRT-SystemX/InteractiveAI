@@ -5,7 +5,7 @@ from .correlation_client_manager import CorrelationClientManager
 class OrangeContextManager(BaseContextManager):
     def __init__(self) -> None:
         super().__init__()
-        self.use_case = "Orange"
+        self.use_case = "ORANGE"
         self.correaltion_manager = CorrelationClientManager()
 
     def extra_operations(self):
