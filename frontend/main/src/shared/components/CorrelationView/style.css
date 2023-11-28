@@ -35,10 +35,10 @@ h1 {
 }
 #size-value {
   text-align: center;
-  color: #4BB4E6;
+  color: #4bb4e6;
 }
 #number-correlations {
-  color: #4BB4E6;
+  color: #4bb4e6;
 }
 h2 {
   text-align: center;
@@ -55,11 +55,14 @@ h2 {
   align-items: center;
   justify-content: space-between;
 }
+#correlation-size {
+  flex: 1;
+  margin: 0 16px;
+}
 #correlations {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  flex: 1;
   gap: 4px;
 }
 .icon {
@@ -69,6 +72,7 @@ h2 {
 #correlations-more {
   place-self: end;
   background: transparent;
+  cursor: pointer;
   border: none;
   color: #4bb4e6;
   margin: 8px;

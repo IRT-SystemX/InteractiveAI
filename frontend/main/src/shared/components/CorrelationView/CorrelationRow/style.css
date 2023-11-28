@@ -1,3 +1,6 @@
+:host[disabled] {
+  filter: grayscale(1);
+}
 .correlation-row {
   display: flex;
   border-radius: 8px;

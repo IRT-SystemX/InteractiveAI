@@ -20,10 +20,14 @@
   font-size: 14px;
 }
 h1 {
-  font-size: 16px;
-}
-#assistance-component main > *:not(:last-child) {
+  font-size: 20px;
+  margin: 0;
   margin-bottom: 8px;
+}
+#assistance-component main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 #assistance-component .logo {
   width: 58px;
@@ -62,19 +66,9 @@ h1 {
 [speech-bubble][pbottom] {
   margin-bottom: var(--bbArrowSize);
 }
-[speech-bubble][ptop] {
-  margin-top: var(--bbArrowSize);
-}
-[speech-bubble][pleft] {
-  margin-left: var(--bbArrowSize);
-}
-[speech-bubble][pright] {
-  margin-right: var(--bbArrowSize);
-}
 
 /* bottom and top  */
-[speech-bubble][pbottom]::before,
-[speech-bubble][ptop]::before {
+[speech-bubble][pbottom]::before {
   --width: calc(var(--bbArrowSize) / 2 * 3);
   height: var(--bbArrowSize);
   width: var(--width);
@@ -87,55 +81,6 @@ h1 {
 [speech-bubble][pbottom][aleft]::before {
   left: 1rem;
   clip-path: polygon(25% 0, 100% 0, 0% 100%);
-}
-[speech-bubble][pbottom][acenter]::before {
-  left: calc(50% - var(--width) / 2);
-  clip-path: polygon(12.5% 0, 87.5% 0, 50% 100%);
-}
-[speech-bubble][pbottom][aright]::before {
-  right: 1rem;
-  clip-path: polygon(0 0, 75% 0, 100% 100%);
-}
-/* left and right  */
-[speech-bubble][pleft]::before,
-[speech-bubble][pright]::before {
-  --height: calc(var(--bbArrowSize) / 2 * 3);
-  width: var(--bbArrowSize);
-  height: var(--height);
-}
-
-/* right */
-[speech-bubble][pright]::before {
-  left: calc(100% - 2px);
-}
-[speech-bubble][pright][atop]::before {
-  top: var(--bbPadding);
-  clip-path: polygon(100% 0, 0 100%, 0 25%);
-}
-[speech-bubble][pright][acenter]::before {
-  top: calc(50% - var(--height) / 2);
-  clip-path: polygon(0 12.5%, 100% 50%, 0 87.5%);
-}
-[speech-bubble][pright][abottom]::before {
-  bottom: var(--bbPadding);
-  clip-path: polygon(0 0, 100% 100%, 0 75%);
-}
-
-/* left */
-[speech-bubble][pleft]::before {
-  right: calc(100% - 2px);
-}
-[speech-bubble][pleft][atop]::before {
-  top: var(--bbPadding);
-  clip-path: polygon(0 0, 100% 25%, 100% 100%);
-}
-[speech-bubble][pleft][acenter]::before {
-  top: calc(50% - var(--height) / 2);
-  clip-path: polygon(0 50%, 100% 12.5%, 100% 87.5%);
-}
-[speech-bubble][pleft][abottom]::before {
-  bottom: var(--bbPadding);
-  clip-path: polygon(0 100%, 100% 0, 100% 75%);
 }
 
 button {

@@ -211,6 +211,7 @@ export async function setCorrelation(data, source, shown, kpi, severity) {
 
 window.showLink = showLink;
 window.hideLink = hideLink;
+window.t = t;
 window.showNode = showNode;
 window.setCorrelation = setCorrelation;
 window.ctx = ctx;

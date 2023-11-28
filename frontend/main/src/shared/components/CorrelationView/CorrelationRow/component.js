@@ -6,8 +6,9 @@ class CorrelationRowComponent extends HTMLElement {
       .then((response) => response.text())
       .then((html) => {
         this.shadowRoot.innerHTML = html;
-        this.shadowRoot.querySelector('.correlation-row').addEventListener('mouseenter', this.showLink.bind(this));
-        this.shadowRoot.querySelector('.correlation-row').addEventListener('mouseleave', hideLink);
+        this.addEventListener('mouseenter', this.showLink.bind(this));
+        this.addEventListener('mouseleave', hideLink);
+        this.addEventListener('click', () => this.setAttribute('style', 'filter:grayscale(1)'));
       })
       .catch((error) => console.error('Error fetching HTML:', error));
   }

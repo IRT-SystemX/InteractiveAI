@@ -51,7 +51,7 @@ class CorrelationComponent extends HTMLElement {
           `<correlation-row source="${this.event.card.data.metadata.id_app}" target="${+/App_(\d+).*/.exec(
             key
           )[1]}"><div slot="app">App ${+/App_(\d+).*/.exec(key)[1]}</div><img slot="icon" title="${
-            /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2]
+            t(/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2])
           }" src="./assets/images/kpi/${/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2]}.svg"><div slot="correlation">${value.toFixed(
             0
           )}</div></correlation-row>`
