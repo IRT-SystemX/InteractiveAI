@@ -71,7 +71,7 @@ class BaseEventManager:
             "data": {"metadata": data["data"]},
         }
 
-        card_pub_client.create_card(card_payload)
+        return card_pub_client.create_card(card_payload)
 
     def create_event(self, data):
         event_id = self.get_event_id()
@@ -79,7 +79,8 @@ class BaseEventManager:
         start_date = data.get("start_date", datetime.now())
         end_date = data.get("end_date")
         # Create a new card (notification)
-        self.create_card(start_date, end_date, data)
+        of_response = self.create_card(start_date, end_date, data)
+        data["of_uid"] = of_response.get("uid")
         # Trace in histric service
         self.trace_event(start_date, end_date, data)
 
