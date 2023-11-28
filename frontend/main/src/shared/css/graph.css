@@ -44,7 +44,6 @@
   background-color: var(--white-900);
   color: var(--blue-500);
   border: 1px solid var(--white-500);
-  font-family: monospace;
   padding: var(--unit);
   border-radius: var(--unit);
   pointer-events: none;

@@ -18,38 +18,51 @@ export function opfabToD3(data, source, shown) {
     target: +/App_(\d+).*/.exec(key)[1],
     coefficient: value / 100,
     rank: Math.floor(index / 5) + 1,
-    type: /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2],
+    kpi: /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2],
   }));
 
   const nodes = [...new Set(data.map(([key]) => +/App_(\d+).*/.exec(key)[1])), +source].map((key) => ({
     id: key,
     status: links.find((link) => link.target === key) ? ['active'] : [],
   }));
+
   for (const link of links) {
     setStatus(link.target, 'active');
   }
+
   return {
     nodes,
     links,
   };
 }
 
+function t(kpi) {
+  switch (kpi) {
+    case 'delay_avg':
+      return 'Temps de réponse';
+    case 'nb_err':
+      return "Nombre d'erreurs";
+    case 'nb_pl':
+      return 'Nombre de pages lentes';
+    case 'nb_req':
+      return 'Nombre de requêtes';
+    case 'ratio_err':
+      return "Ratio d'erreur";
+    case 'ratio_pl':
+      return 'Ratio de pages lentes';
+  }
+  return kpi;
+}
+
 function minmax(value, max = 1, min = 0) {
   return Math.min(Math.max(min, value), max);
 }
 
-export function setup(dataset) {
+export function setup(data) {
   orange_ctx_container.innerHTML = '';
-  // Create a simulation for an array of nodes, and compose the desired forces.
-  ctx.simulation = d3
-    .forceSimulation()
-    .force('repulsion', d3.forceCollide(config.radius * 2)) // Adds repulsion between nodes.
-    .force('center', d3.forceCenter(config.width / 2, config.height / 2)); // Attracts nodes to the center of the svg area
 
-  // Tooltip
-  ctx.tooltip = d3.select(orange_ctx).append('div').attr('class', 'tooltip').style('opacity', 0);
+  ctx.data = data;
 
-  // Main SVG
   ctx.svg = d3
     .select(orange_ctx_container)
     .append('svg')
@@ -58,22 +71,20 @@ export function setup(dataset) {
     .attr('id', 'orange_graph')
     .append('g');
 
-  // Create data
-  ctx.dataset = dataset;
+  ctx.tooltip = d3.select(orange_ctx).append('div').attr('class', 'tooltip').style('opacity', 0);
 
-  // Initialize the links
   ctx.links = ctx.svg
     .append('g')
     .attr('class', 'links')
     .selectAll('line')
-    .data(ctx.dataset.links)
+    .data(ctx.data.links)
     .enter()
     .append('line')
     .attr('class', 'link')
     .on('mouseover.tooltip', function (event, d) {
       ctx.tooltip.style('opacity', 0.9);
       ctx.tooltip
-        .html(`App ${d.source.id} corrélé à App ${d.target.id} à ${Math.round(d.coefficient * 100)}%`)
+        .html(`<img slot="icon" src="./assets/images/kpi/${d.kpi}.svg">&nbsp;${t(d.kpi)} ${Math.round(d.coefficient * 100)}%`)
         .style('left', event.pageX + config.radius + 'px')
         .style('top', event.pageY + config.radius + 'px');
     })
@@ -84,23 +95,32 @@ export function setup(dataset) {
       ctx.tooltip.style('left', event.pageX + config.radius + 'px').style('top', event.pageY + config.radius + 'px');
     });
 
-  // Initialize the nodes
   ctx.nodes = ctx.svg
     .append('g')
     .attr('class', 'nodes')
     .selectAll('g')
-    .data(ctx.dataset.nodes)
+    .data(ctx.data.nodes)
     .enter()
     .append('g')
     .attr('class', (d) => 'node ' + ctx.statuses[d.id]?.join(' '))
     .call(
       d3
-        .drag() // Sets the event listener for the specified typenames and returns the drag behavior.
-        .on('start', dragstarted) // Start - after a new pointer becomes active (on mousedown or touchstart).
-        .on('drag', dragged) // Drag - after an active pointer moves (on mousemove or touchmove).
-        .on('end', dragended) // End - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
+        .drag()
+        .on('start', (event, d) => {
+          if (!event.active) ctx.simulation.alphaTarget(0.3).restart();
+          d.fy = d.y;
+          d.fx = d.x;
+        })
+        .on('drag', (event, d) => {
+          d.fx = event.x;
+          d.fy = event.y;
+        })
+        .on('end', (event, d) => {
+          if (!event.active) ctx.simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        })
     );
-
   ctx.nodes.append('circle').attr('r', (d) => config.radius);
   ctx.nodes
     .append('text')
@@ -108,28 +128,12 @@ export function setup(dataset) {
     .attr('dy', '.3em')
     .text((d) => 'App ' + d.id);
 
-  // Listen for tick events to render the nodes as they update in your Canvas or SVG.
-  ctx.simulation
-    .nodes(ctx.dataset.nodes) // Sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
-    .on('tick', ticked); // Use simulation.on to listen for tick events as the simulation runs.
-  // After this, Each node must be an object. The following properties are assigned by the simulation:
-  // index - the node’s zero-based index into nodes
-  // x - the node’s current x-position
-  // y - the node’s current y-position
-  // vx - the node’s current x-velocity
-  // vy - the node’s current y-velocity
+  ctx.simulation = d3
+    .forceSimulation()
+    .force('repulsion', d3.forceCollide(config.radius * 3))
+    .force('center', d3.forceCenter(config.width / 2, config.height / 2));
 
-  ctx.simulation.force(
-    'link',
-    d3
-      .forceLink() // This force provides links between nodes
-      .links(ctx.dataset.links)
-      .distance((link) => config.force.min * link.rank)
-      .id((d) => d.id) // This sets the node id accessor to the specified function. If not specified, will default to the index of a node.
-  );
-
-  // This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
-  function ticked() {
+  ctx.simulation.nodes(ctx.data.nodes).on('tick', () => {
     ctx.links
       .attr('x1', (d) => minmax(d.source.x, config.width - config.margin.x, config.margin.x))
       .attr('y1', (d) => minmax(d.source.y, config.height - config.margin.y, config.margin.y))
@@ -141,9 +145,17 @@ export function setup(dataset) {
       (d) =>
         `translate(${minmax(d.x, config.width - config.margin.x, config.margin.x)},${minmax(d.y, config.height - config.margin.y, config.margin.y)})`
     );
-  }
+  });
 
-  // Create zoom handler
+  ctx.simulation.force(
+    'link',
+    d3
+      .forceLink()
+      .links(ctx.data.links)
+      .distance((link) => config.force.min * link.rank)
+      .id((d) => d.id)
+  );
+
   const zoom_handler = d3
     .zoom()
     .scaleExtent([1, Infinity])
@@ -151,37 +163,9 @@ export function setup(dataset) {
       [0, 0],
       [config.width, config.height],
     ])
-    .on('zoom', zoom_actions);
+    .on('zoom', (event) => ctx.svg.attr('transform', event.transform));
 
-  // Specify what to do when zoom event listener is triggered
-  function zoom_actions(event) {
-    ctx.svg.attr('transform', event.transform);
-  }
-
-  // Add zoom behaviour to the svg element
-  // Same as svg.call(zoom_handler);
   zoom_handler(d3.select(orange_ctx_container));
-
-  // When the drag gesture starts, the targeted node is fixed to the pointer
-  // The simulation is temporarily “heated” during interaction by setting the target alpha to a non-zero value.
-  function dragstarted(event, d) {
-    if (!event.active) ctx.simulation.alphaTarget(0.3).restart(); // Sets the current target alpha to the specified number in the range [0,1].
-    d.fy = d.y; // Fx - the node’s fixed x-position. Original is null.
-    d.fx = d.x; // Fy - the node’s fixed y-position. Original is null.
-  }
-
-  // When the drag gesture starts, the targeted node is fixed to the pointer
-  function dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-  }
-
-  // The targeted node is released when the gesture ends
-  function dragended(event, d) {
-    if (!event.active) ctx.simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-  }
 }
 
 export function setStatus(node, severity) {
@@ -191,11 +175,9 @@ export function setStatus(node, severity) {
 }
 
 export async function setCorrelation(data, source, shown, kpi, severity) {
-  orange_ctx_container.innerHTML = 'Loading';
-
-  ctx.data = data;
+  ctx.rawData = data;
   config.kpi = kpi;
-  setup(opfabToD3(ctx.data, source, shown));
+  setup(opfabToD3(ctx.rawData, source, shown));
   setStatus(source, severity);
 }
 
