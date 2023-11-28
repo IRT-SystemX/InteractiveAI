@@ -1,0 +1,26 @@
+<div id="assistance-component">
+  <link rel="stylesheet" href="./shared/components/AssistanceView/style.css" />
+  <header>
+    <h1>Assistance</h1>
+  </header>
+  <main>
+    <img src="../../assets/images/cab_frame.png" alt="Logo" class="logo" />
+    <div>
+      <div speech-bubble pbottom aleft style="--bbColor: #eee">
+        Anomalie sur <strong class="orange">Application <span id="app-id">X</span></strong> détectée. Souhaitez-vous de l'aide pour traiter l'événement ?
+      </div speech-bubble>
+    </div>
+    <div class="row">
+      <button type="button">Consulter l'historique d'application</button>
+      <img src="../../assets/images/info.svg" class="icon" />
+    </div>
+    <div class="row">
+      <button type="button" class="action" id="correlateBtn">Calculer des corrélations</button>
+      <img src="../../assets/images/info.svg" class="icon" />
+    </div>
+  </main>
+  <footer>
+    <input type="text" placeholder="Comment puis-je vous aider ?" />
+    <img src="../../assets/images/cab_frame.png" alt="Logo" class="logo" />
+  </footer>
+</div>

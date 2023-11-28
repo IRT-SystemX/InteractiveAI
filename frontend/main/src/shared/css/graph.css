@@ -2,15 +2,13 @@
   --duration: 0.3s;
   --unit: 4px;
   --white-900: #fff;
-  --black-100: #282a36;
-  --black-500: #44475a;
-  --black-900: #6272a4;
-  --red-100: #a00;
+  --white-800: #f6f6f6;
+  --white-500: #999;
+  --black-100: #000;
   --red-500: #f55;
-  --orange-100: #ff8400;
-  --orange-500: #ffb86c;
-  --green-100: #05ad2f;
-  --green-500: #50fa7b;
+  --blue-500: #4bb4e6;
+  --orange-500: #ff7900;
+  --green-500: #009E8F;
 }
 
 #orange_ctx_container {
@@ -33,7 +31,7 @@
 #orange_ctx_container #orange_graph {
   height: 100%;
   width: 100%;
-  cursor: grab;
+  cursor: move;
   overscroll-behavior: none;
 }
 
@@ -43,12 +41,12 @@
 
 .tooltip {
   position: absolute;
-  background-color: var(--black-500);
-  color: var(--white-900);
-  border: var(--unit) solid var(--black-100);
-  font-family: monospace;
+  background-color: var(--white-900);
+  color: var(--black-100);
+  font-size: 1.2em;
+  border: 1px solid var(--white-500);
   padding: var(--unit);
-  border-radius: calc(var(--unit) * 2);
+  border-radius: var(--unit);
   pointer-events: none;
   white-space-collapse: preserve;
 }
@@ -64,10 +62,12 @@
 }
 
 .node {
-  cursor: pointer;
-  --node-text: var(--white-900);
-  --node-fill: var(--black-500);
-  --node-stroke: var(--black-100);
+  cursor: grab;
+  --node-text: var(--white-500);
+  --node-fill: var(--white-900);
+  --node-stroke: var(--white-500);
+  --stroke-width: var(--unit);
+  --font-size: 1.2em;
 }
 
 .node:active {
@@ -77,67 +77,50 @@
 .node text {
   text-anchor: middle;
   fill: var(--node-text);
-  font-size: 0.6em;
+  font-size: var(--font-size);
   font-weight: bold;
 }
 
 .node circle {
   fill: var(--node-fill);
   stroke: var(--node-stroke);
-  stroke-width: calc(var(--unit) * 2);
+  stroke-width: var(--stroke-width);
   paint-order: stroke;
 }
 
 .node:hover {
-  --node-stroke: var(--black-500);
-  --node-fill: var(--black-900);
+  --node-text: var(--blue-500);
+  --node-stroke: var(--blue-500);
 }
 
-#orange_graph:has(.active) .node:not(.active),
-#orange_graph:has(.active) .link:not(.active) {
-  opacity: 0;
-}
-
-#orange_graph:has(.hover) .node:not(.active) {
-  opacity: 0.3;
-}
-
-#orange_graph:has(.hover) .link:not(.active) {
-  opacity: 0.1;
-}
-
-.node.active,
-.link.active {
-  z-index: 1000;
+.node.active {
+  --node-stroke: var(--blue-500);
+  --node-text: var(--blue-500);
 }
 
 .node.focus {
-  --node-stroke: var(--red-100);
-  --node-fill: var(--red-500);
+  --stroke-width: calc(var(--unit) * 2);
+  --font-size: 1.6em;
+  --node-fill: var(--white-800);
 }
 
-.node.ROUTINE {
-  animation: ROUTINE var(--duration) infinite alternate;
+.node.INFORMATION {
+  --node-stroke: var(--green-500);
+  --node-text: var(--green-500);
 }
 
 .node.ACTION {
-  animation: ACTION var(--duration) infinite alternate;
+  --node-stroke: var(--orange-500);
+  --node-text: var(--orange-500);
 }
 
 .link {
-  stroke-width: 3;
+  stroke-width: 12;
+  stroke: var(--white-500);
+  cursor: pointer;
 }
 
-@keyframes ACTION {
-  to {
-    --node-stroke: var(--orange-100);
-    --node-fill: var(--orange-500);
-  }
-}
-
-@keyframes ROUTINE {
-  to {
-    --node-stroke: var(--orange-100);
-    --node-fill: var(--orange-500);
-  }
+.link:hover,
+.link.active {
+  stroke: var(--blue-500);
 }

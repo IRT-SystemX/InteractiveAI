@@ -139,7 +139,8 @@ export class CardService {
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
                             if(operation.card.entityRecipients.includes('ORANGE')){
-                                setStatus(operation.card.titleTranslated, operation.card.severity)
+                                // TODO: color based on title and not metadata :(
+                                setStatus(+/App_(\d+).*/.exec(operation.card.titleTranslated)[1], operation.card.severity)
                             }
 
                             if (operation.card.id === this.selectedCardId)

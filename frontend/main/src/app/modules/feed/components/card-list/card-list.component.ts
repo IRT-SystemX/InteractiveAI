@@ -24,7 +24,7 @@ import {UserService} from '@ofServices/user.service';
 import {UserWithPerimeters} from '@ofModel/userWithPerimeters.model';
 import {EntitiesService} from '@ofServices/entities.service';
 import {GroupedCardsService} from '@ofServices/grouped-cards.service';
-import {setup, setThreshold, opfabToD3} from 'shared/js/d3graph.js'
+import {setup} from 'shared/js/d3graph.js'
 
 @Component({
     selector: 'of-card-list',
@@ -60,7 +60,7 @@ export class CardListComponent implements AfterViewChecked, OnInit {
     ngOnInit(): void {
         this.domCardListElement = document.getElementById('opfab-card-list');
         this.hideAckAllCardsFeature = this.configService.getConfigValue('feed.card.hideAckAllCardsFeature', true);
-        setup({nodes: Array.from(Array(28).keys()).map((i) => ({id: `App_${(i+1).toString(10).padStart(2,"0")}`, data: [], status: []})), links: [] })
+        setup({nodes: Array.from(Array(28).keys()).map((i) => ({id: i+1, status: []})), links: [] })
     }
 
     ngAfterViewChecked() {
@@ -140,9 +140,5 @@ export class CardListComponent implements AfterViewChecked, OnInit {
 
     isCardInGroup(selected: string, id: string) {
         return this.groupedCardsService.isCardInGroup(selected, id);
-    }
-
-    changeThreshold(event){
-        setThreshold(event.target.value);
     }
 }
