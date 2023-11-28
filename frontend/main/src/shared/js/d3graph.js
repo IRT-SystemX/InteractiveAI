@@ -4,7 +4,7 @@ const config = {
   // Dimensions of the viewport
   width: 1090,
   height: 680,
-  force: 100,
+  force: 200,
   radius: 50,
 };
 
@@ -148,12 +148,12 @@ export function setup(data) {
       .id((d) => d.id)
   );
 
-  const zoom_handler = d3
+  ctx.zoom = d3
     .zoom()
     .scaleExtent([0.1, Infinity])
     .on('zoom', (event) => ctx.svg.attr('transform', event.transform));
 
-  zoom_handler(d3.select(orange_ctx_container));
+  ctx.zoom(d3.select(orange_ctx_container));
 }
 
 export function setStatus(node, severity) {
@@ -162,11 +162,44 @@ export function setStatus(node, severity) {
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
 }
 
+export function showLink(source, target) {
+  ctx.links.classed('active', (link) => source === link.source.id && target === link.target.id);
+}
+
+export function hideLink() {
+  ctx.links.classed('active', false);
+}
+
+export function showNode(id) {
+  ctx.nodes.classed('focus', (node) => id === node.id);
+  zoomToNode(id);
+}
+
+export function zoomToNode(id, zoom = 2) {
+  const node = ctx.data.nodes.find((node) => node.id === id);
+  ctx.svg
+    .transition()
+    .duration(750)
+    .call(
+      ctx.zoom.transform,
+      d3.zoomIdentity
+        .translate(config.width / 2, config.height / 2)
+        .scale(zoom)
+        .translate(-node.x, -node.y)
+    );
+}
+
 export async function setCorrelation(data, source, shown, kpi, severity) {
   ctx.rawData = data;
   config.kpi = kpi;
   setup(opfabToD3(ctx.rawData, source, shown));
   setStatus(source, severity);
+  setTimeout(() => zoomToNode(+source, 1.2), 200);
 }
 
+window.showLink = showLink;
+window.hideLink = hideLink;
+window.showNode = showNode;
 window.setCorrelation = setCorrelation;
+window.ctx = ctx;
+window.config = config;

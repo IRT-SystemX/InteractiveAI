@@ -1,9 +1,12 @@
-
 .correlation-row {
   display: flex;
   border-radius: 8px;
   background: var(--primary);
   --primary: #4bb4e6;
+  cursor: pointer;
+}
+.correlation-row:hover .label {
+  background: #f6f6f6;
 }
 .correlation-row > * {
   border: 1px solid var(--primary);

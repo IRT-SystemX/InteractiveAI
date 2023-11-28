@@ -116,10 +116,11 @@
 
 .link {
   stroke-width: 12;
-  stroke: var(--white-800);
+  stroke: var(--white-500);
   cursor: pointer;
 }
 
-.link:hover {
+.link:hover,
+.link.active {
   stroke: var(--blue-500);
 }

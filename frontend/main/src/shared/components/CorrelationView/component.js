@@ -48,9 +48,13 @@ class CorrelationComponent extends HTMLElement {
       .slice(0, this.shown)
       .map(
         ([key, value]) =>
-          `<correlation-row><div slot="app">App ${+/App_(\d+).*/.exec(key)[1]}</div><img slot="icon" src="./assets/images/kpi/${
+          `<correlation-row source="${this.event.card.data.metadata.id_app}" target="${+/App_(\d+).*/.exec(
+            key
+          )[1]}"><div slot="app">App ${+/App_(\d+).*/.exec(key)[1]}</div><img slot="icon" title="${
             /App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2]
-          }.svg"><div slot="correlation">${value.toFixed(0)}</div></correlation-row>`
+          }" src="./assets/images/kpi/${/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2]}.svg"><div slot="correlation">${value.toFixed(
+            0
+          )}</div></correlation-row>`
       )
       .join('');
     this.shadowRoot.getElementById('number-correlations').innerText = this.formatted.length;
