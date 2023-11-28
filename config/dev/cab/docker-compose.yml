@@ -184,6 +184,8 @@ services:
       - EVENT_URL=http://cabevent:5000
       - CAB_USERNAME=publisher_test
       - CAB_PASSWORD=test
+      - AUTH_DISABLED=True
+      - DEFAULT_USE_CASE=ORANGE
 
     command: sh -c "./entrypoint.sh"
     ports:
