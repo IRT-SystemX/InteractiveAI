@@ -1,5 +1,5 @@
 from apiflask import Schema
-from apiflask.fields import Dict, List, String
+from apiflask.fields import Dict, List, String, Integer
 
 
 class RecommendationAsk(Schema):
@@ -14,3 +14,9 @@ class RecommendationOut(Schema):
     description = String()
     agent_type = String()
     actions = List(Dict())
+
+
+class ProcedureOut(Schema):
+    procedure = List(Dict())
+    max_speed = Integer()
+    min_speed = Integer()
