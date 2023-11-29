@@ -52,6 +52,7 @@ class DAManager(BaseRecommendation):
     def get_procedure(self, event_type):
         min_speed = 180
         max_speed = 260  
+        event_type = "90 PRESS : CABIN ALT TOO HIGH"
         all_events = {
             "90 PRESS : CABIN ALT TOO HIGH": "90_PRESS_CABIN_ALT_TOO_HI",
             "ENG1: AUTO SHUTDOWN": "ENG1_AUTO_SHUTDOWN",
