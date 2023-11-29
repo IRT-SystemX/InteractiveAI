@@ -1,3 +1,5 @@
+var newDestination;
+
 function displayStats(value, event) {
     hideAllSynops()
     document.querySelectorAll("#synoptique button.btn-group-synoptic-active").forEach(bouton => bouton.classList.remove("btn-group-synoptic-active"));
@@ -184,7 +186,90 @@ function displayStats(value, event) {
         layer.setStyle({ color: routeColorDA });
       }
     });
+    planeMarker.setIcon(plainFailedIcon)
   }
   function setAndUpdateDAMarkersOnMap(data) {
     planeMarker.setLatLng([data.Latitude, data.Longitude]);
+  }
+  function getRecommandationDA(){
+
+    document.getElementById('da_recommendations').innerHTML = "";
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.addEventListener("readystatechange", function() {
+      if(this.readyState === 4) {
+        Swal.hideLoading();
+        Swal.close();
+        document.body.style.cursor = 'unset';
+        console.log(JSON.parse(this.responseText))
+        var recos = JSON.parse(this.responseText);
+        var bodyHTML = "";
+         for (var reco=0;reco<recos.length;reco++){
+            var description = recos[reco].description;
+            var agent_type = recos[reco].agent_type;
+            var title = recos[reco].title;
+            var actions = recos[reco].actions;
+            sessionStorage.setItem("actions"+"["+ reco + "]", JSON.stringify(actions[0]));
+            bodyHTML = "<div><span class='rtePrd reco'><b onclick ='"+ 'showDescDA(' + reco + ')' + " '>" + title + "</b></span>";
+            bodyHTML += "<span style='bottom: 0px;position: absolute;' id='description" + reco + "' hidden>" + "<u>Flight Plan Information</u><br>" +  description + '</span>';
+            document.getElementById('da_recommendations').innerHTML += bodyHTML;
+         }
+         btnValid = "<button style='margin-top:50px;float:right' class='da_assist_btn' onclick='gotoDestDA()'> Go to selected Destination</button>";
+         document.getElementById('da_recommendations').innerHTML += btnValid;
+         var buttons = document.querySelectorAll('.rtePrd.reco')
+
+         buttons.forEach(function(button) {
+           button.addEventListener('click', handleClick);
+         });
+         
+
+      }
+    });
+    xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
+    
+    var recommendationBody = 
+      {
+      "event": {
+          "event_type": "90 PRESS : CABIN ALT TOO HIGH"
+      }
+      }
+    xhr.send(JSON.stringify(recommendationBody));
+
+
+    }
+    
+
+function gotoDestDA(dest,reco){
+        Swal.fire({
+            icon: 'question',
+            title: 'You are about to recalculate a new flight plan to reroute to ' + newDestination + '<br>Do you wish to continue ? ',
+            showCancelButton: true,
+            showConfirmButton: true,
+            cancelButtonText: "No",
+            confirmButtonText: "Yes",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                traceInHistory("AWARD", authorizedUseCase, {});
+                applyRecommandationFinal(reco);
+            }
+        })
+}
+
+
+function handleClick(event) {
+    var clickedElement = event.target;
+    console.log(clickedElement);
+    var buttons = document.querySelectorAll('.rtePrd.reco')
+    buttons.forEach(function(button) {
+        try {
+            button.classList.remove("active_reco")
+            button.parentElement.classList.remove("active_reco")
+           } catch (error) {
+           }
+      button.addEventListener('click', handleClick);
+    });
+    clickedElement.parentElement.classList.add("active_reco")
+    newDestination  = clickedElement.innerText;
   }

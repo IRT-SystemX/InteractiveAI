@@ -601,7 +601,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
         Swal.showLoading();
         document.getElementById('usecase_hidden').innerText === "CAB Orange" && // @ts-expect-error
         AssistanceComponent.showAssistanceView(this.lightCard.id);
-        document.getElementById('usecase_hidden').innerText === "CAB DA" && this.getEmergencyPlan();
+        document.getElementById('usecase_hidden').innerText === "CAB DA" && (this.getEmergencyPlan(),document.getElementById("btnSyn").click());
         var element = $event.srcElement;
         while (element && !element.classList.contains('card')) {
           console.log((element));

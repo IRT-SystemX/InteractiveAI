@@ -17,7 +17,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.0.7</title>
+  <title>Assistant CAB v3.0.8</title>
   <span id="login"></span>
   <base href="/">
 
@@ -78,6 +78,8 @@ These two parameters are place in this file as the style should have a title par
       ALARM: trainIconFr,
     }
     var planeMarker;
+    var planeIcon;
+    var plainFailedIcon;
     var contextSNCF;
     var host;
     var traceHost;
@@ -467,7 +469,6 @@ These two parameters are place in this file as the style should have a title par
       if (selectedUseCase == "DA") {
         setDANotifications();
         if (assistNeverTriggered) {
-          document.getElementById("dassault_assist").hidden = false;
           assistNeverTriggered = false;
         }
       }
@@ -823,7 +824,7 @@ These two parameters are place in this file as the style should have a title par
           });
           L.tileLayer(mapLayer, {
           }).addTo(map);
-          let planeIcon = {
+           planeIcon = {
             iconUrl: "assets/images/Iconmetro-airplane.png",
             iconSize: [80, 80]
           }
@@ -833,6 +834,9 @@ These two parameters are place in this file as the style should have a title par
             icon: myIcon3
           }
 
+          plainFailedIcon = L.icon({
+            iconUrl: "/assets/images/Plane + icon.png",
+        });
           planeMarker = new L.Marker([latitude, longitude], iconOptions3);
           planeMarker.addTo(map).bindPopup(iconOptions3.title)
           break;
@@ -952,6 +956,16 @@ These two parameters are place in this file as the style should have a title par
       </div>
     </div>
     <div id="dassault_assist" hidden>
+      <div id="top-menus-da-assist" style="display:flex">
+        <img src="assets/images/Icon CAB.svg">
+        <span style="margin-left:5px"><b>Checklist</b></span>
+        <span style="margin-left:5px"><b>Recommendations</b></span>
+      </div>
+      <div>Flight plans recommendations</div>
+      <button class="da_assist_btn" id ="cockpitmaintenance">Cockpit maintenance</button>
+      <button class="da_assist_btn" id ="cost">Cost</button>
+      <button class="da_assist_btn" id ="Accomodation">Acommodation</button>
+      <div id="da_recommendations"></div>
       <div id="da_bloc_content">
         <div class="da_assist" id="high_procedure" hidden>
           <img src="assets\images\endofprocedure_da.png">

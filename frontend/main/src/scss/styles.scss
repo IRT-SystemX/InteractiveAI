@@ -1372,3 +1372,24 @@ input[type="range"] {
     border-radius: 3px;
     font-size: 12px;
   }
+
+  .da_assist_btn{
+    background-color: #00A3FF;
+    border-radius:5px;
+    font-weight: bold;
+  }
+
+  .reco{
+    box-shadow: 15px 0px 0px #00A3FF;
+    border: 2px solid #00A3FF;
+    padding: 13px;
+    border-radius: 10px;
+    width: 95%;
+    display: block;
+    margin-top:3px;
+    }
+
+.active_reco{
+    background-color: #4B4B4B;
+    color: #00A3FF;
+}
