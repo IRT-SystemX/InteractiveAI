@@ -5,6 +5,10 @@ from resources.da.da_cab_recommender import DaCabRecommender
 from .base_recommendation import BaseRecommendation
 from flask import current_app
 import os
+import json
+
+
+
 
 
 class DAManager(BaseRecommendation):
@@ -12,6 +16,9 @@ class DAManager(BaseRecommendation):
         self.root_path = current_app.config["ROOT_PATH"]
         self.owl_file_path = os.path.join(
             self.root_path, "resources/da/ontology/AlarmsOntoDA.owl"
+        )
+        self.json_file_path = os.path.join(
+            self.root_path, 'resources/da/procedures/'
         )
         self.recommender = DaCabRecommender()
 
@@ -39,61 +46,36 @@ class DAManager(BaseRecommendation):
 
         return combined_fake_recommendations
 
+ 
+
+
     def get_procedure(self, event_type):
+        event_type = "ENG1: AUTO SHUTDOWN"
         min_speed = 180
-        max_speed = 260
+        max_speed = 260  
         all_events = {
-            "90 PRESS : CABIN ALT TOO HIGH": "procedure_90_PRESS_CABIN_ALT_TOO_HI",
-            "ENG1: AUTO SHUTDOWN": "procedure_ENG1_AUTO_SHUTDOWN",
+            "90 PRESS : CABIN ALT TOO HIGH": "90_PRESS_CABIN_ALT_TOO_HI",
+            "ENG1: AUTO SHUTDOWN": "ENG1_AUTO_SHUTDOWN",
         }
-        # Load ontology
 
-        DA_onto = get_ontology(self.owl_file_path).load()
-
-        # Update checkList object property assertion to actual event
-        # get instance of check list from ontology + procedure depending on event
-        mycheckList = DA_onto.CheckList("checkList")
-        myProcedure = DA_onto.AlarmProcedure(all_events[event_type])
-
-        # Empty checkList relation if exists
-        mycheckList.HasCurrentCheckListProcedure = []
-        # add property
-        mycheckList.HasCurrentCheckListProcedure.append(myProcedure)
-        # save ontology
-        DA_onto.save(self.owl_file_path)
-
-        # request procedure from ontology
-        procedure = list(
-            default_world.sparql(
-                """
-                   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        PREFIX cab: <http://www.semanticweb.org/scdsahv/ontologies/2022/5/untitled-ontology-5#>
-        SELECT ?taskText
-        WHERE { 
-          ?checklist rdf:type cab:CheckList .
-          ?checklist cab:HasCurrentCheckListProcedure ?procedure .  
-          ?procedure cab:HasProcedureElement ?procedureTask .  
-          ?procedureTask cab:TaskIndex ?taskIndex .    
-          ?procedureTask cab:TaskText ?taskText .    
-        } ORDER BY ?taskIndex
-
-            """
-            )
-        )
-
-        # jsonify & add index
         procedure_dict = {
             "procedure": [],
             "min_speed": min_speed,
             "max_speed": max_speed,
-        }
+        }      
 
-        for i, sub_list in enumerate(procedure):
-            task_dict = {"TaskIndex": i + 1, "TaskText": sub_list[0]}
+        #get alarm's json 
+        if '90' in event_type:
+            print('YES')
+            with open(self.json_file_path + 'proc_emerg_' + all_events[event_type] + '.json') as f:
+                json_data = json.load(f)
+                procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
 
-            procedure_dict["procedure"].append(task_dict)
+        else:
+            with open(self.json_file_path + 'proc_abnrml_' + all_events[event_type] + '.json') as f:
+                json_data = json.load(f)
+                procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
 
         return procedure_dict
+        
+ 
