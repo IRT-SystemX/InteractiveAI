@@ -50,7 +50,6 @@ class DAManager(BaseRecommendation):
 
 
     def get_procedure(self, event_type):
-        event_type = "ENG1: AUTO SHUTDOWN"
         min_speed = 180
         max_speed = 260  
         all_events = {
@@ -66,7 +65,6 @@ class DAManager(BaseRecommendation):
 
         #get alarm's json 
         if '90' in event_type:
-            print('YES')
             with open(self.json_file_path + 'proc_emerg_' + all_events[event_type] + '.json') as f:
                 json_data = json.load(f)
                 procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
