@@ -1,0 +1,94 @@
+{
+  "max_speed": 260,
+  "min_speed": 180,
+  "procedure": [
+    {
+      "blockIndex": 1,
+      "blockText": "Precautions",
+      "tasks": [
+        {
+          "taskIndex": 1,
+          "taskText": "Engine 1 power lever",
+          "taskType": "task"
+        }
+      ]
+    },
+    {
+      "blockIndex": 2,
+      "blockText": "System reconfiguration",
+      "tasks": [
+        {
+          "taskIndex": 4,
+          "taskText": "BUS TIE",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 5,
+          "taskText": "Engine 1 FUEL switch",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 6,
+          "taskText": "BOOST 1",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 7,
+          "taskText": "BLEED 1",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 8,
+          "taskText": "XBLEED 1 2",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 9,
+          "taskText": "GEN 1",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 10,
+          "taskText": "GALLEY MASTER & CABIN MASTER",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 11,
+          "taskText": "ENGINE 1 SHUT OFF",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 12,
+          "taskText": "TA Only",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 13,
+          "taskText": "A/I: ENG 1",
+          "taskType": "task"
+        }
+      ]
+    },
+    {
+      "blockIndex": 4,
+      "blockText": "Status",
+      "tasks": [
+        {
+          "taskIndex": 14,
+          "taskText": "Two engines out?",
+          "taskType": "choice"
+        },
+        {
+          "taskIndex": 15,
+          "taskText": "WINDSHIELD HEAT LH or RH",
+          "taskType": "task"
+        },
+        {
+          "taskIndex": 16,
+          "taskText": "Airbrakes auto retraction function is lost",
+          "taskType": "caution"
+        }
+      ]
+    }
+  ]
+}
