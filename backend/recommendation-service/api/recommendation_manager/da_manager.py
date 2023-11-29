@@ -64,15 +64,15 @@ class DAManager(BaseRecommendation):
         }      
 
         #get alarm's json 
-        if '90' in event_type:
-            with open(self.json_file_path + 'proc_emerg_' + all_events[event_type] + '.json') as f:
-                json_data = json.load(f)
-                procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
+        # if '90' in event_type:
+        with open(self.json_file_path + 'proc_emerg_' + all_events[event_type] + '.json') as f:
+            json_data = json.load(f)
+            procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
 
-        else:
-            with open(self.json_file_path + 'proc_abnrml_' + all_events[event_type] + '.json') as f:
-                json_data = json.load(f)
-                procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
+        # else:
+        #     with open(self.json_file_path + 'proc_abnrml_' + all_events[event_type] + '.json') as f:
+        #         json_data = json.load(f)
+        #         procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
 
         return procedure_dict
         
