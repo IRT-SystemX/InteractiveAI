@@ -1,5 +1,9 @@
-<link rel="stylesheet" href="./shared/components/CorrelationView/CorrelationRow/style.css" />
+<link rel="stylesheet" href="./shared/components/ProcedureView/Step/style.css" />
 <div class="procedure-step">
-  <div class="label"><slot name="app">App X</slot><slot name="icon">©</slot></div>
-  <div class="value"><slot name="correlation">100</slot>%</div>
+  <div class="timeline">
+    <div class="line top"></div>
+    <div class="circle"></div>
+    <div class="line bottom"></div>
+  </div>
+  <div class="step">[<slot name="number">#</slot>]&nbsp;<slot name="step">Step</slot></div>
 </div>
