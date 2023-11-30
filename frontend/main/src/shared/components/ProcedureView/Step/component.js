@@ -23,30 +23,9 @@ class ProcedureStepComponent extends HTMLElement {
   }
 
   getRecommandationDA(title) {
+    this.setAttribute('state', 'done');
     document.getElementsByTagName('procedure-component')[0].hidden = true;
-    var recoResponse;
-    var data = JSON.stringify({
-      event: {
-        event_type: title,
-      },
-    });
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.addEventListener('readystatechange', function () {
-      if (this.readyState === 4) {
-        document.getElementById('da_block_request').innerHTML = '';
-        document.getElementById('da_block_request').innerHTML += 'Procedure <hr>';
-        recoResponse = JSON.parse(this.responseText);
-        Object.keys(recoResponse).forEach(function (k) {
-          document.getElementById('da_block_request').hidden = false;
-          document.getElementById('da_block_request').innerHTML += recoResponse[k].title + '<hr>';
-        });
-      }
-    });
-    xhr.open('POST', host + '/cab_recommendation/api/v1/recommendation');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + window.localStorage.token);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(data);
+    // TODO: bind to flight plan
   }
 }
 
