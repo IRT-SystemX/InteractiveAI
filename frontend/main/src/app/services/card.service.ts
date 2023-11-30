@@ -126,7 +126,7 @@ export class CardService {
                                     document.getElementById("noevent_da").hidden = true;
                                     document.getElementById("noevent_da_second").hidden = true;
                                     document.getElementById("da-fake-card").hidden = false;
-                                    document.getElementById("fake-card-content-da").innerHTML += document.querySelector(".opfab-feed-list-card-severity").textContent;
+                                    document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
                                     $("#setPolylineColor").click();
                                 }
                             }, 6000);
