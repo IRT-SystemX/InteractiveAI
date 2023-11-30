@@ -13,13 +13,21 @@ class ProcedureComponent extends HTMLElement {
   }
 
   static async showProcedureView(id) {
-    document.getElementsByTagName('procedure-component')[0].hidden = false;
+    const component = document.getElementsByTagName('procedure-component')[0];
+    component.hidden = false;
     // Get data for card clicked
     const res = await fetch('./shared/components/ProcedureView/procedure.json');
     const data = await res.json();
+
+    let timeline = '';
     for (const block of data.procedure) {
-      console.debug(block);
+      timeline += `<procedure-block><span slot="block">${block.blockText}</span></procedure-block>`;
+      for (const task of block.tasks) {
+        timeline += `<procedure-step><span slot="number">${task.taskIndex}</span><span slot="step">${task.taskText}</span></procedure-step>`;
+      }
     }
+
+    component.shadowRoot.querySelector('#procedure-component main').innerHTML = timeline;
   }
 
   showRecommendations(title) {

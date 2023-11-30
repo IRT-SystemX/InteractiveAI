@@ -43,9 +43,6 @@ h1 {
 h2 {
   text-align: center;
 }
-#procedure-component main > *:not(:last-child) {
-  margin-bottom: 8px;
-}
 #procedure-component .logo {
   width: 58px;
   align-self: center;

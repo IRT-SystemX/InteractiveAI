@@ -1,34 +1,36 @@
-:host[disabled] {
+.procedure-step {
+  display: flex;
+  margin-left: 4px;
+}
+
+:root[state='done'] {
   filter: grayscale(1);
 }
-.correlation-row {
-  display: flex;
-  border-radius: 8px;
-  background: var(--primary);
-  --primary: #4bb4e6;
-  cursor: pointer;
+
+.step {
+  padding: 4px 8px;
 }
-.correlation-row:hover .label {
-  background: #f6f6f6;
-}
-.correlation-row > * {
-  border: 1px solid var(--primary);
-  height: 36px;
-  border-radius: 8px;
+
+.timeline {
   display: flex;
-  padding: 4px 10px;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
 }
-.correlation-row .label {
-  background: #fff;
+
+.line {
+  width: 4px;
   flex: 1;
-  border: 1px solid var(--primary);
+  background: #00a3ff;
+  border-radius: 9px;
+  margin: -2px 0;
 }
-.correlation-row .value {
-  background: var(--primary);
-  color: #fff;
-  width: 48px;
-  justify-content: center;
+
+.circle {
+  width: 17px;
+  height: 17px;
+  border-radius: 99px;
+  background: #00a3ff;
+  border: 2px solid #1d1d1d;
+  box-sizing: border-box;
+  z-index: 100;
 }
