@@ -1,6 +1,6 @@
 .procedure-step {
   display: flex;
-  margin-left: 4px;
+  margin-left: 16px;
   cursor: pointer;
 }
 
@@ -70,6 +70,6 @@
   border: none;
 }
 
-:host([landing]) #procedure-step-landing {
+:host([landing][state='doing']) #procedure-step-landing {
   display: block;
 }

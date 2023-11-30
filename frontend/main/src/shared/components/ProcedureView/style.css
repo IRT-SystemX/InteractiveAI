@@ -3,10 +3,10 @@
 }
 #procedure-component {
   position: absolute;
-  width: 370px;
-  height: 680px;
-  top: 80px;
-  right: 16px;
+  width: 390px;
+  height: 770px;
+  top: 60px;
+  right: 0;
   box-sizing: border-box;
   background: #1d1d1d;
   z-index: 1000;
