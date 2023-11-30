@@ -1,6 +1,6 @@
 backend/recommendation-service/resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test
 backend/recommendation-service/resources/rte/rtegrid2op_poc_simulator/XD_silly_repo
-
+backend/correlation-service/api/ai_models
 # Sonarqube
 .scannerwork
 
