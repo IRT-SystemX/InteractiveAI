@@ -12,11 +12,22 @@ class ProcedureComponent extends HTMLElement {
       .catch((error) => console.error('Error fetching HTML:', error));
   }
 
-  static async showProcedureView(id) {
+  static async showProcedureView() {
     const component = document.getElementsByTagName('procedure-component')[0];
     component.hidden = false;
     // Get data for card clicked
-    const res = await fetch('./shared/components/ProcedureView/procedure.json');
+    const res = await fetch(`${host}/cab_recommendation/api/v1/procedure`, {
+      method: 'POST',
+      body: JSON.stringify({
+        event: {
+          event_type: 'ENG1: AUTO SHUTDOWN',
+        },
+      }),
+      headers: {
+        "Content-Type": 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
     const data = await res.json();
 
     let timeline = '';
@@ -24,10 +35,10 @@ class ProcedureComponent extends HTMLElement {
     for (const block of data.procedure) {
       timeline += `<procedure-block><span slot="block">${block.blockText}</span></procedure-block>`;
       for (const task of block.tasks) {
-        timeline += `<procedure-step step="${index}" ${task.taskText === 'LAND ASAP' ? 'landing' : ''} state="${
+        timeline += `<procedure-step step="${index}" ${task.taskText.match(/land asap/gi) ? 'landing' : ''} state="${
           !index ? 'doing' : 'todo'
         }"><span slot="number">${task.taskIndex}</span><span slot="step">${task.taskText}</span></procedure-step>`;
-        index++
+        index++;
       }
     }
 
