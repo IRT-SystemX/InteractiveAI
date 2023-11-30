@@ -25,7 +25,7 @@ class ProcedureStepComponent extends HTMLElement {
   getRecommandationDA(title) {
     this.setAttribute('state', 'done');
     document.getElementsByTagName('procedure-component')[0].hidden = true;
-    // TODO: bind to flight plan
+    askRecoDA();
   }
 }
 
