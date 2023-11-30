@@ -20,18 +20,18 @@ class ProcedureComponent extends HTMLElement {
     const data = await res.json();
 
     let timeline = '';
+    let index = 0;
     for (const block of data.procedure) {
       timeline += `<procedure-block><span slot="block">${block.blockText}</span></procedure-block>`;
       for (const task of block.tasks) {
-        timeline += `<procedure-step><span slot="number">${task.taskIndex}</span><span slot="step">${task.taskText}</span></procedure-step>`;
+        timeline += `<procedure-step step="${index}" ${task.taskText === 'LAND ASAP' ? 'landing' : ''} state="${
+          !index ? 'doing' : 'todo'
+        }"><span slot="number">${task.taskIndex}</span><span slot="step">${task.taskText}</span></procedure-step>`;
+        index++
       }
     }
 
     component.shadowRoot.querySelector('#procedure-component main').innerHTML = timeline;
-  }
-
-  showRecommendations(title) {
-    getRecommandationDA(title);
   }
 }
 
