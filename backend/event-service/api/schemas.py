@@ -54,8 +54,8 @@ class EventIn(Schema):
     )
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
-    start_date = DateTime(format="iso")
-    end_date = DateTime(format="iso")
+    start_date = DateTime(format="iso", allow_none=True)
+    end_date = DateTime(format="iso", allow_none=True)
     criticality = String(
         required=True,
         validate=OneOf(["ND", "HIGH", "MEDIUM", "LOW", "ROUTINE"]),
@@ -89,8 +89,8 @@ class EventOut(Schema):
     use_case = String()
     title = String()
     description = String()
-    start_date = DateTime(format="iso")
-    end_date = DateTime(format="iso")
+    start_date = DateTime(format="iso", allow_none=True)
+    end_date = DateTime(format="iso", allow_none=True)
     criticality = String()
     data = Dict()
     is_active = Boolean()

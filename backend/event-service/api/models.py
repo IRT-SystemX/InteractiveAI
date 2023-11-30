@@ -14,3 +14,17 @@ class EventModel(db.Model):
     criticality = db.Column(db.String(10))
     data = db.Column(db.PickleType)
     is_active = db.Column(db.Boolean, default=True)
+
+    def to_dict(self):
+        return {
+            'id_event': self.id_event,
+            'of_uid': self.of_uid,
+            'use_case': self.use_case,
+            'title': self.title,
+            'description': self.description,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+            'criticality': self.criticality,
+            'data': self.data,
+            'is_active': self.is_active
+        }
