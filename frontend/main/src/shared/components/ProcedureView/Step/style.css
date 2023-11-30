@@ -1,10 +1,25 @@
 .procedure-step {
   display: flex;
   margin-left: 4px;
+  cursor: pointer;
 }
 
-:root[state='done'] {
-  filter: grayscale(1);
+:host([state='done']) .line {
+  background: #00a3ff;
+}
+
+:host([state='done']) .circle {
+  background: #00a3ff;
+  border: 2px solid #1d1d1d;
+}
+
+:host([state='doing']) .line.top {
+  background: #00a3ff;
+}
+
+:host([state='doing']) .circle {
+  background: #1d1d1d;
+  border: 2px solid #00a3ff;
 }
 
 .step {
@@ -20,17 +35,37 @@
 .line {
   width: 4px;
   flex: 1;
-  background: #00a3ff;
+  background: #c6c6c6;
   border-radius: 9px;
   margin: -2px 0;
+}
+
+.line.top {
+  z-index: -1;
 }
 
 .circle {
   width: 17px;
   height: 17px;
   border-radius: 99px;
-  background: #00a3ff;
-  border: 2px solid #1d1d1d;
+  background: #1d1d1d;
+  border: 2px solid #c6c6c6;
   box-sizing: border-box;
   z-index: 100;
+}
+
+#procedure-step-landing {
+  border-radius: 8px;
+  background: #00a3ff;
+  color: #fff;
+  padding: 8px;
+  width: fit-content;
+  margin: 8px 0;
+  display: none;
+  margin: auto;
+  border: none;
+}
+
+:host([landing]) #procedure-step-landing {
+  display: block;
 }
