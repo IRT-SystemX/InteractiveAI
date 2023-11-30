@@ -377,6 +377,9 @@ function gotoDestDA(dest, reco) {
       traceInHistory("AWARD", authorizedUseCase, {});
       applyRecommandationFinal(reco);
     }
+  }).finally(() => {
+    // Go back to procedure view
+    document.getElementsByTagName('procedure-component')[0].hidden = false
   })
 }
 
