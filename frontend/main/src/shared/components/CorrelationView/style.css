@@ -78,6 +78,15 @@ h2 {
   margin: 8px;
 }
 
+#refresh {
+  background: #4bb4e6;
+  color: #fff;
+  padding: 4px;
+  border-radius: 8px;
+  border: none;
+  width: fit-content;
+  align-self: center;
+}
 footer {
   margin-top: auto;
   display: flex;

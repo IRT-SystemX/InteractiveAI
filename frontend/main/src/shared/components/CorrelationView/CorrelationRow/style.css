@@ -1,4 +1,4 @@
-:host[disabled] {
+:host(.clicked:not(:target)) {
   filter: grayscale(1);
 }
 .correlation-row {

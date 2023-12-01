@@ -8,7 +8,7 @@
   --red-500: #f55;
   --blue-500: #4bb4e6;
   --orange-500: #ff7900;
-  --green-500: #009E8F;
+  --green-500: #50be87;
 }
 
 #orange_ctx_container {
@@ -121,6 +121,10 @@
 }
 
 .link:hover,
+.link.focus {
+  stroke: var(--blue-500) !important;
+}
+
 .link.active {
-  stroke: var(--blue-500);
+  stroke: var(--white-800);
 }

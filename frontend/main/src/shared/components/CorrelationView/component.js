@@ -4,7 +4,7 @@ class CorrelationComponent extends HTMLElement {
   formatted;
   correlationSize;
   shown;
-  size = 15;
+  size = 60;
 
   constructor() {
     super();
@@ -20,6 +20,7 @@ class CorrelationComponent extends HTMLElement {
         this.correlationSize.addEventListener('change', this.setSize.bind(this));
         this.correlationSize.value = this.size;
         this.shadowRoot.getElementById('correlations-more').addEventListener('click', this.more.bind(this));
+        this.shadowRoot.getElementById('refresh').addEventListener('click', () => this.getCorrelation(true));
       })
       .catch((error) => console.error('Error fetching HTML:', error));
   }
