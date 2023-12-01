@@ -13,7 +13,6 @@ const ctx = { statuses: {} };
 export function opfabToD3(data, source, shown) {
   const links = data.slice(0, shown).reduce((acc, [key, value], index) => {
     const target = +/App_(\d+).*/.exec(key)[1];
-    console.debug('slt', acc);
     const link = acc.find((link) => link.source === +source && link.target === target);
     if (link) {
       link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)[2], value]);
@@ -168,10 +167,20 @@ export function setup(data) {
 
 export function setStatus(node, severity) {
   if (ctx.statuses[node]) {
-    ctx.statuses[node].push(severity);
+    ctx.status[node].includes(severity) && ctx.statuses[node].push(severity);
   } else ctx.statuses[node] = [severity];
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
-  if (severity === 'INFORMATION') ctx.nodes?.filter((d) => d.id === +node).classed('ACTION', false);
+  if (severity === 'INFORMATION') {
+    removeStatus(node, 'ACTION');
+  }
+}
+
+export function removeStatus(node, severity) {
+  ctx.nodes?.filter((d) => d.id === +node).classed(severity, false);
+  ctx.statuses[node](
+    ctx.statuses[node].findIndex((el) => el === severity),
+    1
+  );
 }
 
 export function showLink(source, target) {
@@ -180,6 +189,20 @@ export function showLink(source, target) {
 
 export function hideLink() {
   ctx.links.classed('active', false);
+}
+
+export function focusLink(source, target) {
+  ctx.links.classed('focus', false);
+  ctx.links.classed('focus', (link) => source === link.source.id && target === link.target.id);
+  const d3link = ctx.links.filter((link) => source === link.source.id && target === link.target.id).node().getBoundingClientRect();
+  const datalink = ctx.data.links.find((link) => source === link.source.id && target === link.target.id)
+  ctx.tooltip.style('opacity', 0.9);
+  ctx.tooltip
+  .html(
+    datalink.data.map(([kpi, value]) => `<img slot="icon" src="./assets/images/kpi/${kpi}.svg">&nbsp;${t(kpi)} à ${Math.round(value)}%`).join('\n')
+  )
+  .style('left', d3link.x + 20 + 'px')
+  .style('top', d3link.y + 20 + 'px');
 }
 
 export function showNode(id) {
@@ -211,6 +234,7 @@ export async function setCorrelation(data, source, shown, kpi, severity) {
 
 window.showLink = showLink;
 window.hideLink = hideLink;
+window.focusLink = focusLink;
 window.t = t;
 window.showNode = showNode;
 window.setCorrelation = setCorrelation;
