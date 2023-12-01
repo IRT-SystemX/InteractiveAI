@@ -1,4 +1,5 @@
 var newDestination;
+var originalDestTooltip;
 
 function displayStats(value, event) {
   hideAllSynops()
@@ -92,7 +93,6 @@ function getMarkersCoordinates() {
   var CTX_URL_MOCK = "http://localhost:4200/shared/json_samples/da_ctx.json";
   var CTX_URL = host + "/cabcontext/api/v1/contexts";
   var request = new XMLHttpRequest();
-  // clearMarkers();
   request.onreadystatechange = function () {
     if (request.readyState == 4) {
       try {
@@ -106,7 +106,9 @@ function getMarkersCoordinates() {
 
         destMarker = new L.Marker([dest_lat, dest_lon]);
         destMarker.addTo(map);
-        destMarker.bindTooltip(destination.apname, { permanent: true, direction: 'bottom', className: 'dest-tooltip' });
+        apname = destination.apname;
+        beautifyApName = apname.charAt(0).toUpperCase() + apname.slice(1).toLowerCase();
+        destMarker.bindTooltip(beautifyApName, { permanent: true, direction: 'bottom', className: 'original-dest-tooltip' });
 
         response.data.wpList.forEach(function (marker, index, array) {
           var customIcon = L.icon({
@@ -130,16 +132,16 @@ function getMarkersCoordinates() {
             }, 100 * index);
           }
         });
+
         var lastWp = markersDA[markersDA.length - 1].getLatLng();
         var destLatLng = destMarker.getLatLng();
         var latlngs = [lastWp, destLatLng];
-        var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10 }).addTo(map);
-
+        var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10, polyLineId: "firstTripPolyline" }).addTo(map);
+        originalDestTooltip = document.querySelector('.original-dest-tooltip');
       } catch (error) {
         latitude = 3.3671419444444446;
         longitude = 48.28990115416667;
       }
-
     }
   };
 
@@ -148,8 +150,6 @@ function getMarkersCoordinates() {
   request.setRequestHeader("Authorization", "Bearer " + token);
   request.send();
 }
-
-
 function connectMarkers(markerId1, markerId2) {
   try {
     var marker1 = markersDA.find(marker => marker.options.id === markerId1);
@@ -173,13 +173,14 @@ function connectMarkers(markerId1, markerId2) {
       [marker1.getLatLng().lat, marker1.getLatLng().lng],
       [marker2.getLatLng().lat, marker2.getLatLng().lng],
     ];
-    var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10 }).addTo(map);
+    var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10, polyLineId: "firstTripPolyline"}).addTo(map);
   } catch (error) {
     console.error(error.message);
   }
 }
 
 function askRecoDA() {
+  document.getElementById("btnCarte").click();
   document.getElementById("dassault_assist").hidden = false
   document.getElementById("nominal_assist_en").hidden = true
   setTimeout(() => {
@@ -194,7 +195,12 @@ function setPolylineColor(color) {
       layer.setStyle({ color: routeColorDA });
     }
   });
-  planeMarker.setIcon(plainFailedIcon)
+  planeMarker.setIcon(plainFailedIcon);
+  originalDestTooltip.style.backgroundColor = '#FF0000';
+  originalDestTooltip.style.color = 'white';
+  originalDestTooltip.style.fontWeight ='bold';
+  originalDestTooltip.style.fontSize='18px';
+  originalDestTooltip.style.borderRadius ='5px';
 }
 function setAndUpdateDAMarkersOnMap(data) {
   planeMarker.setLatLng([data.Latitude, data.Longitude]);
@@ -219,7 +225,7 @@ function getRecommandationDA() {
         var actions = recos[reco].actions;
         sessionStorage.setItem("actions" + "[" + reco + "]", JSON.stringify(actions[0]));
         drawNewTrip(actions[0], reco);
-        bodyHTML = "<div><span class='rtePrd reco'><b onclick ='" + 'showDescDA(' + reco + '),getActionOnMap(' + reco + ')' + " '>" + title + "</b></span>";
+        bodyHTML = "<div onclick ='" + 'showDescDA(' + reco + '),getActionOnMap(' + reco + ')' + " '><span class='rtePrd reco'><b>" +  title + "</b></span>";
         bodyHTML += "<span style='bottom: 0px;position: absolute;' id='description" + reco + "' hidden>" + "<u>Flight Plan Information</u><br>" + description + '</span>';
         document.getElementById('da_recommendations').innerHTML += bodyHTML;
       }
@@ -259,6 +265,7 @@ function drawNewTrip(actions, reco) {
   var actionId = "action_" + reco;
 
   console.log("Nouveau voyage " + apname + " tracé!");
+  var polylineColors = ['#00A3FF', 'gray', 'white'];
 
   var waypointIcon = L.icon({
     iconUrl: './assets/images/Ellipse.svg',
@@ -280,7 +287,7 @@ function drawNewTrip(actions, reco) {
       [waypoint1.latitude, waypoint1.longitude],
       [waypoint2.latitude, waypoint2.longitude]
     ];
-    var polyline = L.polyline(latlngs, { color: '#00A3FF', weight: 5 ,actionId: actionId }).addTo(map);
+    var polyline = L.polyline(latlngs, { color: polylineColors[reco], weight: 5 ,actionId: actionId }).addTo(map);
 
     marker.bindTooltip(waypoint1.wpid, {
       permanent: true,
@@ -313,7 +320,7 @@ function drawNewTrip(actions, reco) {
     [lastWaypoint.latitude, lastWaypoint.longitude],
     [newLatitude, newLongitude]
   ];
-  var polyline = L.polyline(latlngs, { color: '#00A3FF', weight: 5 ,actionId: actionId }).addTo(map);
+  var polyline = L.polyline(latlngs, { color: polylineColors[reco], weight: 5 ,actionId: actionId }).addTo(map);
 
   var destinationIcon = L.icon({
     iconUrl: './assets/images/icon _flag_.png',
@@ -324,8 +331,8 @@ function drawNewTrip(actions, reco) {
     icon: destinationIcon,
     actionId: actionId
   }).addTo(map);
-
-  destMarker.bindTooltip(apname, {
+    beautifyApName = apname.charAt(0).toUpperCase() + apname.slice(1).toLowerCase();
+    destMarker.bindTooltip(beautifyApName, {
     permanent: true,
     direction: 'bottom',
     className: 'dest-tooltip',
@@ -334,9 +341,12 @@ function drawNewTrip(actions, reco) {
 
   var destTooltips = document.querySelectorAll('.dest-tooltip');
   destTooltips.forEach(function (tooltip) {
-    tooltip.style.backgroundColor = 'white';
+    tooltip.style.backgroundColor = '#00A3FF';
     tooltip.style.color = 'black';
     tooltip.style.border = '1px solid black';
+    tooltip.style.fontWeight ='bold';
+    tooltip.style.fontSize='18px';
+    tooltip.style.borderRadius ='5px';
   });
 }
 
@@ -346,12 +356,12 @@ function getActionOnMap(actionId) {
   actionId = "action_" + actionId;
 
   map.eachLayer(function (layer) {
-    if (layer instanceof L.Polyline) {
+    if (layer instanceof L.Polyline && layer.options.polyLineId != "firstTripPolyline") {
       if (layer.options.actionId === actionId) {
         console.log("Polyligne associée à l'action:", layer);
         layer.setStyle({ color: '#00A3FF', weight: 15 });
       } else {
-        layer.setStyle({ color: '#00A3FF', weight: 5 });
+        layer.setStyle({ color: 'gray', weight: 5 });
       }
     }
   });
@@ -385,15 +395,16 @@ function gotoDestDA(dest, reco) {
 
 
 function handleClick(event) {
-  var clickedElement = event.target;
-  
-  document.querySelectorAll('.rtePrd.reco').forEach(button => {
-    button.classList.remove("active_reco");
-    button.parentElement.classList.remove("active_reco");
+  document.getElementById('da_recommendations').addEventListener('click', function (event) {
+    var clickedElement = event.target;
+    var targetElement = clickedElement.closest('.rtePrd.reco');
+    if (targetElement) {
+      document.querySelectorAll('.rtePrd.reco').forEach(button => {
+        button.classList.remove('active_reco');
+        button.parentElement.classList.remove('active_reco');
+      });
+      targetElement.classList.add('active_reco');
+      newDestination = targetElement.innerText;
+    }
   });
-  
-  var targetElement = clickedElement.closest('.rtePrd.reco') || clickedElement.parentElement;
-  targetElement.classList.add("active_reco");
-
-  newDestination = targetElement.innerText;
 }

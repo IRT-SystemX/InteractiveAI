@@ -184,10 +184,10 @@ function initTimeLine() {
 function updateGlobalCurrentTimeCursor() {
     var globalCurrentTimeCursor = document.querySelector('.global-current-time-cursor');
     var currentTimeDiv = document.getElementById('current-time');
-    if (selectedUseCase == "RTE" ||selectedUseCase == "ORANGE" ){
-        var currentTime = new Date();
-    }else{
+    if (selectedUseCase == "SNCF" ){
         var currentTime = new Date(dateCtx);
+    }else{
+        var currentTime = new Date();
     }
     var totalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
     var positionEnPourcentage = (totalMinutes / 1440) * 100;

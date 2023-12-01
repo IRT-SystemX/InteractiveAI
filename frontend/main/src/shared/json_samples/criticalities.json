@@ -58,7 +58,7 @@
                 "COMPLIANT": "<img src='./assets/images/red_alarm.svg'/>",
                 "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>",
                 "timeline": {
-                    "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "MEDIUM": "<img src='./assets/images/warning-icon-orange.svg'/>",
                     "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.svg'/>",
                     "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>"
                 }

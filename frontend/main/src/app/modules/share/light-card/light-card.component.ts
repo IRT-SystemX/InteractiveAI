@@ -571,7 +571,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           document.getElementById("noevent_da").hidden=true;
           document.getElementById("da_block_request").innerHTML = "";
           var xmlHttp = new XMLHttpRequest();
-          xmlHttp.open("GET", this.host + "./assets/emergency_procedures_short.json", false);
+          xmlHttp.open("POST", "https://frontend.cab-dev.irtsystemx.org/cab_recommendation/api/v1/procedure", false);
           // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
           xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
           xmlHttp.send(null);
@@ -601,8 +601,11 @@ export class LightCardComponent implements OnInit, OnDestroy {
         Swal.showLoading();
         document.getElementById('usecase_hidden').innerText === "CAB Orange" && // @ts-expect-error
         AssistanceComponent.showAssistanceView(this.lightCard.id);
-        document.getElementById('usecase_hidden').innerText === "CAB DA" && // @ts-expect-error
-        ProcedureComponent.showProcedureView(this.lightCard.id);
+        if (document.getElementById('usecase_hidden').innerText === "CAB DA") {
+          // @ts-expect-error
+          ProcedureComponent.showProcedureView(this.lightCard.id);
+          document.getElementById("btnSyn").click();
+      }
         var element = $event.srcElement;
         while (element && !element.classList.contains('card')) {
           console.log((element));
