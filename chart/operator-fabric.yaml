@@ -24,8 +24,8 @@ services:
     container_name: rabbit
     image: rabbitmq:3-management
     hostname: rabbit
-    # volumes:
-    #   - rabbit_persistance:/var/lib/rabbitmq/mnesia/
+    volumes:
+      - rabbit_persistance:/var/lib/rabbitmq/mnesia/
     ports:
       - "5672:5672"
     deploy:
