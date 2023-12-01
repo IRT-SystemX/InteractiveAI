@@ -70,6 +70,7 @@ class OrangeEventManager(BaseEventManager):
                 event_data = (EventModel.query.filter_by(id_event=value['id_event']).first()).to_dict()
                 event_data["criticality"] = "ROUTINE"
                 event_data["end_date"] = datetime.now()
+                event_data["description"] = "L’application n’est plus en anomalie"
                 created_event = self.create_event(event_data)
                 created_events_list.append(created_event)
 
