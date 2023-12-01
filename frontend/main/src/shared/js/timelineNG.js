@@ -9,6 +9,8 @@ var criticalities = fetch('./shared/json_samples/criticalities.json')
 
 var newCriticalityReady = true;
 var events;
+var heureActuelle = new Date();
+
 
 function fillTimeLine() {
     var data = "";
@@ -208,16 +210,15 @@ function positionnerPointSurTimeline(heure, timeline_id, end_date) {
     var heureMinutes = heure.split(':');
     var heures = parseInt(heureMinutes[0]);
     var minutes = parseInt(heureMinutes[1]);
-    var heureActuelle = new Date();
     var heureEvent = new Date();
     heureEvent.setHours(heures, minutes, 0, 0);
     if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
         console.error("Heure invalide. Assurez-vous que l'heure est entre 00:00 et 23:59.");
         return;
     }
-    var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
-    point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
-}
+        var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
+        point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+    }
 
 function updateHighlights(){
     var highlights = document.querySelectorAll(".timeline-highlight")
@@ -237,7 +238,9 @@ function updateHighlights(){
             var end_timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
             highlights[highlight].style.width = Math.abs(end_timelineHighlightWidth) + "px";
         }else{
-            highlights[highlight].style.width = Math.abs(timelineHighlightWidth) + "px";
+            if(new Date(heureActuelle) > new Date().setHours(heures,minutes)){
+                highlights[highlight].style.width = Math.abs(timelineHighlightWidth) + "px";
+            }
         }
         if (document.getElementById("eventsForTimeLine").innerHTML == ""){
             document.querySelectorAll('img[id^="event"][id$="icon"], img[id^="event"][id$="icon_end"]');

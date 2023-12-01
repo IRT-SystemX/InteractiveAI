@@ -1,5 +1,7 @@
 var newDestination;
 var originalDestTooltip;
+var actionId;
+var savedAction;
 
 function displayStats(value, event) {
   hideAllSynops()
@@ -80,9 +82,18 @@ function clearMarkers() {
   markersDA = [];
 }
 
-function clearPolylines() {
+function selectFlightPlan(actionId) {
   map.eachLayer(function (layer) {
-    if (layer instanceof L.Polyline) {
+    if ((layer instanceof L.Polyline) && layer.options.polyLineId == "firstTripPolyline" || (layer instanceof L.Polyline) && layer.options.actionId != "action_"+actionId) {
+      map.removeLayer(layer);
+    }else{
+      if(layer instanceof L.Polyline){
+        layer.setStyle({ color: 'gray', weight: 5 });
+      }
+    }
+  });
+  map.eachLayer(function (layer) {
+    if ((layer instanceof L.Marker) && layer.options.actionId != "action_"+actionId && !layer.options.isPlane) {
       map.removeLayer(layer);
     }
   });
@@ -183,9 +194,7 @@ function askRecoDA() {
   document.getElementById("btnCarte").click();
   document.getElementById("dassault_assist").hidden = false
   document.getElementById("nominal_assist_en").hidden = true
-  setTimeout(() => {
-    getRecommandationDA();
-  }, 3000);
+  getRecommandationDA();
 }
 
 function setPolylineColor(color) {
@@ -262,7 +271,7 @@ function drawNewTrip(actions, reco) {
   var newLatitude = actions.airport_destination.latitude;
   var newLongitude = actions.airport_destination.longitude;
   var newWaypoints = actions.waypoints;
-  var actionId = "action_" + reco;
+  actionId = "action_" + reco;
 
   console.log("Nouveau voyage " + apname + " tracé!");
   var polylineColors = ['#00A3FF', 'gray', 'white'];
@@ -353,8 +362,8 @@ function drawNewTrip(actions, reco) {
 
 
 function getActionOnMap(actionId) {
+  savedAction = actionId;
   actionId = "action_" + actionId;
-
   map.eachLayer(function (layer) {
     if (layer instanceof L.Polyline && layer.options.polyLineId != "firstTripPolyline") {
       if (layer.options.actionId === actionId) {
@@ -385,7 +394,7 @@ function gotoDestDA(dest, reco) {
   }).then((result) => {
     if (result.isConfirmed) {
       traceInHistory("AWARD", authorizedUseCase, {});
-      applyRecommandationFinal(reco);
+      selectFlightPlan(savedAction);
     }
   }).finally(() => {
     // Go back to procedure view

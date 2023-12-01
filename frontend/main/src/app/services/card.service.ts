@@ -129,7 +129,11 @@ export class CardService {
                                     document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
                                     $("#setPolylineColor").click();
                                 }
-                            }, 6000);
+                            }, 3000);
+
+                            setTimeout(() => {
+                                $("#updateHighlights").click()
+                            }, 10000);
                             this.logger.info(
                                 'CardService - Receive card to add id=' +
                                     operation.card.id +

@@ -770,6 +770,77 @@ tag-input {
     border: 2px solid #50BE87;
 
 }
+
+
+#opfab-selected-card-summary,
+#opfab-feed-list-card-title{
+    margin-left: 18px;
+    font-size: 15px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#opfab-selected-card-summary{
+    color:gray;
+}
+
+div[data-urlid^="orangeProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #FF0000 inset;
+    border: 2px solid #FF0000;
+    color: #FF0000;
+  }
+div[data-urlid^="orangeProcess"][severity="information"] {
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+    color: #50BE87 !important;
+  }
+div[data-urlid^="orangeProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #FF7900 inset;
+    border: 2px solid #FF7900;
+    color:#FF7900!important
+  }
+div[data-urlid^="daProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+    color:#A70000!important;
+    min-height: unset!important;
+    max-height: 50px;
+  }
+
+  div[data-urlid^="daProcess"] #opfab-selected-card-summary {
+    display: none;
+}
+div[data-urlid^="rteProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+    color: #A70000!important
+  }
+div[data-urlid^="rteProcess"][severity="information"] {
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+    color: #50BE87 !important;
+  }
+div[data-urlid^="rteProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
+  }
+div[data-urlid^="rteProcess"][severity="compliant"] {
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+  }
+div[data-urlid^="sncfProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    color: #DC582A!important;
+    border: 2px solid #DC582A!important;
+  }
+div[data-urlid^="sncfProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #DAAA00 inset;
+    border: 2px solid #DAAA00;
+    color: #DAAA00!important;
+  }
+
 #opfab-div-card-template-alarm{
     font-size : 12px!important;
 }

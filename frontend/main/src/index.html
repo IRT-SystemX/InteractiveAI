@@ -17,7 +17,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.1.0</title>
+  <title>Assistant CAB v3.1.1</title>
   <span id="login"></span>
   <base href="/">
 
@@ -258,7 +258,7 @@ These two parameters are place in this file as the style should have a title par
           document.getElementById("map").classList += " map_sncf";
           setInterval(() => {
             refreshCtxSNCF();
-          }, 110);
+          }, 3000);
           mapSNCF();
           break;
       }
@@ -385,13 +385,6 @@ These two parameters are place in this file as the style should have a title par
           cards[card].innerHTML = cards[card].innerHTML.replace("alarm ", "Sureté");
           cards[card].innerHTML = cards[card].innerHTML.replace("compliant ", "Maintenance ");
           cards[card].innerHTML = cards[card].innerHTML.replace("information ", "Maintenance ");
-          cards[card].children[0].style.marginLeft = "20px";
-          // cards[card].innerHTML += "<button onclick='acknowledgeEvent(" + cards[card].getAttribute("data-urlid").toString() + ",0)'> trashIcon </button>"
-          try {
-            cards[card].children[1].style.marginLeft = "20px";
-          } catch (error) {
-          }
-
           if (selectedUseCase == "SNCF") {
             cards[card].innerHTML = cards[card].innerHTML.replace("assets\\images\\opfab-bg-sev-action-icon.svg", "assets\\images\\impact_sncf.svg");
 
@@ -816,7 +809,8 @@ These two parameters are place in this file as the style should have a title par
       switch (usecase) {
         case 'Dassault':
           mapZoom = 8;
-          mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
+          mapLayer = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+          // mapLayer = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
           if (latitude === undefined || longitude === undefined) {
             longitude = 3.3671419444444446;
             latitude = 48.28990115416667;
@@ -842,6 +836,7 @@ These two parameters are place in this file as the style should have a title par
         });
           planeMarker = new L.Marker([latitude, longitude], iconOptions3);
           planeMarker.addTo(map).bindPopup(iconOptions3.title)
+          planeMarker.options.isPlane = true;
           break;
       }
       console.log("map init OK")
@@ -852,6 +847,7 @@ These two parameters are place in this file as the style should have a title par
   <div id="usecase_hidden" hidden></div>
   <button id="setPolylineColor" onclick="setPolylineColor('red')" hidden></button>
   <button id="updateSeverity" onclick="setCardsSeverity()" hidden></button>
+  <button id="updateHighlights" onclick="updateHighlights()" hidden></button>
   <button id="updateTimeLine" onclick="fillTimeLine()" hidden></button>
   
 
