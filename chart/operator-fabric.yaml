@@ -38,6 +38,7 @@ services:
           memory: 1024M
     labels:
       kompose.controller.type: statefulset
+      # Add something to updateStrategy: Recreate instead of RollingUpdate
 
   users:
     container_name: users

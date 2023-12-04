@@ -91,6 +91,7 @@ class BaseEventManager:
     def create_events_list(self, events_list):
         created_events_list = []
         for event_data in events_list:
-            created_event = self.create_event(event_data)
-            created_events_list.append(created_event)
+            if event_data["use_case"] == self.use_case:
+                created_event = self.create_event(event_data)
+                created_events_list.append(created_event)
         return created_events_list
