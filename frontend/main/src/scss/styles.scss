@@ -825,10 +825,14 @@ div[data-urlid^="rteProcess"][severity="information"] {
 div[data-urlid^="rteProcess"][severity="action"] {
     box-shadow: 15px 0px 0px #E05206 inset;
     border: 2px solid #E05206;
+    color: #E05206 !important;
+
   }
 div[data-urlid^="rteProcess"][severity="compliant"] {
     box-shadow: 15px 0px 0px rgb(0,158,143) inset;
     border: 2px solid rgb(0,158,143);
+    color: rgb(0,158,143) !important;
+
   }
 div[data-urlid^="sncfProcess"][severity="alarm"] {
     box-shadow: 15px 0px 0px #A70000 inset;
@@ -1044,7 +1048,7 @@ div[data-urlid^="sncfProcess"][severity="action"] {
     }
     #dassaultBar2{
         height: 790px;
-        margin-left: 1050px;
+        margin-left: 965px;
     }
     #assistOpTitle{
         width:326px!important;
@@ -1053,7 +1057,7 @@ div[data-urlid^="sncfProcess"][severity="action"] {
         left:1025px;
     }
     .assistOpTitleDA{
-        left:1087px;
+        left:1020px;
         height:700px
     }
     .assist_rte{
@@ -1064,7 +1068,13 @@ div[data-urlid^="sncfProcess"][severity="action"] {
     }
     .map_da{
         height: 45vh!important;
-        width: 668px!important
+        width: 600px!important
+    }
+    .imgBin{
+        margin-top: -5px;
+    }
+    #opfab-feed-list-card-title{
+        font-size: 13px;
     }
     .map_sncf{
         height: 59vh!important;

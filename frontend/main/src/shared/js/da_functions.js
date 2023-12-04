@@ -2,7 +2,8 @@ var newDestination;
 var originalDestTooltip;
 var actionId;
 var savedAction;
-
+let previousState = null;
+var drawFirstTripPolyline = true;
 function displayStats(value, event) {
   hideAllSynops()
   document.querySelectorAll("#synoptique button.btn-group-synoptic-active").forEach(bouton => bouton.classList.remove("btn-group-synoptic-active"));
@@ -86,6 +87,7 @@ function selectFlightPlan(actionId) {
   map.eachLayer(function (layer) {
     if ((layer instanceof L.Polyline) && layer.options.polyLineId == "firstTripPolyline" || (layer instanceof L.Polyline) && layer.options.actionId != "action_"+actionId) {
       map.removeLayer(layer);
+      drawFirstTripPolyline = false;
     }else{
       if(layer instanceof L.Polyline){
         layer.setStyle({ color: 'gray', weight: 5 });
@@ -126,16 +128,44 @@ function getMarkersCoordinates() {
             iconUrl: './assets/images/Ellipse.svg',
             iconSize: [20, 20]
           });
-
-          var wp = new L.Marker([marker.wplat, marker.wplon], {
-            id: marker.wpidx,
-            icon: customIcon,
+          markersDA.forEach(function (existingMarker) {
+            var isMarkerStillPresent = response.data.wpList.some(function (newMarker) {
+              return existingMarker.options.id === newMarker.wpidx;
+            });
+  
+            if (!isMarkerStillPresent) {
+              map.removeLayer(existingMarker);
+              markersDA = markersDA.filter(function (marker) {
+                return marker.options.id !== existingMarker.options.id;
+              });
+            }
+            
+          var polylineToRemove = getPolylineByWpId(existingMarker.options.id);
+          if (polylineToRemove) {
+            map.removeLayer(polylineToRemove);
+          }
           });
-          wp.bindTooltip(marker.wpid, { permanent: true, direction: 'top', className: 'marker-tooltip' });
 
-          wp.addTo(map).bindPopup(marker.wpid);
+          var wp = markersDA.find(existingMarker => existingMarker.options.id === marker.wpidx);
 
-          markersDA.push(wp);
+          if (!wp) {
+            wp = new L.Marker([marker.wplat, marker.wplon], {
+              id: marker.wpidx,
+              icon: customIcon,
+            });
+            wp.addTo(map).bindPopup(marker.wpid);
+
+            markersDA.push(wp);
+          } else {
+            wp.setLatLng([marker.wplat, marker.wplon]);
+          }
+
+          var existingTooltip = wp.getTooltip();
+          if (existingTooltip) {
+            existingTooltip.setContent(marker.wpid);
+          } else {
+            wp.bindTooltip(marker.wpid, { permanent: true, direction: 'top', className: 'marker-tooltip' });
+          }
 
           if (index < array.length - 1) {
             setTimeout(function () {
@@ -147,7 +177,6 @@ function getMarkersCoordinates() {
         var lastWp = markersDA[markersDA.length - 1].getLatLng();
         var destLatLng = destMarker.getLatLng();
         var latlngs = [lastWp, destLatLng];
-        var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10, polyLineId: "firstTripPolyline" }).addTo(map);
         originalDestTooltip = document.querySelector('.original-dest-tooltip');
       } catch (error) {
         latitude = 3.3671419444444446;
@@ -161,6 +190,24 @@ function getMarkersCoordinates() {
   request.setRequestHeader("Authorization", "Bearer " + token);
   request.send();
 }
+
+function getPolylineByWpId(wpId) {
+  var matchingPolyline = null;
+
+  map.eachLayer(function (layer) {
+    if (layer instanceof L.Polyline && layer.options.polyLineId === "firstTripPolyline") {
+      var latlngs = layer.getLatLngs();
+      var wpIds = latlngs.map(wp => wp.options.id);
+
+      if (wpIds.includes(wpId)) {
+        matchingPolyline = layer;
+      }
+    }
+  });
+
+  return matchingPolyline;
+}
+
 function connectMarkers(markerId1, markerId2) {
   try {
     var marker1 = markersDA.find(marker => marker.options.id === markerId1);
@@ -184,7 +231,9 @@ function connectMarkers(markerId1, markerId2) {
       [marker1.getLatLng().lat, marker1.getLatLng().lng],
       [marker2.getLatLng().lat, marker2.getLatLng().lng],
     ];
-    var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10, polyLineId: "firstTripPolyline"}).addTo(map);
+    if(drawFirstTripPolyline){
+      var polyline = L.polyline(latlngs, { color: routeColorDA, weight: 10, polyLineId: "firstTripPolyline"}).addTo(map);
+    }
   } catch (error) {
     console.error(error.message);
   }

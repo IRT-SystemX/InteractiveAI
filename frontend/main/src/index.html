@@ -512,6 +512,7 @@ These two parameters are place in this file as the style should have a title par
       xmlHttp.send(null);
       var response = JSON.parse(xmlHttp.responseText);
       setAndUpdateDAMarkersOnMap(response[0].data);
+      getMarkersCoordinates();
 
     };
     function getCorrelations() {

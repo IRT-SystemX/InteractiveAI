@@ -130,7 +130,12 @@ export class CardService {
                                     $("#setPolylineColor").click();
                                 }
                             }, 3000);
-
+                            // Pour démo DA 
+                            setTimeout(() => {
+                                if (document.getElementById('usecase_hidden').innerText === "CAB DA" && document.getElementById("noevent_da").hidden){ 
+                                    $("#setPolylineColor").click();
+                                }
+                            }, 7000);
                             setTimeout(() => {
                                 $("#updateHighlights").click()
                             }, 10000);

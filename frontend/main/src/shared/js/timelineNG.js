@@ -156,8 +156,8 @@ function acknowledgeEvent(uid,card,id_event){
             document.querySelector('img[card_id_point_end="' + card + '"]').remove();
         }
     });
-    xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
-    // xhr.open("POST", window.location.hostname + "/cardspub/cards/userAcknowledgement/" + uid);
+    // xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
+    xhr.open("POST", window.location.hostname + "/cardspub/cards/userAcknowledgement/" + uid);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer "+ token);
