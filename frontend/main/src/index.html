@@ -17,7 +17,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.1.3</title>
+  <title>Assistant CAB v3.1.3a</title>
   <span id="login"></span>
   <base href="/">
 
@@ -182,6 +182,7 @@ These two parameters are place in this file as the style should have a title par
         case "DA":
           document.getElementById("usecase_hidden").innerText = "CAB DA";
           document.getElementById("dassault_div").hidden = false;
+          document.getElementById("opfab-navbar-menu-feed").style.color = "var(--opfab-bgcolor)"
           document.getElementById("dassaultBar").hidden = false;
           document.getElementById("dassaultBar2").hidden = false;
           document.getElementById("feed-content").style.position = "absolute";
