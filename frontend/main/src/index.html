@@ -17,7 +17,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.1.2</title>
+  <title>Assistant CAB v3.1.3</title>
   <span id="login"></span>
   <base href="/">
 
@@ -367,10 +367,11 @@ These two parameters are place in this file as the style should have a title par
       for (var card = 0; card < cards.length; card++) {
         if (cards[card].getAttribute("data-urlid") && cards[card].id != "") {
           id_event = cards[card].getAttribute("data-urlid").replace(selectedUseCase.toLowerCase() + "Process.", '');
-          event_start_date = document.querySelector(`[event_id="${id_event}"]`).parentElement.querySelector(".tl_hour").innerHTML;
           try {
+          event_start_date = document.querySelector(`[event_id="${id_event}"]`).parentElement.querySelector(".tl_hour").innerHTML;
             cards[card].querySelector(".p-1").style.color = "grey";
           } catch (error) {
+            console.log(error)
           }
 
           //positionner point sur timeline END DATE
