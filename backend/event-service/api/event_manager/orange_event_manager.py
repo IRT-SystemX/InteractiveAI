@@ -60,7 +60,9 @@ class OrangeEventManager(BaseEventManager):
         return None
 
     def create_events_list(self, events_list):
-        id_apps_list = {str(event["data"]["id_app"]) for event in events_list}
+        use_case_events_list = [event for event in events_list if event["use_case"] == self.use_case]
+
+        id_apps_list = {str(event["data"]["id_app"]) for event in use_case_events_list}
 
         created_events_list = []
 
@@ -75,7 +77,7 @@ class OrangeEventManager(BaseEventManager):
                 created_events_list.append(created_event)
 
         # set new events
-        for event_data in events_list:
+        for event_data in use_case_events_list:
             created_event = self.create_event(event_data)
             created_events_list.append(created_event)
 
