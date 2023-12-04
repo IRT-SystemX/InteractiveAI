@@ -164,3 +164,8 @@
         }
     }
     
+    @media (min-height: 1024px) and (max-width: 1366px){ 
+    #tl-box{
+        bottom: 100px!important;
+    }
+}

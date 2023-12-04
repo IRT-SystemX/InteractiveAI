@@ -129,11 +129,12 @@ export class CardService {
                                     document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
                                     $("#setPolylineColor").click();
                                 }
-                            }, 3000);
+                            }, 4000);
                             // Pour démo DA 
                             setTimeout(() => {
                                 if (document.getElementById('usecase_hidden').innerText === "CAB DA" && document.getElementById("noevent_da").hidden){ 
                                     $("#setPolylineColor").click();
+                                    document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
                                 }
                             }, 7000);
                             setTimeout(() => {

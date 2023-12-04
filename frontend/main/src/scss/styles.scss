@@ -719,7 +719,7 @@ tag-input {
 .rteBg-alarm{
     box-shadow: 15px 0px 0px #A70000 inset;
     border: 2px solid #A70000;
-    color: #A70000!important
+    color: #A70000;
 
 }
 .rteBg-action{
@@ -804,7 +804,7 @@ div[data-urlid^="orangeProcess"][severity="action"] {
 div[data-urlid^="daProcess"][severity="alarm"] {
     box-shadow: 15px 0px 0px #A70000 inset;
     border: 2px solid #A70000;
-    color:#A70000!important;
+    color:#A70000;
     min-height: unset!important;
     max-height: 50px;
   }
