@@ -167,7 +167,7 @@ export function setup(data) {
 
 export function setStatus(node, severity) {
   if (ctx.statuses[node]) {
-    ctx.status[node].includes(severity) && ctx.statuses[node].push(severity);
+    ctx.statuses[node].includes(severity) && ctx.statuses[node].push(severity);
   } else ctx.statuses[node] = [severity];
   ctx.nodes?.filter((d) => d.id === +node).classed(severity, true);
   if (severity === 'INFORMATION') {
