@@ -117,7 +117,7 @@ export class CardService {
                     switch (operation.type) {
                         case CardOperationType.ADD:
                             setTimeout(() => {
-                                document.getElementById("eventsForTimeLine").innerHTML = "";
+                                // document.getElementById("eventsForTimeLine").innerHTML = "";
                             }, 2000);
                             cards = $(".card");
                             setTimeout(() => {
