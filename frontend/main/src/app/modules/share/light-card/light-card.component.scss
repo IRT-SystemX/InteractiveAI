@@ -15,35 +15,26 @@
     margin-left: 8px;
 }
 
-.light-card-detail-selected {
-    transition: margin 0.3s;
-    color:white!important;
-}
 #opfab-card-icon{
-    filter: drop-shadow(1px 0px 4px white);
     margin-left:5px;
 }
 
 .light-card-detail-selected-alarm {
-    background-color: $sev-alarm;
     margin-right: 0px;
     transition: margin 0.3s;
 }
 
 .light-card-detail-selected-action {
-    background-color: $sev-action;
     margin-right: 0px;
     transition: margin 0.3s;
 }
 
 .light-card-detail-selected-compliant {
-    background-color: $sev-compliant;
     margin-right: 0px;
     transition: margin 0.3s;
 }
 
 .light-card-detail-selected-information {
-    background-color: $sev-information;
     margin-right: 0px;
     transition: margin 0.3s;
 }
@@ -54,7 +45,6 @@
 }
 .light-card-background-action {
     cursor: pointer;
-    background-color: #EC775C;
 }
 .light-card-background-action_DA {
     cursor: pointer;
@@ -64,16 +54,29 @@
     cursor: pointer;
     background-color: #A70000;
 }
-.sncf-light-card-background-action {
-    cursor: pointer;
-    background-color: #E05206;
-    color:white;
-}
+
 .sncf-light-card-background-alarm {
-    cursor: pointer;
-    background-color: #C30044;
-    color:white;
+    box-shadow: 15px 0px 0px #A70000 inset;
+    color: #DC582A!important;
+    border: 2px solid #DC582A!important;
+
 }
+.sncf-light-card-background-action{
+    box-shadow: 15px 0px 0px #DAAA00 inset;
+    border: 2px solid #DAAA00;
+    color: #DAAA00!important;
+}
+
+// .sncf-light-card-background-action {
+//     cursor: pointer;
+//     background-color: #E05206;
+//     color:white;
+// }
+// .sncf-light-card-background-alarm {
+//     cursor: pointer;
+//     background-color: #C30044;
+//     color:white;
+// }
 .sncf-light-card-background-compliant {
     cursor: pointer;
     background-color: #E05206;
@@ -85,7 +88,7 @@
     color:white;
 }
 .sncf-border-alarm{
-    border-color: #C30044;
+    border-color: #DC582A;
     border-width: 4px;
 }
 .sncf-border-action{
@@ -140,7 +143,7 @@
 }
 
 .card-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -192,9 +195,5 @@
 
 #opfab-selected-card-summary {
     word-break: normal;
-    // color:white;
-}
-
-.light-card-detail-selected span{
-    color:white;
+    font-size: 12px;
 }

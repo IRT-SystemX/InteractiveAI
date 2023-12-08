@@ -127,7 +127,7 @@ def test_add_sncf_event(client, sncf_auth_mocker, mock_of_create_cards_request):
             "num_rame": "18",
             "tmp_rame": "27"
         },
-        "date": "2023-04-11T06:20:12",
+        "start_date": "2023-04-11T06:20:12",
         "description": "0 is having PASSENGER malfunction",
         "is_active": True,
         "use_case": "SNCF"
@@ -162,7 +162,7 @@ def test_update_sncf_event_if_exist(client, sncf_auth_mocker, mock_of_create_car
             "num_rame": "18",
             "tmp_rame": "27"
         },
-        "date": "2023-04-11T06:20:12",
+        "start_date": "2023-04-11T06:20:12",
         "description": "0 is having PASSENGER malfunction",
         "is_active": True,
         "use_case": "SNCF"

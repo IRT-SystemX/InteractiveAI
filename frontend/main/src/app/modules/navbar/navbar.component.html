@@ -12,8 +12,8 @@
   padding-bottom: 162px;
   text-align: center;
   overflow: auto;">
-  <div style="padding-top:28px;background-color:#00A7DE;color:white"><b
-      style="font: normal normal 600 30px/40px Segoe UI;">Assistant CAB</b></div>
+  <div style="padding-top:28px;background-color:white;color:black;box-shadow: 2px 0px 7px -1px;"><b
+      style="font: normal normal 600 30px/40px Segoe UI;">CAB</b></div>
   <div style="height:30px"></div>
   <div style="font-size:23px;color:grey;text-align:left;margin-left:100px"><b>Cas d'usage supervision</b></div>
   <div style="height:20px"></div>
@@ -28,7 +28,7 @@
 
 </div>
 
-<nav class="navbar navbar-expand-lg fixed-top opfab-navbar" style="z-index:1">
+<nav class="navbar navbar-expand-lg fixed-top opfab-navbar" style="z-index:1;height:60px;background-color: var(--opfab-bgcolor);box-shadow: 2px 0px 7px -1px;">
   <a class="navbar-brand">
     <div *ngIf="this.customLogo;">
       <of-custom-logo [base64]="customLogo" [height]="height" [width]="width"></of-custom-logo>
@@ -44,7 +44,7 @@
       <li class="nav-item" *ngFor="let link of navigationRoutes, let i = index"
         [class.active]="link.path === currentPath[1]">
         <a id="opfab-navbar-menu-{{link.path}}" class="nav-link" [routerLink]="link.path" routerLinkActive
-          #rla="routerLinkActive" (click)="activeLinkIndex = i" translate>{{'menu.'+link.path}}</a>
+          #rla="routerLinkActive" (click)="activeLinkIndex = i" translate>{{'menu.'+link.path}}<span id="cabTitle"><b>CAB</b></span></a>
       </li>
       <!-- Links from menus declared in businessconfig-party bundles-->
       <li *ngFor="let tMenu of (businessconfigMenus|async); let index = index;" class="nav-item"

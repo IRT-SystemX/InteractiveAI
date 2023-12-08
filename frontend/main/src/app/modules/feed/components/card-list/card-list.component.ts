@@ -24,6 +24,7 @@ import {UserService} from '@ofServices/user.service';
 import {UserWithPerimeters} from '@ofModel/userWithPerimeters.model';
 import {EntitiesService} from '@ofServices/entities.service';
 import {GroupedCardsService} from '@ofServices/grouped-cards.service';
+import {setup} from 'shared/js/d3graph.js'
 
 @Component({
     selector: 'of-card-list',
@@ -59,6 +60,7 @@ export class CardListComponent implements AfterViewChecked, OnInit {
     ngOnInit(): void {
         this.domCardListElement = document.getElementById('opfab-card-list');
         this.hideAckAllCardsFeature = this.configService.getConfigValue('feed.card.hideAckAllCardsFeature', true);
+        setup({nodes: Array.from(Array(28).keys()).map((i) => ({id: i+1, status: []})), links: [] })
     }
 
     ngAfterViewChecked() {

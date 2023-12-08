@@ -37,6 +37,7 @@ import {LogOption, OpfabLoggerService} from './logs/opfab-logger.service';
 import packageInfo from '../../../package.json';
 import {SoundNotificationService} from './sound-notification.service';
 import $ from "jquery";
+import {setStatus} from "shared/js/d3graph.js"
 
 @Injectable({
     providedIn: 'root'
@@ -116,9 +117,29 @@ export class CardService {
                     switch (operation.type) {
                         case CardOperationType.ADD:
                             setTimeout(() => {
-                                document.getElementById("eventsForTimeLine").innerHTML = "";
-                            }, 30000);
+                                // document.getElementById("eventsForTimeLine").innerHTML = "";
+                            }, 2000);
                             cards = $(".card");
+                            setTimeout(() => {
+                                $("#updateSeverity").click()
+                                if (document.getElementById('usecase_hidden').innerText === "CAB DA" && document.getElementById("noevent_da").hidden){ 
+                                    document.getElementById("noevent_da").hidden = true;
+                                    document.getElementById("noevent_da_second").hidden = true;
+                                    document.getElementById("da-fake-card").hidden = false;
+                                    document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
+                                    $("#setPolylineColor").click();
+                                }
+                            }, 4000);
+                            // Pour démo DA 
+                            setTimeout(() => {
+                                if (document.getElementById('usecase_hidden').innerText === "CAB DA" && document.getElementById("noevent_da").hidden){ 
+                                    $("#setPolylineColor").click();
+                                    document.getElementById("fake-card-content-da").innerHTML = document.querySelector(".opfab-feed-list-card-severity").textContent + "<img id='opfab-card-icon' src='assets\/images\/info.svg' style='margin-left: 3px; float: right;'>";
+                                }
+                            }, 7000);
+                            setTimeout(() => {
+                                $("#updateHighlights").click()
+                            }, 10000);
                             this.logger.info(
                                 'CardService - Receive card to add id=' +
                                     operation.card.id +
@@ -127,6 +148,10 @@ export class CardService {
                                 LogOption.LOCAL_AND_REMOTE
                             );
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
+                            if(operation.card.entityRecipients.includes('ORANGE')){
+                                // TODO: color based on title and not metadata :(
+                                setStatus(+/App_(\d+).*/.exec(operation.card.titleTranslated)[1], operation.card.severity)
+                            }
 
                             if (operation.card.id === this.selectedCardId)
                                 this.store.dispatch(new LoadCardAction({id: operation.card.id}));

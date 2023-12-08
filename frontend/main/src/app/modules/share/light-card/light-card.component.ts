@@ -28,7 +28,7 @@ import { DateTimeFormatterService } from '@ofServices/date-time-formatter.servic
 import { MapService } from '@ofServices/map.service';
 import $, { get } from "jquery";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import {setCorrelation} from "shared/js/d3graph.js"
 
 @Component({
     selector: 'of-light-card',
@@ -195,7 +195,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
           }
         });
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Authorization", "Bearer "+ window.localStorage.token);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(data);
@@ -350,7 +349,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById('sncf_solution').innerHTML += recoSNCF;
           }
         });
-        // xhr.open("POST", "http://192.168.208.57:3200/cab_recommendation/api/v1/recommendation");
         xhr.open("POST", this.host + "/cab_recommendation/api/v1/recommendation");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Authorization", "Bearer " + window.localStorage.token);
@@ -384,6 +382,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
+            document.getElementById("nominal_assist").hidden = true;
+
             
            
                 document.getElementById("rte_assist_nominal").hidden = false;
@@ -404,6 +404,8 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-security").hide()
             $("#opfab-div-card-template-op").hide()
             $("#rte_assist").show()
+            document.getElementById("nominal_assist").hidden = true;
+
             
             if(document.getElementById("rte_assist_nominal").hidden &&
              document.getElementById("rte_assist_nominal").getAttribute("assistnevertriggered") == "false"){
@@ -445,23 +447,27 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-div-card-template-alarm").hide()
             $("#opfab-div-card-template-noparades").hide()
         
-    }else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
-            $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
-                $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
-                $(".opfab-card-response-header").hide();
-            });
-            $("#opfab-div-card-template").hide()
-            $("#opfab-div-card-template-op").show()
-            $("#opfab-div-card-template-security").hide()
-            $("#opfab-div-card-template-alarm").hide()
-            $("#opfab-div-card-template-noparades").hide()
-            $("#opfab-div-card-template-agent").hide()
-        }
+    }
+          else if (document.getElementById("opfab-card-title").innerHTML.includes("Application")) {
+            document.getElementById("nominal_assist").hidden = true;
+            document.getElementById("orange_assist").hidden = false;
+      }
+          else if (document.getElementById("opfab-card-title").innerHTML.includes("Retour de ligne") || document.getElementById("opfab-card-title").innerHTML.includes("Retrait de ligne")) {
+                      $.get(this.rteUrl + "?time=" +  + new Date().getTime(), function (data) {
+                          $("#ctxImg").attr("src", "data:image/png;base64," + data[0].data.topology)
+                          $(".opfab-card-response-header").hide();
+                      });
+                      $("#opfab-div-card-template").hide()
+                      $("#opfab-div-card-template-op").show()
+                      $("#opfab-div-card-template-security").hide()
+                      $("#opfab-div-card-template-alarm").hide()
+                      $("#opfab-div-card-template-noparades").hide()
+                      $("#opfab-div-card-template-agent").hide()
+                  }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("FAULT")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = false;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("pdv_da").hidden = true;
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ENG1")) {
@@ -469,7 +475,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("da_block_request").hidden = true;
             this.getRecommandationDA(document.getElementById("opfab-card-title").innerText);
             document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
@@ -491,7 +496,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
             $("#opfab-card-detail-footer").hide();
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             document.getElementById("ECS_nominal").setAttribute("src",document.getElementById("ECS").getAttribute("src"));
             document.getElementById("ECS").hidden = false;
             this.getEmergencyPlan();
@@ -499,7 +503,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ELEC")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("ELEC_nominal").setAttribute("src",document.getElementById("ELEC").getAttribute("src"));
@@ -508,7 +511,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("ENGINE")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("ENGINE_nominal").setAttribute("src",document.getElementById("ENGINE").getAttribute("src"));
@@ -517,7 +519,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("FUEL")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("FUEL_nominal").setAttribute("src",document.getElementById("FUEL").getAttribute("src"));
@@ -526,7 +527,6 @@ export class LightCardComponent implements OnInit, OnDestroy {
          else if (document.getElementById("opfab-card-title").innerHTML.includes("HYD")) {
             document.getElementById("high_procedure").hidden = true;
             document.getElementById("pdv_da").hidden = true;
-            document.getElementById("noevent_da").hidden = true;
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
             document.getElementById("HYD_nominal").setAttribute("src",document.getElementById("HYD").getAttribute("src"));
@@ -541,12 +541,12 @@ export class LightCardComponent implements OnInit, OnDestroy {
               document.getElementById("sncf_assist_nominal").hidden = true;
               document.getElementById("sncf_assist_nominal").setAttribute("triggered","true");
             }
+            document.getElementById("nominal_assist").hidden = true;
 
         }
          else if (document.getElementById("opfab-card-title").innerHTML.includes("Signal alarme") || document.getElementById("opfab-card-title").innerHTML.includes("Event")) {
             $(".opfab-card-response-header").hide();
             $("#opfab-card-detail-footer").hide();
-            document.getElementById("noevent_da").hidden = true;
             $("#rte_assist").hide()
             var cardDesc = document.getElementsByClassName("sncf-light-card-selected")[0].getElementsByTagName("span")[2].innerText;
             document.getElementById("sncf_incident_infos").innerHTML 
@@ -571,7 +571,7 @@ export class LightCardComponent implements OnInit, OnDestroy {
           document.getElementById("noevent_da").hidden=true;
           document.getElementById("da_block_request").innerHTML = "";
           var xmlHttp = new XMLHttpRequest();
-          xmlHttp.open("GET", this.host + "./assets/emergency_procedures_short.json", false);
+          xmlHttp.open("POST", "https://frontend.cab-dev.irtsystemx.org/cab_recommendation/api/v1/procedure", false);
           // xmlHttp.open("GET", "/cabcontext/api/v1/contexts?time=" + new Date().getTime(), false);
           xmlHttp.setRequestHeader("Authorization","Bearer "+this.token);
           xmlHttp.send(null);
@@ -592,14 +592,30 @@ export class LightCardComponent implements OnInit, OnDestroy {
             document.getElementById("assistOpTitle").style.overflowY = "scroll";
             this.emergencyClicked = true;
       }else{
-        document.getElementById("da_block_request").hidden = true;
-        document.getElementById("assistOpTitle").style.overflowY = "hidden";
+        // document.getElementById("da_block_request").hidden = true;
+        // document.getElementById("assistOpTitle").style.overflowY = "hidden";
       }
       };
     public select($event) {
+        document.getElementById("nominal_assist_en").hidden = true;
         Swal.showLoading();
-
-        // var card = $event.path[2].firstChild.offsetParent.outerText;
+        document.getElementById('usecase_hidden').innerText === "CAB Orange" && // @ts-expect-error
+        AssistanceComponent.showAssistanceView(this.lightCard.id);
+        if (document.getElementById('usecase_hidden').innerText === "CAB DA") {
+          // @ts-expect-error
+          ProcedureComponent.showProcedureView(this.lightCard.id);
+          document.getElementById("btnSyn").click();
+      }
+        var element = $event.srcElement;
+        while (element && !element.classList.contains('card')) {
+          console.log((element));
+          element = element.parentElement;
+      }
+      if (element && element.classList.contains('card')) {
+        console.log(element)
+          element.classList.add('hasBeenRead');
+          element.querySelector(".card-title").classList.add("hasBeenRead")
+      }
         $event.stopPropagation();
         // Fix for https://github.com/opfab/operatorfabric-core/issues/2994
         this.soundNotificationService.clearOutstandingNotifications();

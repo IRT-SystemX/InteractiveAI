@@ -1,0 +1,115 @@
+:host {
+  font-family: sans-serif;
+}
+
+#assistance-component {
+  position: absolute;
+  width: 370px;
+  height: 680px;
+  top: 80px;
+  right: 16px;
+  box-sizing: border-box;
+  background: #fff;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  font-size: 14px;
+}
+h1 {
+  font-size: 20px;
+  margin: 0;
+  margin-bottom: 8px;
+}
+#assistance-component main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#assistance-component .logo {
+  width: 58px;
+  align-self: center;
+}
+.icon {
+  width: 16px;
+  margin-left: 8px;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+[speech-bubble],
+[speech-bubble] * {
+  box-sizing: border-box;
+}
+
+[speech-bubble] {
+  --bbColor: grey;
+  --bbArrowSize: 1.5rem;
+  --bbBorderRadius: 0.25rem;
+  --bbPadding: 1rem;
+  background: var(--bbColor);
+  border-radius: var(--bbBorderRadius);
+  padding: var(--bbPadding);
+  position: relative;
+}
+
+[speech-bubble]::before {
+  content: '';
+  position: absolute;
+  background: var(--bbColor);
+}
+
+[speech-bubble][pbottom] {
+  margin-bottom: var(--bbArrowSize);
+}
+
+/* bottom and top  */
+[speech-bubble][pbottom]::before {
+  --width: calc(var(--bbArrowSize) / 2 * 3);
+  height: var(--bbArrowSize);
+  width: var(--width);
+}
+
+/* bottom */
+[speech-bubble][pbottom]::before {
+  top: calc(100% - 2px);
+}
+[speech-bubble][pbottom][aleft]::before {
+  left: 1rem;
+  clip-path: polygon(25% 0, 100% 0, 0% 100%);
+}
+
+button {
+  padding: 4px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.action {
+  background: #4bb4e6;
+  color: #fff;
+}
+footer {
+  margin-top: auto;
+  display: flex;
+  height: 36px;
+}
+footer input {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-radius-moyen, 8px);
+  border: 1px solid var(--colors-actions-cab, #4bb4e6);
+  background: var(--colors-surface-primary, #f6f6f6);
+}
+footer .logo {
+  width: 36px !important;
+  margin-left: 8px;
+}
+.orange {
+  color: #ff7900;
+}

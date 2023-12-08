@@ -1,0 +1,105 @@
+:host {
+  font-family: sans-serif;
+}
+#correlation-component {
+  position: absolute;
+  width: 370px;
+  height: 680px;
+  top: 80px;
+  right: 16px;
+  box-sizing: border-box;
+  background: #fff;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  font-size: 14px;
+}
+h1 {
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
+}
+#correlation-component header {
+  display: flex;
+  align-items: center;
+}
+#correlation-component main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+#size-value {
+  text-align: center;
+  color: #4bb4e6;
+}
+#number-correlations {
+  color: #4bb4e6;
+}
+h2 {
+  text-align: center;
+}
+#correlation-component main > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+#correlation-component .logo {
+  width: 58px;
+  align-self: center;
+}
+.correlation-size {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#correlation-size {
+  flex: 1;
+  margin: 0 16px;
+}
+#correlations {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 4px;
+}
+.icon {
+  width: 16px;
+  margin-left: 8px;
+}
+#correlations-more {
+  place-self: end;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  color: #4bb4e6;
+  margin: 8px;
+}
+
+#refresh {
+  background: #4bb4e6;
+  color: #fff;
+  padding: 4px;
+  border-radius: 8px;
+  border: none;
+  width: fit-content;
+  align-self: center;
+}
+footer {
+  margin-top: auto;
+  display: flex;
+  height: 36px;
+}
+footer input {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-radius-moyen, 8px);
+  border: 1px solid var(--colors-actions-cab, #4bb4e6);
+  background: var(--colors-surface-primary, #f6f6f6);
+}
+footer .logo {
+  width: 36px !important;
+  margin-left: 8px;
+}

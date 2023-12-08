@@ -4,6 +4,7 @@ from datetime import datetime
 from ..models import EventModel
 from settings import logger
 
+
 class SNCFEventManager(BaseEventManager):
     def __init__(self) -> None:
         super().__init__()
@@ -15,14 +16,21 @@ class SNCFEventManager(BaseEventManager):
         event_type = data["data"].get("event_type")
         if id_train and event_type:
             events_list = EventModel.query.filter_by(
-                use_case=self.use_case).all()
+                use_case=self.use_case
+            ).all()
             logger.info(events_list)
             logger.info(id_train)
             logger.info(event_type)
 
             for event in events_list:
-                logger.info(event.data.get("id_train") == id_train and event.data.get("event_type") == event_type)
-                if event.data.get("id_train") == id_train and event.data.get("event_type") == event_type:
+                logger.info(
+                    event.data.get("id_train") == id_train
+                    and event.data.get("event_type") == event_type
+                )
+                if (
+                    event.data.get("id_train") == id_train
+                    and event.data.get("event_type") == event_type
+                ):
                     event_id = event.id_event
                     logger.debug(f"Found event: {event_id} for: {id_train}")
                     return str(event_id)
@@ -34,11 +42,13 @@ class SNCFEventManager(BaseEventManager):
         event_id = self.get_event_id(data)
         data["id_event"] = str(event_id)
         logger.info(event_id)
-        date = data.get("date", datetime.now())
+        start_date = data.get("start_date", datetime.now())
+        end_date = None
         # Create a new card (notification)
-        self.create_card(date, data)
+        of_response = self.create_card(start_date, end_date, data)
+        data["of_uid"] = of_response.get("uid")
         # Trace in histric service
-        self.trace_event(date, data)
+        self.trace_event(start_date, end_date, data)
 
         # Save event to database
         event = self.save_event_db(data)

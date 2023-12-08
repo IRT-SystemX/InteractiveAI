@@ -45,6 +45,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
     private vectorLayer: VectorLayer;
     private graphChart = null;
     lightCardToDisplay: LightCard;
+    private cabUseCase;
 
     constructor(
         private lightCardsFeedFilterService: LightCardsFeedFilterService,
@@ -450,19 +451,18 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.unsubscribe$.complete();
     }
     isSmallscreen() {
-        var cabUseCase = document.getElementById("opfab-navbar-menu-feed").innerText;
-        switch(document.getElementById("opfab-navbar-menu-feed").innerText){
+        switch(document.getElementById("usecase_hidden").innerText){
             case 'CAB Dassault':
                 document.getElementById("ctxImg").style.width = window.innerWidth / 1.80 + "px"; 
                 break;
             default:
-                // document.getElementById("ctxImg").style.width = window.innerWidth / 2.70 + "px"; 
                 break;
         }
         // document.getElementById("ctxImg").style.height = window.innerHeight / 1.90 + "px";
         // document.getElementById("bar").style.marginLeft =  document.getElementById("ctxImg").style.width ;
         // document.getElementById("bar").style.marginLeft = parseInt(document.getElementById("bar").style.marginLeft) - 10 + "px";
-        if(cabUseCase != "CAB SNCF" || "Hypervision"){
+        this.cabUseCase = document.getElementById("usecase_hidden").innerText;
+        if(document.getElementById("usecase_hidden").innerText != "CAB SNCF" || document.getElementById("usecase_hidden").innerText != "Hypervision"){
             document.getElementById("notifContainer").style.width =  window.innerWidth / 3.84 + "px";
             document.getElementById("feed-content").style.width = window.innerWidth / 4.90 + "px"; 
         }
@@ -470,9 +470,9 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewChecked {
         // document.getElementById("bar2").style.height = window.innerHeight / 1.6 + "px";
         // document.getElementById("bar2").style.marginLeft =  parseInt(document.getElementById("ctxImg").style.width)-80 
         // + parseInt(document.getElementById("notifContainer").style.width + 15) + "px";
-        if(cabUseCase == 'CAB Dassault'){
+        if(this.cabUseCase == 'CAB Dassault'){
             document.getElementById("assistOpTitle").style.marginLeft = parseInt(document.getElementById("dassaultBar2").style.marginLeft) + 40 + "px"; 
-        }else if (cabUseCase == 'CAB SNCF')
+        }else if (this.cabUseCase == 'CAB SNCF')
         {
             // document.getElementById("assistOpTitle").style.marginLeft = window.screen.width * 73/100 + "px"; 
         }

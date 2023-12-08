@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2NzYzMDM0NDMsImlhdCI6MTY3NTY5ODY0MywianRpIjoiZWFjOWZmNGMtNjM0NC00NDg5LTgzZGQtNmE4ZjRjNDRkYTE2IiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvYXV0aC9yZWFsbXMvZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6InB1Ymxpc2hlcl90ZXN0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjM1ZmY2NGFhLWNmN2MtNGFiMC1hNGE5LTgzODRiMWQ4MjI5ZCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsInNpZCI6IjM1ZmY2NGFhLWNmN2MtNGFiMC1hNGE5LTgzODRiMWQ4MjI5ZCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjoiRGlzcGF0Y2hlcjtSZWFkT25seTtTdXBlcnZpc29yIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicHVibGlzaGVyX3Rlc3QiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.hruPmitQ-mnW4yLaE5UvdaO-4I7BNI4X2L8GPtmMEgGqJ0-4n-IpRRDMZ0imhhU6xHBe0L3nRpjjQM3ntIAGA9eraSNRXDlM3OKL7qQilv-dANjkWGNNzeaR2Cbd6IuCn7PpUwX6WLgQXn3wBgW-Tb8joqf-8stqcb7LBnMl-Ljo3FUX52nBGTIBNWNF9jUSGG8pI9czDzM3j1QeqCwMvpIXrz9iPHHsttth8tJIfqxAl-NF-FTtXSnp1hebBtpA3EjY614gYamrSky6Z87vT61dfrbb0d442s7X9aQ8ph-hE1GhblC-BJBWD2eFoLhAD8fuP38oURAq9MJiiO2xQg",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE3MDA3NzExODUsImlhdCI6MTcwMDE2NjM4NSwianRpIjoiN2QzMzA4OWQtMmZhMC00YjIwLTg2MTAtOWUzZTAwN2M2YWQ4IiwiaXNzIjoiaHR0cDovLzE3Mi4xNy4wLjE6MzIwMC8qL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoicHVibGlzaGVyX3Rlc3QiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiODRiNjFhYjItOGM0MC00YTYzLTk2MTItMzhhOTVlYjE4MTRlIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiODRiNjFhYjItOGM0MC00YTYzLTk2MTItMzhhOTVlYjE4MTRlIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJncm91cHMiOiJEaXNwYXRjaGVyO1JlYWRPbmx5O1N1cGVydmlzb3IiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwdWJsaXNoZXJfdGVzdCIsImdpdmVuX25hbWUiOiIiLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIiwiZmFtaWx5X25hbWUiOiIifQ.VTd8bb3NubwMWQuONSwfXbfyX-qV5gR020gYBiw1msEm69zLSvqb0VrzNFJetCUNCF9nh9tj-0xe9Xwh1_R8ct6QP4V5qFkdEXWjfQ9xSURVqL0IUg0jGlag1KgjzfePbIpy_KeGW2p4Ncc5C3RrU4nfnc1J1ag4kIJzJKVEbTSjXg7SByKm_AbSEAKZ1uquPR8EMZQsNS3uWs6I8XlgJ2Qpop0NzGa6JukPq1-snQmK3AMyDuBkGOE-RwkGYs8NkebC0Q-b-GJrCcsUEucBm4hOBwi8DbluS_bQmeAY0fK1KzzrXa5GbrxKTIqZGGuqK1yQY3YiJerFajR7nnDw0A",
 							"type": "string"
 						}
 					]
@@ -22,7 +22,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88212\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"KPI 2\",\r\n    \"description\": \"description\",\r\n    \"use_case\": \"ORANGE\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"id_app\":\"App_01\",\r\n        \"bad_kpi\": \"delay_avg\"\r\n        \r\n    },\r\n    \"end_date\": \"2023-11-16T22:29:58.429732\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -45,7 +45,7 @@
 			},
 			"response": [
 				{
-					"name": "event",
+					"name": "event RTE",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -101,7 +101,7 @@
 					"body": "{\n    \"criticality\": \"ROUTINE\",\n    \"date\": \"2022-11-07T15:23:53.595000+00:00\",\n    \"description\": \"s\",\n    \"id_event\": \"3\",\n    \"metadata\": {\n        \"event_type\": \"KPI\",\n        \"flux\": 456,\n        \"line\": 123,\n        \"zone\": \"Est\"\n    },\n    \"use_case\": \"RTE\"\n}"
 				},
 				{
-					"name": "event",
+					"name": "event RTE",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -133,7 +133,7 @@
 					"body": null
 				},
 				{
-					"name": "event",
+					"name": "event SNCF",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -269,6 +269,288 @@
 					"header": null,
 					"cookie": [],
 					"body": null
+				},
+				{
+					"name": "event SNCF",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88212\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"status": "UNAUTHORIZED",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 13:03:18 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"detail\": {},\n    \"message\": \"Unauthorized\"\n}"
+				},
+				{
+					"name": "DA event",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"DA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Apr 2023 13:11:52 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "328"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"criticality\": \"HIGH\",\n    \"data\": {\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\",\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\"\n    },\n    \"date\": \"2023-04-04T13:11:52.224848\",\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\n    \"id_event\": \"11302c21-2504-4ad1-9e5d-22c0affb5f2e\",\n    \"use_case\": \"DA\"\n}"
+				},
+				{
+					"name": "event SNCF",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Malaise voyageur - TGV 8404\",\r\n    \"description\": \"0 is having                                      PASSENGER                                      malfunction\",\r\n    \"data\": {\r\n        \"event_type\": \"PASSENGER\",\r\n        \"id_train\": \"8404\",\r\n        \"agent_id\": \"0\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": 382\r\n    },\r\n    \"date\": \"2023-04-11T07:00:10.000000\",\r\n    \"agent_position\": [\r\n        294,\r\n        2\r\n    ],\r\n    \"malfunction_stop_position\": [\r\n        94,\r\n        2\r\n    ],\r\n    \"use_case\": \"SNCF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "event DA",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"DA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "event ORANGE",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"KPI 2\",\r\n    \"description\": \"description\",\r\n    \"use_case\": \"ORANGE\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"id_app\":\"App_01\",\r\n        \"bad_kpi\": \"delay_avg\"\r\n        \r\n    },\r\n    \"end_date\": \"2023-11-16T22:29:58.429732\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 16 Nov 2023 20:30:59 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "289"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"criticality\": \"MEDIUM\",\n    \"data\": {\n        \"bad_kpi\": \"delay_avg\",\n        \"event_type\": \"KPI\",\n        \"id_app\": \"App_01\"\n    },\n    \"description\": \"description\",\n    \"end_date\": \"2023-11-16T22:29:58.429732\",\n    \"id_event\": \"9150b3fc-401b-4691-bc1c-2394925df94a\",\n    \"start_date\": \"2023-11-16T20:30:59.940614\",\n    \"title\": \"KPI 2\",\n    \"use_case\": \"ORANGE\"\n}"
 				}
 			]
 		},
@@ -283,7 +565,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODExMjk3NjIsImlhdCI6MTY4MDUyNDk2MiwianRpIjoiNzc4ODk0NTUtNzAzYi00Yjc3LTlkZGEtNWFjMzRjMDk4YzU3IiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjA4LjU3OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJydGVfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJlM2RiOTcwOS0xNmRmLTRhNzYtOGI4Zi0wMjM1OGQ0OTlmZmEiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJlM2RiOTcwOS0xNmRmLTRhNzYtOGI4Zi0wMjM1OGQ0OTlmZmEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InJ0ZV91c2VyIiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.VCHFrIXRpi6VHTFDjjhoxDxfEL8JAGvbYfMC9OQ3GjeoAKIdc9cROQztw-vbpczRPt9bpYHkLDT_ncmiMfdW1ogXVCX1L9xDLR24Mk_2aFvyOKTfm4Q1pjClVcyw4lVz9WjveZjro2RvXXB1C0TVku7ec8OLvC3zgzFztAZmht6Ln1aHCpA8AJUEUFz2jHShMBrrFwIsIdPemjJEKHG8jc2OweKWpX4hivhdS2oqY9JMERSwY9oq7a0IyglxAoWKfjNxPzFRErnIYYp75wTMZYLAY0v1EG58H339UkceZt8WOBz5WGRVp5KU3DEXzHJudmcklSdZegJUl_GXnafTcQ",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1FkMjFNNzlVRUZjQl9BeFhDcWhUZDlrZDBKZGZpbmxyQnJNbFJqTEVzIn0.eyJleHAiOjE2OTg3ODA0NTAsImlhdCI6MTY5ODc4MDE1MCwianRpIjoiMzhmODZiMjItNGQ3NS00NTgzLTliNDctZTBkODY2MzI0MTlhIiwiaXNzIjoiaHR0cHM6Ly9mcm9udGVuZC5jYWItZGV2LmlydHN5c3RlbXgub3JnLyovcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJzbmNmX3VzZXIiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNWY4MGI3ZjktNGQ5OS00NTQ5LWE5YWYtN2Y4M2Q5ODg0MjM2IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiNWY4MGI3ZjktNGQ5OS00NTQ5LWE5YWYtN2Y4M2Q5ODg0MjM2IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzbmNmX3VzZXIiLCJlbnRpdGllc0lkIjoiU05DRiJ9.G6KgyMfKXAiu8v61i31zNhevKpw2zz6ZugV4DguYy97VbfzZNjopvbtLnInLYCtq-E2z-iSHVVn0b1VYKUrEDpkDO6dnPlGqqkXml6BPrGrVS8nhVjm7lVBjaRxG28u7iDZ6v28HRA8d7XdV41Rgbpdp2JAtnKQlrIK3IKNtvr_ufkhzRgg3bwQ9SvrXV8uYbx_8eJ-ChO0jqRCxrEimRh2AhBCtOFQCGCTC-ZenQ1vG2T_H_p7N8tarSsGGAC22P8Z-KwhyKzWG5Sjet-ps567XYdwxcxUE3yyeEoRBUnoXHnoFK6JrLhURk-ORkdYlH7EqIBxmJt8ZhMEukKWP6A",
 							"type": "string"
 						}
 					]

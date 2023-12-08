@@ -1,0 +1,8 @@
+.procedure-block {
+  border-radius: 8px;
+  background: #727272;
+  color: #fff;
+  padding: 8px;
+  width: fit-content;
+  margin: 8px 0;
+}

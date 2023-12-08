@@ -9,6 +9,7 @@
     display:flex;
 }
 .bloc_title{
+    display: flex;
     border: 2px solid gray;
     flex: 15%;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
@@ -38,7 +39,8 @@
     
     .timeline-line {
         position: relative;
-        border-top: 2px dashed #C6C6C6
+        border-top: 2px dashed #C6C6C6;
+        color: rgb(114,114,114);
     }
     
     .timeline-hour {
@@ -71,17 +73,21 @@
         transform: translateX(-100%);
     }
     
-    .timeline-point {
+    .tl-point {
         position: absolute;
         width: 8px;
         height: 8px;
         color: gray;
         font-weight: bold;
         border-radius: 50%;
-        top: -4px;
+        /* top: 10px; */
     }
+
     [id^="timeline-point"] img {
-        margin-left: -12px;
+        margin-top: -25px;
+    }
+    [id^="timeline-point"] {
+        margin-top: 8px;
     }
 
     .timeline-point:hover{
@@ -92,7 +98,8 @@
         border: 4px solid;
         border-radius: 15px;
         opacity: 0.4;
-        margin-top: -5px;
+        margin-top: 17px;
+        
     }
 
 
@@ -105,14 +112,16 @@
 
         position: relative;
     }
+    #tl-container-home{
+        max-height: 30px;
+    }
     
     .global-current-time-cursor {
         position: absolute;
         top: 0;
         width: 4px;
-        /* height: 100%; */
         min-height: 95%;
-        background-color: black;
+        background-color: rgb(114,114,114);
         z-index: 2;
         font-weight: 600;
         margin-top: 12px;
@@ -122,6 +131,7 @@
     #current-time{
         margin-top: -20px;
         margin-left: -15px;
+        color:grey;
     }
 
     .timeline-border{
@@ -130,6 +140,11 @@
         margin-left: 13px;
     }
 
+    .tl_hour{
+        position: absolute;
+        margin-left: -19px;
+        margin-top: 15px;
+    }
 
     @media (max-height: 768px) { 
 
@@ -141,9 +156,16 @@
 
     @media (min-height: 900px) and  (min-width: 1800px) { 
         .timeline-border{
-            min-height: 245px;
+            height: 245px!important;
+            max-height: 245px;
             margin-top: 12px;
-            width: 98.6%;
+            width: 98.8%;
+            overflow-x: hidden;
         }
     }
     
+    @media (min-height: 1024px) and (max-width: 1366px){ 
+    #tl-box{
+        bottom: 100px!important;
+    }
+}

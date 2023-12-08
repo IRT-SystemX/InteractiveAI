@@ -301,6 +301,14 @@ select.form-control[multiple] {
     background-color: var(--opfab-bgcolor);
 }
 
+#cabTitle{
+    font-size: 32px;
+    position: absolute;
+    left: 50%;
+    color:var(--opfab-text-color);
+    background-color: var(--opfab-bgcolor);
+}
+
 html,
 body {
     height: 100%;
@@ -393,9 +401,10 @@ body {
         color: var(--opfab-text-color);
         margin-top: -10px;
         margin-bottom: -10px;
+        background-color: var(--opfab-popover-bgcolor);
     }
     .arrow::after {
-        border-right-color: var(--opfab-popover-bgcolor);
+        border-right-color: var(--opfab-feedbar-icon-hover-color);
     }
 }
 
@@ -647,17 +656,19 @@ tag-input {
 .choose-uc-img:hover{
     //TBD background-image: url("../assets/images/bouton DA nominal.png");
   }
-#opfab-card-icon{
-    filter: drop-shadow(1px 0px 4px white);
-}
 
-label:hover{
+  label:hover{
     font-weight: bold;
     color: var(--bs-blue);
 }
 
 .DA_Card{
     min-height: 31px!important;
+    color: white!important;
+    background-color: black!important;
+}
+.empty_event_list{
+    color:lightgray;
 }
 .SNCF_Card{
     min-height: 54px !important
@@ -665,6 +676,11 @@ label:hover{
 .sncf{
     box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
     border-radius: 5px;
+}
+.in_feed{
+    left: 40%;
+    position: absolute;
+    margin-top: 50%;
 }
 
 .choose-uc-img{
@@ -688,26 +704,147 @@ label:hover{
     font-weight: bold;
     cursor: pointer;
 }
+.daBg-alarm{
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+}
+.daBg-action{
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
+}
+.daBg-compliant{
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+}
 .rteBg-alarm{
-    box-shadow: 15px 0px 9px #A70000 inset;
-    color: #A70000!important
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+    color: #A70000;
 
 }
 .rteBg-action{
-    box-shadow: 15px 0px 9px #E05206 inset;
-    color: #E05206!important
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
 
 }
 .rteBg-compliant{
-    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
-    color: rgb(0,158,143)!important
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+
+}
+.da-compliant{
+    box-shadow: 15px 0px 0px white inset;
+    border: 2px solid white;
 
 }
 .rteBg-information{
-    box-shadow: 15px 0px 9px rgb(0,158,143) inset;
-    color: rgb(0,158,143)!important
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+    color: rgb(0,158,143);
 
 }
+.orangeBg-action{
+    box-shadow: 15px 0px 0px #FF7900 inset;
+    border: 2px solid #FF7900;
+    color:#FF7900!important
+
+}
+.orangeBg-alarm{
+    box-shadow: 15px 0px 0px #FF0000 inset;
+    border: 2px solid #FF0000;
+    color:#FF0000!important
+
+}
+.orangeBg-information{
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+    color:#50BE87!important
+}
+.orangeBg-compliant{
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+
+}
+.orangeBg-routine{
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+
+}
+
+
+#opfab-selected-card-summary,
+#opfab-feed-list-card-title{
+    margin-left: 18px;
+    font-size: 15px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#opfab-selected-card-summary{
+    color:gray;
+}
+
+div[data-urlid^="orangeProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #FF0000 inset;
+    border: 2px solid #FF0000;
+    color: #FF0000;
+  }
+div[data-urlid^="orangeProcess"][severity="information"] {
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+    color: #50BE87 !important;
+  }
+div[data-urlid^="orangeProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #FF7900 inset;
+    border: 2px solid #FF7900;
+    color:#FF7900!important
+  }
+div[data-urlid^="daProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+    color:#A70000;
+    min-height: unset!important;
+    max-height: 50px;
+  }
+
+  div[data-urlid^="daProcess"] #opfab-selected-card-summary {
+    display: none;
+}
+div[data-urlid^="rteProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    border: 2px solid #A70000;
+    color: #A70000!important
+  }
+div[data-urlid^="rteProcess"][severity="information"] {
+    box-shadow: 15px 0px 0px #50BE87 inset;
+    border: 2px solid #50BE87;
+    color: #50BE87 !important;
+  }
+div[data-urlid^="rteProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #E05206 inset;
+    border: 2px solid #E05206;
+    color: #E05206 !important;
+
+  }
+div[data-urlid^="rteProcess"][severity="compliant"] {
+    box-shadow: 15px 0px 0px rgb(0,158,143) inset;
+    border: 2px solid rgb(0,158,143);
+    color: rgb(0,158,143) !important;
+
+  }
+div[data-urlid^="sncfProcess"][severity="alarm"] {
+    box-shadow: 15px 0px 0px #A70000 inset;
+    color: #DC582A!important;
+    border: 2px solid #DC582A!important;
+  }
+div[data-urlid^="sncfProcess"][severity="action"] {
+    box-shadow: 15px 0px 0px #DAAA00 inset;
+    border: 2px solid #DAAA00;
+    color: #DAAA00!important;
+  }
+
 #opfab-div-card-template-alarm{
     font-size : 12px!important;
 }
@@ -744,6 +881,18 @@ label:hover{
 }
 #dassaultBar,#dassaultBar2{
     margin-top: -44px;
+}
+#sncfControl{
+    display: flex;
+}
+#sncfControl button{
+    color: var(--opfab-text-color);
+}
+.imgBin{
+    margin-left: 20px;
+    margin-top: -7px;
+    margin-bottom: 5px;
+    cursor:pointer;
 }
 @media (max-height: 768px) { //random laptop
     .sncf{
@@ -880,21 +1029,26 @@ label:hover{
         max-width: 608px;
     }
     .dassault_ctx_div{
-        margin-left: 370px
+        margin-left: 345px;
+    }
+    .btn-group-synoptic{
+        margin-left: 25px!important;
+        margin-top: 80px;
     }
     #synoptique{
-        font-size: 12px;
+        font-size: 15px;
     }
     #synoptic_back{
-        width: 77%!important;
+        width: 97%!important;
+        margin-top: 55px;
     }
     #dassaultBar{
-        height: 905px;
-        margin-left: 350px
+        height: 790px;
+        margin-left: 326px;
     }
     #dassaultBar2{
-        height: 905px;
-        margin-left: 1050px;
+        height: 790px;
+        margin-left: 965px;
     }
     #assistOpTitle{
         width:326px!important;
@@ -903,7 +1057,8 @@ label:hover{
         left:1025px;
     }
     .assistOpTitleDA{
-        left:1087px;
+        left:1020px;
+        height:700px
     }
     .assist_rte{
         margin-left: 875px;
@@ -913,7 +1068,13 @@ label:hover{
     }
     .map_da{
         height: 45vh!important;
-        width: 668px!important
+        width: 600px!important
+    }
+    .imgBin{
+        margin-top: -5px;
+    }
+    #opfab-feed-list-card-title{
+        font-size: 13px;
     }
     .map_sncf{
         height: 59vh!important;
@@ -943,7 +1104,7 @@ label:hover{
         margin-left: 450px;
     }
     #img_indice{
-        width: 150%;
+        width: 120%;
     }
     #notifContainer{
         width: 400px!important;
@@ -952,11 +1113,11 @@ label:hover{
         width:350px;
     }
     .sncf_ctx_div{
-        margin-left: 360px;
-        min-width: 1190px
+        margin-left: 410px!important;
+        min-width: 1090px;
     }
     .feed-content_override{
-        width: 350px!important;
+        width: 400px!important;
     }
     .rte_ctx_div{
         margin-left: 432px;
@@ -977,13 +1138,14 @@ label:hover{
 
     .dassault_ctx_div{
         margin-left: 405px;
+
     }
     #dassaultBar{
-        height: 905px;
+        height: 790px;
         margin-left: 392px;
     }
     #dassaultBar2{
-        height: 905px;
+        height: 790px;
         margin-left: 1500px
     }
     .map_da{
@@ -993,14 +1155,18 @@ label:hover{
         width:1078px!important;
     }
     .map_sncf{
-        width: 1185px !important;
+        width: 1090px !important;
         height: 56vh!important;
     }
     #da_uc_btn {
         margin-left: 185px;
     }
     #synoptic_back{
-        width: 91%!important;
+        width: 104%!important;
+        background-color: black;
+        border-radius: 11px;
+        margin-top: 70px;
+        margin-left: 20px;
     }
     .assist_sncf{
         width:350px; 
@@ -1008,22 +1174,20 @@ label:hover{
     .assist_orange{
         width:350px; 
     }
-    .assist_orange_overflow_override{
-        overflow: scroll!important;
-    }
     .assist_rte{
         margin-left: 1160px;
         height: 726px;
     }
     #assistOpTitle{
-        width:326px!important;
+        width:370px!important;
         overflow-y: hidden;
     }
     .assistOpTitle{
-        left:1580px;
+        left: 1535px;
     }
     .assistOpTitleDA{
         left: 1540px;
+        height:700px
     }
     .assistOpTitle_rte{
         height: 700px;
@@ -1035,14 +1199,11 @@ label:hover{
         max-height: 455px;
         overflow-y: auto!important;
     }
-    #sncfControl{
-        display: flex;
-    }
     #sncf_ctx{
         margin-top : 10px;
     }
     #orange_ctx_container{
-        margin-left: 300px;
+        // margin-left: 300px;
     }
     #train_infos{
         max-height: 200px;
@@ -1070,11 +1231,15 @@ label:hover{
     cursor: pointer;
   }
 
+  .hasBeenRead{
+    color: gray!important;
+    font-weight: normal!important;
+  }
+
   .sncf-light-card-selected span{
     color:black!important
   }
   .sncfCard{
-    background: url(../assets/images/!.png);
     background-size: 30px;
     background-repeat: no-repeat;
     background-position-x: 60px;
@@ -1245,4 +1410,69 @@ input[type="range"] {
     color: white;
     font-size: 10px;
     z-index: 3;
+}
+#nominal_assist{
+    text-align: center;
+    color: #00A3FF;
+    margin-top: 270px;
+}
+
+#nominal_assist_chat{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+}
+#nominal_assist_en{
+    text-align: center;
+    color: #00A3FF;
+    margin-top: 270px;
+}
+
+#nominal_assist_en_chat{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+}
+
+#userInput {
+    border: 1px solid #00A3FF;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    color:gray;
+    min-width: 300px;
+}
+.marker-tooltip {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .da_assist_btn{
+    background-color: #00A3FF;
+    border-radius:5px;
+    font-weight: bold;
+  }
+
+  .reco{
+    box-shadow: 15px 0px 0px #00A3FF;
+    border: 2px solid #00A3FF;
+    padding: 13px;
+    border-radius: 10px;
+    width: 95%;
+    display: block;
+    margin-top:3px;
+    }
+
+.active_reco{
+    background-color: #4B4B4B;
+    box-shadow: 43px 0px 0px #00A3FF;
+    width: 88%;
+    color: #00A3FF;
 }

@@ -6,15 +6,18 @@ from marshmallow import ValidationError, validates_schema
 
 class Event(Schema):
     id_event = String()
+    of_uid = String()
     use_case = String(required=True, validate=OneOf(
         ['RTE', 'SNCF', 'DA', 'ORANGE']))
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
-    date = DateTime(format="iso")
+    start_date = DateTime(format="iso", allow_none=True)
+    end_date = DateTime(format="iso", allow_none=True)
     criticality = String(required=True, validate=OneOf(
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
     is_active = Boolean()
+
 
 class Solution(Schema):
     pass

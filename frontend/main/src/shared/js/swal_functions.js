@@ -75,6 +75,19 @@ function showDesc(desc) {
     }
     document.getElementById('descriptionRTE' + desc).hidden = false;
 }
+function showDescDA(desc) {
+    for (var desc_check = 0; desc_check < 3; desc_check++) {
+        if (desc_check != desc) {
+            try {
+                document.getElementById('description' + desc_check).hidden = true;
+            } catch (error) {
+                
+            }
+        }
+    }
+    document.getElementById('description' + desc).hidden = false;
+}
+
 function showDescSNCF(desc) {
     for (var desc_check = 0; desc_check < 3; desc_check++) {
         try {

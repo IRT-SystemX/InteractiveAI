@@ -15,7 +15,7 @@
 
 .opfab-card-list {
     overflow-x: hidden;
-    overflow-y: hidden;
+    max-height: 630px;
 }
 
 .opfab-feed-horizontal-bar {
@@ -84,17 +84,16 @@ input[type=checkbox]:checked + label {
 }
 
   .imgMarged{
-    margin-top:50px;
+    margin-top:60px;
   }
 
   .btn-group button {
-    background-color: white;
-    color: #0085CC;
     padding: 10px 24px;
     cursor: pointer;
+    color:white;
     float: left;
-    border-radius: 5px;
-    border: #0085CC;
+    background: unset;
+    border: none;
   }
   .btn-group-synoptic button {
     background-color: white;
@@ -102,7 +101,6 @@ input[type=checkbox]:checked + label {
     padding: 2px 24px;
     cursor: pointer;
     float: left;
-    border-radius: 5px;
   }
   
   .btn-group button:not(:last-child) {
@@ -119,31 +117,39 @@ input[type=checkbox]:checked + label {
     background-color: #0085CC;
     color:white;
   }
-  .btn-group_synoptic button:hover {
-    background-color: rgb(50,75,107);;
-    color:white;
+  .btn-group-synoptic button:active,
+  .btn-group-synoptic button:hover,
+  .btn-group-synoptic button:focus,
+  .btn-group-synoptic-active {
+    background-color: #9B9B9B!important
   }
-  .btn-group_synoptic button:active {
-    background-color: rgb(50,75,107);;
+  .btn-group-synoptic button{
+    background: none;
+    background-color: #4B4B4B;
     color:white;
+    border: none;
+    font-weight: bold;
   }
-  .btn-group button:active {
-    background-color: #0085CC;
-    color:white;
+  .btn-group-synoptic{
+    display: inline-flex;
+    background: none;
+    color: white;
+    margin-left: 40px;
+    margin-top: 90px;
   }
-  .btn-group button:focus {
-    background-color: #0085CC;
-    color:white;
-  }
-  .btn-group_synoptic button:focus {
-    background-color: rgb(50,75,107);
-    color:white;
+  .btn-group button:active,
+  .btn-group button:focus,
+  .btn-group button:hover,
+  .btn-group-active {
+    background-color: #9B9B9B!important;
+    color: white;
+    border-radius: 32px;
+    font-weight: bold;
   }
 
   #synoptic_back{
     background-color: black;
     height: 340px;
     width: 91%;
-    margin-top: 50px;
     border-radius: 7px;
   }

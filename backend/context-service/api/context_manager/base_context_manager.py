@@ -25,14 +25,19 @@ class BaseContextManager:
     def get_context(self):
         return self.context
 
-    def get_contexts_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).filter(
-            ContextModel.use_case.in_(self.use_case)).all()
-        return context
+    def get_contexts_with_date(self, date_str):
+        date = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%f")
+        contexts = ContextModel.query.filter(
+            ContextModel.date == date, ContextModel.use_case == self.use_case
+        ).all()
+        return contexts
 
     def get_context_with_date(self, date):
-        context = ContextModel.query.filter_by(date=date).filter(
-            ContextModel.use_case.in_(self.use_case)).first()
+        context = (
+            ContextModel.query.filter_by(date=date)
+            .filter(ContextModel.use_case.in_([self.use_case]))
+            .first()
+        )
         return context
 
     def extra_operations(self):

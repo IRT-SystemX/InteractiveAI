@@ -96,3 +96,4 @@ function getCardProcess(){
         }
       xhr.send(JSON.stringify(recommendationBody));
       }
+

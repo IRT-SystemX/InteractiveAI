@@ -10,6 +10,7 @@
 export const environment = {
     production: true,
     urls: {
+        host: '/',
         authentication: '/ui/',
         auth: '/auth',
         cards: '/cards',
