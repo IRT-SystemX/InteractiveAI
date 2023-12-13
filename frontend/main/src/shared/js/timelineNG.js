@@ -86,7 +86,6 @@ function fillTimeLine() {
     xhr.send(data);
 }
 
-
 function getCardForTimeline(id_event,card){
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -151,12 +150,12 @@ function acknowledgeEvent(uid,card,id_event){
         if (this.readyState === 4 && this.status == 201) {
             document.getElementById("event"+card).style.display = 'none';
             document.getElementById("event"+card).remove();
-            document.getElementById("opfab-feed-light-card-" + selectedUseCase.toLocaleLowerCase() + "Process-" + id_event).remove();
-            document.querySelector('img[card_id_point="' + card + '"]').remove();
-            document.querySelector('img[card_id_point_end="' + card + '"]').remove();
+            document.querySelector(`[data-urlid="${id_event}"]`).remove();
+            document.getElementById("event"+ id_event + "icon").remove();
+            document.getElementById("event"+ id_event + "icon_end").remove();
         }
     });
-    // xhr.open("POST", "http://192.168.208.57:2002/cardspub/cards/userAcknowledgement/" + uid);
+    // xhr.open("POST", "http://192.168.211.95:2002/cardspub/cards/userAcknowledgement/" + uid);
     xhr.open("POST", window.location.hostname + "/cardspub/cards/userAcknowledgement/" + uid);
     xhr.setRequestHeader("Accept", "application/json, text/plain, */*");
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -173,13 +172,13 @@ function initTimeLine() {
     console.info("TIMELINE : ", "Ready");
     document.getElementById("tl-container-home").hidden = false;
     updateGlobalCurrentTimeCursor();
-    fillTimeLine();
+    // fillTimeLine();
     setInterval(() => {
-            fillTimeLine();
-            updateHighlights();
+            // fillTimeLine();
+            // updateHighlights();
             document.getElementById("eventsForTimeLine").hidden = false
             updateGlobalCurrentTimeCursor();
-            setCardsSeverity();
+            // setCardsSeverity();
     }, 5000);
 }
 
@@ -223,19 +222,19 @@ function positionnerPointSurTimeline(heure, timeline_id, end_date) {
 function updateHighlights(){
     var highlights = document.querySelectorAll(".timeline-highlight")
     for(var highlight=0;highlight<highlights.length;highlight++){
-        var timeline_id = highlights[highlight].id.match(/\d+/)[0]
-        var heure = highlights[highlight].parentElement.querySelector("#timeline-point"+timeline_id).outerText
+        var timeline_id = highlights[highlight].id;
+        var heure = highlights[highlight].parentElement.querySelector(".timeline-point").outerText;
         var heureMinutes = heure.split(':');
-        var end_date = highlights[highlight].parentElement.querySelector("#timeline-point-end"+timeline_id).outerText
+        var end_date = highlights[highlight].parentElement.querySelector(".timeline-point-end").outerText
         var heures = parseInt(heureMinutes[0]);
         var minutes = parseInt(heureMinutes[1]);
         var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
-        var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
+        var timelineHighlightWidth = highlights[highlight].parentElement.querySelector(".timeline-point").getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
         highlights[highlight].style.left = "calc(" + positionEnPourcentage + "% - 4px)";
         highlights[highlight].hidden = false;
         if(end_date){
-            positionnerPointFinDateEventSurTimeline(end_date,timeline_id)
-            var end_timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
+            // positionnerPointFinDateEventSurTimeline(end_date,highlights[highlight].parentElement.querySelector(".timeline-point-end"));
+            var end_timelineHighlightWidth = highlights[highlight].parentElement.querySelector(".timeline-point").getBoundingClientRect().left - highlights[highlight].parentElement.querySelector(".timeline-point-end").getBoundingClientRect().left;
             highlights[highlight].style.width = Math.abs(end_timelineHighlightWidth) + "px";
         }else{
             if(new Date(heureActuelle) > new Date().setHours(heures,minutes)){

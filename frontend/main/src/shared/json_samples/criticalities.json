@@ -2,28 +2,41 @@
     "criticalities": {
         "RTE": {
             "icon": {
+                "ACTION": "<img src='./assets/images/medium_alarm.svg'/>",
                 "MEDIUM": "<img src='./assets/images/medium_alarm.svg'/>",
+                "ALARM": "<img src='./assets/images/red_alarm.svg'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
-                "ROUTINE": "<img src='./assets/images/routine.svg'/>",
+                "ROUTINE": "<img src='./assets/images/routine_icon.svg'/>",
+                "INFORMATION": "<img src='./assets/images/routine_icon.svg'/>",
                 "timeline": {
+                    "ACTION": "<img src='./assets/images/medium_alarm_tl.svg'/>",
                     "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "ALARM": "<img src='./assets/images/red_alarm_tl.svg'/>",
                     "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
+                    "INFORMATION": "<img src='./assets/images/routine.svg'/>",
                     "ROUTINE": "<img src='./assets/images/routine.svg'/>"
                 }
             },
             "color": {
+                "ACTION": "#EC775C",
                 "MEDIUM": "#EC775C",
+                "ALARM": "#C81640",
                 "HIGH": "#C81640",
+                "INFORMATION": "#009E8F",
                 "ROUTINE": "#009E8F"
             }
         },
         "SNCF": {
             "icon": {
                 "MEDIUM": "<img src='./assets/images/sncf_delay.png'/>",
+                "ACTION": "<img src='./assets/images/sncf_delay.png'/>",
                 "HIGH": "<img src='./assets/images/red_alarm.svg'/>",
+                "ALARM": "<img src='./assets/images/red_alarm.svg'/>",
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>",
                 "timeline": {
+                    "ACTION": "<img src='./assets/images/medium_alarm_tl.svg'/>",
                     "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "ALARM": "<img src='./assets/images/red_alarm_tl.svg'/>",
                     "HIGH": "<img src='./assets/images/red_alarm_tl.svg'/>",
                     "ROUTINE": "<img src='./assets/images/routine.svg'/>"
                 }
@@ -37,11 +50,15 @@
         "DA": {
             "icon": {
                 "MEDIUM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
+                "ACTION": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
+                "ALARM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "ROUTINE": "<img src='./assets/images/routine.svg'/>",
                 "timeline": {
                     "MEDIUM": "<img src='./assets/images/medium_alarm_tl.svg'/>",
+                    "ACTION": "<img src='./assets/images/medium_alarm_tl.svg'/>",
                     "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
+                    "ALARM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                     "ROUTINE": "<img src='./assets/images/routine.svg'/>"
                 }
             },
@@ -53,20 +70,28 @@
         },
         "ORANGE": {
             "icon": {
+                "ACTION": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "MEDIUM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.png'/>",
                 "COMPLIANT": "<img src='./assets/images/red_alarm.svg'/>",
+                "INFORMATION": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>",
                 "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>",
                 "timeline": {
+                    "ACTION": "<img src='./assets/images/warning-icon-orange.svg'/>",
                     "MEDIUM": "<img src='./assets/images/warning-icon-orange.svg'/>",
+                    "ALARM": "<img src='./assets/images/opfab-bg-sev-alarm-icon.svg'/>",
                     "HIGH": "<img src='./assets/images/opfab-bg-sev-alarm-icon.svg'/>",
+                    "INFORMATION": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>",
                     "ROUTINE": "<img src='./assets/images/opfab-bg-sev-information-icon.svg'/>"
                 }
             },
             "color": {
+                "ACTION": "#FF7900",
                 "MEDIUM": "#FF7900",
+                "ALARM": "#FF7900",
                 "HIGH": "#FF7900",
                 "COMPLIANT": "#FF7900",
+                "INFORMATION": "#50BE87",
                 "ROUTINE": "#50BE87"
             }
         }

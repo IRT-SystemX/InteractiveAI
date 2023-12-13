@@ -107,6 +107,43 @@ export class CardService {
         this.selectedCardId = cardId;
     }
 
+    async removeAndAddToTimeline(operation: any) {
+        try {
+            await this.removeCardFromTimeline(operation.card.id);
+            this.addToTimeline(operation.card);
+        } catch (error) {
+            console.log("Timeline", "Une erreur est survenue :", error);
+        }
+    }
+    
+    removeCardFromTimeline(cardId: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const cardElement = document.querySelector(`[event_id="${cardId}"]`);
+    
+            if (cardElement) {
+                try {
+                    cardElement.parentElement?.remove();
+    
+                    // Ajout d'un délai pour s'assurer que l'élément a été supprimé avant de résoudre la promesse
+                    setTimeout(() => {
+                        ["", "_end"].forEach(suffix => {
+                            const iconElement = document.getElementById(`event${cardId}icon${suffix}`);
+                            if (iconElement) {
+                                iconElement.remove();
+                            }
+                        });
+                        resolve();
+                    }, 0);
+                } catch (error) {
+                    reject(error);
+                }
+            } else {
+                console.log(`Timeline : La carte avec ID "${cardId}" n'existe pas.`);
+                resolve();
+            }
+        });
+    }
+    
     public initCardSubscription() {
        
         var cards;
@@ -147,6 +184,9 @@ export class CardService {
                                     new Date(operation.card.publishDate).toISOString(),
                                 LogOption.LOCAL_AND_REMOTE
                             );
+                            if(!operation.card.hasBeenAcknowledged){
+                                this.removeAndAddToTimeline(operation);
+                            }
                             this.lightCardsStoreService.addOrUpdateLightCard(operation.card);
                             if(operation.card.entityRecipients.includes('ORANGE')){
                                 // TODO: color based on title and not metadata :(
@@ -219,10 +259,166 @@ export class CardService {
         }
     }
 
+    public addToTimeline(card){
+                    var criticality = card.severity;
+                    var criticalities ;
+                    var use_case = card.entityRecipients[0];
+                    var date = card.startDate;
+                    var end_date = card.endDate;
+                    var title = card.title.parameters.title;
+                    var description = card.description;
+                    var id_event = card.id;
+                    var uid = card.uid;
+                    var heure_event = this.time_format(new Date(date));
+                    var heure_event_fin = end_date ? this.time_format(new Date(end_date)) : null;
+                    var id_bloc_event = document.getElementById("event" + card)
+                    fetch('./shared/json_samples/criticalities.json')
+                    .then(response => response.json())
+                    .then(data => {
+                      criticalities = data.criticalities;
+                      var cardToAdd = "<div class='blocEvent' id='event" + id_event  + "'>" +
+                            "<div class='bloc_title'" + "style = 'width: 185px;position:absolute;z-index: 2;height: 40px;background-color:var(--opfab-bgcolor);color:"+ criticalities[use_case].color[criticality] + 
+                            ";border: 1px solid " + criticalities[use_case].color[criticality] + ';box-shadow: -4px 0px 0px ' + criticalities[use_case].color[criticality] + "' event_id='"+ id_event + "'" +
+                            " id='title" + id_event + "'>" + "<div>"+title +"</div>" + "<div style='position:absolute;right:0px;'>"+criticalities[use_case].icon.timeline[criticality] + "</div>" + "</div>" + "<div class='timeline'>" +
+                            "<div class='timeline-line'><d<div class='timeline-hour' style='left: 0;'></div><div class='timeline-hour' style='left: 25%;'></div>" +
+                            "<div class='timeline-hour' style='left: 50%;'></div><div class='timeline-hour' style='left: 75%;'></div><div class='timeline-hour' style='right: 0;'></div></div>" +
+                            "<div class='timeline-point tl-point' id='timeline-point" + id_event + "'>" 
+                            + "<span class='tl_hour' start_date='" + heure_event + "'>" + heure_event + "</span>" 
+                            + criticalities[use_case].icon[criticality] + "</div>" +
+                            "<div class='timeline-point-end tl-point' id='timeline-point-end" + id_event + "'>" + (heure_event_fin !== null ? "<span class='tl_hour'>" + heure_event_fin + "</span><img src='assets/images/done.png'>" : "") + "</div>" +
+                            "<div class='timeline-highlight' id='timeline-highlight" + id_event + "' style='position:absolute;color: " + criticalities[use_case].color[criticality] + "' hidden></div></div>";
+                            document.getElementById("eventsForTimeLine").innerHTML += cardToAdd;
+
+                        })
+                    .catch(error => {
+                      console.error('Erreur lors de la lecture du fichier JSON :', error);
+                    });
+                 
+                    setTimeout(() => {
+                        
+                        this.waitForElementCreation(`timeline-point${id_event}`)
+                        .then(() => this.positionnerPointSurTimeline(heure_event, id_event, heure_event_fin))
+                        .then(() => this.waitForElementCreation(`event${id_event}icon`))
+                        .then(() => this.getCardForTimeline(id_event, uid, use_case))
+
+                        setTimeout(() => {
+                            if(heure_event_fin){
+
+                            }
+                        }, 2000);
+                      
+
+                        
+                    }, 2000);
+    }
+
+    private waitForElementCreation(elementId: string): Promise<void> {
+        return new Promise<void>((resolve) => {
+            const checkElement = () => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    resolve();
+                } else {
+                    setTimeout(checkElement, 100); 
+                }
+            };
+    
+            checkElement(); 
+        });
+    }
+    public getCardForTimeline(id_event, uid, use_case) {
+        if (document.querySelector(`[data-urlid="${id_event}"]`).querySelector(".imgBin") == null) {
+            var trashIconSrc = use_case !== "DA" ? "assets/images/trashIcon.svg" : "assets/images/trashIconDA.svg";
+            document.querySelector(`[data-urlid="${id_event}"]`).innerHTML += '<img class="imgBin" src="' + trashIconSrc + '" width="10%" onclick="event.stopPropagation();acknowledgeEvent(\'' + uid + '\', \'' + id_event + '\', \'' + id_event + '\')">';
+        }
+    }
+    
+    public positionnerPointSurTimeline(heure, timeline_id,end_date) {
+
+        var point = document.getElementById('timeline-point' + timeline_id);
+        var highlight = document.getElementById('timeline-highlight' + timeline_id);
+        var heureRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!heureRegex.test(heure)) {
+            console.error("Format d'heure invalide. Utilisez le format HH:mm.");
+            return;
+        }
+        var end_date;
+        var heureMinutes = heure.split(':');
+        var heures = parseInt(heureMinutes[0]);
+        var minutes = parseInt(heureMinutes[1]);
+        var heureEvent = new Date();
+        heureEvent.setHours(heures, minutes, 0, 0);
+        highlight.hidden = false;
+        setTimeout(() => {
+            var originIcon = (document.getElementById("title" + timeline_id).parentElement.querySelector(".timeline-point img") as HTMLImageElement | null)?.src || '';
+            var originLeft = (document.getElementById("title" + timeline_id).parentElement.querySelector(".timeline-point") as HTMLImageElement | null)?.style.left || '';
+    
+            document.getElementById("timeline-line").innerHTML += "<img id='event" + timeline_id + "icon'" + "src='" + originIcon + "'" + ">";
+            document.getElementById("event" + timeline_id + "icon").style.left = originLeft;
+            document.getElementById("event" + timeline_id + "icon").style.marginLeft = "-5px";
+            document.getElementById("event" + timeline_id + "icon").style.position = "absolute"
+            document.getElementById("event" + timeline_id + "icon").style.marginTop = "-27px"
+            if(end_date){
+                    this.positionnerPointFinDateEventSurTimeline(end_date,timeline_id)
+                    var end_timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementById("timeline-point-end"+timeline_id).getBoundingClientRect().left;
+                    highlight.style.width = Math.abs(end_timelineHighlightWidth) + "px";
+                    highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+                    var originIconEnd = (document.getElementById("title" + timeline_id).parentElement.querySelector(".timeline-point-end img") as HTMLImageElement | null)?.src || '';
+                    var originLeftEnd = (document.getElementById("title" + timeline_id).parentElement.querySelector(".timeline-point-end") as HTMLImageElement | null)?.style.left || '';
+                    document.getElementById("timeline-line").innerHTML += "<img id='event" + timeline_id + "icon_end'" + "src='" + originIconEnd + "'" + ">";
+                    document.getElementById("event" + timeline_id + "icon_end").style.left = originLeftEnd
+                    document.getElementById("event" + timeline_id + "icon_end").style.position = "absolute"
+                    document.getElementById("event" + timeline_id + "icon_end").style.marginTop = "-27px"
+
+
+
+            }else{
+                    if (new Date() > new Date(new Date().setHours(heures, minutes))) { 
+                    var timelineHighlightWidth = document.getElementById("timeline-point"+timeline_id).getBoundingClientRect().left - document.getElementsByClassName("global-current-time-cursor")[0].getBoundingClientRect().left;
+                    highlight.style.width = Math.abs(timelineHighlightWidth) + "px";
+                    highlight.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+                }
+                
+
+            }
+        }, 5000);
+
+        if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
+            console.error("Heure invalide. Assurez-vous que l'heure est entre 00:00 et 23:59.");
+            return;
+        }
+            var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
+            point.style.left = "calc(" + positionEnPourcentage + "%)";
+        }
+
+
     private deleteCardSubscription(): Observable<HttpResponse<void>> {
         return this.httpClient.delete<any>(`${this.deleteCardSubscriptionUrl}`, {observe: 'response'});
     }
 
+    public positionnerPointFinDateEventSurTimeline(heure, timeline_id) {
+
+        var point = document.getElementById('timeline-point-end' + timeline_id);
+        var heureRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!heureRegex.test(heure)) {
+            console.error("Format d'heure invalide. Utilisez le format HH:mm.");
+            return;
+        }
+        var highlight = document.getElementById('timeline-highlight' + timeline_id);
+    
+        var heureMinutes = heure.split(':');
+        var heures = parseInt(heureMinutes[0]);
+        var minutes = parseInt(heureMinutes[1]);
+        var heureActuelle = new Date();
+        var heureEvent = new Date();
+        heureEvent.setHours(heures, minutes, 0, 0);
+        if (heures < 0 || heures > 23 || minutes < 0 || minutes > 59) {
+            console.error("Heure invalide. Assurez-vous que l'heure est entre 00:00 et 23:59.");
+            return;
+        }
+        var positionEnPourcentage = ((heures * 60 + minutes) / 1440) * 100;
+        point.style.left = "calc(" + positionEnPourcentage + "% - 4px)";
+    }
     private getCardSubscription(): Observable<CardOperation> {
         // security header needed here as SSE request are not intercepted by our header interceptor
         let securityHeader;
@@ -327,6 +523,15 @@ export class CardService {
         this.httpClient.post<any>(`${this.cardOperationsUrl}`, {publishFrom: dateForRecovering}).subscribe();
     }
 
+    public time_format(d) {
+        var hours = this.format_two_digits(d.getHours());
+        var minutes = this.format_two_digits(d.getMinutes());
+        return hours + ":" + minutes;
+    }
+
+    public format_two_digits(n) {
+        return n < 10 ? '0' + n : n;
+    }
     public removeAllLightCardFromMemory() {
         this.startOfAlreadyLoadedPeriod = null;
         this.lightCardsStoreService.removeAllLightCards();

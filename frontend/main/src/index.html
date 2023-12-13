@@ -17,7 +17,7 @@
   <script src=".\shared\js\rte_functions.js"></script>
   <script src=".\shared\js\common_functions.js"></script>
   <script src=".\shared\js\swal_functions.js"></script>
-  <title>Assistant CAB v3.1.4</title>
+  <title>Assistant CAB v3.1.5</title>
   <span id="login"></span>
   <base href="/">
 
@@ -369,7 +369,7 @@ These two parameters are place in this file as the style should have a title par
         if (cards[card].getAttribute("data-urlid") && cards[card].id != "") {
           id_event = cards[card].getAttribute("data-urlid").replace(selectedUseCase.toLowerCase() + "Process.", '');
           try {
-          event_start_date = document.querySelector(`[event_id="${id_event}"]`).parentElement.querySelector(".tl_hour").innerHTML;
+            event_start_date = document.querySelector(`[event_id="${selectedUseCase.toLowerCase()}Process.${id_event}"]`).parentElement.querySelector(".tl_hour").innerHTML;
             cards[card].querySelector(".p-1").style.color = "grey";
           } catch (error) {
             console.log(error)
@@ -1073,14 +1073,14 @@ These two parameters are place in this file as the style should have a title par
             margin-top: 15px;
             padding: 2px;
 ">
-          <div class="timeline-hour" style="left: 0;margin-top: -5px;"></div>
-          <div class="timeline-hour" style="left: 25%;margin-top: -5px;">06:00
+          <div class="timeline-hour" style="left: 0;margin-top: -22px;"></div>
+          <div class="timeline-hour" style="left: 25%;margin-top: -22px;">06:00
           </div>
-          <div class="timeline-hour" style="left: 50%;margin-top: -5px;"> 12:00</div>
-          <div class="timeline-hour" style="left: 75%;margin-top: -5px;">18:00</div>
+          <div class="timeline-hour" style="left: 50%;margin-top: -22px;"> 12:00</div>
+          <div class="timeline-hour" style="left: 75%;margin-top: -22px;">18:00</div>
           <div class="timeline-hour" style="right: 0;"></div>
         </div>
-        <div id="eventsForTimeLine" hidden></div>
+        <div id="eventsForTimeLine" ></div>
       </div>
     </div>
 </body>
