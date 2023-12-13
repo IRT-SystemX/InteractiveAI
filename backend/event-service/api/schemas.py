@@ -22,30 +22,30 @@ class MetadataRTE(Metadata):
         validate=OneOf(["KPI", "anticipation", "agent", "consignation"]),
     )
     zone = String(validate=OneOf(["Est", "Ouest", "Centre"]))
-    line = String()
+    line = String(required=True)
     flux = Float()
 
 
 class MetadataSNCF(Metadata):
-    agent_id = String()
-    event_type = String()
+    agent_id = String(required=True)
+    event_type = String(required=True)
     agent_position = List(Integer())
-    delay = Integer()
-    id_train = String()
+    delay = Integer(required=True)
+    id_train = String(required=True)
     malfunction_stop_position = List(Integer())
     num_rame = String()
     tmp_rame = String()
 
 
 class MetadataOrange(Metadata):
-    event_type = String()
-    id_app = String()
-    bad_kpi = String()
+    event_type = String(required=True)
+    id_app = String(required=True)
+    bad_kpi = String(required=True)
 
 
 class MetadataDA(Metadata):
-    event_type = String()
-    system = String()
+    event_type = String(required=True)
+    system = String(required=True)
 
 
 class EventIn(Schema):
