@@ -9,7 +9,7 @@ import { addOrUpdate, remove } from '@/utils/utils'
 export const useMapStore = defineStore('map', () => {
   const waypoints = ref<Waypoint<CircleMarkerOptions>[]>([])
   const polylines = ref<Polyline[]>([])
-  const contextWaypoints = ref<Waypoint<{ severity: Severity }>[]>([])
+  const contextWaypoints = ref<Waypoint<{ severity?: Severity }>[]>([])
 
   function reset() {
     resetWaypoints()
@@ -39,11 +39,11 @@ export const useMapStore = defineStore('map', () => {
   function resetPolylines() {
     polylines.value.splice(0, polylines.value.length)
   }
-  function addContextWaypoint(waypoint: Waypoint<{ severity: Severity }>) {
+  function addContextWaypoint(waypoint: Waypoint<{ severity?: Severity }>) {
     addOrUpdate(contextWaypoints.value, waypoint, (el) => el.id === waypoint.id)
   }
 
-  function removeContextWaypoint(waypoint: Waypoint<{ severity: Severity }>) {
+  function removeContextWaypoint(waypoint: Waypoint<{ severity?: Severity }>) {
     remove(contextWaypoints.value, (el) => el.id === waypoint.id)
   }
 

@@ -25,6 +25,7 @@ import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/map'
 import { useServicesStore } from '@/stores/services'
+import type { Severity } from '@/types/cards'
 
 import Context from '../Common/Context.vue'
 
@@ -44,10 +45,10 @@ onMounted(async () => {
         lng: train.longitude,
         id: train.id_train,
         options: {
-          alt: cardsStore.cards.reduce((acc, curr) => {
+          severity: cardsStore.cards.reduce((acc: Severity | undefined, curr) => {
             if (curr.data?.metadata.id_train === train.id_train) return curr.severity
             return acc
-          }, '')
+          }, undefined)
         }
       })
   })
@@ -62,10 +63,10 @@ onBeforeUnmount(() => {
   .context-marker {
     background: var(--color-success);
     border-radius: var(--radius-circular);
-    &[alt='ACTION'] {
+    &.ACTION {
       background: var(--color-warning);
     }
-    &[alt='ALARM'] {
+    &.ALARM {
       background: var(--color-error);
     }
   }

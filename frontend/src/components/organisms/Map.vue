@@ -92,7 +92,13 @@ onMounted(() => {
         const existing = contextWaypointsL.value.find((el) => el.id === waypoint.id)
         if (existing) {
           existing.L.setLatLng(waypoint)
-          existing.L.options.alt = waypoint.options?.alt
+          existing.L.setIcon(
+            L.icon({
+              iconUrl: `/img/icons/map_markers/${route.params.entity}.svg`,
+              iconSize: [32, 32],
+              className: 'context-marker ' + waypoint.options?.severity
+            })
+          )
           continue
         }
 
@@ -101,9 +107,8 @@ onMounted(() => {
           icon: L.icon({
             iconUrl: `/img/icons/map_markers/${route.params.entity}.svg`,
             iconSize: [32, 32],
-            className: 'context-marker'
-          }),
-          ...(waypoint.options as MarkerOptions)
+            className: 'context-marker ' + waypoint.options?.severity
+          })
         })
           .bindTooltip(waypoint.id, { direction: 'top', offset: [0, -16] })
           .addTo(map!)
