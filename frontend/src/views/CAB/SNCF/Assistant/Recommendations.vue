@@ -65,7 +65,7 @@ function applyParry() {
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })
-  applyRecommendationSNCF(servicesStore.recommendations[selectedRecommendation.value!])
+  applyRecommendationSNCF(servicesStore.recommendations[selectedRecommendation.value!].actions[0])
   eventBus.emit('assistant:tab', 0)
 }
 
