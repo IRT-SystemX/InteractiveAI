@@ -26,7 +26,7 @@ export function getContext() {
   return http.get<Context<DAData>>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
 }
 
-export function sendTrace(payload: { data: any; date?: Date; step: TraceType; use_case: Entity }) {
+export function sendTrace(payload: { data: object; date?: Date; step: TraceType; use_case: Entity }) {
   return http.post(import.meta.env.VITE_TRACE + '/api/v1/traces', { ...payload, date: new Date().toISOString() })
 }
 

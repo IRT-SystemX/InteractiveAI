@@ -42,7 +42,7 @@ import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { sendTrace } from '@/api/services'
+import { applyRecommendationRTE, sendTrace } from '@/api/services'
 import context from '@/assets/json/context_rte.json'
 import Button from '@/components/atoms/Button.vue'
 import CardVue from '@/components/atoms/Card.vue'
@@ -56,14 +56,15 @@ const route = useRoute()
 
 const servicesStore = useServicesStore()
 
-const props = defineProps<{ card: Card }>()
+defineProps<{ card: Card }>()
 
 function applyParry() {
   sendTrace({
-    data: props.card,
+    data: {},
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })
+  applyRecommendationRTE(servicesStore.recommendations[selectedRecommendation.value!])
   eventBus.emit('assistant:tab', 0)
 }
 

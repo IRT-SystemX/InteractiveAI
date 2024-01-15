@@ -40,22 +40,32 @@
 import { FileBarChart2, Pin, Settings, Star } from 'lucide-vue-next'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
+import { applyRecommendationSNCF, sendTrace } from '@/api/services'
 import context from '@/assets/json/context_rte.json'
 import Button from '@/components/atoms/Button.vue'
 import CardVue from '@/components/atoms/Card.vue'
 import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
+import type { Entity } from '@/types/entities'
 
 const selectedRecommendation = ref()
 
 const servicesStore = useServicesStore()
 
+const route = useRoute()
+
 defineProps<{ card: Card }>()
 
 function applyParry() {
-  console.log('apply parry')
+  sendTrace({
+    data: {},
+    use_case: route.params.entity as Entity,
+    step: 'AWARD'
+  })
+  applyRecommendationSNCF(servicesStore.recommendations[selectedRecommendation.value!])
   eventBus.emit('assistant:tab', 0)
 }
 
