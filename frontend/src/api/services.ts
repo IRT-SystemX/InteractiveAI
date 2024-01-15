@@ -27,7 +27,7 @@ export function getContext() {
 }
 
 export function sendTrace(payload: { data: any; date?: Date; step: TraceType; use_case: Entity }) {
-  return http.post('/api/v1/traces', { ...payload, date: new Date().toISOString() })
+  return http.post(import.meta.env.VITE_TRACE + '/api/v1/traces', { ...payload, date: new Date().toISOString() })
 }
 
 export function applyRecommendationRTE(data: any) {

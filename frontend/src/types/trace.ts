@@ -1,1 +1,1 @@
-export type TraceType = 'EVENT' | 'ASKFORHELP' | 'SOLUTION' | 'REWARD'
+export type TraceType = 'EVENT' | 'ASKFORHELP' | 'SOLUTION' | 'AWARD'

@@ -56,14 +56,13 @@ const route = useRoute()
 
 const servicesStore = useServicesStore()
 
-defineProps<{ card: Card }>()
+const props = defineProps<{ card: Card }>()
 
 function applyParry() {
-  console.log('apply parry')
   sendTrace({
-    data: servicesStore.recommendations[selectedRecommendation.value!],
+    data: props.card,
     use_case: route.params.entity as Entity,
-    step: 'REWARD'
+    step: 'AWARD'
   })
   eventBus.emit('assistant:tab', 0)
 }
