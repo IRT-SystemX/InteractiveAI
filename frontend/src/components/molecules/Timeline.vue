@@ -27,7 +27,12 @@
         :severity="card.severity"
         class="cab-timeline-card"
         :style="{ 'grid-row': index + 1 }">
-        {{ card.titleTranslated }}
+        <template #title>
+          {{ card.titleTranslated }}
+        </template>
+        <template #severity>
+          <slot :card="card"></slot>
+        </template>
       </Notification>
       <div class="cab-timeline-line" :style="{ 'grid-row': index + 1 }"></div>
       <div
@@ -45,6 +50,9 @@
           )}`
         }"
         class="cab-timeline-event">
+        <div class="cab-timeline-event-icon">
+          <slot :card="card"></slot>
+        </div>
         <div class="cab-timeline-event-line" :class="severityToColor(card.severity)"></div>
         <div class="cab-timeline-event-time">
           <div
@@ -162,6 +170,10 @@ onMounted(() => {
 
   &-event {
     align-self: center;
+
+    &-icon {
+      margin-left: calc(var(--spacing-1) * -1);
+    }
 
     &-time {
       font-size: 0.75rem;
