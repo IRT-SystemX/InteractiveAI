@@ -38,7 +38,8 @@
             window.length + 1,
             2
           )} / ${minmax(
-            differenceInMinutes(card.endDate ? new Date(card.endDate): new Date(), window.start) + 2,
+            differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) +
+              2,
             window.length + 1,
             2
           )}`
@@ -119,6 +120,7 @@ onMounted(() => {
     position: absolute;
     transform: translateX(-50%);
     bottom: 0;
+    width: max-content;
   }
 
   &-hover {
@@ -142,6 +144,7 @@ onMounted(() => {
       pointer-events: none;
       text-align: center;
       width: calc(var(--unit) * 5);
+      width: max-content;
     }
   }
 
@@ -170,6 +173,7 @@ onMounted(() => {
         background: var(--color-grey-300);
         border-radius: var(--radius-small);
         padding: 0 calc(var(--unit) / 2);
+        width: max-content;
       }
       .start {
         left: calc(var(--spacing-4) * -1);
