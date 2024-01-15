@@ -1,0 +1,9 @@
+{
+  "i18n-ally.localesPaths": ["src/locales/*"],
+  "i18n-ally.keystyle": "flat",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.sourceLanguage": "fr",
+  "i18n-ally.extract.keygenStyle": "camelCase",
+  "i18n-ally.translate.deepl.useFreeApiEntry": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
