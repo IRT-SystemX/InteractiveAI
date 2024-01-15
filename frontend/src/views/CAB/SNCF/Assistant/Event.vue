@@ -10,9 +10,7 @@
       </SpeechBubble>
     </div>
     <div class="row">
-      <Button type="button" @click="eventBus.emit('assistant:tab', 2)">
-        Recalculer les plans de transports
-      </Button>
+      <Button type="button" @click="askRecommendations">Recalculer les plans de transports</Button>
       <Info
         fill="var(--color-grey-600)"
         stroke="var(--color-background)"
@@ -31,13 +29,27 @@
 </template>
 <script setup lang="ts">
 import { Info } from 'lucide-vue-next'
+import { useRoute } from 'vue-router'
 
+import { sendTrace } from '@/api/services'
 import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
+import type { Entity } from '@/types/entities'
 import { severityToColor } from '@/utils/utils'
+
+const route = useRoute()
+
+function askRecommendations() {
+  sendTrace({
+    data: {},
+    use_case: route.params.entity as Entity,
+    step: 'ASKFORHELP'
+  })
+  eventBus.emit('assistant:tab', 2)
+}
 
 defineProps<{ card: Card }>()
 </script>
