@@ -227,7 +227,8 @@ onMounted(() => {
       .start,
       .end {
         position: absolute;
-        background: var(--color-grey-300);
+        background: var(--color-background);
+        color: var(--color-grey-600);
         border-radius: var(--radius-small);
         padding: 0 calc(var(--unit) / 2);
         width: max-content;
