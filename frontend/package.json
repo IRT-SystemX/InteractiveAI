@@ -1,7 +1,9 @@
 {
   "name": "cab-front",
-  "version": "4.0.0-alpha3",
+  "version": "4.0.0-alpha4",
   "private": true,
+  "license": "LGPL-3.0-or-later",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "dev:": "vite --mode",
