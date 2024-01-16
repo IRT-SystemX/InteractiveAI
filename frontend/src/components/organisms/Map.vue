@@ -155,10 +155,18 @@ onBeforeUnmount(() => {
 
 .context-marker {
   transition: var(--duration);
+  background: var(--color-success);
+  border-radius: var(--radius-circular);
+  &.ACTION {
+    background: var(--color-warning);
+  }
+  &.ALARM {
+    background: var(--color-error);
+  }
 }
 .cab-map-lockview {
   width: calc(var(--unit) * 5);
-  display:flex;
+  display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
   max-width: fit-content;

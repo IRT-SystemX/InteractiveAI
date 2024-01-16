@@ -58,17 +58,3 @@ onBeforeUnmount(() => {
   clearInterval(contextId.value)
 })
 </script>
-<style lang="scss">
-#map {
-  .context-marker {
-    background: var(--color-success);
-    border-radius: var(--radius-circular);
-    &.ACTION {
-      background: var(--color-warning);
-    }
-    &.ALARM {
-      background: var(--color-error);
-    }
-  }
-}
-</style>
