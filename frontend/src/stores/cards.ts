@@ -64,7 +64,7 @@ export const useCardsStore = defineStore('cards', () => {
     const id = crypto.randomUUID()
     cardsApi.getCardsSubscription(
       {
-        clientId: crypto.randomUUID(),
+        clientId: id,
         rangeEnd: String(endOfDay(new Date()).getTime()),
         rangeStart: String(startOfDay(new Date()).getTime())
       },
@@ -72,7 +72,7 @@ export const useCardsStore = defineStore('cards', () => {
     )
     cardsApi.getCardsSubscription(
       {
-        clientId: crypto.randomUUID(),
+        clientId: id,
         notification: 'true'
       },
       handler

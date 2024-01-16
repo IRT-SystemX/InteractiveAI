@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import * as servicesApi from '@/api/services'
 import type { Entity } from '@/types/entities'
-import * as d3 from '@/utils/d3'
 
 export const useServicesStore = defineStore('services', () => {
   const context = ref<any>()
