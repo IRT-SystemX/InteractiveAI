@@ -128,8 +128,16 @@ onMounted(() => {
 
   &-top {
     display: grid;
+    height: calc(var(--unit) * 2);
     // Because of scrollbar
     padding-right: var(--spacing-2);
+    grid-template-rows: 1fr;
+    > * {
+      grid-row: events-start / events-end;
+    }
+    .cab-timeline-event {
+      margin-bottom: calc(var(--unit) / 2);
+    }
   }
 
   &-border {
@@ -147,7 +155,21 @@ onMounted(() => {
     position: absolute;
     transform: translateX(-50%);
     bottom: 0;
+    padding-bottom: var(--spacing-2);
     width: max-content;
+    &:after {
+      content: '';
+      position: absolute;
+      left: -2px;
+      bottom: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 0;
+      height: 0;
+      border-top: 16px solid var(--color-grey-400);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+    }
   }
 
   &-hover {
