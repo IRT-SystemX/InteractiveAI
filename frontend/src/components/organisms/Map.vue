@@ -157,6 +157,7 @@ onBeforeUnmount(() => {
   transition: var(--duration);
   background: var(--color-success);
   border-radius: var(--radius-circular);
+  padding: calc(var(--unit) / 2);
   &.ACTION {
     background: var(--color-warning);
   }
