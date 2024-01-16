@@ -2,6 +2,25 @@
   <div
     class="cab-timeline-top"
     :style="{ 'grid-template-columns': style['grid-template-columns'] }">
+    <div
+      v-for="card of cards"
+      :key="card.id"
+      class="cab-timeline-event"
+      :style="{
+        'grid-column': `${minmax(
+          differenceInMinutes(new Date(card.startDate), window.start) + 2,
+          window.length + 1,
+          2
+        )} / ${minmax(
+          differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) + 2,
+          window.length + 1,
+          2
+        )}`
+      }">
+      <div class="cab-timeline-event-icon">
+        <slot :card="card"></slot>
+      </div>
+    </div>
     <div class="cab-timeline-border"></div>
     <div
       class="cab-timeline-now"
@@ -173,6 +192,10 @@ onMounted(() => {
 
     &-icon {
       margin-left: calc(var(--spacing-1) * -1);
+      height: 0;
+      width: 0;
+      bottom: 18px;
+      position: relative;
     }
 
     &-time {
