@@ -2,7 +2,7 @@
   <div id="map"></div>
   <label class="cab-map-lockview p-1 flex flex-wrap">
     <input v-model="lockView" type="checkbox" style="display: none" />
-    <div class="mr-1">
+    <div class="ml-1">
       <Focus v-if="lockView" />
       <Scan v-else />
     </div>
@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 
-import L, { type CircleMarkerOptions, type MarkerOptions, type PolylineOptions } from 'leaflet'
+import L, { type CircleMarkerOptions, type PolylineOptions } from 'leaflet'
 import { Focus, Scan } from 'lucide-vue-next'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -52,6 +52,8 @@ onMounted(() => {
     center: L.latLng(47, 2),
     zoom: 6
   })
+
+  L.control.scale().addTo(map)
 
   map.createPane('polylines')
   map.createPane('waypoints')
@@ -156,6 +158,8 @@ onBeforeUnmount(() => {
 }
 .cab-map-lockview {
   width: calc(var(--unit) * 5);
+  display:flex;
+  flex-direction: row-reverse;
   align-items: flex-start;
   max-width: fit-content;
   height: calc(var(--unit) * 5);
@@ -165,8 +169,8 @@ onBeforeUnmount(() => {
   z-index: 1000;
   background: var(--color-background);
   border-radius: var(--radius-small);
-  bottom: var(--spacing-1);
-  left: var(--spacing-1);
+  top: var(--spacing-1);
+  right: var(--spacing-1);
   transition: var(--duration);
 
   &:hover {
