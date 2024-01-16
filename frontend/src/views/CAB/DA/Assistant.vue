@@ -13,7 +13,7 @@ import { computed, ref } from 'vue'
 
 import { getProcedure } from '@/api/services'
 import eventBus from '@/plugins/eventBus'
-import { useMapStore } from '@/stores/map'
+import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 
 import Default from '../Common/Assistant/Default.vue'
@@ -72,3 +72,4 @@ eventBus.on('assistant:procedure:plan', async () => {
   scroll-snap-type: y mandatory;
 }
 </style>
+@/stores/components/map

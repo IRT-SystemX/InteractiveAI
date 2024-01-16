@@ -17,7 +17,7 @@ import { Focus, Scan } from 'lucide-vue-next'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { useMapStore } from '@/stores/map'
+import { useMapStore } from '@/stores/components/map'
 
 let map: L.Map | undefined = undefined
 
@@ -187,3 +187,4 @@ onBeforeUnmount(() => {
   }
 }
 </style>
+@/stores/components/map

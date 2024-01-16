@@ -24,7 +24,7 @@
     <div class="color-primary text-center">{{ size }} min</div>
     <Button class="self-center" @click="getCorrelations()">Rafraîchir les résultats</Button>
     <h2 class="flex flex-center">
-      <span class="color-primary">{{ servicesStore.formattedData.length }}&nbsp;</span>
+      <span class="color-primary">{{ graphStore.formattedData.length }}&nbsp;</span>
       corrélations trouvées
       <Info
         fill="var(--color-grey-600)"
@@ -34,7 +34,7 @@
     </h2>
     <div id="correlations">
       <CardVue
-        v-for="correlation of servicesStore.formattedData.slice(0, servicesStore.shown)"
+        v-for="correlation of graphStore.formattedData.slice(0, graphStore.shown)"
         :key="correlation[0]"
         orientation="right"
         class="correlation-card"
@@ -51,10 +51,10 @@
       </CardVue>
     </div>
     <Button
-      v-if="servicesStore.shown < servicesStore.formattedData.length"
+      v-if="graphStore.shown < graphStore.formattedData.length"
       color="secondary"
       class="self-end"
-      @click="servicesStore.shown += 5">
+      @click="graphStore.shown += 5">
       + Résultats
     </Button>
   </main>
@@ -67,19 +67,19 @@ import { ref } from 'vue'
 import Button from '@/components/atoms/Button.vue'
 import CardVue from '@/components/atoms/Card.vue'
 import SVG from '@/components/atoms/SVG.vue'
-import { useServicesStore } from '@/stores/services'
+import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
 import { focusLink, hideLinks, showLink } from '@/utils/d3'
 
 const size = ref(5)
 
-const servicesStore = useServicesStore()
+const graphStore = useGraphStore()
 
 const props = defineProps<{ card: Card }>()
 
 function getCorrelations() {
   console.log(/App_(\d+)/.exec(props.card.data?.metadata.id_app)![1])
-  servicesStore.getCorrelations({
+  graphStore.getCorrelations({
     size: size.value / 5,
     app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app)![1]
   })

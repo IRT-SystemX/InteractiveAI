@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
-import { useMapStore } from '@/stores/map'
+import { useMapStore } from '@/stores/components/map'
 
 const mapStore = useMapStore()
 
@@ -54,3 +54,4 @@ function newRoute(recommendation: any) {
   emit('update:modelValue', [])
 }
 </script>
+@/stores/components/map

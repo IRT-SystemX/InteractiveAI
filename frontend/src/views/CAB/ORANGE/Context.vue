@@ -1,6 +1,6 @@
 <template>
   <Context v-model="activeTab" :tabs="[$t('cab.tab.graph')]">
-    <Graph v-if="activeTab === 0" :data="servicesStore.d3Correlations" />
+    <Graph v-if="activeTab === 0" :data="graphStore.d3Correlations" />
   </Context>
   <div id="graph-tooltip">
     <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-v">
@@ -19,12 +19,12 @@ import { ref } from 'vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Graph from '@/components/organisms/Graph.vue'
 import eventBus from '@/plugins/eventBus'
-import { useServicesStore } from '@/stores/services'
+import { useGraphStore } from '@/stores/components/graph'
 
 import Context from '../Common/Context.vue'
 
 const activeTab = ref(0)
-const servicesStore = useServicesStore()
+const graphStore = useGraphStore()
 const tooltipData = ref<any | undefined>(['test'])
 
 eventBus.on('graph:showTooltip', (node) => {

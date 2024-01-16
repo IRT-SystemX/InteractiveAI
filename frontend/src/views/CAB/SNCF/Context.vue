@@ -23,7 +23,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
-import { useMapStore } from '@/stores/map'
+import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 import type { Severity } from '@/types/cards'
 
@@ -58,3 +58,4 @@ onBeforeUnmount(() => {
   clearInterval(contextId.value)
 })
 </script>
+@/stores/components/map
