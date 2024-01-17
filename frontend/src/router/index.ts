@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
-import { Entities } from '@/types/entities'
+import { Entities, type Entity } from '@/types/entities'
 
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -45,7 +45,7 @@ router.beforeEach((to) => {
   if (to.meta.auth && !authStore.user) return { name: 'login' }
   if (to.name === 'home' && authStore.entities.length === 1)
     return { name: 'cab', params: { entity: authStore.entities[0] } }
-  if (!to.name || (to.name === 'cab' && !authStore.entities.includes(to.params.entity as string)))
+  if (!to.name || (to.name === 'cab' && !authStore.entities.includes(to.params.entity as Entity)))
     return { name: 'home' }
 })
 
