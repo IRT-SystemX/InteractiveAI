@@ -1,7 +1,6 @@
 import http from '@/plugins/http'
 import type { Entity } from '@/types/entities'
 import type { Context } from '@/types/services'
-import type { DAData } from '@/types/services/DA'
 import type { TraceType } from '@/types/trace'
 
 export function getRecommendation(context: any) {
@@ -23,7 +22,7 @@ export function getCorrelations(params: { size: number; app_id?: string; kpi_nam
 }
 
 export function getContext() {
-  return http.get<Context<DAData>>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
+  return http.get<Context<object>>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
 }
 
 export function sendTrace(payload: { data: object; date?: Date; step: TraceType; use_case: Entity }) {
