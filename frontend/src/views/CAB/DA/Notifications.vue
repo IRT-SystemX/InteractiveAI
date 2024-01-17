@@ -16,7 +16,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selectedCard', card)">
+            @click="eventBus.emit('assistant:selected', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>
               {{ format(new Date(card.startDate), 'p') }}
@@ -51,7 +51,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selectedCard', card)">
+            @click="eventBus.emit('assistant:selected', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>{{ card.severity }}</template>
             {{ card.summaryTranslated }}

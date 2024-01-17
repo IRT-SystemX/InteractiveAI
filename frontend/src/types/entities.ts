@@ -1,3 +1,3 @@
-export const Entities =  ["ORANGE","DA","SNCF","RTE"] as const
+export const Entities = <const>["ORANGE","DA","SNCF","RTE"]
 
 export type Entity = typeof Entities[number]

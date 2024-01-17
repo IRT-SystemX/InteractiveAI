@@ -19,7 +19,7 @@
         class="ml-1" />
     </div>
     <div class="row">
-      <Button type="button" @click="eventBus.emit('assistant:correlations', card)">
+      <Button type="button" @click="eventBus.emit('assistant:tab', 2)">
         Calculer des corrélations
       </Button>
       <Info

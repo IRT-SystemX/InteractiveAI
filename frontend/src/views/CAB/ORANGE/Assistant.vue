@@ -20,12 +20,12 @@ const card = ref<Card | undefined>(undefined)
 
 const tab = ref(0)
 
-eventBus.on('assistant:selectedCard', (selectedCard) => {
-  card.value = selectedCard
+eventBus.on('assistant:selected', (selected) => {
+  card.value = selected
   tab.value = 1
 })
-eventBus.on('assistant:correlations', () => {
-  tab.value = 2
+eventBus.on('assistant:tab', (index) => {
+  tab.value = index
 })
 </script>
 <style lang="scss"></style>

@@ -7,7 +7,7 @@
           v-for="card of cardsStore.cards"
           :key="card.id"
           :severity="card.severity"
-          @click="eventBus.emit('assistant:selectedCard', card)">
+          @click="eventBus.emit('assistant:selected', card)">
           <template #title>{{ card.titleTranslated }}</template>
           <template #severity>
             {{ $t(`card.event_type.${card.data!.metadata.event_type}`) }}

@@ -13,7 +13,7 @@
   </div>
   <Button
     v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
-    @click="eventBus.emit('assistant:procedure:plan')">
+    @click="eventBus.emit('assistant:tab', 2)">
     {{ $t('assistant.plan') }}
   </Button>
 </template>

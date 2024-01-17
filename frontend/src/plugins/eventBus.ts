@@ -6,12 +6,10 @@ const eventBus = mitt<{
   'progress:start': void
   'progress:stop': void
   modal: string
-  'assistant:selectedCard': Card
-  'assistant:correlations': Card
+  'assistant:selected': Card
   'graph:showTooltip': any
   'assistant:tab': number
   'assistant:procedure:checked': any
-  'assistant:procedure:plan': void
 }>()
 
 export default eventBus

@@ -6,7 +6,7 @@
     <Button>Accomodation</Button>
   </div>
   <Card
-    v-for="recommendation of modelValue"
+    v-for="recommendation of servicesStore.recommendations"
     :key="recommendation"
     orientation="right"
     @click="newRoute(recommendation)">
@@ -14,14 +14,45 @@
   </Card>
 </template>
 <script setup lang="ts">
+import { onBeforeMount } from 'vue'
+
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
+import eventBus from '@/plugins/eventBus'
 import { useMapStore } from '@/stores/components/map'
+import { useServicesStore } from '@/stores/services'
 
 const mapStore = useMapStore()
+const servicesStore = useServicesStore()
 
-defineProps<{ modelValue: any[] }>()
-const emit = defineEmits(['update:modelValue'])
+onBeforeMount(async () => {
+  await servicesStore.getRecommendation({})
+  for (const recommendation of servicesStore.recommendations)
+    for (const action of recommendation.actions) {
+      for (const { latitude, longitude, wpid } of action.waypoints)
+        mapStore.addWaypoint({ lat: latitude, lng: longitude, id: wpid })
+      mapStore.addWaypoint({
+        lat: action.airport_destination.latitude,
+        lng: action.airport_destination.longitude,
+        id: action.airport_destination.apname
+      })
+      mapStore.addPolyline({
+        id: recommendation.title,
+        waypoints: [
+          ...action.waypoints.map((waypoint: any) => ({
+            lat: waypoint.latitude,
+            lng: waypoint.longitude,
+            id: waypoint.wpid
+          })),
+          {
+            lat: action.airport_destination.latitude,
+            lng: action.airport_destination.longitude,
+            id: action.airport_destination.apname
+          }
+        ]
+      })
+    }
+})
 
 function newRoute(recommendation: any) {
   mapStore.resetPolylines()
@@ -51,7 +82,7 @@ function newRoute(recommendation: any) {
       ]
     })
   }
-  emit('update:modelValue', [])
+  eventBus.emit('assistant:tab', 0)
 }
 </script>
 @/stores/components/map
