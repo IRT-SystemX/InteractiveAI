@@ -27,10 +27,10 @@
         </div>
       </template>
     </CardVue>
-    <Button v-if="selectedRecommendation !== undefined" class="self-end" @click="applyParry">
+    <Button v-if="selectedRecommendation !== -1" class="self-end" @click="applyParry">
       Appliquer
     </Button>
-    <div v-if="selectedRecommendation !== undefined">
+    <div v-if="selectedRecommendation !== -1">
       <h2>Description parade</h2>
       {{ servicesStore.recommendations[selectedRecommendation].description }}
     </div>
@@ -51,7 +51,7 @@ import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 
-const selectedRecommendation = ref()
+const selectedRecommendation = ref<number>(-1)
 
 const servicesStore = useServicesStore()
 
@@ -65,7 +65,7 @@ function applyParry() {
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })
-  applyRecommendationSNCF(servicesStore.recommendations[selectedRecommendation.value!].actions[0])
+  applyRecommendationSNCF(servicesStore.recommendations[selectedRecommendation.value].actions[0])
   eventBus.emit('assistant:tab', 0)
 }
 
