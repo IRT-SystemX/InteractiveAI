@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 
 import * as auth from '@/api/auth'
 import type { LoginResponse, UserResponse } from '@/types/auth'
+import { EntitiesArray } from '@/types/entities'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -11,9 +12,7 @@ export const useAuthStore = defineStore(
     const user = ref<UserResponse>()
     const entities = computed(() =>
       user.value
-        ? user.value.userData.entities
-            .filter((entity) => ['DA', 'ORANGE', 'RTE', 'SNCF'].includes(entity))
-            .sort()
+        ? user.value.userData.entities.filter((entity) => EntitiesArray.includes(entity)).sort()
         : []
     )
 

@@ -13,7 +13,7 @@ import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
 import { toggleMode } from '@/plugins/colorMode'
 import { useCardsStore } from '@/stores/cards'
-import type { Entity } from '@/types/entities'
+import { Entities, type Entity } from '@/types/entities'
 
 const route = useRoute()
 
@@ -28,7 +28,7 @@ const { locale } = useI18n()
 function setup(entity: Entity) {
   cardsStore.getCards(
     route.params.entity as Entity,
-    ['ORANGE', 'SNCF'].includes(route.params.entity as Entity)
+    Entities[route.params.entity as Entity].hydrated
   )
   locale.value = `${locale.value.slice(0, 2)}-${entity}`
   toggleMode(entity)
