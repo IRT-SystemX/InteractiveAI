@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
-import { Entities, type Entity } from '@/types/entities'
+import { EntitiesArray, type Entity } from '@/types/entities'
 
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -26,7 +26,7 @@ const router = createRouter({
       }
     },
     {
-      path: `/cab/:entity(${Entities.join('|')})`,
+      path: `/cab/:entity(${EntitiesArray.join('|')})`,
       name: 'cab',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route

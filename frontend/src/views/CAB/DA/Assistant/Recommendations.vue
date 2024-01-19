@@ -7,7 +7,7 @@
   </div>
   <Card
     v-for="recommendation of servicesStore.recommendations"
-    :key="recommendation"
+    :key="recommendation.title"
     orientation="right"
     @click="newRoute(recommendation)">
     <h1>{{ recommendation.title }}</h1>

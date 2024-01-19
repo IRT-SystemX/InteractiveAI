@@ -3,11 +3,11 @@ import { ref } from 'vue'
 
 import * as servicesApi from '@/api/services'
 import type { Context, Entity } from '@/types/entities'
-import type { RecommendationAction } from '@/types/services'
+import type { Recommendations } from '@/types/services'
 
 export const useServicesStore = defineStore('services', () => {
   const context = ref<Context | undefined>()
-  const recommendations = ref<any[]>([])
+  const recommendations = ref<Recommendations[]>([])
 
   async function getContext<T extends Context>(
     entity: Entity,
@@ -23,9 +23,9 @@ export const useServicesStore = defineStore('services', () => {
     return window.setInterval(handler, delay)
   }
 
-  async function getRecommendation<T extends RecommendationAction>(newContext?: any) {
+  async function getRecommendation<T extends Recommendations[]>(newContext?: any) {
     const payload = newContext || context.value
-    const { data } = await servicesApi.getRecommendation<any>(payload)
+    const { data } = await servicesApi.getRecommendation<T>(payload)
     recommendations.value = data
   }
 

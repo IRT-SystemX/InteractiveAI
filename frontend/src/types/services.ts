@@ -1,10 +1,12 @@
 import type { Context, Entity } from './entities'
 
 export type Recommendations = {
+  description: string
+  title: string
   actions: RecommendationAction[]
 }
 
-export type RecommendationAction = object
+export type RecommendationAction = { [key: string]: any }
 
 export type ContextResponse = [
   {
