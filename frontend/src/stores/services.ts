@@ -2,25 +2,30 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import * as servicesApi from '@/api/services'
-import type { Entity } from '@/types/entities'
+import type { Context, Entity } from '@/types/entities'
+import type { RecommendationAction } from '@/types/services'
 
 export const useServicesStore = defineStore('services', () => {
-  const context = ref<any>()
+  const context = ref<Context | undefined>()
   const recommendations = ref<any[]>([])
 
-  async function getContext<T>(entity: Entity, callback: (context: T) => any, delay = 5000) {
+  async function getContext<T extends Context>(
+    entity: Entity,
+    callback: (context: T) => void,
+    delay = 5000
+  ) {
     const handler = async () => {
       const { data } = await servicesApi.getContext()
       context.value = data.find((el) => el.use_case === entity)?.data
-      callback(context.value)
+      if (context.value) callback(context.value as T)
     }
     handler()
     return window.setInterval(handler, delay)
   }
 
-  async function getRecommendation(newContext?: any) {
+  async function getRecommendation<T extends RecommendationAction>(newContext?: any) {
     const payload = newContext || context.value
-    const { data } = await servicesApi.getRecommendation(payload)
+    const { data } = await servicesApi.getRecommendation<any>(payload)
     recommendations.value = data
   }
 

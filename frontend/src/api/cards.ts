@@ -1,6 +1,7 @@
 import http from '@/plugins/http'
 import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
+import type { CardMetadata } from '@/types/entities'
 
 let controller: AbortController
 
@@ -13,7 +14,7 @@ export async function getCardsSubscription(
     rangeStart?: string
     notification?: 'true' | 'false'
   },
-  handler: (card: CardEvent) => void
+  handler: (card: CardEvent<CardMetadata>) => void
 ) {
   controller = new AbortController()
   const response = await fetch(
@@ -51,7 +52,7 @@ export async function getCardsSubscription(
             break
           default:
             try {
-              handler(JSON.parse(data) as CardEvent)
+              handler(JSON.parse(data) as CardEvent<CardMetadata>)
             } catch (err) {}
         }
       }
@@ -63,15 +64,15 @@ export function isSubscriptionActive() {
   return http.get<boolean>('/cards/willNewSubscriptionDisconnectAnExistingSubscription')
 }
 
-export function getCard(id: string) {
-  return http.get<{ card: Card }>(`/cards/cards/${id}`)
+export function getCard<T extends CardMetadata>(id: string) {
+  return http.get<{ card: Card<T> }>(`/cards/cards/${id}`)
 }
 
 export function deleteCard(id: string) {
   http.delete(`/cardspub/cards/${id}`)
 }
 
-export function acknowledgeCard(card: Card) {
+export function acknowledgeCard(card: Card<CardMetadata>) {
   http.post(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }
 

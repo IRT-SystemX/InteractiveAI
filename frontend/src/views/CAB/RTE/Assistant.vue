@@ -11,12 +11,13 @@ import { ref } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
+import type { Metadata } from '@/types/entities/RTE'
 
 import Default from '../Common/Assistant/Default.vue'
 import Event from './Assistant/Event.vue'
 import Recommendations from './Assistant/Recommendations.vue'
 
-const card = ref<Card | undefined>(undefined)
+const card = ref<Card<Metadata> | undefined>(undefined)
 
 const tab = ref(0)
 

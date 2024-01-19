@@ -25,7 +25,8 @@ import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
-import type { Severity } from '@/types/cards'
+import type { Card, Severity } from '@/types/cards'
+import type * as SNCF from '@/types/entities/SNCF'
 
 import Context from '../Common/Context.vue'
 
@@ -38,17 +39,20 @@ const cardsStore = useCardsStore()
 const contextId = ref(0)
 
 onMounted(async () => {
-  contextId.value = await servicesStore.getContext('SNCF', (context: any) => {
+  contextId.value = await servicesStore.getContext<SNCF.Context>('SNCF', (context) => {
     for (const train of context.trains)
       mapStore.addContextWaypoint({
         lat: train.latitude,
         lng: train.longitude,
         id: train.id_train,
         options: {
-          severity: cardsStore.cards.reduce((acc: Severity | undefined, curr) => {
-            if (curr.data?.metadata.id_train === train.id_train) return curr.severity
-            return acc
-          }, undefined)
+          severity: (cardsStore.cards as Card<SNCF.Metadata>[]).reduce(
+            (acc: Severity | undefined, curr) => {
+              if (curr.data?.metadata.id_train === train.id_train) return curr.severity
+              return acc
+            },
+            undefined
+          )
         }
       })
   })

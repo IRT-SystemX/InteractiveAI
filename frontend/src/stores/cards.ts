@@ -4,10 +4,10 @@ import { ref } from 'vue'
 
 import * as cardsApi from '@/api/cards'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
-import type { Entity } from '@/types/entities'
+import type { CardMetadata, Entity } from '@/types/entities'
 
 export const useCardsStore = defineStore('cards', () => {
-  const cards = ref<Card[]>([])
+  const cards = ref<Card<CardMetadata>[]>([])
 
   async function getCards(entity: Entity, hydrated = false) {
     const { data } = await cardsApi.isSubscriptionActive()
@@ -15,7 +15,7 @@ export const useCardsStore = defineStore('cards', () => {
       const res = confirm('Un utilisateur est connecté, le déconnecter?')
       if (!res) return
     }
-    const handler = async (cardEvent: CardEvent) => {
+    const handler = async (cardEvent: CardEvent<CardMetadata>) => {
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
         existingCard = cards.value.findIndex((card) => cardEvent.cardId === card.id)

@@ -11,17 +11,18 @@ import { ref } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
+import type { Metadata } from '@/types/entities/ORANGE'
 
 import Default from '../Common/Assistant/Default.vue'
 import Correlations from './Assistant/Correlations.vue'
 import Event from './Assistant/Event.vue'
 
-const card = ref<Card | undefined>(undefined)
+const card = ref<Card<Metadata> | undefined>(undefined)
 
 const tab = ref(0)
 
 eventBus.on('assistant:selected', (selected) => {
-  card.value = selected
+  card.value = selected as Card<Metadata>
   tab.value = 1
 })
 eventBus.on('assistant:tab', (index) => {
