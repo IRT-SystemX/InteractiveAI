@@ -4,7 +4,9 @@ import type * as RTE from './entities/RTE'
 import type * as SNCF from './entities/SNCF'
 // You can add your custom types here
 
-export const Entities = <const>{
+type EntityParams = { hydrated: boolean }
+
+export const Entities: { [entity: string]: EntityParams } = <const>{
   ORANGE: { hydrated: true },
   DA: { hydrated: false },
   RTE: { hydrated: false },
