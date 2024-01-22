@@ -1,12 +1,6 @@
 <template>
-  <Context v-model="activeTab" :tabs="[$t('cab.tab.graph')]">
-    <Graph
-      v-if="activeTab === 0"
-      :data="
-        graphStore.d3Correlations(
-          card?.data?.metadata.id_app ? +/App_(\d+).*/.exec(card?.data?.metadata.id_app)![1] : -1
-        )
-      " />
+  <Context v-model="tab" :tabs="[$t('cab.tab.graph')]">
+    <Graph v-if="tab === 0" />
   </Context>
   <div id="graph-tooltip">
     <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-v">
@@ -32,9 +26,9 @@ import type { Metadata } from '@/types/entities/ORANGE'
 import Context from '../Common/Context.vue'
 
 const card = ref<Card<Metadata> | null>()
-const activeTab = ref(0)
+const tab = ref(0)
 const graphStore = useGraphStore()
-const tooltipData = ref<any | undefined>(['test'])
+const tooltipData = ref<any | null>()
 
 eventBus.on('graph:showTooltip', (node) => {
   tooltipData.value = node
@@ -42,6 +36,7 @@ eventBus.on('graph:showTooltip', (node) => {
 
 eventBus.on('assistant:selected', (selected) => {
   card.value = selected as Card<Metadata>
+  graphStore.d3Correlations(+/App_(\d+)/.exec(card.value.data?.metadata.id_app!)![1])
 })
 </script>
 <style lang="scss">

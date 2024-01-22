@@ -1,10 +1,10 @@
 <template>
   <Context
-    v-model="activeTab"
+    v-model="tab"
     :tabs="[$t('cab.tab.map'), $t('cab.tab.synoptic'), $t('cab.tab.dependencies')]">
-    <Map v-if="activeTab === 0"></Map>
-    <div v-if="activeTab === 1">1</div>
-    <div v-if="activeTab === 2">2</div>
+    <Map v-if="tab === 0"></Map>
+    <div v-if="tab === 1">1</div>
+    <div v-if="tab === 2">2</div>
   </Context>
 </template>
 <script setup lang="ts">
@@ -16,7 +16,7 @@ import { useServicesStore } from '@/stores/services'
 
 import Context from '../Common/Context.vue'
 
-const activeTab = ref(0)
+const tab = ref(0)
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()

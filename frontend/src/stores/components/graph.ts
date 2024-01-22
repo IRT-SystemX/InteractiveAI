@@ -5,8 +5,10 @@ import * as servicesApi from '@/api/services'
 import * as d3 from '@/utils/d3'
 
 export const useGraphStore = defineStore('graph', () => {
+  const data = ref<{ nodes: any[]; links: any[] } | undefined>(undefined)
   const correlations = ref<{ [key: string]: { [key: string]: number } } | undefined>(undefined)
   const shown = ref(5)
+
   const formattedData = computed(() =>
     correlations.value
       ? Object.keys(correlations.value)
@@ -15,7 +17,7 @@ export const useGraphStore = defineStore('graph', () => {
           .sort(([, a], [, b]) => b - a)
       : []
   )
-  function d3Correlations(source: number) {
+  function d3Correlations(source = 1) {
     if (!correlations.value)
       return {
         nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [] })),
@@ -48,7 +50,10 @@ export const useGraphStore = defineStore('graph', () => {
     for (const link of links) {
       d3.setStatus(link.target, 'active')
     }
-
+    data.value = {
+      nodes,
+      links
+    }
     return {
       nodes,
       links
@@ -65,11 +70,5 @@ export const useGraphStore = defineStore('graph', () => {
     shown.value = 5
   }
 
-  return {
-    correlations,
-    shown,
-    formattedData,
-    d3Correlations,
-    getCorrelations
-  }
+  return { data, correlations, shown, formattedData, d3Correlations, getCorrelations }
 })

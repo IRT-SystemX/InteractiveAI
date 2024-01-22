@@ -17,7 +17,7 @@ import Default from '../Common/Assistant/Default.vue'
 import Correlations from './Assistant/Correlations.vue'
 import Event from './Assistant/Event.vue'
 
-const card = ref<Card<Metadata> | undefined>(undefined)
+const card = ref<Card<Metadata> | null>()
 
 const tab = ref(0)
 

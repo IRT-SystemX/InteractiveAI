@@ -79,7 +79,6 @@ const graphStore = useGraphStore()
 const props = defineProps<{ card: Card<Metadata> }>()
 
 function getCorrelations() {
-  console.log(/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1])
   graphStore.getCorrelations({
     size: size.value / 5,
     app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]

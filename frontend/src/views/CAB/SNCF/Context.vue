@@ -1,17 +1,17 @@
 <template>
   <Context
-    v-model="activeTab"
+    v-model="tab"
     :tabs="[
       $t('cab.tab.incident'),
       $t('cab.tab.equipment'),
       $t('cab.tab.passengers'),
       $t('cab.tab.map')
     ]">
-    <div v-if="activeTab === 0">0</div>
-    <div v-if="activeTab === 1">1</div>
-    <div v-if="activeTab === 2">2</div>
+    <div v-if="tab === 0">0</div>
+    <div v-if="tab === 1">1</div>
+    <div v-if="tab === 2">2</div>
     <Map
-      v-if="activeTab === 3"
+      v-if="tab === 3"
       :tile-layers="[
         'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png'
@@ -30,7 +30,7 @@ import type * as SNCF from '@/types/entities/SNCF'
 
 import Context from '../Common/Context.vue'
 
-const activeTab = ref(0)
+const tab = ref(0)
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import * as cardsApi from '@/api/cards'
+import eventBus from '@/plugins/eventBus'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import type { CardMetadata, Entity } from '@/types/entities'
 
@@ -12,9 +13,22 @@ export const useCardsStore = defineStore('cards', () => {
   async function getCards(entity: Entity, hydrated = false) {
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
-      const res = confirm('Un utilisateur est connecté, le déconnecter?')
-      if (!res) return
+      const id = crypto.randomUUID()
+      eventBus.emit('modal:open', {
+        id,
+        data: 'Un utilisateur est connecté, le déconnecter?',
+        type: 'choice'
+      })
+      eventBus.on(
+        'modal:close',
+        (data) => data.id === id && data.res === 'ok' && _getCards(entity, hydrated)
+      )
+    } else {
+      _getCards(entity, hydrated)
     }
+  }
+
+  async function _getCards(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent<CardMetadata>) => {
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
