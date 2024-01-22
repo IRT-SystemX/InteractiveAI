@@ -54,7 +54,7 @@
       v-if="graphStore.shown < graphStore.formattedData.length"
       color="secondary"
       class="self-end"
-      @click="graphStore.shown += 5">
+      @click="more">
       + Résultats
     </Button>
   </main>
@@ -78,11 +78,17 @@ const graphStore = useGraphStore()
 
 const props = defineProps<{ card: Card<Metadata> }>()
 
-function getCorrelations() {
-  graphStore.getCorrelations({
+async function getCorrelations() {
+  await graphStore.getCorrelations({
     size: size.value / 5,
     app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   })
+  graphStore.d3Correlations(+/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1])
+}
+
+function more() {
+  graphStore.shown += 5
+  graphStore.d3Correlations(+/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1])
 }
 
 onMounted(() => {

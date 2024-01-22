@@ -19,7 +19,6 @@ import { ref } from 'vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Graph from '@/components/organisms/Graph.vue'
 import eventBus from '@/plugins/eventBus'
-import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
 import type { Metadata } from '@/types/entities/ORANGE'
 
@@ -27,7 +26,6 @@ import Context from '../Common/Context.vue'
 
 const card = ref<Card<Metadata> | null>()
 const tab = ref(0)
-const graphStore = useGraphStore()
 const tooltipData = ref<any | null>()
 
 eventBus.on('graph:showTooltip', (node) => {
@@ -36,7 +34,6 @@ eventBus.on('graph:showTooltip', (node) => {
 
 eventBus.on('assistant:selected', (selected) => {
   card.value = selected as Card<Metadata>
-  graphStore.d3Correlations(+/App_(\d+)/.exec(card.value.data?.metadata.id_app!)![1])
 })
 </script>
 <style lang="scss">
