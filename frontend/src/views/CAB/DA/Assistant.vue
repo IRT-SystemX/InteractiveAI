@@ -17,8 +17,14 @@ import Recommendations from './Assistant/Recommendations.vue'
 
 const tab = ref(0)
 
-eventBus.on('assistant:selected', () => {
+eventBus.on('assistant:selected', async (selectedCard) => {
   tab.value = 1
+  const firstClickPromise = new Promise((resolve) => {
+    document.getElementsByClassName("cab-tab")[1].addEventListener("click", resolve, { once: true });
+    document.getElementsByClassName("cab-tab")[1].click();
+  });
+  await firstClickPromise;
+  document.getElementById("ecs").click();
 })
 eventBus.on('assistant:tab', (index) => {
   tab.value = index
