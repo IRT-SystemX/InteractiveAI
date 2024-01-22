@@ -30,4 +30,3 @@ eventBus.on('assistant:tab', (index) => {
   scroll-snap-type: y mandatory;
 }
 </style>
-@/stores/components/map
