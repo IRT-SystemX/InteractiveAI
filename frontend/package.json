@@ -18,7 +18,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lint:svg": "svgo -rf src/assets/img public/img",
     "format": "prettier --write src/",
-    "commit": "commit"
+    "commit": "commit",
+    "prepare": "cd .. && husky install frontend/.husky"
   },
   "dependencies": {
     "@vueuse/core": "^10.7.0",

@@ -1,2 +1,1 @@
-const exp = { extends: ['@commitlint/config-conventional'] }
-export default exp
+export default { extends: ['@commitlint/config-conventional'] }
