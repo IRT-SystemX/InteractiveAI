@@ -187,4 +187,3 @@ onBeforeUnmount(() => {
   }
 }
 </style>
-@/stores/components/map
