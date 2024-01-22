@@ -19,6 +19,7 @@ export type Card = {
   }
   summaryTranslated: string
   keepChildCards: boolean
+  hasBeenAcknowledged?: boolean
   processInstanceId: string
   process: string
   publisherType: PublisherType

@@ -33,6 +33,7 @@ export const useCardsStore = defineStore('cards', () => {
       switch (cardEvent.type) {
         case CardOperationType.ADD:
         case CardOperationType.UPDATE:
+          if (cardEvent.card.hasBeenAcknowledged) return
           // eslint-disable-next-line no-case-declarations
           let hydratedCard = {}
           if (hydrated) {
