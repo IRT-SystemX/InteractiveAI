@@ -1,14 +1,14 @@
 <template>
   <Context
-    v-model="activeTab"
+    v-model="tab"
     :tabs="[$t('cab.tab.map'), $t('cab.tab.synoptic'), $t('cab.tab.dependencies')]">
-    <Map v-if="activeTab === 0"></Map>
+    <Map v-if="tab === 0"></Map>
     <Synoptic
-      v-if="activeTab === 1"
+      v-if="tab === 1"
       :tab="synopticTab"
       :faulty="faulty"
       @update:tab="synopticTab = $event"></Synoptic>
-    <div v-if="activeTab === 2">2</div>
+    <div v-if="tab === 2">2</div>
   </Context>
 </template>
 <script setup lang="ts">
@@ -22,7 +22,7 @@ import { useServicesStore } from '@/stores/services'
 import Context from '../Common/Context.vue'
 import Synoptic from './Context/Synoptic.vue'
 
-const activeTab = ref(0)
+const tab = ref(0)
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
 })
 
 eventBus.on('assistant:selected', (card) => {
-  activeTab.value = 1
+  tab.value = 1
   faulty.value = true
   synopticTab.value = 'ECS'
 })
@@ -106,4 +106,3 @@ eventBus.on('assistant:selected', (card) => {
   border-radius: 7px;
 }
 </style>
-@/stores/components/map

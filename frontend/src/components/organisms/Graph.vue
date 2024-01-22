@@ -1,26 +1,27 @@
 <template>
-  <div id="cab-graph" ref="graph"></div>
+  <div id="cab-graph" ref="graphHTML"></div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
+import { useGraphStore } from '@/stores/components/graph'
 import { setup } from '@/utils/d3'
 
-const props = defineProps<{ data: any }>()
+const graphStore = useGraphStore()
 
-const graph = ref<HTMLDivElement | null>(null)
+const graphHTML = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   setup(
     { nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [] })), links: [] },
-    graph.value!
+    graphHTML.value!
   )
 })
 
 watch(
-  () => props.data,
+  () => graphStore.data,
   (value) => {
-    setup(value, graph.value!)
+    setup(value, graphHTML.value!)
   }
 )
 </script>

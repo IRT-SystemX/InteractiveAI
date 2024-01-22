@@ -94,12 +94,13 @@ import { onMounted } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
+import type { CardMetadata } from '@/types/entities'
 import { minmax, repeatEvery, severityToColor } from '@/utils/utils'
 
 import Notification from './Notification.vue'
 
 const now = ref(new Date())
-const props = defineProps<{ start: number; end: number; cards: Card[] }>()
+const props = defineProps<{ start: number; end: number; cards: Card<CardMetadata>[] }>()
 const window = computed(() => ({
   start: addMinutes(now.value, props.start),
   end: addMinutes(now.value, props.end),

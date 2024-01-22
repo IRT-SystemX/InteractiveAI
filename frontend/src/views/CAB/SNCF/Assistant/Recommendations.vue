@@ -50,6 +50,7 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Metadata } from '@/types/entities/SNCF'
 
 const selectedRecommendation = ref<number>(-1)
 
@@ -57,7 +58,7 @@ const servicesStore = useServicesStore()
 
 const route = useRoute()
 
-defineProps<{ card: Card }>()
+defineProps<{ card: Card<Metadata> }>()
 
 function applyParry() {
   sendTrace({

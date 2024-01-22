@@ -1,12 +1,19 @@
 import mitt from 'mitt'
 
 import type { Card } from '@/types/cards'
+import type { CardMetadata } from '@/types/entities'
 
 const eventBus = mitt<{
   'progress:start': void
   'progress:stop': void
-  modal: string
-  'assistant:selected': Card
+  'modal:open': {
+    id: `${string}-${string}-${string}-${string}-${string}`
+    data: string
+    type: 'choice' | 'info'
+  }
+  'modal:close': { id: `${string}-${string}-${string}-${string}-${string}`; res: 'ok' | 'ko' }
+  'assistant:selected': Card<CardMetadata>
+  'graph:update': any
   'graph:showTooltip': any
   'assistant:tab': number
   'assistant:procedure:checked': any

@@ -1,7 +1,7 @@
 <template>
-  <Context v-model="activeTab" :tabs="[$t('cab.tab.context')]">
+  <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
     <img
-      v-if="activeTab === 0"
+      v-if="tab === 0"
       :src="`data:image/png;base64, ${topology}`"
       class="cab-context-topology" />
   </Context>
@@ -13,7 +13,7 @@ import { useServicesStore } from '@/stores/services'
 
 import Context from '../Common/Context.vue'
 
-const activeTab = ref(0)
+const tab = ref(0)
 
 const servicesStore = useServicesStore()
 

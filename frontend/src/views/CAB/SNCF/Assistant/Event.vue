@@ -38,6 +38,7 @@ import SVG from '@/components/atoms/SVG.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Metadata } from '@/types/entities/SNCF'
 import { severityToColor } from '@/utils/utils'
 
 const route = useRoute()
@@ -51,7 +52,7 @@ function askRecommendations() {
   eventBus.emit('assistant:tab', 2)
 }
 
-defineProps<{ card: Card }>()
+defineProps<{ card: Card<Metadata> }>()
 </script>
 <style lang="scss">
 .cab-event {

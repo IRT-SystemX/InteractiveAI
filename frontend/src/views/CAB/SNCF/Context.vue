@@ -1,17 +1,17 @@
 <template>
   <Context
-    v-model="activeTab"
+    v-model="tab"
     :tabs="[
       $t('cab.tab.incident'),
       $t('cab.tab.equipment'),
       $t('cab.tab.passengers'),
       $t('cab.tab.map')
     ]">
-    <div v-if="activeTab === 0">0</div>
-    <div v-if="activeTab === 1">1</div>
-    <div v-if="activeTab === 2">2</div>
+    <div v-if="tab === 0">0</div>
+    <div v-if="tab === 1">1</div>
+    <div v-if="tab === 2">2</div>
     <Map
-      v-if="activeTab === 3"
+      v-if="tab === 3"
       :tile-layers="[
         'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
         'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png'
@@ -25,11 +25,12 @@ import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
-import type { Severity } from '@/types/cards'
+import type { Card, Severity } from '@/types/cards'
+import type * as SNCF from '@/types/entities/SNCF'
 
 import Context from '../Common/Context.vue'
 
-const activeTab = ref(0)
+const tab = ref(0)
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
@@ -38,17 +39,20 @@ const cardsStore = useCardsStore()
 const contextId = ref(0)
 
 onMounted(async () => {
-  contextId.value = await servicesStore.getContext('SNCF', (context: any) => {
+  contextId.value = await servicesStore.getContext<SNCF.Context>('SNCF', (context) => {
     for (const train of context.trains)
       mapStore.addContextWaypoint({
         lat: train.latitude,
         lng: train.longitude,
         id: train.id_train,
         options: {
-          severity: cardsStore.cards.reduce((acc: Severity | undefined, curr) => {
-            if (curr.data?.metadata.id_train === train.id_train) return curr.severity
-            return acc
-          }, undefined)
+          severity: (cardsStore.cards as Card<SNCF.Metadata>[]).reduce(
+            (acc: Severity | undefined, curr) => {
+              if (curr.data?.metadata.id_train === train.id_train) return curr.severity
+              return acc
+            },
+            undefined
+          )
         }
       })
   })

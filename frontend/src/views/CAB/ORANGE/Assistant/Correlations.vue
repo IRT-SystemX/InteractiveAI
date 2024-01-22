@@ -69,19 +69,19 @@ import CardVue from '@/components/atoms/Card.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
+import type { Metadata } from '@/types/entities/ORANGE'
 import { focusLink, hideLinks, showLink } from '@/utils/d3'
 
 const size = ref(5)
 
 const graphStore = useGraphStore()
 
-const props = defineProps<{ card: Card }>()
+const props = defineProps<{ card: Card<Metadata> }>()
 
 function getCorrelations() {
-  console.log(/App_(\d+)/.exec(props.card.data?.metadata.id_app)![1])
   graphStore.getCorrelations({
     size: size.value / 5,
-    app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app)![1]
+    app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   })
 }
 

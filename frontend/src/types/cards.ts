@@ -1,4 +1,4 @@
-import type { Entity } from './entities'
+import type { CardMetadata, Entity } from './entities'
 
 export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'
 
@@ -11,7 +11,7 @@ export enum CardOperationType {
   ACK = 'ACK'
 }
 
-export type Card = {
+export type Card<T extends CardMetadata> = {
   severity: Severity
   summary: {
     parameters: { summary: string }
@@ -35,7 +35,7 @@ export type Card = {
   state: string
   startDate: number
   hydrated: boolean
-  data?: { metadata: any }
+  data?: { metadata: T }
 }
 
 export type CardAck = {
@@ -51,16 +51,16 @@ export type CardDelete = {
   cardId: string
 }
 
-export type CardAdd = {
+export type CardAdd<T extends CardMetadata> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.ADD
-  card: Card
+  card: Card<T>
 }
 
-export type CardUpdate = {
+export type CardUpdate<T extends CardMetadata> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.UPDATE
-  card: Card
+  card: Card<T>
 }
 
-export type CardEvent = CardAdd | CardUpdate | CardAck | CardDelete
+export type CardEvent<T extends CardMetadata> = CardAdd<T> | CardUpdate<T> | CardAck | CardDelete
