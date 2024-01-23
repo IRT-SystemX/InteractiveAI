@@ -1,24 +1,10 @@
 import http from '@/plugins/http'
 import type { Context, Entity } from '@/types/entities'
-import type { ContextResponse, RecommendationAction } from '@/types/services'
+import type { ContextResponse } from '@/types/services'
 import type { TraceType } from '@/types/trace'
 
 export function getRecommendation<T>(context: Context) {
   return http.post<T>('/cab_recommendation/api/v1/recommendation', context)
-}
-
-export function getProcedure(event_type: string = 'ENG1: AUTO SHUTDOWN') {
-  return http.post('/cab_recommendation/api/v1/procedure', {
-    event: {
-      event_type
-    }
-  })
-}
-
-export function getCorrelations(params: { size: number; app_id?: string; kpi_name?: string }) {
-  return http.get('cab_correlation/api/v1/correlation', {
-    params
-  })
 }
 
 export function getContext() {
@@ -35,12 +21,4 @@ export function sendTrace(payload: {
     ...payload,
     date: new Date().toISOString()
   })
-}
-
-export function applyRecommendationRTE(data: RecommendationAction) {
-  return http.post(import.meta.env.VITE_RTE_SIMU + '/api/v1/recommendations', data)
-}
-
-export function applyRecommendationSNCF(data: RecommendationAction) {
-  return http.post(import.meta.env.VITE_SNCF_SIMU + '/transport_plan', data)
 }

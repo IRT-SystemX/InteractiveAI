@@ -65,6 +65,7 @@ import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { nextTick } from 'vue'
 
+import { getCorrelations as getCorrelationsApi } from '@/api/services/ORANGE'
 import Button from '@/components/atoms/Button.vue'
 import CardVue from '@/components/atoms/Card.vue'
 import SVG from '@/components/atoms/SVG.vue'
@@ -81,10 +82,13 @@ const props = defineProps<{ card: Card<Metadata> }>()
 
 async function getCorrelations() {
   const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
-  await graphStore.getCorrelations({
+  const { data } = await getCorrelationsApi({
     size: size.value / 5,
-    app_id
+    app_id,
+    kpi_name: props.card.data?.metadata.bad_kpi
   })
+  graphStore.correlations = data[0].data
+  graphStore.shown = 5
   graphStore.d3Correlations(+app_id)
   nextTick(() => zoomToNode(+app_id))
 }

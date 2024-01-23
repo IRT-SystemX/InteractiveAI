@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 
-import { getProcedure } from '@/api/services'
+import { getProcedure } from '@/api/services/DA'
 import ProcedureBlock from '@/components/molecules/ProcedureBlock.vue'
 import eventBus from '@/plugins/eventBus'
 

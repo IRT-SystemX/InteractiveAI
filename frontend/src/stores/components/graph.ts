@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import * as servicesApi from '@/api/services'
 import * as d3 from '@/utils/d3'
 
 export const useGraphStore = defineStore('graph', () => {
@@ -60,15 +59,5 @@ export const useGraphStore = defineStore('graph', () => {
     }
   }
 
-  async function getCorrelations(params: { size: number; app_id?: string; kpi_name?: string }) {
-    const { data } = await servicesApi.getCorrelations({
-      size: params.size,
-      app_id: params.app_id,
-      kpi_name: params.kpi_name
-    })
-    correlations.value = data[0].data
-    shown.value = 5
-  }
-
-  return { data, correlations, shown, formattedData, d3Correlations, getCorrelations }
+  return { data, correlations, shown, formattedData, d3Correlations }
 })
