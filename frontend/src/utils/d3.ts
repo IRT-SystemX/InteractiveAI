@@ -20,9 +20,9 @@ export function setup(data, element: HTMLElement) {
   ctx.svg = d3
     .select(element)
     .append('svg')
-    .attr('width', config.width)
-    .attr('height', config.height)
-    .attr('id', 'orange_graph')
+    .attr('width', element.clientWidth)
+    .attr('height', element.clientHeight)
+    .attr('id', 'd3-graph')
     .append('g')
 
   ctx.tooltip = d3.select(document.getElementById('graph-tooltip')).style('opacity', 0)
@@ -111,6 +111,17 @@ export function setup(data, element: HTMLElement) {
     .on('zoom', (event) => ctx.svg.attr('transform', event.transform))
 
   ctx.zoom(d3.select(element))
+
+  ctx.svg
+    .transition()
+    .duration(750)
+    .call(
+      ctx.zoom.transform,
+      d3.zoomIdentity.translate(
+        document.getElementById('d3-graph')?.clientWidth / 2,
+        document.getElementById('d3-graph')?.clientHeight / 2
+      )
+    )
 }
 
 export function setStatus(node, severity) {
@@ -159,7 +170,7 @@ export function showNode(id) {
   zoomToNode(id)
 }
 
-export function zoomToNode(id, zoom = 2) {
+export function zoomToNode(id, zoom = 1.2) {
   const node = ctx.data.nodes.find((node) => node.id === id)
   ctx.svg
     .transition()
@@ -167,10 +178,7 @@ export function zoomToNode(id, zoom = 2) {
     .call(
       ctx.zoom.transform,
       d3.zoomIdentity
-        .translate(
-          document.getElementById('cab-graph')?.clientWidth / 2,
-          document.getElementById('cab-graph')?.clientHeight / 2
-        )
+        .translate(document.getElementById('cab-graph')?.clientWidth / 2, 0)
         .scale(zoom)
         .translate(-node.x, -node.y)
     )

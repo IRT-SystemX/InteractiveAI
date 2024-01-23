@@ -63,6 +63,7 @@
 import { Info } from 'lucide-vue-next'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
+import { nextTick } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
 import CardVue from '@/components/atoms/Card.vue'
@@ -70,7 +71,7 @@ import SVG from '@/components/atoms/SVG.vue'
 import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
 import type { Metadata } from '@/types/entities/ORANGE'
-import { focusLink, hideLinks, showLink } from '@/utils/d3'
+import { focusLink, hideLinks, showLink, zoomToNode } from '@/utils/d3'
 
 const size = ref(5)
 
@@ -79,16 +80,20 @@ const graphStore = useGraphStore()
 const props = defineProps<{ card: Card<Metadata> }>()
 
 async function getCorrelations() {
+  const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   await graphStore.getCorrelations({
     size: size.value / 5,
-    app_id: /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
+    app_id
   })
-  graphStore.d3Correlations(+/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1])
+  graphStore.d3Correlations(+app_id)
+  nextTick(() => zoomToNode(+app_id))
 }
 
 function more() {
+  const app_id = +/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   graphStore.shown += 5
-  graphStore.d3Correlations(+/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1])
+  graphStore.d3Correlations()
+  nextTick(() => zoomToNode(app_id))
 }
 
 onMounted(() => {
