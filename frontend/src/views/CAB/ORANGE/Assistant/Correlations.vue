@@ -84,8 +84,7 @@ async function getCorrelations() {
   const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   const { data } = await getCorrelationsApi({
     size: size.value / 5,
-    app_id,
-    kpi_name: props.card.data?.metadata.bad_kpi
+    app_id
   })
   graphStore.correlations = data[0].data
   graphStore.shown = 5
