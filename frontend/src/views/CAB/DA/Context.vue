@@ -47,6 +47,9 @@ eventBus.on('assistant:selected', (card) => {
   faulty.value = true
   synopticTab.value = 'ECS'
 })
+eventBus.on('navbar:tab', (value) => {
+  tab.value = value
+})
 </script>
 <style lang="scss">
 .btn-group-synoptic button {
