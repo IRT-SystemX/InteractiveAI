@@ -1,4 +1,14 @@
 {
   "card.event_type.IMPACT": "Impact",
-  "card.event_type.PASSENGER": "Voyageur"
+  "card.event_type.INFRASTRUCTURE": "Infrastructure",
+  "card.event_type.PASSENGER": "Voyageur",
+  "card.event_type.RAIL": "Rail",
+  "event.button.primary": "Recalculer les plans de transports",
+  "event.button.secondary": "Continuer le suivi de procédure",
+  "event.text": "{event} détectée. Souhaitez-vous de l'aide pour recalculer les plans de transport ?",
+  "recommendations.button1": "Desserte",
+  "recommendations.button2": "Retard cumulé",
+  "recommendations.button3": "Coût",
+  "recommendations.button4": "Impact client",
+  "recommendations.description": "Description parade"
 }

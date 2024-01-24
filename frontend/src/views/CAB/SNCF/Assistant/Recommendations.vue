@@ -2,8 +2,10 @@
   <main class="cab-parries">
     <div class="flex flex-wrap flex-gap">
       <Settings />
-      <Button>Coût</Button>
-      <Button>LTTD > 2h</Button>
+      <Button>{{ $t('recommendations.button1') }}</Button>
+      <Button>{{ $t('recommendations.button2') }}</Button>
+      <Button>{{ $t('recommendations.button3') }}</Button>
+      <Button>{{ $t('recommendations.button4') }}</Button>
     </div>
     <CardVue
       v-for="(recommendation, index) of servicesStore.recommendations"
@@ -28,10 +30,10 @@
       </template>
     </CardVue>
     <Button v-if="selectedRecommendation !== -1" class="self-end" @click="applyParry">
-      Appliquer
+      {{ $t('button.apply') }}
     </Button>
     <div v-if="selectedRecommendation !== -1">
-      <h2>Description parade</h2>
+      <h2>{{ $t('recommendations.description') }}</h2>
       {{ servicesStore.recommendations[selectedRecommendation].description }}
     </div>
   </main>

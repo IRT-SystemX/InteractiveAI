@@ -1,6 +1,11 @@
 {
   "cab.notifications": "Anomalies",
   "cab.tab.graph": "Correlation graph",
+  "correlations.refresh": "Refresh the results",
+  "correlations.timestep": "Time steps",
+  "event.button.primary": "Calculate correlations",
+  "event.button.secondary": "View application history",
+  "event.text": "Anomaly on {event} detected. Would you like help diagnosing this anomaly?",
   "kpi.delay_avg": "Response time",
   "kpi.nb_err": "Number of errors",
   "kpi.nb_pl": "Number of slow pages",

@@ -9,7 +9,7 @@
         fill="var(--color-primary)"
         :width="16"
         class="mr-1"></SVG>
-      {{ $t('kpi.' + datum[0]) }} à {{ Math.round(datum[1]) }}%
+      {{ $t('kpi.' + datum[0]) }} {{ $t('to') }} {{ Math.round(datum[1]) }}%
     </div>
   </div>
 </template>

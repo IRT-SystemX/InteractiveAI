@@ -1,5 +1,11 @@
 {
   "cab.assistant": "Recommendations",
   "cab.notifications": "Alerts",
-  "cab.notifications.sub": "Tasks"
+  "cab.notifications.sub": "Tasks",
+  "event.button.primary": "Consult the recommendations",
+  "event.button.secondary": "Use the analysis tool",
+  "event.text": "{event} detected. Would you like help processing the event?",
+  "recommendations.button1": "Cost",
+  "recommendations.button2": "LTTD > 2h",
+  "recommendations.description": "Parry description"
 }

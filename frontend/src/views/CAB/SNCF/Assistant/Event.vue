@@ -3,14 +3,17 @@
     <SVG src="logo" fill="var(--color-primary)" :width="56" class="self-center"></SVG>
     <div>
       <SpeechBubble>
-        <strong :style="{ color: `var(--color-${severityToColor(card.severity)})` }">
-          {{ card.titleTranslated }}
-        </strong>
-        détectée. Souhaitez-vous de l'aide pour recalculer les plans de transport ?
+        <i18n-t keypath="event.text">
+          <template #event>
+            <strong :style="{ color: `var(--color-${severityToColor(card.severity)})` }">
+              {{ card.titleTranslated }}
+            </strong>
+          </template>
+        </i18n-t>
       </SpeechBubble>
     </div>
     <div class="row">
-      <Button type="button" @click="askRecommendations">Recalculer les plans de transports</Button>
+      <Button type="button" @click="askRecommendations">{{ $t('event.button.primary') }}</Button>
       <Info
         fill="var(--color-grey-600)"
         stroke="var(--color-background)"
@@ -18,7 +21,7 @@
         class="ml-1" />
     </div>
     <div class="row">
-      <Button type="button" color="secondary">Continuer le suivi de procédure</Button>
+      <Button type="button" color="secondary">{{ $t('event.button.secondary') }}</Button>
       <Info
         fill="var(--color-grey-600)"
         stroke="var(--color-background)"

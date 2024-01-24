@@ -3,15 +3,17 @@
     <SVG src="logo" fill="var(--color-primary)" :width="56" class="self-center"></SVG>
     <div>
       <SpeechBubble>
-        Anomalie sur
-        <strong style="color: var(--color-error)">
-          Application {{ card.data?.metadata.id_app }}
-        </strong>
-        détectée. Souhaitez-vous de l'aide au diagnostic de cette anomalie ?
+        <i18n-t keypath="event.text">
+          <template #event>
+            <strong style="color: var(--color-error)">
+              {{ card.titleTranslated }}
+            </strong>
+          </template>
+        </i18n-t>
       </SpeechBubble>
     </div>
     <div class="row">
-      <Button color="secondary" type="button">Consulter l'historique d'application</Button>
+      <Button color="secondary" type="button">{{ $t('event.button.secondary') }}</Button>
       <Info
         fill="var(--color-grey-600)"
         stroke="var(--color-background)"
@@ -20,7 +22,7 @@
     </div>
     <div class="row">
       <Button type="button" @click="eventBus.emit('assistant:tab', 2)">
-        Calculer des corrélations
+        {{ $t('event.button.primary') }}
       </Button>
       <Info
         fill="var(--color-grey-600)"

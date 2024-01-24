@@ -1,5 +1,9 @@
 {
   "assistant.plan": "Recommander un nouveau plan de vol",
   "cab.notifications": "Défaillances",
-  "cab.notifications.sub": "Notifications"
+  "cab.notifications.sub": "Notifications",
+  "recommendations.button1": "Maintenance cockpit",
+  "recommendations.button2": "Coût",
+  "recommendations.button3": "Accomodation",
+  "recommendations.title": "Recommendations de plan de vol"
 }

@@ -42,7 +42,7 @@ onBeforeUnmount(() => {
   clearInterval(contextId.value)
 })
 
-eventBus.on('assistant:selected', (card) => {
+eventBus.on('assistant:selected', () => {
   tab.value = 1
   faulty.value = true
   synopticTab.value = 'ECS'

@@ -1,9 +1,9 @@
 <template>
-  Flight plans recommendations
+  {{ $t('recommendations.title') }}
   <div class="flex flex-wrap">
-    <Button>Cockpit maintenance</Button>
-    <Button>Cost</Button>
-    <Button>Accomodation</Button>
+    <Button>{{ $t('recommendations.button1') }}</Button>
+    <Button>{{ $t('recommendations.button2') }}</Button>
+    <Button>{{ $t('recommendations.button3') }}</Button>
   </div>
   <Card
     v-for="recommendation of servicesStore.recommendations"

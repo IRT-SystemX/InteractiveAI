@@ -17,7 +17,7 @@ import Recommendations from './Assistant/Recommendations.vue'
 
 const tab = ref(0)
 
-eventBus.on('assistant:selected', async (selectedCard) => {
+eventBus.on('assistant:selected', async () => {
   tab.value = 1
 })
 eventBus.on('assistant:tab', (index) => {

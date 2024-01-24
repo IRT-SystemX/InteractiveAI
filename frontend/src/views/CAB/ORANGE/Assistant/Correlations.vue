@@ -1,37 +1,27 @@
 <template>
   <main class="cab-correlations">
-    <h2>Pas de temps</h2>
+    <h2>{{ $t('correlations.timestep') }}</h2>
     <div class="correlation-size">
-      5min
+      {{ $t('minute', 5) }}
       <input
         v-model="size"
         type="range"
         list="size"
         min="5"
         max="60"
-        value="5"
         step="5"
         @change="getCorrelations()" />
       <datalist id="size">
-        <option value="5" label="5min"></option>
-        <option value="15" label="15min"></option>
-        <option value="30" label="30min"></option>
-        <option value="45" label="45min"></option>
-        <option value="60" label="60min"></option>
+        <option
+          v-for="i of [5, 15, 30, 45, 60]"
+          :key="i"
+          :value="i"
+          :label="$t('minute', i)"></option>
       </datalist>
-      60 min
+      {{ $t('minute', 60) }}
     </div>
-    <div class="color-primary text-center">{{ size }} min</div>
-    <Button class="self-center" @click="getCorrelations()">Rafraîchir les résultats</Button>
-    <h2 class="flex flex-center">
-      <span class="color-primary">{{ graphStore.formattedData.length }}&nbsp;</span>
-      corrélations trouvées
-      <Info
-        fill="var(--color-grey-600)"
-        stroke="var(--color-background)"
-        :width="20"
-        class="ml-1" />
-    </h2>
+    <div class="color-primary text-center">{{ $t('minute', +size) }}</div>
+    <Button class="self-center" @click="getCorrelations()">{{ $t('correlations.refresh') }}</Button>
     <div id="correlations">
       <CardVue
         v-for="correlation of graphStore.formattedData.slice(0, graphStore.shown)"
@@ -41,7 +31,7 @@
         @mouseenter="showLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
         @click="focusLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
         @mouseleave="hideLinks">
-        App {{ +/App_(\d+)/.exec(correlation[0])![1] }}
+        {{ $t('correlations.app', { id: +/App_(\d+)/.exec(correlation[0])![1] }) }}
         <SVG
           :src="`icons/kpi/${/App_\d+\.KPI(|_composite)\.(.*)/.exec(correlation[0])![2]}`"
           :alt="$t(`kpi.${/App_\d+\.KPI(|_composite)\.(.*)/.exec(correlation[0])![2]}`)"
@@ -55,12 +45,11 @@
       color="secondary"
       class="self-end"
       @click="more">
-      + Résultats
+      {{ $t('button.more-results') }}
     </Button>
   </main>
 </template>
 <script setup lang="ts">
-import { Info } from 'lucide-vue-next'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { nextTick } from 'vue'
@@ -74,7 +63,7 @@ import type { Card } from '@/types/cards'
 import type { Metadata } from '@/types/entities/ORANGE'
 import { focusLink, hideLinks, showLink, zoomToNode } from '@/utils/d3'
 
-const size = ref(5)
+const size = ref('5')
 
 const graphStore = useGraphStore()
 
@@ -83,7 +72,7 @@ const props = defineProps<{ card: Card<Metadata> }>()
 async function getCorrelations() {
   const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   const { data } = await getCorrelationsApi({
-    size: size.value / 5,
+    size: +size.value / 5,
     app_id
   })
   graphStore.correlations = data[0].data
