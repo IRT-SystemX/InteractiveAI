@@ -5,7 +5,7 @@
       class="cab-handle left"
       draggable="true"
       :class="{ active: active === 'left' }"
-      @drag.stop="leftHandle"
+      @drag="leftHandle"
       @dragstart="dragStart($event, 'left')"
       @dragend="dragEnd"
       @contextmenu.prevent="left = 320">
@@ -16,7 +16,7 @@
       class="cab-handle right"
       draggable="true"
       :class="{ active: active === 'right' }"
-      @drag.stop="rightHandle"
+      @drag="rightHandle"
       @dragstart="dragStart($event, 'right')"
       @dragend="dragEnd"
       @contextmenu.prevent="right = 320">
@@ -27,7 +27,7 @@
       class="cab-handle bottom"
       draggable="true"
       :class="{ active: active === 'bottom' }"
-      @drag.stop="bottomHandle"
+      @drag="bottomHandle"
       @dragstart="dragStart($event, 'bottom')"
       @dragend="dragEnd"
       @contextmenu.prevent="bottom = 240">
