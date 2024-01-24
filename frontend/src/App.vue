@@ -1,3 +1,11 @@
+<template>
+  <ProgressBar />
+  <Modal />
+  <header>
+    <Navbar />
+  </header>
+  <main><RouterView /></main>
+</template>
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
@@ -8,11 +16,3 @@ import { mode } from './plugins/colorMode'
 
 mode.value = 'auto'
 </script>
-<template>
-  <ProgressBar />
-  <Modal />
-  <header>
-    <Navbar />
-  </header>
-  <main><RouterView /></main>
-</template>

@@ -7,28 +7,26 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
 
 import { useServicesStore } from '@/stores/services'
 
 import Context from '../Common/Context.vue'
 
-const tab = ref(0)
-
 const servicesStore = useServicesStore()
 
-const contextId = ref(0)
-
+const tab = ref(0)
+const contextPID = ref(0)
 const topology = ref('')
 
-onMounted(async () => {
-  contextId.value = await servicesStore.getContext('RTE', (context: any) => {
+onBeforeMount(async () => {
+  contextPID.value = await servicesStore.getContext('RTE', (context: any) => {
     topology.value = context.topology
   })
 })
 
 onBeforeUnmount(() => {
-  clearInterval(contextId.value)
+  clearInterval(contextPID.value)
 })
 </script>
 <style lang="scss">

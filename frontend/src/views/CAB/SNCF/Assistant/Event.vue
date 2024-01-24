@@ -44,6 +44,8 @@ import type { Entity } from '@/types/entities'
 import type { Metadata } from '@/types/entities/SNCF'
 import { severityToColor } from '@/utils/utils'
 
+defineProps<{ card: Card<Metadata> }>()
+
 const route = useRoute()
 
 function askRecommendations() {
@@ -54,8 +56,6 @@ function askRecommendations() {
   })
   eventBus.emit('assistant:tab', 2)
 }
-
-defineProps<{ card: Card<Metadata> }>()
 </script>
 <style lang="scss">
 .cab-event {

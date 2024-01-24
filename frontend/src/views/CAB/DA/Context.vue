@@ -12,7 +12,8 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import Map from '@/components/organisms/Map.vue'
 import eventBus from '@/plugins/eventBus'
@@ -22,24 +23,27 @@ import { useServicesStore } from '@/stores/services'
 import Context from '../Common/Context.vue'
 import Synoptic from './Context/Synoptic.vue'
 
-const tab = ref(0)
-
+const { t } = useI18n()
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
 
-const contextId = ref(0)
-
+const tab = ref(0)
+const contextPID = ref(0)
 const synopticTab = ref<'STAT' | 'ENG' | 'ELEC' | 'FUEL' | 'HYD' | 'ECS' | 'BLD'>('ENG')
 const faulty = ref(false)
 
-onMounted(async () => {
-  contextId.value = await servicesStore.getContext('DA', (context: any) => {
-    mapStore.addContextWaypoint({ lat: context.Latitude, lng: context.Longitude, id: 'Plane' })
+onBeforeMount(async () => {
+  contextPID.value = await servicesStore.getContext('DA', (context: any) => {
+    mapStore.addContextWaypoint({
+      lat: context.Latitude,
+      lng: context.Longitude,
+      id: t('map.context')
+    })
   })
 })
 
 onBeforeUnmount(() => {
-  clearInterval(contextId.value)
+  clearInterval(contextPID.value)
 })
 
 eventBus.on('assistant:selected', () => {
@@ -47,6 +51,7 @@ eventBus.on('assistant:selected', () => {
   faulty.value = true
   synopticTab.value = 'ECS'
 })
+
 eventBus.on('navbar:tab', (value) => {
   tab.value = value
 })

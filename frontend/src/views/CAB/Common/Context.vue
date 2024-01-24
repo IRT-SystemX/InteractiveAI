@@ -18,6 +18,7 @@
 import Tab from '@/components/atoms/Tab.vue'
 
 defineProps<{ tabs: string[]; modelValue: number }>()
+
 defineEmits(['update:modelValue'])
 </script>
 <style lang="scss">

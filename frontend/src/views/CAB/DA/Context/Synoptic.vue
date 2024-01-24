@@ -20,6 +20,7 @@
 import { asset } from '@/utils/utils'
 
 defineProps<{ faulty: boolean; tab: 'STAT' | 'ENG' | 'ELEC' | 'FUEL' | 'HYD' | 'ECS' | 'BLD' }>()
+
 const emit = defineEmits(['update:tab'])
 </script>
 <style lang="scss">

@@ -19,7 +19,7 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
 
 import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
@@ -30,16 +30,15 @@ import type * as SNCF from '@/types/entities/SNCF'
 
 import Context from '../Common/Context.vue'
 
-const tab = ref(0)
-
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
 const cardsStore = useCardsStore()
 
-const contextId = ref(0)
+const tab = ref(0)
+const contextPID = ref(0)
 
-onMounted(async () => {
-  contextId.value = await servicesStore.getContext<SNCF.Context>('SNCF', (context) => {
+onBeforeMount(async () => {
+  contextPID.value = await servicesStore.getContext<SNCF.Context>('SNCF', (context) => {
     for (const train of context.trains)
       mapStore.addContextWaypoint({
         lat: train.latitude,
@@ -59,7 +58,6 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  clearInterval(contextId.value)
+  clearInterval(contextPID.value)
 })
 </script>
-@/stores/components/map

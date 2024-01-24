@@ -4,11 +4,11 @@
     :width="width ?? height"
     :height="height ?? width"
     @contextmenu.prevent>
-    <use :href="`/img/${props.src}.svg#root`" :color="fill" :stroke="stroke" />
+    <use :href="`/img/${src}.svg#root`" :color="fill" :stroke="stroke" />
   </svg>
 </template>
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   src: string
   fill?: string
   stroke?: string

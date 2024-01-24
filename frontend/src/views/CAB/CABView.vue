@@ -7,7 +7,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
@@ -15,15 +15,16 @@ import { toggleMode } from '@/plugins/colorMode'
 import { useCardsStore } from '@/stores/cards'
 import { Entities, type Entity } from '@/types/entities'
 
-const route = useRoute()
-
 let Assistant = defineAsyncComponent(() => import(`./${route.params.entity}/Assistant.vue`))
 let Context = defineAsyncComponent(() => import(`./${route.params.entity}/Context.vue`))
 let Notifications = defineAsyncComponent(() => import(`./${route.params.entity}/Notifications.vue`))
 let Timeline = defineAsyncComponent(() => import(`./${route.params.entity}/Timeline.vue`))
 
-const cardsStore = useCardsStore()
+const route = useRoute()
 const { locale } = useI18n()
+const cardsStore = useCardsStore()
+
+setup(route.params.entity as Entity)
 
 function setup(entity: Entity) {
   cardsStore.getCards(
@@ -46,10 +47,6 @@ onBeforeRouteUpdate((to) => {
 onBeforeRouteLeave(() => {
   toggleMode('auto')
   cardsStore.closeCards()
-})
-
-onMounted(() => {
-  setup(route.params.entity as Entity)
 })
 </script>
 <style lang="scss">

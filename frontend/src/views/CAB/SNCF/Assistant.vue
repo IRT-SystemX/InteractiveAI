@@ -18,15 +18,14 @@ import Event from './Assistant/Event.vue'
 import Recommendations from './Assistant/Recommendations.vue'
 
 const card = ref<Card<Metadata> | undefined>(undefined)
-
 const tab = ref(0)
 
 eventBus.on('assistant:selected', (selected) => {
   card.value = selected
   tab.value = 1
 })
+
 eventBus.on('assistant:tab', (index) => {
   tab.value = index
 })
 </script>
-<style lang="scss"></style>

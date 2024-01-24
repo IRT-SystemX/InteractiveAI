@@ -51,4 +51,3 @@ import { severityToColor } from '@/utils/utils'
 
 const cardsStore = useCardsStore()
 </script>
-<style lang="scss"></style>

@@ -22,10 +22,10 @@ import Button from '@/components/atoms/Button.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
+
 const username = ref('')
 const password = ref('')
-
-const authStore = useAuthStore()
 
 async function login() {
   await authStore.login(username.value, password.value)

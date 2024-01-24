@@ -19,17 +19,6 @@ import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/components/map'
 
-let map: L.Map | undefined = undefined
-
-const mapStore = useMapStore()
-
-const route = useRoute()
-
-const lockView = ref(true)
-const waypointsL = ref<{ id: string; L: L.CircleMarker }[]>([])
-const contextWaypointsL = ref<{ id: string; L: L.Marker }[]>([])
-const polylinesL = ref<{ id: string; L: L.Polyline }[]>([])
-
 const props = withDefaults(
   defineProps<{
     tileLayers?: string[]
@@ -37,6 +26,15 @@ const props = withDefaults(
   }>(),
   { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'], smoothMovements: true }
 )
+const mapStore = useMapStore()
+const route = useRoute()
+
+let map: L.Map | undefined = undefined
+
+const lockView = ref(true)
+const waypointsL = ref<{ id: string; L: L.CircleMarker }[]>([])
+const contextWaypointsL = ref<{ id: string; L: L.Marker }[]>([])
+const polylinesL = ref<{ id: string; L: L.Polyline }[]>([])
 
 watch(lockView, (value) => {
   if (value) {

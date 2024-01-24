@@ -50,9 +50,7 @@
   </main>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { ref } from 'vue'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 
 import { getCorrelations as getCorrelationsApi } from '@/api/services/ORANGE'
 import Button from '@/components/atoms/Button.vue'
@@ -63,11 +61,13 @@ import type { Card } from '@/types/cards'
 import type { Metadata } from '@/types/entities/ORANGE'
 import { focusLink, hideLinks, showLink, zoomToNode } from '@/utils/d3'
 
-const size = ref('5')
+const props = defineProps<{ card: Card<Metadata> }>()
 
 const graphStore = useGraphStore()
 
-const props = defineProps<{ card: Card<Metadata> }>()
+const size = ref('5')
+
+getCorrelations()
 
 async function getCorrelations() {
   const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
@@ -87,10 +87,6 @@ function more() {
   graphStore.d3Correlations()
   nextTick(() => zoomToNode(app_id))
 }
-
-onMounted(() => {
-  getCorrelations()
-})
 </script>
 <style lang="scss">
 .cab-correlations {

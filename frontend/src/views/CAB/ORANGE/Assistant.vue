@@ -18,15 +18,14 @@ import Correlations from './Assistant/Correlations.vue'
 import Event from './Assistant/Event.vue'
 
 const card = ref<Card<Metadata> | null>()
-
 const tab = ref(0)
 
 eventBus.on('assistant:selected', (selected) => {
   card.value = selected as Card<Metadata>
   tab.value = 1
 })
+
 eventBus.on('assistant:tab', (index) => {
   tab.value = index
 })
 </script>
-<style lang="scss"></style>

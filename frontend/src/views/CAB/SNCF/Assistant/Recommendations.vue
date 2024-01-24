@@ -40,7 +40,6 @@
 </template>
 <script setup lang="ts">
 import { FileBarChart2, Pin, Settings, Star } from 'lucide-vue-next'
-import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -55,13 +54,14 @@ import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { Metadata } from '@/types/entities/SNCF'
 
-const selectedRecommendation = ref<number>(-1)
-
-const servicesStore = useServicesStore()
+defineProps<{ card: Card<Metadata> }>()
 
 const route = useRoute()
+const servicesStore = useServicesStore()
 
-defineProps<{ card: Card<Metadata> }>()
+const selectedRecommendation = ref<number>(-1)
+
+servicesStore.getRecommendation(context)
 
 function applyParry() {
   sendTrace({
@@ -72,10 +72,6 @@ function applyParry() {
   applyRecommendation(servicesStore.recommendations[selectedRecommendation.value].actions[0])
   eventBus.emit('assistant:tab', 0)
 }
-
-onMounted(async () => {
-  await servicesStore.getRecommendation(context)
-})
 </script>
 <style lang="scss">
 .cab-parries {

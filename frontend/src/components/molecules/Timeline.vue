@@ -90,7 +90,6 @@
 <script setup lang="ts">
 import { addMinutes, differenceInMinutes, isAfter, isBefore } from 'date-fns'
 import { computed, ref } from 'vue'
-import { onMounted } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
@@ -99,8 +98,9 @@ import { minmax, repeatEvery, severityToColor } from '@/utils/utils'
 
 import Notification from './Notification.vue'
 
-const now = ref(new Date())
 const props = defineProps<{ start: number; end: number; cards: Card<CardMetadata>[] }>()
+
+const now = ref(new Date())
 const window = computed(() => ({
   start: addMinutes(now.value, props.start),
   end: addMinutes(now.value, props.end),
@@ -113,11 +113,9 @@ const style = computed(() => ({
   }`
 }))
 
-onMounted(() => {
-  repeatEvery(() => {
-    now.value = new Date()
-  }, 60 * 1000)
-})
+repeatEvery(() => {
+  now.value = new Date()
+}, 60 * 1000)
 </script>
 <style lang="scss" scoped>
 .cab-timeline {

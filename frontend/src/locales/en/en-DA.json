@@ -2,6 +2,7 @@
   "assistant.plan": "Recommend new flight plans",
   "cab.notifications": "Failures",
   "cab.notifications.sub": "Notifications",
+  "map.context": "Plane",
   "recommendations.button1": "Cockpit maintenance",
   "recommendations.button2": "Cost",
   "recommendations.button3": "Accomodation",

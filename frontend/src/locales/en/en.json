@@ -28,6 +28,7 @@
   "entity.SNCF": "SNCF",
   "input.placeholder.password": "Password",
   "input.placeholder.username": "Username",
+  "map.context": "Target",
   "minute": "{n} minute | {n} minutes",
   "modal.default": "Default modal message",
   "modal.error.ECONNABORTED": "Connection interrupted",

@@ -29,6 +29,7 @@
   "entity.SNCF": "SNCF",
   "input.placeholder.password": "Mot de passe",
   "input.placeholder.username": "Nom d'utilisateur",
+  "map.context": "Cible",
   "minute": "{n} minute | {n} minutes",
   "modal.default": "Message de modale par défaut",
   "modal.error.ECONNABORTED": "Connection interrompue",

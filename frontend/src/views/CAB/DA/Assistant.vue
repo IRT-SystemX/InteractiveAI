@@ -20,6 +20,7 @@ const tab = ref(0)
 eventBus.on('assistant:selected', async () => {
   tab.value = 1
 })
+
 eventBus.on('assistant:tab', (index) => {
   tab.value = index
 })
