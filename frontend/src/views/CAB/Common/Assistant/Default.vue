@@ -33,7 +33,11 @@ import SVG from '@/components/atoms/SVG.vue'
   justify-content: space-between;
 
   &-input {
+    flex: 1;
     position: relative;
+    .cab-input {
+      width: 100%;
+    }
 
     svg {
       position: absolute;

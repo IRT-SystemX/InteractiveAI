@@ -1,17 +1,17 @@
 <template>
   <Context v-model="tab" :tabs="[$t('cab.tab.graph')]">
     <Graph v-if="tab === 0" />
-  </Context>
-  <div id="graph-tooltip">
-    <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-v">
-      <SVG
-        :src="`icons/kpi/${datum[0]}`"
-        fill="var(--color-primary)"
-        :width="16"
-        class="mr-1"></SVG>
-      {{ $t('kpi.' + datum[0]) }} {{ $t('to') }} {{ Math.round(datum[1]) }}%
+    <div id="graph-tooltip">
+      <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-v">
+        <SVG
+          :src="`icons/kpi/${datum[0]}`"
+          fill="var(--color-primary)"
+          :width="16"
+          class="mr-1"></SVG>
+        {{ $t('kpi.' + datum[0]) }} {{ $t('to') }} {{ Math.round(datum[1]) }}%
+      </div>
     </div>
-  </div>
+  </Context>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -39,7 +39,7 @@ eventBus.on('assistant:selected', (selected) => {
 <style lang="scss">
 #graph-tooltip {
   z-index: 1000;
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   background-color: var(--color-background);

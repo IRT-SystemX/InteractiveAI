@@ -1,13 +1,44 @@
 <template>
   <div class="cab-container">
     <Notifications class="cab-notifications" />
+    <div
+      class="cab-handle left"
+      draggable="true"
+      :class="{ active: active === 'left' }"
+      @drag.stop="leftHandle"
+      @dragstart="dragStart($event, 'left')"
+      @dragend="dragEnd"
+      @contextmenu.prevent="left = 320">
+      <GripVertical width="16" />
+    </div>
     <Context class="cab-context" />
+    <div
+      class="cab-handle right"
+      draggable="true"
+      :class="{ active: active === 'right' }"
+      @drag.stop="rightHandle"
+      @dragstart="dragStart($event, 'right')"
+      @dragend="dragEnd"
+      @contextmenu.prevent="right = 320">
+      <GripVertical width="16" />
+    </div>
     <Assistant class="cab-assistant" />
+    <div
+      class="cab-handle bottom"
+      draggable="true"
+      :class="{ active: active === 'bottom' }"
+      @drag.stop="bottomHandle"
+      @dragstart="dragStart($event, 'bottom')"
+      @dragend="dragEnd"
+      @contextmenu.prevent="bottom = 240">
+      <GripHorizontal height="16" />
+    </div>
     <Timeline class="cab-timeline" />
   </div>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { GripHorizontal, GripVertical } from 'lucide-vue-next'
+import { defineAsyncComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
@@ -23,6 +54,33 @@ let Timeline = defineAsyncComponent(() => import(`./${route.params.entity}/Timel
 const route = useRoute()
 const { locale } = useI18n()
 const cardsStore = useCardsStore()
+
+const left = ref(320)
+const right = ref(320)
+const bottom = ref(240)
+const active = ref('')
+
+function dragStart(ev: DragEvent, value: 'left' | 'right' | 'bottom') {
+  active.value = value
+  const img = new Image()
+  ev.dataTransfer!.setDragImage(img, 0, 0)
+}
+
+function dragEnd() {
+  active.value = ''
+}
+
+function leftHandle(ev: DragEvent) {
+  left.value = ev.clientX ? ev.clientX - 8 : left.value
+}
+
+function rightHandle(ev: DragEvent) {
+  right.value = ev.clientX ? document.body.clientWidth - ev.clientX - 8 : right.value
+}
+
+function bottomHandle(ev: DragEvent) {
+  bottom.value = ev.clientY ? document.body.clientHeight - ev.clientY - 8 : bottom.value
+}
 
 setup(route.params.entity as Entity)
 
@@ -54,9 +112,43 @@ onBeforeRouteLeave(() => {
   padding: var(--spacing-1);
   display: grid;
   height: calc(100vh - 60px);
-  gap: var(--spacing-1);
-  grid-template-columns: [left-start] 320px [left-end] minmax(0, 1fr) [right-start] 320px [right-end];
-  grid-template-rows: [top] minmax(0, 1fr) [middle] 240px [bottom];
+  transition: 0.1s;
+  grid-template-columns:
+    [left-start] clamp(64px, calc(v-bind(left) * 1px), 40%) [left-end]
+    var(--spacing-1)
+    [center-start] minmax(0, 1fr) [center-end]
+    var(--spacing-1)
+    [right-start] clamp(64px, calc(v-bind(right) * 1px), 40%) [right-end];
+  grid-template-rows:
+    [middle-start] minmax(0, 1fr) [middle-end]
+    var(--spacing-1)
+    [bottom-start] clamp(96px, calc(v-bind(bottom) * 1px), 60%) [bottom-end];
+
+  .cab-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-medium);
+    transition: var(--duration);
+    &.active {
+      background: var(--color-grey-600);
+    }
+    &.left,
+    &.right {
+      cursor: col-resize;
+      flex-direction: column;
+    }
+    &.left {
+      grid-area: middle-start / left-end / middle-end / center-start;
+    }
+    &.right {
+      grid-area: middle-start / center-end / middle-end / right-start;
+    }
+    &.bottom {
+      grid-area: middle-end / left-start / bottom-start / right-end;
+      cursor: row-resize;
+    }
+  }
 
   .cab-panel {
     display: flex;
@@ -64,7 +156,7 @@ onBeforeRouteLeave(() => {
   }
 
   .cab-notifications {
-    grid-area: top / left-start / middle / left-end;
+    grid-area: middle-start / left-start / middle-end / left-end;
 
     .card-container {
       overflow: auto;
@@ -93,13 +185,13 @@ onBeforeRouteLeave(() => {
     }
   }
   .cab-context {
-    grid-area: top / left-end / middle / right-start;
+    grid-area: middle-start / center-start / middle-end / center-end;
   }
   .cab-assistant {
-    grid-area: top / right-start / middle / right-end;
+    grid-area: middle-start / right-start / middle-end / right-end;
   }
   .cab-timeline {
-    grid-area: middle / left-start / bottom / right-end;
+    grid-area: bottom-start / left-start / bottom-end / right-end;
   }
 }
 </style>
