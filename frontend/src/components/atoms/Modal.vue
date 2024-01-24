@@ -3,6 +3,7 @@
     {{ modal.data }}
     <form method="dialog" class="cab-modal-buttons">
       <Button
+        v-if="modal.type === 'choice'"
         color="secondary"
         type="submit"
         @click="eventBus.emit('modal:close', { id: modal.id, res: 'ko' })">
