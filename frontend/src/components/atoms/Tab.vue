@@ -14,8 +14,10 @@ defineProps<{
 .cab-tab {
   cursor: pointer;
   background: var(--color-grey-200);
-  border: 1px solid var(--color-grey-300);
-  border-bottom: none;
+  border: none;
+  box-shadow:
+    0px 8px #fff,
+    0px 4px 10px 0px rgba(0, 0, 0, 0.3);
   border-radius: var(--radius-small) var(--radius-small) 0 0;
   margin: 0 var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-2);
