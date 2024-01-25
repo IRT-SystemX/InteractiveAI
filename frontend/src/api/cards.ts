@@ -53,6 +53,7 @@ export async function getCardsSubscription(
           case 'USER_CONFIG_CHANGE':
             break
           case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
+            controller.abort()
             eventBus.emit('modal:open', {
               data: t(`modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION`),
               type: 'info'
