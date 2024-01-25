@@ -1,6 +1,7 @@
 import { endOfDay, startOfDay } from 'date-fns'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
@@ -11,12 +12,13 @@ export const useCardsStore = defineStore('cards', () => {
   const cards = ref<Card<CardMetadata>[]>([])
 
   async function getCards(entity: Entity, hydrated = false) {
+    const { t } = useI18n()
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       const id = crypto.randomUUID()
       eventBus.emit('modal:open', {
         id,
-        data: 'Un utilisateur est connecté, le déconnecter?',
+        data: t('modal.info.SUBSCRIPTION_ACTIVE'),
         type: 'choice'
       })
       eventBus.on(

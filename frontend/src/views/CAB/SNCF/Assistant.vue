@@ -17,7 +17,7 @@ import Default from '../Common/Assistant/Default.vue'
 import Event from './Assistant/Event.vue'
 import Recommendations from './Assistant/Recommendations.vue'
 
-const card = ref<Card<Metadata> | undefined>(undefined)
+const card = ref<Card<Metadata>>()
 const tab = ref(0)
 
 eventBus.on('assistant:selected', (selected) => {

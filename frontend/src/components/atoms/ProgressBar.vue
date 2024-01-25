@@ -32,7 +32,7 @@ const endingPoint = 90
 const isLoading = ref(true) // Once loading is done, start fading away
 const isVisible = ref(false) // Once animate finish, set display: none
 const progress = ref(startingPoint)
-const timeoutId = ref<number | undefined>(undefined)
+const timeoutId = ref<number>()
 
 function loop() {
   if (timeoutId.value) {

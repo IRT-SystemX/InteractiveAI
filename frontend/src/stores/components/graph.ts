@@ -4,8 +4,8 @@ import { computed, ref } from 'vue'
 import * as d3 from '@/utils/d3'
 
 export const useGraphStore = defineStore('graph', () => {
-  const data = ref<{ nodes: any[]; links: any[] } | undefined>(undefined)
-  const correlations = ref<{ [key: string]: { [key: string]: number } } | undefined>(undefined)
+  const data = ref<{ nodes: any[]; links: any[] }>()
+  const correlations = ref<{ [key: string]: { [key: string]: number } }>()
   const shown = ref(5)
 
   const formattedData = computed(() =>

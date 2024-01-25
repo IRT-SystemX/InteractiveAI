@@ -9,7 +9,7 @@ import type { Recommendations } from '@/types/services'
 
 export const useServicesStore = defineStore('services', () => {
   const { t } = useI18n()
-  const context = ref<Context | undefined>()
+  const context = ref<Context>()
   const recommendations = ref<Recommendations[]>([])
 
   async function getContext<T extends Context>(
@@ -20,7 +20,6 @@ export const useServicesStore = defineStore('services', () => {
     const modalID = crypto.randomUUID()
     let contextPID = 0
     eventBus.on('modal:close', (data) => {
-      console.log('salut')
       if (data.id === modalID && data.res === 'ok') {
         handler()
         contextPID = window.setInterval(handler, delay)

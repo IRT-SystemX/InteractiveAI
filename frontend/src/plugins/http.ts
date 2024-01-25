@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
 import eventBus from './eventBus'
@@ -31,11 +32,21 @@ http.interceptors.response.use(
     eventBus.emit('progress:stop')
     return response
   },
-  function (error) {
+  async function (error) {
+    const authStore = useAuthStore()
+    const res = await authStore.checkToken()
+    if (!res) {
+      eventBus.emit('modal:open', {
+        data: t('modal.error.DISCONNECTED'),
+        type: 'info'
+      })
+      authStore.logout()
+      router.push({ name: 'login' })
+      return
+    }
     eventBus.emit('progress:stop')
     if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))
       eventBus.emit('modal:open', {
-        id: crypto.randomUUID(),
         data: t(`modal.error.${error.code}`) ?? error.message ?? error,
         type: 'info'
       })

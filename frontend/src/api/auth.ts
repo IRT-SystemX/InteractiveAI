@@ -14,20 +14,13 @@ export function login(username: string, password: string) {
   )
 }
 
-export function refreshToken(refresh_token: string, client_id: string, client_secret: string) {
+export function checkToken(token: string) {
   return http.post(
-    '/auth/token',
+    '/auth/check_token',
     new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token,
-      client_id,
-      client_secret
+      token
     })
   )
-}
-
-export function checkToken() {
-  return http.post('/auth/check_token')
 }
 
 export function synchronizeWithToken() {
