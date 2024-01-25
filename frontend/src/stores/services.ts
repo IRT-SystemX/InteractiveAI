@@ -42,6 +42,7 @@ export const useServicesStore = defineStore('services', () => {
     }
     handler()
     contextPID = window.setInterval(handler, delay)
+    return contextPID
   }
 
   async function getRecommendation<T extends Recommendations[]>(newContext?: any) {
