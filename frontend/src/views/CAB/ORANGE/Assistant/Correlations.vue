@@ -10,6 +10,7 @@
         min="5"
         max="60"
         step="5"
+        class="mx-1 flex-1 w-100"
         @change="getCorrelations()" />
       <datalist id="size">
         <option
@@ -106,6 +107,7 @@ function more() {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text-align: center;
   }
   #correlation-size {
     flex: 1;
