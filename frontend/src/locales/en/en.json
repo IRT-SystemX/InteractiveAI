@@ -32,7 +32,7 @@
   "minute": "{n} minute | {n} minutes",
   "modal.default": "Default modal message",
   "modal.error.CONTEXT_FAILED": "Unable to retrieve context, try again?",
-  "modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION": "A new connection has been opened, you have been disconnected.",
+  "modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION": "A new connection has been opened, you have been disconnected",
   "modal.error.ECONNABORTED": "Connection interrupted",
   "modal.error.ERR_BAD_REQUEST": "Bad request",
   "modal.error.ERR_NETWORK": "Network error",
