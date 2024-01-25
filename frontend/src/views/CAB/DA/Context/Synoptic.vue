@@ -12,7 +12,7 @@
     <div id="synoptic_back">
       <img
         :alt="tab"
-        :src="asset(`img/placeholders/DA/${tab}_${!faulty ? 'nominal' : 'faulty'}.png`)" />
+        :src="asset(`assets/img/placeholders/DA/${tab}_${!faulty ? 'nominal' : 'faulty'}.png`)" />
     </div>
   </div>
 </template>

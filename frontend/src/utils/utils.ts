@@ -1,7 +1,12 @@
 import type { Severity } from '@/types/cards'
 
+/**
+ * Get dynamic asset url
+ * @param path Path string to the asset, relative to `src` folder
+ * @returns Asset url
+ */
 export function asset(path: string) {
-  return new URL(`../assets/${path}`, import.meta.url).href
+  return new URL(`../${path}`, import.meta.url).href
 }
 
 export function severityToColor(severity: Severity) {
