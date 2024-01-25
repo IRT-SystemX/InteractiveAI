@@ -93,6 +93,8 @@ nav {
   padding: var(--spacing-1);
   position: sticky;
   top: 0;
+  width: 100vw;
+  overflow: auto hidden;
   z-index: 1000;
 
   .entity {
