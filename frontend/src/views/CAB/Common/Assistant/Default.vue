@@ -12,7 +12,7 @@
       <input class="cab-input" :placeholder="$t('assistant.placeholder')" />
       <Mic color="var(--color-grey-600)" :height="24" />
     </div>
-    <SVG src="logo" fill="var(--color-primary)" :width="32"></SVG>
+    <SVG src="logo" fill="var(--color-primary)" :width="32" class="ml-1"></SVG>
   </footer>
 </template>
 <script setup lang="ts">
@@ -44,6 +44,7 @@ import SVG from '@/components/atoms/SVG.vue'
       right: var(--spacing-1);
       top: 50%;
       transform: translateY(-50%);
+      background: var(--color-grey-200);
     }
   }
 }
