@@ -7,7 +7,7 @@ const eventBus = mitt<{
   'progress:start': void
   'progress:stop': void
   'modal:open': {
-    id: `${string}-${string}-${string}-${string}-${string}`
+    id?: `${string}-${string}-${string}-${string}-${string}`
     data: string
     type: 'choice' | 'info'
   }

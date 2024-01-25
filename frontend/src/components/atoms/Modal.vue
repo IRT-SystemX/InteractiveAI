@@ -32,7 +32,7 @@ const modals = ref<
 >([])
 
 eventBus.on('modal:open', (message) => {
-  const index = modals.value.push(message)
+  const index = modals.value.push({ id: crypto.randomUUID(), ...message })
   nextTick(() => {
     modalHTML.value && modalHTML.value[index - 1].showModal()
   })

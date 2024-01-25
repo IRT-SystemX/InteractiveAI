@@ -1,4 +1,6 @@
+import eventBus from '@/plugins/eventBus'
 import http from '@/plugins/http'
+import i18n from '@/plugins/i18n'
 import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
 import type { CardMetadata } from '@/types/entities'
@@ -6,6 +8,7 @@ import type { CardMetadata } from '@/types/entities'
 let controller: AbortController
 
 const authStore = useAuthStore()
+const { t } = i18n.global
 
 export async function getCardsSubscription(
   config: {
@@ -46,9 +49,14 @@ export async function getCardsSubscription(
           case 'INIT':
           case 'RELOAD':
           case 'HEARTBEAT':
-          case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
           case 'BUSINESS_CONFIG_CHANGE':
           case 'USER_CONFIG_CHANGE':
+            break
+          case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
+            eventBus.emit('modal:open', {
+              data: t(`modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION`),
+              type: 'info'
+            })
             break
           default:
             try {
