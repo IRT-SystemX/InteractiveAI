@@ -33,7 +33,7 @@ http.interceptors.response.use(
   },
   function (error) {
     eventBus.emit('progress:stop')
-    if (!['ERR_CANCELED'].includes(error.code))
+    if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))
       eventBus.emit('modal:open', {
         id: crypto.randomUUID(),
         data: t(`modal.error.${error.code}`) ?? error.message ?? error,
