@@ -1,28 +1,30 @@
 <template>
   <div class="cab-container">
-    <Notifications class="cab-notifications" />
-    <div
-      class="cab-handle left"
-      draggable="true"
-      :class="{ active: active === 'left' }"
-      @drag="leftHandle"
-      @dragstart="dragStart($event, 'left')"
-      @dragend="dragEnd"
-      @contextmenu.prevent="left = 320">
-      <GripVertical width="16" />
+    <div class="cab-container-upper">
+      <Notifications class="cab-notifications" :style="{ width: `${left}px` }" />
+      <div
+        class="cab-handle left"
+        draggable="true"
+        :class="{ active: active === 'left' }"
+        @drag="leftHandle"
+        @dragstart="dragStart($event, 'left')"
+        @dragend="dragEnd"
+        @contextmenu.prevent="left = 320">
+        <GripVertical width="16" />
+      </div>
+      <Context class="cab-context" />
+      <div
+        class="cab-handle right"
+        draggable="true"
+        :class="{ active: active === 'right' }"
+        @drag="rightHandle"
+        @dragstart="dragStart($event, 'right')"
+        @dragend="dragEnd"
+        @contextmenu.prevent="right = 320">
+        <GripVertical width="16" />
+      </div>
+      <Assistant class="cab-assistant" :style="{ width: `${right}px` }" />
     </div>
-    <Context class="cab-context" />
-    <div
-      class="cab-handle right"
-      draggable="true"
-      :class="{ active: active === 'right' }"
-      @drag="rightHandle"
-      @dragstart="dragStart($event, 'right')"
-      @dragend="dragEnd"
-      @contextmenu.prevent="right = 320">
-      <GripVertical width="16" />
-    </div>
-    <Assistant class="cab-assistant" />
     <div
       class="cab-handle bottom"
       draggable="true"
@@ -33,7 +35,7 @@
       @contextmenu.prevent="bottom = 240">
       <GripHorizontal height="16" />
     </div>
-    <Timeline class="cab-timeline" />
+    <Timeline class="cab-timeline" :style="{ height: `${bottom}px` }" />
   </div>
 </template>
 <script setup lang="ts">
@@ -110,28 +112,29 @@ onBeforeRouteLeave(() => {
 <style lang="scss">
 .cab-container {
   padding: var(--spacing-1);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   height: calc(100vh - 60px);
-  transition: 0.1s;
-  grid-template-columns:
-    [left-start] clamp(64px, calc(v-bind(left) * 1px), 40%) [left-end]
-    var(--spacing-1)
-    [center-start] minmax(0, 1fr) [center-end]
-    var(--spacing-1)
-    [right-start] clamp(64px, calc(v-bind(right) * 1px), 40%) [right-end];
-  grid-template-rows:
-    [middle-start] minmax(0, 1fr) [middle-end]
-    var(--spacing-1)
-    [bottom-start] clamp(96px, calc(v-bind(bottom) * 1px), 60%) [bottom-end];
+  width: 100vw;
+
+  &-upper {
+    display: flex;
+    flex: 1;
+    height: 0;
+  }
 
   .cab-handle {
     display: flex;
+    z-index: 1000;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-medium);
     transition: var(--duration);
+    &:hover {
+      background: var(--color-grey-300);
+    }
     &.active {
-      background: var(--color-grey-600);
+      background: var(--color-grey-400);
     }
     &.left,
     &.right {
@@ -156,6 +159,8 @@ onBeforeRouteLeave(() => {
   }
 
   .cab-notifications {
+    min-width: 64px;
+    max-width: 40vw;
     grid-area: middle-start / left-start / middle-end / left-end;
 
     .card-container {
@@ -185,12 +190,18 @@ onBeforeRouteLeave(() => {
     }
   }
   .cab-context {
+    flex: 1;
+    width: 0;
     grid-area: middle-start / center-start / middle-end / center-end;
   }
   .cab-assistant {
+    min-width: 64px;
+    max-width: 40vw;
     grid-area: middle-start / right-start / middle-end / right-end;
   }
   .cab-timeline {
+    min-height: 96px;
+    max-height: 60vh;
     grid-area: bottom-start / left-start / bottom-end / right-end;
   }
 }
