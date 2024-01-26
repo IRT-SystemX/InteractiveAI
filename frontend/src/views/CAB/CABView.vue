@@ -246,6 +246,7 @@ onBeforeRouteLeave(() => {
       justify-content: center;
       color: var(--color-grey-300);
       font-weight: 400;
+      text-align: center;
     }
 
     &-main {
