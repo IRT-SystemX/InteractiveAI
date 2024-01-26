@@ -179,7 +179,7 @@ onBeforeRouteLeave(() => {
     &.cab-assistant {
       writing-mode: vertical-rl;
     }
-    &.cab-notifications {
+    &.cab-notifications h1 {
       transform: rotate(180deg);
     }
   }
