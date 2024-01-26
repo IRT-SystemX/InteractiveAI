@@ -1,22 +1,21 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <Notifications
-        v-show="left > 120"
-        class="cab-notifications"
-        :style="{ width: `${left}px` }" />
-      <div v-show="!(left > 120)" class="cab-notifications cab-panel cab-section-placeholder">
+      <div v-show="left" ref="leftPanel" style="width: 320px; max-width: 40vw">
+        <Notifications />
+      </div>
+      <div v-show="!left" class="cab-notifications cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.notifications') }}</h1>
       </div>
       <div
         class="cab-handle left"
         draggable="true"
         :class="{ active: active === 'left' }"
-        @drag="leftHandle"
+        @drag="resize($event, 'left')"
         @dragstart="dragStart($event, 'left')"
         @dragend="dragEnd"
-        @mousedown.middle="left = 320"
-        @contextmenu.prevent="left = 320">
+        @mousedown.middle="reset('left')"
+        @contextmenu.prevent="reset('left')">
         <GripVertical width="16" />
       </div>
       <Context class="cab-context" />
@@ -24,15 +23,17 @@
         class="cab-handle right"
         draggable="true"
         :class="{ active: active === 'right' }"
-        @drag="rightHandle"
+        @drag="resize($event, 'right')"
         @dragstart="dragStart($event, 'right')"
         @dragend="dragEnd"
-        @mousedown.middle="right = 320"
-        @contextmenu.prevent="right = 320">
+        @mousedown.middle="reset('right')"
+        @contextmenu.prevent="reset('right')">
         <GripVertical width="16" />
       </div>
-      <Assistant v-show="right > 120" class="cab-assistant" :style="{ width: `${right}px` }" />
-      <div v-show="!(right > 120)" class="cab-assistant cab-panel cab-section-placeholder">
+      <div v-show="right" ref="rightPanel" style="width: 320px; max-width: 40vw">
+        <Assistant class="cab-assistant" />
+      </div>
+      <div v-show="!right" class="cab-assistant cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.assistant') }}</h1>
       </div>
     </div>
@@ -40,15 +41,17 @@
       class="cab-handle bottom"
       draggable="true"
       :class="{ active: active === 'bottom' }"
-      @drag="bottomHandle"
+      @drag="resize($event, 'bottom')"
       @dragstart="dragStart($event, 'bottom')"
       @dragend="dragEnd"
-      @mousedown.middle="bottom = 240"
-      @contextmenu.prevent="bottom = 240">
+      @mousedown.middle="reset('bottom')"
+      @contextmenu.prevent="reset('bottom')">
       <GripHorizontal height="16" />
     </div>
-    <Timeline v-show="bottom > 96" class="cab-timeline" :style="{ height: `${bottom}px` }" />
-    <div v-show="!(bottom > 96)" class="cab-timeline cab-panel cab-section-placeholder">
+    <div v-show="bottom" ref="bottomPanel" style="height: 240px; max-height: 60vh">
+      <Timeline class="cab-timelines" />
+    </div>
+    <div v-show="!bottom" class="cab-timelines cab-panel cab-section-placeholder">
       <h1>{{ $t('cab.timeline') }}</h1>
     </div>
   </div>
@@ -72,9 +75,12 @@ const route = useRoute()
 const { locale } = useI18n()
 const cardsStore = useCardsStore()
 
-const left = ref(320)
-const right = ref(320)
-const bottom = ref(240)
+const leftPanel = ref<HTMLDivElement | null>(null)
+const left = ref(true)
+const rightPanel = ref<HTMLDivElement | null>(null)
+const right = ref(true)
+const bottomPanel = ref<HTMLDivElement | null>(null)
+const bottom = ref(true)
 const active = ref('')
 
 function dragStart(ev: DragEvent, value: 'left' | 'right' | 'bottom') {
@@ -87,16 +93,49 @@ function dragEnd() {
   active.value = ''
 }
 
-function leftHandle(ev: DragEvent) {
-  left.value = ev.clientX ? ev.clientX - 8 : left.value
+function resize(ev: DragEvent, panel: 'left' | 'right' | 'bottom') {
+  if (ev.clientX && ev.clientY) {
+    const width = document.body.clientWidth
+    const height = document.body.clientHeight
+    switch (panel) {
+      case 'left':
+        window.requestAnimationFrame(() => {
+          leftPanel.value!.style.width = ev.clientX - 8 + 'px'
+          left.value = ev.clientX > 120
+        })
+        break
+      case 'right':
+        window.requestAnimationFrame(() => {
+          rightPanel.value!.style.width = width - ev.clientX - 16 + 'px'
+          right.value = width - ev.clientX - 16 > 120
+        })
+        break
+
+      case 'bottom':
+        window.requestAnimationFrame(() => {
+          bottomPanel.value!.style.height = height - ev.clientY - 16 + 'px'
+          bottom.value = height - ev.clientY - 16 > 96
+        })
+        break
+    }
+  }
 }
 
-function rightHandle(ev: DragEvent) {
-  right.value = ev.clientX ? document.body.clientWidth - ev.clientX - 8 : right.value
-}
-
-function bottomHandle(ev: DragEvent) {
-  bottom.value = ev.clientY ? document.body.clientHeight - ev.clientY - 8 : bottom.value
+function reset(panel: 'left' | 'right' | 'bottom') {
+  switch (panel) {
+    case 'left':
+      leftPanel.value!.style.width = 320 + 'px'
+      left.value = true
+      break
+    case 'right':
+      rightPanel.value!.style.width = 320 + 'px'
+      right.value = true
+      break
+    case 'bottom':
+      bottomPanel.value!.style.height = 240 + 'px'
+      bottom.value = true
+      break
+  }
 }
 
 setup(route.params.entity as Entity)
@@ -156,14 +195,7 @@ onBeforeRouteLeave(() => {
       cursor: col-resize;
       flex-direction: column;
     }
-    &.left {
-      grid-area: middle-start / left-end / middle-end / center-start;
-    }
-    &.right {
-      grid-area: middle-start / center-end / middle-end / right-start;
-    }
     &.bottom {
-      grid-area: middle-end / left-start / bottom-start / right-end;
       cursor: row-resize;
     }
   }
@@ -171,13 +203,18 @@ onBeforeRouteLeave(() => {
   .cab-panel {
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   .cab-section-placeholder {
     text-align: center;
+    &.cab-timelines {
+      height: 40px;
+    }
     &.cab-notifications,
     &.cab-assistant {
       writing-mode: vertical-rl;
+      width: 40px;
     }
     &.cab-notifications h1 {
       transform: rotate(180deg);
@@ -185,8 +222,7 @@ onBeforeRouteLeave(() => {
   }
 
   .cab-notifications {
-    max-width: 40vw;
-    grid-area: middle-start / left-start / middle-end / left-end;
+    resize: horizontal;
 
     .card-container {
       overflow: auto;
@@ -217,15 +253,6 @@ onBeforeRouteLeave(() => {
   .cab-context {
     flex: 1;
     width: 0;
-    grid-area: middle-start / center-start / middle-end / center-end;
-  }
-  .cab-assistant {
-    max-width: 40vw;
-    grid-area: middle-start / right-start / middle-end / right-end;
-  }
-  .cab-timeline {
-    max-height: 60vh;
-    grid-area: bottom-start / left-start / bottom-end / right-end;
   }
 }
 </style>
