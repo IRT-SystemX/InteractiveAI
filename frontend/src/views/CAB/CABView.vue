@@ -1,8 +1,11 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <Notifications v-if="left > 120" class="cab-notifications" :style="{ width: `${left}px` }" />
-      <div v-else class="cab-notifications cab-panel cab-section-placeholder">
+      <Notifications
+        v-show="left > 120"
+        class="cab-notifications"
+        :style="{ width: `${left}px` }" />
+      <div v-show="!(left > 120)" class="cab-notifications cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.notifications') }}</h1>
       </div>
       <div
@@ -28,8 +31,8 @@
         @contextmenu.prevent="right = 320">
         <GripVertical width="16" />
       </div>
-      <Assistant v-if="right > 120" class="cab-assistant" :style="{ width: `${right}px` }" />
-      <div v-else class="cab-assistant cab-panel cab-section-placeholder">
+      <Assistant v-show="right > 120" class="cab-assistant" :style="{ width: `${right}px` }" />
+      <div v-show="!(right > 120)" class="cab-assistant cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.assistant') }}</h1>
       </div>
     </div>
@@ -44,8 +47,8 @@
       @contextmenu.prevent="bottom = 240">
       <GripHorizontal height="16" />
     </div>
-    <Timeline v-if="bottom > 96" class="cab-timeline" :style="{ height: `${bottom}px` }" />
-    <div v-else class="cab-timeline cab-panel cab-section-placeholder">
+    <Timeline v-show="bottom > 96" class="cab-timeline" :style="{ height: `${bottom}px` }" />
+    <div v-show="!(bottom > 96)" class="cab-timeline cab-panel cab-section-placeholder">
       <h1>{{ $t('cab.timeline') }}</h1>
     </div>
   </div>
