@@ -33,15 +33,17 @@ http.interceptors.response.use(
     return response
   },
   async function (error) {
-    const authStore = useAuthStore()
-    const res = await authStore.checkToken()
-    if (!res) {
-      eventBus.emit('modal:open', {
-        data: t('modal.error.DISCONNECTED'),
-        type: 'info'
-      })
-      authStore.logout()
-      router.push({ name: 'login' })
+    if (error.config.url !== '/auth/check_token') {
+      const authStore = useAuthStore()
+      const res = await authStore.checkToken()
+      if (!res) {
+        eventBus.emit('modal:open', {
+          data: t('modal.error.DISCONNECTED'),
+          type: 'info'
+        })
+        authStore.logout()
+        router.push({ name: 'login' })
+      }
       return
     }
     eventBus.emit('progress:stop')
