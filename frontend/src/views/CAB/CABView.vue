@@ -1,7 +1,10 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <Notifications class="cab-notifications" :style="{ width: `${left}px` }" />
+      <Notifications v-if="left > 120" class="cab-notifications" :style="{ width: `${left}px` }" />
+      <div v-else class="cab-notifications cab-panel cab-section-placeholder">
+        <h1>{{ $t('cab.notifications') }}</h1>
+      </div>
       <div
         class="cab-handle left"
         draggable="true"
@@ -9,6 +12,7 @@
         @drag="leftHandle"
         @dragstart="dragStart($event, 'left')"
         @dragend="dragEnd"
+        @mousedown.middle="left = 320"
         @contextmenu.prevent="left = 320">
         <GripVertical width="16" />
       </div>
@@ -20,10 +24,14 @@
         @drag="rightHandle"
         @dragstart="dragStart($event, 'right')"
         @dragend="dragEnd"
+        @mousedown.middle="right = 320"
         @contextmenu.prevent="right = 320">
         <GripVertical width="16" />
       </div>
-      <Assistant class="cab-assistant" :style="{ width: `${right}px` }" />
+      <Assistant v-if="right > 120" class="cab-assistant" :style="{ width: `${right}px` }" />
+      <div v-else class="cab-assistant cab-panel cab-section-placeholder">
+        <h1>{{ $t('cab.assistant') }}</h1>
+      </div>
     </div>
     <div
       class="cab-handle bottom"
@@ -32,10 +40,14 @@
       @drag="bottomHandle"
       @dragstart="dragStart($event, 'bottom')"
       @dragend="dragEnd"
+      @mousedown.middle="bottom = 240"
       @contextmenu.prevent="bottom = 240">
       <GripHorizontal height="16" />
     </div>
-    <Timeline class="cab-timeline" :style="{ height: `${bottom}px` }" />
+    <Timeline v-if="bottom > 96" class="cab-timeline" :style="{ height: `${bottom}px` }" />
+    <div v-else class="cab-timeline cab-panel cab-section-placeholder">
+      <h1>{{ $t('cab.timeline') }}</h1>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -158,8 +170,18 @@ onBeforeRouteLeave(() => {
     flex-direction: column;
   }
 
+  .cab-section-placeholder {
+    text-align: center;
+    &.cab-notifications,
+    &.cab-assistant {
+      writing-mode: vertical-rl;
+    }
+    &.cab-notifications {
+      transform: rotate(180deg);
+    }
+  }
+
   .cab-notifications {
-    min-width: 64px;
     max-width: 40vw;
     grid-area: middle-start / left-start / middle-end / left-end;
 
@@ -195,12 +217,10 @@ onBeforeRouteLeave(() => {
     grid-area: middle-start / center-start / middle-end / center-end;
   }
   .cab-assistant {
-    min-width: 64px;
     max-width: 40vw;
     grid-area: middle-start / right-start / middle-end / right-end;
   }
   .cab-timeline {
-    min-height: 96px;
     max-height: 60vh;
     grid-area: bottom-start / left-start / bottom-end / right-end;
   }

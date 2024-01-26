@@ -7,7 +7,7 @@
       <b><slot name="title"></slot></b>
       <aside><slot name="severity"></slot></aside>
     </header>
-    <main><slot name="default"></slot></main>
+    <main><slot></slot></main>
     <footer><slot name="actions"></slot></footer>
   </Card>
 </template>

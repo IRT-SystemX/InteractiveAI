@@ -1,6 +1,6 @@
 <template>
   <button class="cab-btn" :class="[size, color, { icon }]" :type="type">
-    <slot name="default"></slot>
+    <slot></slot>
   </button>
 </template>
 <script setup lang="ts">

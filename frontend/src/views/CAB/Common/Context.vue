@@ -10,7 +10,7 @@
       </Tab>
     </aside>
     <section class="cab-panel flex-center p-0 flex-1">
-      <slot name="default"></slot>
+      <slot></slot>
     </section>
   </main>
 </template>

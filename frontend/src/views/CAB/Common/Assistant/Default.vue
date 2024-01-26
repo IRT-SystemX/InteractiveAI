@@ -1,6 +1,6 @@
 <template>
   <h1>{{ $t('cab.assistant') }}</h1>
-  <slot name="default">
+  <slot>
     <main class="flex flex-1 flex-center flex-col color-primary">
       <SVG src="logo" fill="var(--color-primary)" :width="56" class="mb-3"></SVG>
       <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>

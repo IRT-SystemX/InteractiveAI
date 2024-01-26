@@ -1,7 +1,7 @@
 <template>
   <div class="cab-card" :class="[orientation, color]">
     <div class="cab-card-outer"><slot name="outer"></slot></div>
-    <div class="cab-card-inner"><slot name="default"></slot></div>
+    <div class="cab-card-inner"><slot></slot></div>
   </div>
 </template>
 <script setup lang="ts">

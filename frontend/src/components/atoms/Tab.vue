@@ -1,5 +1,5 @@
 <template>
-  <button class="cab-tab" :class="{ active }"><slot name="default"></slot></button>
+  <button class="cab-tab" :class="{ active }"><slot></slot></button>
 </template>
 <script setup lang="ts">
 defineProps<{

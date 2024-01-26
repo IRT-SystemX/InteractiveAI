@@ -1,6 +1,6 @@
 <template>
   <div speech-bubble pbottom aleft>
-    <slot name="default"></slot>
+    <slot></slot>
   </div>
 </template>
 <style lang="scss">
