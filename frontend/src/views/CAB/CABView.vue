@@ -14,6 +14,7 @@
         @drag="resize($event, 'left')"
         @dragstart="dragStart($event, 'left')"
         @dragend="dragEnd"
+        @click="left = !left"
         @mousedown.middle="reset('left')"
         @contextmenu.prevent="reset('left')">
         <GripVertical width="16" />
@@ -26,6 +27,7 @@
         @drag="resize($event, 'right')"
         @dragstart="dragStart($event, 'right')"
         @dragend="dragEnd"
+        @click="right = !right"
         @mousedown.middle="reset('right')"
         @contextmenu.prevent="reset('right')">
         <GripVertical width="16" />
@@ -44,6 +46,7 @@
       @drag="resize($event, 'bottom')"
       @dragstart="dragStart($event, 'bottom')"
       @dragend="dragEnd"
+      @click="bottom = !bottom"
       @mousedown.middle="reset('bottom')"
       @contextmenu.prevent="reset('bottom')">
       <GripHorizontal height="16" />
