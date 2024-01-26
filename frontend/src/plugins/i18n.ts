@@ -15,6 +15,8 @@ export default createI18n({
   locale: window.navigator.language.split('-')[0] || import.meta.env.VITE_DEFAULT_LOCALE || 'en',
   fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE || 'en',
   legacy: false,
+  missingWarn: false,
+  fallbackWarn: false,
   messages: {
     en,
     'en-DA': enDA,
