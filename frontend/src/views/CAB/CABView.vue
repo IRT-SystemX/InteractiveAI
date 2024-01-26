@@ -1,7 +1,7 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <div v-show="left" ref="leftPanel" style="width: 320px; max-width: 40vw">
+      <div v-show="left" ref="leftPanel" style="width: 320px; max-width: 40vw; transition: 0.05s">
         <Notifications />
       </div>
       <div v-show="!left" class="cab-notifications cab-panel cab-section-placeholder">
@@ -30,7 +30,7 @@
         @contextmenu.prevent="reset('right')">
         <GripVertical width="16" />
       </div>
-      <div v-show="right" ref="rightPanel" style="width: 320px; max-width: 40vw">
+      <div v-show="right" ref="rightPanel" style="width: 320px; max-width: 40vw; transition: 0.05s">
         <Assistant class="cab-assistant" />
       </div>
       <div v-show="!right" class="cab-assistant cab-panel cab-section-placeholder">
@@ -48,7 +48,10 @@
       @contextmenu.prevent="reset('bottom')">
       <GripHorizontal height="16" />
     </div>
-    <div v-show="bottom" ref="bottomPanel" style="height: 240px; max-height: 60vh">
+    <div
+      v-show="bottom"
+      ref="bottomPanel"
+      style="height: 240px; max-height: 60vh; transition: 0.05s">
       <Timeline class="cab-timelines" />
     </div>
     <div v-show="!bottom" class="cab-timelines cab-panel cab-section-placeholder">
