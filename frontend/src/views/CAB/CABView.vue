@@ -2,7 +2,7 @@
   <div class="cab-container">
     <div class="cab-container-upper">
       <div v-show="left" ref="leftPanel" style="width: 320px; max-width: 40vw; transition: 0.05s">
-        <Notifications />
+        <Notifications class="cab-notifications" />
       </div>
       <div v-show="!left" class="cab-notifications cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.notifications') }}</h1>
