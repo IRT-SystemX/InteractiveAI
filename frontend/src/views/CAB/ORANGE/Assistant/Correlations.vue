@@ -29,9 +29,9 @@
         :key="correlation[0]"
         orientation="right"
         class="correlation-card"
-        @mouseenter="showLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
-        @click="focusLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
-        @mouseleave="hideLinks">
+        @mouseenter="graphStore.showLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
+        @click="graphStore.focusLink(1, +/App_(\d+)/.exec(correlation[0])![1])"
+        @mouseleave="graphStore.hideLinks">
         {{ $t('correlations.app', { id: +/App_(\d+)/.exec(correlation[0])![1] }) }}
         <SVG
           :src="`icons/kpi/${/App_\d+\.KPI(|_composite)\.(.*)/.exec(correlation[0])![2]}`"
@@ -60,7 +60,6 @@ import SVG from '@/components/atoms/SVG.vue'
 import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
 import type { Metadata } from '@/types/entities/ORANGE'
-import { focusLink, hideLinks, showLink, zoomToNode } from '@/utils/d3'
 
 const props = defineProps<{ card: Card<Metadata> }>()
 
@@ -79,14 +78,14 @@ async function getCorrelations() {
   graphStore.correlations = data[0].data
   graphStore.shown = 5
   graphStore.d3Correlations(+app_id)
-  nextTick(() => zoomToNode(+app_id))
+  nextTick(() => graphStore.zoomToNode(+app_id))
 }
 
 function more() {
   const app_id = +/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
   graphStore.shown += 5
   graphStore.d3Correlations()
-  nextTick(() => zoomToNode(app_id))
+  nextTick(() => graphStore.zoomToNode(app_id))
 }
 </script>
 <style lang="scss">

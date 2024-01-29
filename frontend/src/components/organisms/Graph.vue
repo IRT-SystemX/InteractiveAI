@@ -5,15 +5,17 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { useGraphStore } from '@/stores/components/graph'
-import { setup } from '@/utils/d3'
 
 const graphStore = useGraphStore()
 
 const graphHTML = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  setup(
-    { nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [] })), links: [] },
+  graphStore.setup(
+    {
+      nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [], selected: false })),
+      links: []
+    },
     graphHTML.value!
   )
 })
@@ -21,7 +23,7 @@ onMounted(() => {
 watch(
   () => graphStore.data,
   (value) => {
-    setup(value, graphHTML.value!)
+    graphStore.setup(value!, graphHTML.value!)
   }
 )
 </script>
