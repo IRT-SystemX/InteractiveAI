@@ -3,7 +3,7 @@
     <SVG src="logo" fill="var(--color-primary)" :width="56" class="self-center"></SVG>
     <div>
       <SpeechBubble>
-        <i18n-t keypath="event.text">
+        <i18n-t scope="global" keypath="event.text">
           <template #event>
             <strong :style="{ color: `var(--color-${severityToColor(card.severity)})` }">
               {{ card.titleTranslated }}
