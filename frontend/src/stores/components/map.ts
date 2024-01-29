@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import type { Severity } from '@/types/cards'
-import type { Polyline, Waypoint } from '@/types/map'
+import type { Polyline, Waypoint } from '@/types/components/map'
 import { addOrUpdate, remove } from '@/utils/utils'
 
 export const useMapStore = defineStore('map', () => {
