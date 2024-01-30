@@ -3,8 +3,8 @@ from datetime import datetime
 
 from settings import logger
 
-from ..models import EventModel
-from .base_event_manager import BaseEventManager
+from api.models import EventModel
+from api.event_manager.base_event_manager import BaseEventManager
 
 
 class RTEEventManager(BaseEventManager):

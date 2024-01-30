@@ -1,22 +1,13 @@
-
-from api.event_manager.da_event_manager import DAEventManager
-from api.event_manager.orange_event_manager import OrangeEventManager
-from api.event_manager.rte_event_manager import RTEEventManager
-from api.event_manager.sncf_event_manager import SNCFEventManager
 from api.models import db
-from api.utils import UseCaseFactory
+from api.utils import UseCaseFactory, load_usecases_db
 from api.views import api_bp
 from apiflask import APIFlask
+from flask_migrate import Migrate
+from settings import logger
 
 from config import DevConfig, ProdConfig, TestConfig
-from settings import logger
-from flask_migrate import Migrate
 
-config_mapping = {
-    'dev': DevConfig,
-    'test': TestConfig,
-    'prod': ProdConfig
-}
+config_mapping = {"dev": DevConfig, "test": TestConfig, "prod": ProdConfig}
 
 
 def create_app(config_mode):
@@ -30,21 +21,24 @@ def create_app(config_mode):
     # Create the application context
     app_ctx = app.app_context()
     app_ctx.push()
-    # add use_case_factory
-    use_case_factory = UseCaseFactory()
-    use_case_factory.register_use_case('DA', DAEventManager())
-    use_case_factory.register_use_case('RTE', RTEEventManager())
-    use_case_factory.register_use_case('SNCF', SNCFEventManager())
-    use_case_factory.register_use_case('ORANGE', OrangeEventManager())
-    app.use_case_factory = use_case_factory
+
     # intiate database
     db.init_app(app)
     db.create_all()
+
+    # add use_case_factory
+    use_case_factory = UseCaseFactory()
+
+    # Load use cases from the database
+    load_usecases_db(use_case_factory)
+
+    app.use_case_factory = use_case_factory
+
     return app
 
 
 if __name__ == "__main__":
     app = create_app("dev")
-    # Clean up the application context when you're done
+    # Clean up the application context when you"re done
     app_ctx = app.app_context()
     app_ctx.pop()
