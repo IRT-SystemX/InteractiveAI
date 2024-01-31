@@ -44,20 +44,22 @@ export const useGraphStore = defineStore('graph', () => {
         })),
         links: []
       }
-    const links = formattedData.value.slice(0, shown.value).reduce((acc, [key, value], index) => {
-      const target = +/App_(\d+).*/.exec(key)![1]
-      const link = acc.find((link) => link.source === source && link.target === target)
-      if (link) {
-        link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
-        return acc
-      }
-      return acc.concat({
-        source,
-        target,
-        rank: Math.floor(index / 5) + 1,
-        data: [[/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value]]
-      })
-    }, [] as any[])
+    const links = formattedData.value
+      .slice(0, shown.value)
+      .reduce<Link[]>((acc, [key, value], index) => {
+        const target = +/App_(\d+).*/.exec(key)![1]
+        const link = acc.find((link) => link.source === source && link.target === target)
+        if (link) {
+          link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
+          return acc
+        }
+        return acc.concat({
+          source,
+          target,
+          rank: Math.floor(index / 5) + 1,
+          data: [[/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value]]
+        })
+      }, [])
 
     const nodes = [
       ...new Set(formattedData.value.map(([key]) => +/App_(\d+).*/.exec(key)![1])),
@@ -69,7 +71,7 @@ export const useGraphStore = defineStore('graph', () => {
     }))
 
     for (const link of links) {
-      setStatus(link.target, 'active')
+      setStatus(link.target as number, 'active')
     }
 
     const res = { nodes, links } as { nodes: Node[]; links: Link[] }
@@ -89,7 +91,7 @@ export const useGraphStore = defineStore('graph', () => {
   }
 
   const ctx: {
-    statuses: { [k: number]: Node['status'] }
+    statuses: { [k: Node['id']]: Node['status'] }
     data?: { nodes: Node[]; links: Link[] }
     svg?: any
     simulation?: any
@@ -207,7 +209,7 @@ export const useGraphStore = defineStore('graph', () => {
       )
   }
 
-  function setStatus(node: number, severity: 'active' | Severity) {
+  function setStatus(node: Node['id'], severity: 'active' | Severity) {
     if (ctx.statuses[node]) {
       ctx.statuses[node].includes(severity) && ctx.statuses[node].push(severity)
     } else ctx.statuses[node] = [severity]
@@ -217,7 +219,7 @@ export const useGraphStore = defineStore('graph', () => {
     }
   }
 
-  function removeStatus(node: number, severity: Severity) {
+  function removeStatus(node: Node['id'], severity: Severity) {
     ctx.nodes?.filter((d: Node) => d.id === +node).classed(severity, false)
     ctx.statuses[node].splice(
       ctx.statuses[node].findIndex((el) => el === severity),
@@ -225,7 +227,7 @@ export const useGraphStore = defineStore('graph', () => {
     )
   }
 
-  function showLink(source: number, target: number) {
+  function showLink(source: Node['id'], target: Node['id']) {
     ctx.links.classed(
       'active',
       (link: Link) =>
@@ -240,7 +242,7 @@ export const useGraphStore = defineStore('graph', () => {
     ctx.links.classed('active', false)
   }
 
-  function focusLink(source: number, target: number) {
+  function focusLink(source: Node['id'], target: Node['id']) {
     ctx.links.classed('focus', false)
     ctx.links.classed(
       'focus',
@@ -274,12 +276,12 @@ export const useGraphStore = defineStore('graph', () => {
     ctx.tooltip.style('left', d3link.x + 20 + 'px').style('top', d3link.y + 20 + 'px')
   }
 
-  function showNode(id: number) {
+  function showNode(id: Node['id']) {
     ctx.nodes.classed('focus', (node: Node) => id === node.id)
     zoomToNode(id)
   }
 
-  function zoomToNode(id: number, zoom = 1.2) {
+  function zoomToNode(id: Node['id'], zoom = 1.2) {
     const node = ctx.data!.nodes.find((node) => node.id === id)
     ctx.svg
       .transition()
