@@ -1,41 +1,43 @@
 <template>
-  <dialog v-for="modal in modals" ref="modalHTML" :key="modal.id" class="cab-panel">
-    {{ modal.data }}
+  <dialog ref="modal" class="cab-panel">
+    {{ data }}
     <form method="dialog" class="cab-modal-buttons">
       <Button
-        v-if="modal.type === 'choice'"
+        v-if="type === 'choice'"
         color="secondary"
         type="submit"
-        @click="eventBus.emit('modal:close', { id: modal.id, res: 'ko' })">
+        @click="$emit('close', id, 'ko')">
         {{ $t('button.ko') }}
       </Button>
-      <Button type="submit" @click="eventBus.emit('modal:close', { id: modal.id, res: 'ok' })">
+      <Button type="submit" @click="$emit('close', id, 'ok')">
         {{ $t('button.ok') }}
       </Button>
     </form>
   </dialog>
 </template>
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
-
-import eventBus from '@/plugins/eventBus'
+import { ref } from 'vue'
+import { onMounted } from 'vue'
 
 import Button from './Button.vue'
 
-const modalHTML = ref<HTMLDialogElement[]>([])
-const modals = ref<
-  {
-    id: `${string}-${string}-${string}-${string}-${string}`
-    data: string
+withDefaults(
+  defineProps<{
     type: 'choice' | 'info'
-  }[]
->([])
+    id?: `${string}-${string}-${string}-${string}-${string}`
+    data: string
+  }>(),
+  { id: crypto.randomUUID() }
+)
+defineEmits<{
+  close: [id: `${string}-${string}-${string}-${string}-${string}`, res: 'ok' | 'ko']
+}>()
 
-eventBus.on('modal:open', (message) => {
-  const index = modals.value.push({ id: crypto.randomUUID(), ...message })
-  nextTick(() => {
-    modalHTML.value && modalHTML.value[index - 1].showModal()
-  })
+const modal = ref<HTMLDialogElement>()
+
+onMounted(() => {
+  console.log(modal.value)
+  modal.value && modal.value.showModal()
 })
 </script>
 <style lang="scss" scoped>
