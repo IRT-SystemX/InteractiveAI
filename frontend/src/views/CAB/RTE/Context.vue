@@ -2,6 +2,7 @@
   <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
     <img
       v-if="tab === 0"
+      style="user-drag: none"
       :src="`data:image/png;base64, ${topology}`"
       class="cab-context-topology" />
   </Context>
