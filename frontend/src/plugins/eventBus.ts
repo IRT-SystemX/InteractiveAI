@@ -13,7 +13,7 @@ const eventBus = mitt<{
   }
   'modal:close': { id: `${string}-${string}-${string}-${string}-${string}`; res: 'ok' | 'ko' }
   'assistant:selected': Card<CardMetadata>
-  'navbar:tab': number
+  'tabs:selected': number
   'graph:update': any
   'graph:showTooltip': any
   'assistant:tab': number

@@ -52,7 +52,7 @@ eventBus.on('assistant:selected', () => {
   synopticTab.value = 'ECS'
 })
 
-eventBus.on('navbar:tab', (value) => {
+eventBus.on('tabs:selected', (value) => {
   tab.value = value
 })
 </script>
