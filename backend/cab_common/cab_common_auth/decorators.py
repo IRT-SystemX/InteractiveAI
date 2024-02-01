@@ -78,6 +78,58 @@ def protected(f):
     return decorated
 
 
+def protected_admin(f):
+    """
+    Decorator that protects a Flask route by validating the authorization token
+    and checking if the user has the "ADMIN" group.
+
+    :param f: The function to be decorated.
+    :type f: function
+    :returns: The decorated function.
+    :rtype: function
+    """
+
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        """
+        Wrapper function that validates the authorization token
+        and checks if the user has the "ADMIN" group.
+
+        :param args: Positional arguments passed to the wrapped function.
+        :type args: tuple
+        :param kwargs: Keyword arguments passed to the wrapped function.
+        :type kwargs: dict
+        :returns: The result of the wrapped function.
+        :rtype: any
+        :raises werkzeug.exceptions.HTTPException: If the token is missing, invalid, or the user is not an admin.
+        """
+        if AUTH_DISABLED:
+            return f(*args, **kwargs)
+
+        token = request.headers.get("Authorization")
+        if not token:
+            abort(401, "Token is missing")
+
+        try:
+            _, token = token.split(" ", 1)
+            introspection = keycloak.introspect(token=token)
+            logger.debug(introspection)
+
+            if not introspection.get("active", False):
+                raise KeycloakError("Invalid Token")
+
+            groups = introspection.get("groups", [])
+            if "ADMIN" not in groups:
+                abort(403, "Unauthorized: User is not an admin")
+
+        except (KeycloakError, ValueError) as e:
+            abort(401, str(e))
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
 def get_use_cases():
     """
     Get the entities ID (corresponds to use cases) associated with the user from the authorization token.

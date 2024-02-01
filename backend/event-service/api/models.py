@@ -28,3 +28,10 @@ class EventModel(db.Model):
             'data': self.data,
             'is_active': self.is_active
         }
+
+
+class UseCaseModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    event_manager_class = db.Column(db.String(255), nullable=False)
+    metadata_schema_class = db.Column(db.String(255), nullable=False)
