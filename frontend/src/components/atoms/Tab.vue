@@ -16,7 +16,7 @@ defineProps<{
   background: var(--color-grey-200);
   border: none;
   box-shadow:
-    0px 8px #fff,
+    0px 8px var(--color-background),
     0px 4px 10px 0px rgba(0, 0, 0, 0.3);
   border-radius: var(--radius-small) var(--radius-small) 0 0;
   margin: 0 var(--spacing-1);
