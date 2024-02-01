@@ -31,6 +31,8 @@
   "input.placeholder.password": "Password",
   "input.placeholder.username": "Username",
   "map.context": "Target",
+  "map.lockview": "Lock view to objects in context",
+  "map.no-lockview": "Free view",
   "minute": "{n} minute | {n} minutes",
   "modal.default": "Default modal message",
   "modal.error.CONTEXT_FAILED": "Unable to retrieve context, try again?",

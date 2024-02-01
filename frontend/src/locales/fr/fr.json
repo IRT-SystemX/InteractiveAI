@@ -32,6 +32,8 @@
   "input.placeholder.password": "Mot de passe",
   "input.placeholder.username": "Nom d'utilisateur",
   "map.context": "Cible",
+  "map.lockview": "Verrouiller la vue aux objets dans le contexte",
+  "map.no-lockview": "Vue libre",
   "minute": "{n} minute | {n} minutes",
   "modal.default": "Message de modale par défaut",
   "modal.error.CONTEXT_FAILED": "Impossible de récupérer le contexte, réessayer ?",

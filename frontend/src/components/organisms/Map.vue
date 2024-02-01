@@ -3,17 +3,17 @@
   <label class="cab-map-lockview p-1 flex flex-wrap">
     <input v-model="lockView" type="checkbox" style="display: none" />
     <div class="ml-1">
-      <Focus v-if="lockView" />
-      <Scan v-else />
+      <LocateFixed v-if="lockView" />
+      <LocateOff v-else />
     </div>
-    Verrouiller la vue aux objets dans le contexte
+    {{ lockView ? $t('map.lockview') : $t('map.no-lockview') }}
   </label>
 </template>
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 
 import L, { type CircleMarkerOptions, type PolylineOptions } from 'leaflet'
-import { Focus, Scan } from 'lucide-vue-next'
+import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
