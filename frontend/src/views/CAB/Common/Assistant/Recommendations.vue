@@ -18,7 +18,9 @@
   </div>
   <Card
     v-for="recommendation of recommendations"
-    :key="recommendation"
+    :key="recommendation?.title"
+    class="cab-recommendation"
+    :class="{ selected: recommendation?.title === selected?.title }"
     orientation="right"
     @click="selected = recommendation">
     <slot :recommendation="recommendation">
@@ -53,3 +55,33 @@ function close(_: any, res: 'ok' | 'ko') {
   confirm.value = false
 }
 </script>
+<style land="scss">
+.cab-recommendation {
+  scroll-snap-align: start;
+  .cab-card-outer {
+    width: 0;
+    color: #fff0;
+    max-width: fit-content;
+    transition: var(--duration);
+
+    .lucide:hover {
+      fill: var(--color-background);
+    }
+  }
+  &.selected {
+    z-index: 2500;
+  }
+  &.selected .cab-card-inner {
+    background: var(--color-grey-200);
+  }
+  &:hover .cab-card-outer,
+  &.selected .cab-card-outer {
+    color: #fff;
+    width: 40px;
+  }
+  .cab-card-inner {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+</style>

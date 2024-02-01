@@ -1,21 +1,20 @@
 <template>
-  <div class="cab-modal-backdrop">
-    <dialog ref="modal" open class="cab-panel cab-modal">
-      <slot></slot>
-      <div class="cab-modal-buttons">
-        <Button
-          v-if="type === 'choice'"
-          color="secondary"
-          type="button"
-          @click="$emit('close', id, 'ko')">
-          {{ $t('button.no') }}
-        </Button>
-        <Button type="button" @click="$emit('close', id, 'ok')">
-          {{ type === 'choice' ? $t('button.yes') : $t('button.ok') }}
-        </Button>
-      </div>
-    </dialog>
-  </div>
+  <div class="cab-modal-backdrop"></div>
+  <dialog ref="modal" open class="cab-panel cab-modal">
+    <slot></slot>
+    <div class="cab-modal-buttons">
+      <Button
+        v-if="type === 'choice'"
+        color="secondary"
+        type="button"
+        @click="$emit('close', id, 'ko')">
+        {{ $t('button.no') }}
+      </Button>
+      <Button type="button" @click="$emit('close', id, 'ok')">
+        {{ type === 'choice' ? $t('button.yes') : $t('button.ok') }}
+      </Button>
+    </div>
+  </dialog>
 </template>
 <script setup lang="ts">
 import Button from './Button.vue'
@@ -38,8 +37,11 @@ defineEmits<{
   padding: var(--spacing-2);
   color: var(--color-text);
   border: none;
-  z-index: 2000;
+  z-index: 3000;
   max-width: 90%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   .cab-modal-buttons {
     display: flex;
     justify-content: flex-end;
