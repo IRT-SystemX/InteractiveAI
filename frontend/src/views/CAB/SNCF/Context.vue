@@ -19,7 +19,7 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Map from '@/components/organisms/Map.vue'
 import { useCardsStore } from '@/stores/cards'
@@ -57,7 +57,7 @@ onBeforeMount(async () => {
   })
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
   clearInterval(contextPID.value)
 })
 </script>

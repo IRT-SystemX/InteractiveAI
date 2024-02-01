@@ -7,7 +7,7 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import { useServicesStore } from '@/stores/services'
 
@@ -25,7 +25,7 @@ onBeforeMount(async () => {
   })
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
   clearInterval(contextPID.value)
 })
 </script>
