@@ -163,7 +163,6 @@ function remove() {
   eventBus.off('assistant:selected')
   eventBus.off('tabs:selected')
   eventBus.off('graph:showTooltip')
-  toggleMode('auto')
   cardsStore.closeCards()
 }
 
@@ -172,7 +171,10 @@ onBeforeRouteUpdate((to) => {
   setup(to.params.entity as Entity)
 })
 
-onBeforeRouteLeave(remove)
+onBeforeRouteLeave(() => {
+  remove()
+  toggleMode('auto')
+})
 </script>
 <style lang="scss">
 .cab-container {
