@@ -59,9 +59,8 @@ import CardVue from '@/components/atoms/Card.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import { useGraphStore } from '@/stores/components/graph'
 import type { Card } from '@/types/cards'
-import type { Metadata } from '@/types/entities/ORANGE'
 
-const props = defineProps<{ card: Card<Metadata> }>()
+const props = defineProps<{ card: Card<'ORANGE'> }>()
 
 const graphStore = useGraphStore()
 

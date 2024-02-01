@@ -41,10 +41,9 @@ import SVG from '@/components/atoms/SVG.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import type { Metadata } from '@/types/entities/RTE'
 import { severityToColor } from '@/utils/utils'
 
-defineProps<{ card: Card<Metadata> }>()
+defineProps<{ card: Card<'RTE'> }>()
 
 const route = useRoute()
 

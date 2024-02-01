@@ -40,9 +40,8 @@ import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
-import type { Metadata } from '@/types/entities/ORANGE'
 
-defineProps<{ card: Card<Metadata> }>()
+defineProps<{ card: Card<'ORANGE'> }>()
 </script>
 <style lang="scss">
 .cab-event {

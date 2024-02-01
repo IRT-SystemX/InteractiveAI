@@ -11,10 +11,17 @@ export const Entities = <const>{
   SNCF: { hydrated: true }
 }
 
+type EntitiesTypes = {
+  DA: { Context: DA.Context; Metadata: DA.Metadata }
+  ORANGE: { Context: ORANGE.Context; Metadata: ORANGE.Metadata }
+  RTE: { Context: RTE.Context; Metadata: RTE.Metadata }
+  SNCF: { Context: SNCF.Context; Metadata: SNCF.Metadata }
+}
+
 export const EntitiesArray = Object.keys(Entities)
 
 export type Entity = keyof typeof Entities
 
-export type CardMetadata = DA.Metadata | ORANGE.Metadata | RTE.Metadata | SNCF.Metadata
+export type Metadata<T extends Entity = Entity> = EntitiesTypes[T]['Metadata']
 
-export type Context = DA.Context | ORANGE.Context | RTE.Context | SNCF.Context
+export type Context<T extends Entity = Entity> = EntitiesTypes[T]['Context']

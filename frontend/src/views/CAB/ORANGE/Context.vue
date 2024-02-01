@@ -20,11 +20,10 @@ import SVG from '@/components/atoms/SVG.vue'
 import Graph from '@/components/organisms/Graph.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
-import type { Metadata } from '@/types/entities/ORANGE'
 
 import Context from '../Common/Context.vue'
 
-const card = ref<Card<Metadata> | null>()
+const card = ref<Card<'ORANGE'> | null>()
 const tab = ref(0)
 const tooltipData = ref<any | null>()
 
@@ -33,7 +32,7 @@ eventBus.on('graph:showTooltip', (node) => {
 })
 
 eventBus.on('assistant:selected', (selected) => {
-  card.value = selected as Card<Metadata>
+  card.value = selected as Card<'ORANGE'>
 })
 </script>
 <style lang="scss">

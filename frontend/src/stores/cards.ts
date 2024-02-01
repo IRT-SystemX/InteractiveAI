@@ -6,12 +6,12 @@ import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
-import type { CardMetadata, Entity } from '@/types/entities'
+import type { Entity } from '@/types/entities'
 
 const { t } = i18n.global
 
 export const useCardsStore = defineStore('cards', () => {
-  const cards = ref<Card<CardMetadata>[]>([])
+  const cards = ref<Card[]>([])
 
   async function getCards(entity: Entity, hydrated = false) {
     const { data } = await cardsApi.isSubscriptionActive()
@@ -32,7 +32,7 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   async function _getCards(entity: Entity, hydrated = false) {
-    const handler = async (cardEvent: CardEvent<CardMetadata>) => {
+    const handler = async (cardEvent: CardEvent) => {
       console.log(cardEvent)
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))

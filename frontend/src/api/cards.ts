@@ -3,7 +3,6 @@ import http from '@/plugins/http'
 import i18n from '@/plugins/i18n'
 import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
-import type { CardMetadata } from '@/types/entities'
 
 let controller: AbortController = new AbortController()
 
@@ -17,7 +16,7 @@ export async function getCardsSubscription(
     rangeStart?: string
     notification?: 'true' | 'false'
   },
-  handler: (card: CardEvent<CardMetadata>) => void
+  handler: (card: CardEvent) => void
 ) {
   controller = new AbortController()
   const response = await fetch(
@@ -61,7 +60,7 @@ export async function getCardsSubscription(
             break
           default:
             try {
-              handler(JSON.parse(data) as CardEvent<CardMetadata>)
+              handler(JSON.parse(data) as CardEvent)
             } catch (err) {}
         }
       }
@@ -73,15 +72,15 @@ export function isSubscriptionActive() {
   return http.get<boolean>('/cards/willNewSubscriptionDisconnectAnExistingSubscription')
 }
 
-export function getCard<T extends CardMetadata>(id: string) {
-  return http.get<{ card: Card<T> }>(`/cards/cards/${id}`)
+export function getCard(id: string) {
+  return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
 export function deleteCard(id: string) {
   http.delete(`/cardspub/cards/${id}`)
 }
 
-export function acknowledgeCard(card: Card<CardMetadata>) {
+export function acknowledgeCard(card: Card) {
   http.post(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }
 

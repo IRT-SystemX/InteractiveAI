@@ -57,7 +57,6 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import type { Metadata } from '@/types/entities/SNCF'
 
 import Default from '../Common/Assistant/Default.vue'
 import Recommendations from '../Common/Assistant/Recommendations.vue'
@@ -66,11 +65,11 @@ import Event from './Assistant/Event.vue'
 const route = useRoute()
 const servicesStore = useServicesStore()
 
-const card = ref<Card<Metadata>>()
+const card = ref<Card<'SNCF'>>()
 const tab = ref(0)
 
 eventBus.on('assistant:selected', (selected) => {
-  card.value = selected
+  card.value = selected as Card<'SNCF'>
   tab.value = 1
 })
 

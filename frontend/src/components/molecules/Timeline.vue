@@ -93,12 +93,11 @@ import { computed, ref } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
-import type { CardMetadata } from '@/types/entities'
 import { minmax, repeatEvery, severityToColor } from '@/utils/utils'
 
 import Notification from './Notification.vue'
 
-const props = defineProps<{ start: number; end: number; cards: Card<CardMetadata>[] }>()
+const props = defineProps<{ start: number; end: number; cards: Card[] }>()
 
 const now = ref(new Date())
 const window = computed(() => ({
