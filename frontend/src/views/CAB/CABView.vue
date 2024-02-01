@@ -69,6 +69,7 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
 import { toggleMode } from '@/plugins/colorMode'
+import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
 import { Entities, type Entity } from '@/types/entities'
 
@@ -165,6 +166,10 @@ onBeforeRouteUpdate((to) => {
 })
 
 onBeforeRouteLeave(() => {
+  eventBus.off('assistant:tab')
+  eventBus.off('assistant:selected')
+  eventBus.off('tabs:selected')
+  eventBus.off('graph:showTooltip')
   toggleMode('auto')
   cardsStore.closeCards()
 })
