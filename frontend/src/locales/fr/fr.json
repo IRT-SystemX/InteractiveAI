@@ -39,6 +39,7 @@
   "modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION": "Une nouvelle connection a été ouverte, vous avez été déconnecté",
   "modal.error.ECONNABORTED": "Connection interrompue",
   "modal.error.ERR_BAD_REQUEST": "Requête invalide",
+  "modal.error.ERR_BAD_RESPONSE": "Erreur réponse serveur",
   "modal.error.ERR_NETWORK": "Erreur réseau",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",

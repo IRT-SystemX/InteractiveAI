@@ -43,8 +43,8 @@ http.interceptors.response.use(
         })
         authStore.logout()
         router.push({ name: 'login' })
+        return
       }
-      return
     }
     eventBus.emit('progress:stop')
     if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))

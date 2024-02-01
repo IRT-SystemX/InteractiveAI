@@ -27,7 +27,7 @@ export const useAuthStore = defineStore(
 
     async function checkToken() {
       const { data } = await auth.checkToken(token.value?.access_token!)
-      return data.exp * 1000 < Date.now()
+      return data.active
     }
 
     function logout() {
