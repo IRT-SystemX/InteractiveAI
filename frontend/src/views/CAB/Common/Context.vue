@@ -9,7 +9,7 @@
         {{ tab }}
       </Tab>
     </aside>
-    <section class="cab-panel flex-center p-0 flex-1">
+    <section class="cab-panel flex flex-center p-0 flex-1">
       <slot></slot>
     </section>
   </main>
@@ -19,7 +19,7 @@ import Tab from '@/components/atoms/Tab.vue'
 
 defineProps<{ tabs: string[]; modelValue: number }>()
 
-defineEmits(['update:modelValue'])
+defineEmits<{ 'update:modelValue': [value: number] }>()
 </script>
 <style lang="scss">
 .cab-context {

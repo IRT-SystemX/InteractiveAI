@@ -21,7 +21,7 @@ import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 
 import Context from '../Common/Context.vue'
-import Synoptic from './Context/Synoptic.vue'
+import Synoptic, { type Tab } from './Context/Synoptic.vue'
 
 const { t } = useI18n()
 const servicesStore = useServicesStore()
@@ -29,7 +29,7 @@ const mapStore = useMapStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
-const synopticTab = ref<'STAT' | 'ENG' | 'ELEC' | 'FUEL' | 'HYD' | 'ECS' | 'BLD'>('ENG')
+const synopticTab = ref<Tab>('ENG')
 const faulty = ref(false)
 
 onBeforeMount(async () => {

@@ -17,6 +17,7 @@ a.router-link-exact-active {
 }
 
 .cab-panel {
+  position: relative;
   border-radius: var(--radius-big);
   background: var(--color-background);
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);

@@ -40,5 +40,6 @@
   "modal.error.ERR_NETWORK": "Erreur réseau",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",
+  "recommendations.title": "Recommandations",
   "to": "à"
 }

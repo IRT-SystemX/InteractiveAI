@@ -1,12 +1,14 @@
 <template>
   <h1>{{ $t('cab.assistant') }}</h1>
-  <slot>
-    <main class="flex flex-1 flex-center flex-col color-primary">
-      <SVG src="logo" fill="var(--color-primary)" :width="56" class="mb-3"></SVG>
-      <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>
-      <p class="text-center">{{ $t('assistant.cab.presentation') }}</p>
-    </main>
-  </slot>
+  <main class="flex flex-1 flex-col">
+    <slot>
+      <div class="flex flex-1 flex-col color-primary flex-center">
+        <SVG src="logo" fill="var(--color-primary)" :width="56" class="mb-3"></SVG>
+        <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>
+        <p class="text-center">{{ $t('assistant.cab.presentation') }}</p>
+      </div>
+    </slot>
+  </main>
   <footer class="flex flex-center-v cab-chat">
     <div class="cab-chat-input">
       <input class="cab-input" :placeholder="$t('assistant.placeholder')" />

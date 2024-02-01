@@ -2,10 +2,10 @@
   <div>
     <div id="synoptique" class="imgMarged btn-group">
       <button
-        v-for="button of ['STAT', 'ENG', 'ELEC', 'FUEL', 'HYD', 'ECS', 'BLD']"
+        v-for="button of tabs"
         :key="button"
         :class="{ active: tab === button }"
-        @click="emit('update:tab', button)">
+        @click="emit('update:tab', tab)">
         {{ button }}
       </button>
     </div>
@@ -19,9 +19,14 @@
 <script setup lang="ts">
 import { asset } from '@/utils/utils'
 
-defineProps<{ faulty: boolean; tab: 'STAT' | 'ENG' | 'ELEC' | 'FUEL' | 'HYD' | 'ECS' | 'BLD' }>()
+const tabs = ['STAT', 'ENG', 'ELEC', 'FUEL', 'HYD', 'ECS', 'BLD'] as const
+export type Tab = (typeof tabs)[number]
 
-const emit = defineEmits(['update:tab'])
+defineProps<{ faulty: boolean; tab: Tab }>()
+
+const emit = defineEmits<{
+  'update:tab': [tab: Tab]
+}>()
 </script>
 <style lang="scss">
 .btn-group button {

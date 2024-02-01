@@ -37,7 +37,6 @@ eventBus.on('modal:open', (message) => {
 })
 
 function modalClose(id: `${string}-${string}-${string}-${string}-${string}`, res: 'ok' | 'ko') {
-  console.log(id, res)
   eventBus.emit('modal:close', { id, res })
   modals.value.splice(
     modals.value.findIndex((el) => el.id === id),

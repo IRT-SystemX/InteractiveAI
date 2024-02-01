@@ -206,7 +206,10 @@ onBeforeRouteLeave(() => {
     }
   }
 
-  .cab-panel {
+  .cab-notifications,
+  .cab-context,
+  .cab-assistant,
+  .cab-timelines {
     display: flex;
     flex-direction: column;
     height: 100%;

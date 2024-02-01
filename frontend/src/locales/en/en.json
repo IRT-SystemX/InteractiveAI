@@ -39,5 +39,6 @@
   "modal.error.ERR_NETWORK": "Network error",
   "modal.info.SUBSCRIPTION_ACTIVE": "A user is logged in, log them out?",
   "recommendations.description": "Description",
+  "recommendations.title": "Recommendations",
   "to": "to"
 }
