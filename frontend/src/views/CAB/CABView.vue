@@ -148,31 +148,31 @@ function reset(panel: 'left' | 'right' | 'bottom') {
 setup(route.params.entity as Entity)
 
 function setup(entity: Entity) {
-  cardsStore.getCards(
-    route.params.entity as Entity,
-    Entities[route.params.entity as Entity].hydrated
-  )
+  cardsStore.getCards(entity, Entities[entity].hydrated)
   locale.value = `${locale.value.slice(0, 2)}-${entity}`
   toggleMode(entity)
 
-  Assistant = defineAsyncComponent(() => import(`./${route.params.entity}/Assistant.vue`))
-  Context = defineAsyncComponent(() => import(`./${route.params.entity}/Context.vue`))
-  Notifications = defineAsyncComponent(() => import(`./${route.params.entity}/Notifications.vue`))
-  Timeline = defineAsyncComponent(() => import(`./${route.params.entity}/Timeline.vue`))
+  Assistant = defineAsyncComponent(() => import(`./${entity}/Assistant.vue`))
+  Context = defineAsyncComponent(() => import(`./${entity}/Context.vue`))
+  Notifications = defineAsyncComponent(() => import(`./${entity}/Notifications.vue`))
+  Timeline = defineAsyncComponent(() => import(`./${entity}/Timeline.vue`))
 }
 
-onBeforeRouteUpdate((to) => {
-  setup(to.params.entity as Entity)
-})
-
-onBeforeRouteLeave(() => {
+function remove() {
   eventBus.off('assistant:tab')
   eventBus.off('assistant:selected')
   eventBus.off('tabs:selected')
   eventBus.off('graph:showTooltip')
   toggleMode('auto')
   cardsStore.closeCards()
+}
+
+onBeforeRouteUpdate((to) => {
+  remove()
+  setup(to.params.entity as Entity)
 })
+
+onBeforeRouteLeave(remove)
 </script>
 <style lang="scss">
 .cab-container {
