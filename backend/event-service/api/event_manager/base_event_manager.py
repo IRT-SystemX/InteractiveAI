@@ -1,7 +1,8 @@
 import uuid
+from datetime import datetime
 
 from settings import logger
-from datetime import datetime
+
 from ..clients.cards_publication import CardPubClient
 from ..clients.historic import HistoricClient
 from ..models import EventModel, db
@@ -17,10 +18,46 @@ class BaseEventManager:
             "ROUTINE": "INFORMATION",
         }
 
-    def get_event_id(self):
+    def uniqueness_condition(self, event, unique_by_fields):
+        """
+        Check if the given event satisfies uniqueness conditions.
+
+        :param event: Event data to check
+        :type event: dict
+        :param unique_by_fields: Dictionary specifying uniqueness conditions
+        :type unique_by_fields: dict
+        :return: True if conditions are satisfied, False otherwise
+        :rtype: bool
+        """
+        for key, value in unique_by_fields.items():
+            if event.get(key) != value:
+                return False
+        return True
+
+    def get_event_id(self, unique_by_fields=None):
+        """_summary_
+
+        :param unique_by_fields: _description_, defaults to None
+        :type unique_by_fields: _type_, optional
+        :return: _description_
+        :rtype: _type_
+        """
+        if unique_by_fields:
+            events_list = EventModel.query.filter_by(
+                use_case=self.use_case
+            ).all()
+
+            for event in events_list:
+                if self.uniqueness_condition(event.data, unique_by_fields):
+                    event_id = event.id_event
+                    logger.debug(
+                        f"Found similar event: {event_id} based on: {unique_by_fields}"
+                    )
+                    return str(event_id), False
+
         event_id = uuid.uuid4()
-        logger.debug(f"Genrating event_id: {event_id}")
-        return str(event_id)
+        logger.debug(f"Generating event_id: {event_id}")
+        return str(event_id), True
 
     def save_event_db(self, data):
         logger.info(data)
