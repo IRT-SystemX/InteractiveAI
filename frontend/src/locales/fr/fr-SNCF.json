@@ -10,5 +10,6 @@
   "recommendations.button2": "Retard cumulé",
   "recommendations.button3": "Coût",
   "recommendations.button4": "Impact client",
-  "recommendations.description": "Description parade"
+  "recommendations.description": "Description parade",
+  "recommendations.modale": "Vous êtes sur le point d'appliquer {recommendation}. Voulez-vous continuer ?"
 }

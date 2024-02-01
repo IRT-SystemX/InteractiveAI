@@ -10,5 +10,6 @@
   "recommendations.button2": "Cumulative delay",
   "recommendations.button3": "Cost",
   "recommendations.button4": "Client impact",
-  "recommendations.description": "Parry description"
+  "recommendations.description": "Parry description",
+  "recommendations.modale": "You are about to apply {recommendation}. Do you want to continue ?"
 }

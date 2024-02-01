@@ -7,5 +7,6 @@
   "event.text": "{event} detected. Would you like help processing the event?",
   "recommendations.button1": "Cost",
   "recommendations.button2": "LTTD > 2h",
-  "recommendations.description": "Parry description"
+  "recommendations.description": "Parry description",
+  "recommendations.modale": "You are about to apply the {recommendation} parry. Would you like to continue ?"
 }

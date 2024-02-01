@@ -4,9 +4,10 @@
     v-for="modal of modals"
     :id="modal.id"
     :key="modal.id"
-    :data="modal.data"
     :type="modal.type"
-    @close="modalClose" />
+    @close="modalClose">
+    {{ modal.data }}
+  </Modal>
   <header>
     <Navbar />
   </header>

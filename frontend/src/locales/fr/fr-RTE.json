@@ -7,5 +7,6 @@
   "event.text": "{event} détectée. Souhaitez-vous de l'aide pour traiter l'événement ?",
   "recommendations.button1": "Coût",
   "recommendations.button2": "LTTD > 2h",
-  "recommendations.description": "Description parade"
+  "recommendations.description": "Description parade",
+  "recommendations.modale": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?"
 }

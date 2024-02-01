@@ -6,7 +6,9 @@
   "button.ko": "KO",
   "button.login": "Log in",
   "button.more-results": "+ Results",
+  "button.no": "No",
   "button.ok": "OK",
+  "button.yes": "Yes",
   "cab": "CAB",
   "cab.assistant": "Assistant",
   "cab.notifications": "Notifications",
@@ -39,6 +41,7 @@
   "modal.error.ERR_NETWORK": "Network error",
   "modal.info.SUBSCRIPTION_ACTIVE": "A user is logged in, log them out?",
   "recommendations.description": "Description",
+  "recommendations.modale": "You are about to apply {recommendation}. Do you want to continue ?",
   "recommendations.title": "Recommendations",
   "to": "to"
 }

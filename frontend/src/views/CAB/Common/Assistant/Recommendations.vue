@@ -1,9 +1,15 @@
 <template>
-  <Modal
-    v-if="confirm"
-    type="choice"
-    data="Voulez-vous appliquer cette recommandation ?"
-    @close="close"></Modal>
+  <Modal v-if="confirm" type="choice" @close="close">
+    <slot name="modale" :selected="selected">
+      <i18n-t scope="global" keypath="recommendations.modale">
+        <template #recommendation>
+          <strong style="color: var(--color-primary)">
+            {{ selected.title }}
+          </strong>
+        </template>
+      </i18n-t>
+    </slot>
+  </Modal>
   <div class="flex flex-wrap flex-center-v flex-gap">
     <Settings />
     <Button v-for="button of buttons" :key="button">

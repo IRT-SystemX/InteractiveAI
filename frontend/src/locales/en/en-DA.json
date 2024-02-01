@@ -6,5 +6,6 @@
   "recommendations.button1": "Cockpit maintenance",
   "recommendations.button2": "Cost",
   "recommendations.button3": "Accomodation",
+  "recommendations.modale": "You are about to recalculate a new flight plan to reroute to {destination}. Do you wish to continue?",
   "recommendations.title": "Flight plans recommendations"
 }

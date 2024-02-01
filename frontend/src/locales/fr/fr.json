@@ -6,7 +6,9 @@
   "button.ko": "KO",
   "button.login": "Se connecter",
   "button.more-results": "+ Résultats",
+  "button.no": "Non",
   "button.ok": "Ok",
+  "button.yes": "Oui",
   "cab": "CAB",
   "cab.assistant": "Assistant",
   "cab.notifications": "Notifications",
@@ -40,6 +42,7 @@
   "modal.error.ERR_NETWORK": "Erreur réseau",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",
+  "recommendations.modale": "Vous êtes sur le point d'appliquer {recommendation}. Voulez-vous continuer ?",
   "recommendations.title": "Recommandations",
   "to": "à"
 }

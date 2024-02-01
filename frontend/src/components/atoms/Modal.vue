@@ -1,17 +1,17 @@
 <template>
   <div class="cab-modal-backdrop">
     <dialog ref="modal" open class="cab-panel cab-modal">
-      {{ data }}
+      <slot></slot>
       <div class="cab-modal-buttons">
         <Button
           v-if="type === 'choice'"
           color="secondary"
           type="button"
           @click="$emit('close', id, 'ko')">
-          {{ $t('button.ko') }}
+          {{ $t('button.no') }}
         </Button>
         <Button type="button" @click="$emit('close', id, 'ok')">
-          {{ $t('button.ok') }}
+          {{ type === 'choice' ? $t('button.yes') : $t('button.ok') }}
         </Button>
       </div>
     </dialog>
@@ -24,7 +24,6 @@ withDefaults(
   defineProps<{
     type: 'choice' | 'info'
     id?: `${string}-${string}-${string}-${string}-${string}`
-    data: string
   }>(),
   { id: crypto.randomUUID() }
 )
