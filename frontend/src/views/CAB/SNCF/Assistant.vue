@@ -28,6 +28,20 @@
             <FileBarChart2 />
           </div>
         </template>
+        <template #modale="{ selected }">
+          <i18n-t scope="global" keypath="recommendations.modale">
+            <template #recommendation>
+              <strong style="color: var(--color-primary)">
+                {{ selected.title }}
+              </strong>
+            </template>
+            <template #train>
+              <strong style="color: var(--color-primary)">
+                {{ card?.data?.metadata.id_train }}
+              </strong>
+            </template>
+          </i18n-t>
+        </template>
       </Recommendations>
     </Default>
   </section>
