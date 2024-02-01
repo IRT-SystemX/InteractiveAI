@@ -1,18 +1,19 @@
 import { endOfDay, startOfDay } from 'date-fns'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
+import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import type { CardMetadata, Entity } from '@/types/entities'
+
+const { t } = i18n.global
 
 export const useCardsStore = defineStore('cards', () => {
   const cards = ref<Card<CardMetadata>[]>([])
 
   async function getCards(entity: Entity, hydrated = false) {
-    const { t } = useI18n()
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       const id = crypto.randomUUID()
@@ -32,6 +33,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   async function _getCards(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent<CardMetadata>) => {
+      console.log(cardEvent)
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
         existingCard = cards.value.findIndex((card) => cardEvent.cardId === card.id)

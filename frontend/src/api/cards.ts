@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
 import type { CardMetadata } from '@/types/entities'
 
-let controller: AbortController
+let controller: AbortController = new AbortController()
 
 const authStore = useAuthStore()
 const { t } = i18n.global
@@ -86,5 +86,5 @@ export function acknowledgeCard(card: Card<CardMetadata>) {
 }
 
 export function closeCardSubscription() {
-  controller?.abort()
+  controller.abort()
 }

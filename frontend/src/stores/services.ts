@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 import * as servicesApi from '@/api/services'
 import eventBus from '@/plugins/eventBus'
+import i18n from '@/plugins/i18n'
 import type { Context, Entity } from '@/types/entities'
 import type { Recommendations } from '@/types/services'
 
+const { t } = i18n.global
+
 export const useServicesStore = defineStore('services', () => {
-  const { t } = useI18n()
   const context = ref<Context>()
   const recommendations = ref<Recommendations[]>([])
 
