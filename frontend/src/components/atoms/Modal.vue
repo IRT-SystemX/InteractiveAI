@@ -54,6 +54,7 @@ defineEmits<{
     width: 100%;
     height: 100%;
     backdrop-filter: blur(2px);
+    background: #72727233;
     top: 0;
     left: 0;
   }

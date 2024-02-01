@@ -8,5 +8,5 @@
   "recommendations.button1": "Coût",
   "recommendations.button2": "LTTD > 2h",
   "recommendations.description": "Description parade",
-  "recommendations.modale": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?"
+  "recommendations.modal": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?"
 }

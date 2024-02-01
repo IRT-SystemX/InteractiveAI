@@ -28,8 +28,8 @@
             <FileBarChart2 />
           </div>
         </template>
-        <template #modale="{ selected }">
-          <i18n-t scope="global" keypath="recommendations.modale">
+        <template #modal="{ selected }">
+          <i18n-t scope="global" keypath="recommendations.modal">
             <template #recommendation>
               <strong style="color: var(--color-primary)">
                 {{ selected.title }}

@@ -11,8 +11,8 @@
           $t('recommendations.button3')
         ]"
         @selected="onSelection">
-        <template #modale="{ selected }">
-          <i18n-t scope="global" keypath="recommendations.modale">
+        <template #modal="{ selected }">
+          <i18n-t scope="global" keypath="recommendations.modal">
             <template #destination>
               <strong style="color: var(--color-primary)">
                 {{ selected.actions[0].airport_destination.apcity }}

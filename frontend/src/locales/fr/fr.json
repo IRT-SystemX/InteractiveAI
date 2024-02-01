@@ -45,7 +45,7 @@
   "modal.error.ERR_NETWORK": "Erreur réseau",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",
-  "recommendations.modale": "Vous êtes sur le point d'appliquer {recommendation}. Voulez-vous continuer ?",
+  "recommendations.modal": "Vous êtes sur le point d'appliquer {recommendation}. Voulez-vous continuer ?",
   "recommendations.title": "Recommandations",
   "to": "à"
 }

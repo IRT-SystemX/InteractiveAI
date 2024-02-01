@@ -1,7 +1,7 @@
 <template>
   <Modal v-if="confirm" type="choice" @close="close">
-    <slot name="modale" :selected="selected">
-      <i18n-t scope="global" keypath="recommendations.modale">
+    <slot name="modal" :selected="selected">
+      <i18n-t scope="global" keypath="recommendations.modal">
         <template #recommendation>
           <strong style="color: var(--color-primary)">
             {{ selected.title }}
