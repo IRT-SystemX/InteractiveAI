@@ -49,5 +49,5 @@ import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import eventBus from '@/plugins/eventBus'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore<'SNCF'>()
+const cardsStore = useCardsStore('SNCF')
 </script>

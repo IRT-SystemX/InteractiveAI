@@ -81,5 +81,5 @@ import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore<'DA'>()
+const cardsStore = useCardsStore('DA')
 </script>

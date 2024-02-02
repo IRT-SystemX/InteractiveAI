@@ -31,7 +31,7 @@ import Context from '../Common/Context.vue'
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
-const cardsStore = useCardsStore()
+const cardsStore = useCardsStore('SNCF')
 
 const tab = ref(0)
 const contextPID = ref(0)

@@ -15,5 +15,5 @@ import Timeline from '@/components/molecules/Timeline.vue'
 import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore()
+const cardsStore = useCardsStore('SNCF')
 </script>

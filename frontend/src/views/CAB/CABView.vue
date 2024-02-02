@@ -68,9 +68,9 @@ import { defineAsyncComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
-import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import { toggleMode } from '@/plugins/colorMode'
 import eventBus from '@/plugins/eventBus'
+import { useCardsStore } from '@/stores/cards'
 import { Entities, EntitiesArray, type Entity } from '@/types/entities'
 
 let Assistant = defineAsyncComponent(() => import(`./${route.params.entity}/Assistant.vue`))
