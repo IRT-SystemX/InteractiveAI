@@ -1,12 +1,13 @@
-export type Context = { [key: string]: any }
+export type ORANGE = {
+  Context: { [key: string]: any }
+  Metadata: {
+    bad_kpi: KPI
+    event_type: 'APP_ANOMALY'
+    id_app: `App_${number}`
+  }
+}
 
 export type KPI = 'nb_err' | 'nb_pl' | 'nb_req' | 'delay_avg' | 'ratio_err' | 'ratio_pl'
-
-export type Metadata = {
-  bad_kpi: KPI
-  event_type: 'APP_ANOMALY'
-  id_app: `App_${number}`
-}
 
 export type CorrelationKey =
   | `App_${number}.KPI.${Exclude<KPI, 'ratio_err' | 'ratio_pl'>}`

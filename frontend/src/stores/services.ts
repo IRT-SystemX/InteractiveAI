@@ -13,9 +13,9 @@ export const useServicesStore = defineStore('services', () => {
   const context = ref<Context>()
   const recommendations = ref<Recommendations[]>([])
 
-  async function getContext<T extends Context>(
-    entity: Entity,
-    callback: (context: T) => void,
+  async function getContext<E extends Entity>(
+    entity: E,
+    callback: (context: Context<E>) => void,
     delay = 5000
   ) {
     const modalID = crypto.randomUUID()
@@ -28,9 +28,9 @@ export const useServicesStore = defineStore('services', () => {
     })
     const handler = async () => {
       try {
-        const { data } = await servicesApi.getContext()
+        const { data } = await servicesApi.getContext<E>()
         context.value = data.find((el) => el.use_case === entity)?.data
-        if (context.value) callback(context.value as T)
+        if (context.value) callback(context.value)
       } catch (err) {
         clearInterval(contextPID)
         eventBus.emit('modal:open', {

@@ -1,7 +1,7 @@
-import type * as DA from './entities/DA'
-import type * as ORANGE from './entities/ORANGE'
-import type * as RTE from './entities/RTE'
-import type * as SNCF from './entities/SNCF'
+import { type DA } from './entities/DA'
+import { type ORANGE } from './entities/ORANGE'
+import { type RTE } from './entities/RTE'
+import { type SNCF } from './entities/SNCF'
 // You can add your custom types here
 
 export const Entities = <const>{
@@ -12,10 +12,10 @@ export const Entities = <const>{
 }
 
 type EntitiesTypes = {
-  DA: { Context: DA.Context; Metadata: DA.Metadata }
-  ORANGE: { Context: ORANGE.Context; Metadata: ORANGE.Metadata }
-  RTE: { Context: RTE.Context; Metadata: RTE.Metadata }
-  SNCF: { Context: SNCF.Context; Metadata: SNCF.Metadata }
+  DA: DA
+  ORANGE: ORANGE
+  RTE: RTE
+  SNCF: SNCF
 }
 
 export const EntitiesArray = Object.keys(Entities)

@@ -26,7 +26,6 @@ import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 import type { Card, Severity } from '@/types/cards'
-import type * as SNCF from '@/types/entities/SNCF'
 
 import Context from '../Common/Context.vue'
 
@@ -38,7 +37,7 @@ const tab = ref(0)
 const contextPID = ref(0)
 
 onBeforeMount(async () => {
-  contextPID.value = await servicesStore.getContext<SNCF.Context>('SNCF', (context) => {
+  contextPID.value = await servicesStore.getContext('SNCF', (context) => {
     for (const train of context.trains)
       mapStore.addContextWaypoint({
         lat: train.latitude,

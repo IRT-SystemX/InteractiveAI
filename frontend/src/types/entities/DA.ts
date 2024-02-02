@@ -1,7 +1,8 @@
-export type Context = {
-  'Current airspeed': number
-  Latitude: number
-  Longitude: number
+export type DA = {
+  Context: {
+    'Current airspeed': number
+    Latitude: number
+    Longitude: number
+  }
+  Metadata: { [key: string]: any }
 }
-
-export type Metadata = { [key: string]: any }

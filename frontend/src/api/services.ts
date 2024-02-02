@@ -7,8 +7,8 @@ export function getRecommendation<T>(context: Context) {
   return http.post<T>('/cab_recommendation/api/v1/recommendation', context)
 }
 
-export function getContext() {
-  return http.get<ContextResponse>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
+export function getContext<E extends Entity = Entity>() {
+  return http.get<ContextResponse<E>>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
 }
 
 export function sendTrace(payload: {
