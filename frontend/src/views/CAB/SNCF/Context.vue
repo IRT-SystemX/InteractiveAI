@@ -22,7 +22,7 @@
 import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Map from '@/components/organisms/Map.vue'
-import { useCardsStore } from '@/stores/cards'
+import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 import type { Card, Severity } from '@/types/cards'

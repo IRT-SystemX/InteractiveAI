@@ -50,8 +50,8 @@ const servicesStore = useServicesStore()
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
 
-eventBus.on('assistant:selected', (selected) => {
-  card.value = selected as Card<'RTE'>
+eventBus.on('assistant:selected:RTE', (selected) => {
+  card.value = selected
   tab.value = 1
 })
 

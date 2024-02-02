@@ -16,7 +16,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selected', card)">
+            @click="eventBus.emit('assistant:selected:DA', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>
               {{ format(new Date(card.startDate), 'p') }}
@@ -51,7 +51,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selected', card)">
+            @click="eventBus.emit('assistant:selected:DA', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>{{ card.severity }}</template>
             {{ card.summaryTranslated }}
@@ -76,10 +76,10 @@ import { acknowledgeCard } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notification from '@/components/molecules/Notification.vue'
+import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
-import { useCardsStore } from '@/stores/cards'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore()
+const cardsStore = useCardsStore<'DA'>()
 </script>

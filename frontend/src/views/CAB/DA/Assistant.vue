@@ -40,7 +40,7 @@ const mapStore = useMapStore()
 
 const tab = ref(0)
 
-eventBus.on('assistant:selected', async () => {
+eventBus.on('assistant:selected:DA', async () => {
   tab.value = 1
 })
 

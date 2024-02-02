@@ -18,7 +18,7 @@ type EntitiesTypes = {
   SNCF: SNCF
 }
 
-export const EntitiesArray = Object.keys(Entities)
+export const EntitiesArray = Object.keys(Entities) as (keyof typeof Entities)[]
 
 export type Entity = keyof typeof Entities
 

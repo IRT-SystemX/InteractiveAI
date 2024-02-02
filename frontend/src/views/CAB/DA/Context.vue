@@ -46,7 +46,7 @@ onUnmounted(() => {
   clearInterval(contextPID.value)
 })
 
-eventBus.on('assistant:selected', () => {
+eventBus.on('assistant:selected:DA', () => {
   tab.value = 1
   faulty.value = true
   synopticTab.value = 'ECS'

@@ -16,7 +16,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selected', card)">
+            @click="eventBus.emit('assistant:selected:RTE', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>
               Sûreté
@@ -64,7 +64,7 @@
             )"
             :key="card.id"
             :severity="card.severity"
-            @click="eventBus.emit('assistant:selected', card)">
+            @click="eventBus.emit('assistant:selected:RTE', card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>{{ card.severity }}</template>
             {{ card.summaryTranslated }}
@@ -84,9 +84,9 @@ import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notification from '@/components/molecules/Notification.vue'
+import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import eventBus from '@/plugins/eventBus'
-import { useCardsStore } from '@/stores/cards'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore()
+const cardsStore = useCardsStore<'RTE'>()
 </script>

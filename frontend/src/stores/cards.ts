@@ -14,6 +14,7 @@ export const useCardsStore = defineStore('cards', () => {
   const cards = ref<Card[]>([])
 
   async function getCards(entity: Entity, hydrated = false) {
+    cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       const id = crypto.randomUUID()

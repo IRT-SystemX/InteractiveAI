@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import * as auth from '@/api/auth'
 import type { LoginResponse, UserResponse } from '@/types/auth'
-import { EntitiesArray } from '@/types/entities'
+import { EntitiesArray, type Entity } from '@/types/entities'
 
 export const useAuthStore = defineStore(
   'auth',
@@ -13,7 +13,9 @@ export const useAuthStore = defineStore(
     const expireDate = ref<number>()
     const entities = computed(() =>
       user.value
-        ? user.value.userData.entities.filter((entity) => EntitiesArray.includes(entity)).sort()
+        ? user.value.userData.entities
+            .filter((entity) => EntitiesArray.includes(entity as Entity))
+            .sort()
         : []
     )
 

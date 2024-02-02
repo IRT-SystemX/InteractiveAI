@@ -19,8 +19,8 @@ import Event from './Assistant/Event.vue'
 const card = ref<Card<'ORANGE'> | null>()
 const tab = ref(0)
 
-eventBus.on('assistant:selected', (selected) => {
-  card.value = selected as Card<'ORANGE'>
+eventBus.on('assistant:selected:ORANGE', (selected) => {
+  card.value = selected
   tab.value = 1
 })
 

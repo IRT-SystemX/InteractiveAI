@@ -31,8 +31,8 @@ eventBus.on('graph:showTooltip', (node) => {
   tooltipData.value = node
 })
 
-eventBus.on('assistant:selected', (selected) => {
-  card.value = selected as Card<'ORANGE'>
+eventBus.on('assistant:selected:ORANGE', (selected) => {
+  card.value = selected
 })
 </script>
 <style lang="scss">
