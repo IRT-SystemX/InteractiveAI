@@ -22,16 +22,16 @@
 import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Map from '@/components/organisms/Map.vue'
-import { useCardsStore } from '@/composables/cardsStoreWrapper'
+import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
-import type { Card, Severity } from '@/types/cards'
+import type { Severity } from '@/types/cards'
 
 import Context from '../Common/Context.vue'
 
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
-const cardsStore = useCardsStore('SNCF')
+const cardsStore = useCardsStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
@@ -44,13 +44,10 @@ onBeforeMount(async () => {
         lng: train.longitude,
         id: train.id_train,
         options: {
-          severity: (cardsStore.cards as Card<'SNCF'>[]).reduce(
-            (acc: Severity | undefined, curr) => {
-              if (curr.data?.metadata.id_train === train.id_train) return curr.severity
-              return acc
-            },
-            undefined
-          )
+          severity: cardsStore.cards('SNCF').reduce((acc: Severity | undefined, curr) => {
+            if (curr.data?.metadata.id_train === train.id_train) return curr.severity
+            return acc
+          }, undefined)
         }
       })
   })

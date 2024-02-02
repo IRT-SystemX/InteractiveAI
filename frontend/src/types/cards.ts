@@ -20,8 +20,8 @@ export type Card<T extends Entity = Entity> = {
   summaryTranslated: string
   keepChildCards: boolean
   hasBeenAcknowledged?: boolean
-  processInstanceId: string
-  process: string
+  processInstanceId: `${string}-${string}-${string}-${string}-${string}`
+  process: `${Lowercase<T>}Process`
   publisherType: PublisherType
   endDate: number
   publishDate: number
@@ -30,8 +30,8 @@ export type Card<T extends Entity = Entity> = {
   titleTranslated: string
   uid: string
   publisher: string
-  entityRecipients: string[]
-  id: string
+  entityRecipients: [T]
+  id: `${Lowercase<T>}Process.${string}-${string}-${string}-${string}-${string}`
   state: string
   startDate: number
   hydrated: boolean

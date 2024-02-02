@@ -4,16 +4,16 @@
       <h1>{{ $t('cab.notifications') }}</h1>
       <div
         v-if="
-          cardsStore.cards.filter((card) =>
-            ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity)
-          ).length
+          cardsStore
+            .cards('RTE')
+            .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity)).length
         "
         class="card-container">
         <TransitionGroup name="fade">
           <Notification
-            v-for="card of cardsStore.cards.filter((card) =>
-              ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity)
-            )"
+            v-for="card of cardsStore
+              .cards('RTE')
+              .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity))"
             :key="card.id"
             :severity="card.severity"
             @click="eventBus.emit('assistant:selected:RTE', card)">
@@ -55,13 +55,15 @@
       <h1>{{ $t('cab.notifications.sub') }}</h1>
       <!--TODO-->
       <div
-        v-if="cardsStore.cards.filter((card) => ['INFORMATION'].includes(card.severity)).length"
+        v-if="
+          cardsStore.cards('RTE').filter((card) => ['INFORMATION'].includes(card.severity)).length
+        "
         class="card-container">
         <TransitionGroup name="fade">
           <Notification
-            v-for="card of cardsStore.cards.filter((card) =>
-              ['INFORMATION'].includes(card.severity)
-            )"
+            v-for="card of cardsStore
+              .cards('RTE')
+              .filter((card) => ['INFORMATION'].includes(card.severity))"
             :key="card.id"
             :severity="card.severity"
             @click="eventBus.emit('assistant:selected:RTE', card)">
@@ -84,9 +86,9 @@ import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notification from '@/components/molecules/Notification.vue'
-import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import eventBus from '@/plugins/eventBus'
+import { useCardsStore } from '@/stores/cards'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore('RTE')
+const cardsStore = useCardsStore()
 </script>

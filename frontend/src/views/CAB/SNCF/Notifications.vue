@@ -1,10 +1,10 @@
 <template>
   <section class="cab-panel">
     <h1>{{ $t('cab.notifications') }}</h1>
-    <div v-if="cardsStore.cards.length" class="card-container">
+    <div v-if="cardsStore.cards('SNCF').length" class="card-container">
       <TransitionGroup name="fade">
         <Notification
-          v-for="card of cardsStore.cards"
+          v-for="card of cardsStore.cards('SNCF')"
           :key="card.id"
           :severity="card.severity"
           @click="eventBus.emit('assistant:selected:SNCF', card)">
@@ -45,9 +45,9 @@ import { deleteCard } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notification from '@/components/molecules/Notification.vue'
-import { useCardsStore } from '@/composables/cardsStoreWrapper'
 import eventBus from '@/plugins/eventBus'
+import { useCardsStore } from '@/stores/cards'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore('SNCF')
+const cardsStore = useCardsStore()
 </script>

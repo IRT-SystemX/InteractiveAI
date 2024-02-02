@@ -20,8 +20,8 @@ import { Zap } from 'lucide-vue-next'
 
 import SVG from '@/components/atoms/SVG.vue'
 import Timeline from '@/components/molecules/Timeline.vue'
-import { useCardsStore } from '@/composables/cardsStoreWrapper'
+import { useCardsStore } from '@/stores/cards'
 import { severityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore('RTE')
+const cardsStore = useCardsStore()
 </script>

@@ -11,10 +11,16 @@ import type { Entity } from '@/types/entities'
 const { t } = i18n.global
 
 export const useCardsStore = defineStore('cards', () => {
-  const cards = ref<Card[]>([])
+  const _cards = ref<Card[]>([])
+
+  function cards<T extends Entity>(entity: T) {
+    return _cards.value.filter<Card<T>>((card): card is Card<T> =>
+      card.entityRecipients.includes(entity)
+    )
+  }
 
   async function getCards(entity: Entity, hydrated = false) {
-    cards.value = []
+    _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       const id = crypto.randomUUID()
@@ -34,18 +40,17 @@ export const useCardsStore = defineStore('cards', () => {
 
   async function _getCards(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent) => {
-      console.log(cardEvent)
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
-        existingCard = cards.value.findIndex((card) => cardEvent.cardId === card.id)
+        existingCard = _cards.value.findIndex((card) => cardEvent.cardId === card.id)
       if (cardEvent.type === 'DELETE' && cardEvent.entityRecipientsIds!.includes(entity))
-        existingCard = cards.value.findIndex((card) => cardEvent.cardId === card.id)
+        existingCard = _cards.value.findIndex((card) => cardEvent.cardId === card.id)
       if (
         cardEvent.type !== 'ACK' &&
         cardEvent.type !== 'DELETE' &&
         cardEvent.card.entityRecipients?.includes(entity)
       )
-        existingCard = cards.value.findIndex((card) => cardEvent.card.id === card.id)
+        existingCard = _cards.value.findIndex((card) => cardEvent.card.id === card.id)
 
       if (existingCard === null) return
 
@@ -60,23 +65,23 @@ export const useCardsStore = defineStore('cards', () => {
             hydratedCard = data.card
           }
           if (existingCard !== -1)
-            cards.value.splice(existingCard, 1, {
+            _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
               ...hydratedCard,
               hydrated
             })
           else
-            cards.value.push({
+            _cards.value.push({
               ...cardEvent.card,
               ...hydratedCard,
               hydrated
             })
           break
         case CardOperationType.DELETE:
-          cards.value.splice(existingCard, 1)
+          _cards.value.splice(existingCard, 1)
           break
         case CardOperationType.ACK:
-          cards.value.splice(existingCard, 1)
+          _cards.value.splice(existingCard, 1)
           break
       }
     }
@@ -90,27 +95,29 @@ export const useCardsStore = defineStore('cards', () => {
       },
       handler
     )
-    cardsApi.getCardsSubscription(
-      {
-        clientId: id,
-        notification: 'true'
-      },
-      handler
-    )
+    cardsApi
+      .getCardsSubscription(
+        {
+          clientId: id,
+          notification: 'true'
+        },
+        handler
+      )
+      .finally(() => (_cards.value = []))
   }
 
   function closeCards() {
     cardsApi.closeCardSubscription()
-    cards.value = []
+    _cards.value = []
   }
 
   async function hydrateCard(id: string) {
     const { data } = await cardsApi.getCard(id)
-    const i = cards.value.findIndex((card) => card.id === data.card.id)
+    const i = _cards.value.findIndex((card) => card.id === data.card.id)
     if (i !== -1) {
-      cards.value[i] = { ...cards.value[i], ...data.card }
+      _cards.value[i] = { ..._cards.value[i], ...data.card }
     } else {
-      cards.value.push(data.card)
+      _cards.value.push(data.card)
     }
   }
 
