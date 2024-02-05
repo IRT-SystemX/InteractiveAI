@@ -2,7 +2,7 @@
   <div>
     <div class="imgMarged btn-group">
       <button
-        v-for="button of tabs"
+        v-for="button of Systems"
         :key="button"
         :class="{ active: tab === button }"
         @click="$emit('update:tab', button)">
@@ -17,15 +17,13 @@
   </div>
 </template>
 <script setup lang="ts">
+import { type System, Systems } from '@/types/entities/DA'
 import { asset } from '@/utils/utils'
 
-const tabs = ['STAT', 'ENG', 'ELEC', 'FUEL', 'HYD', 'ECS', 'BLD'] as const
-export type Tab = (typeof tabs)[number]
+defineProps<{ faulty: boolean; tab: System }>()
 
-defineProps<{ faulty: boolean; tab: Tab }>()
-
-const emit = defineEmits<{
-  'update:tab': [tab: Tab]
+defineEmits<{
+  'update:tab': [tab: System]
 }>()
 </script>
 <style lang="scss">

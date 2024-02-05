@@ -19,9 +19,10 @@ import Map from '@/components/organisms/Map.vue'
 import eventBus from '@/plugins/eventBus'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
+import type { System } from '@/types/entities/DA'
 
 import Context from '../Common/Context.vue'
-import Synoptic, { type Tab } from './Context/Synoptic.vue'
+import Synoptic from './Context/Synoptic.vue'
 
 const { t } = useI18n()
 const servicesStore = useServicesStore()
@@ -29,7 +30,7 @@ const mapStore = useMapStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
-const synopticTab = ref<Tab>('ENG')
+const synopticTab = ref<System>('ENG')
 const faulty = ref(false)
 
 onBeforeMount(async () => {

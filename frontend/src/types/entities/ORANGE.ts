@@ -1,5 +1,5 @@
 export type ORANGE = {
-  Context: { [key: string]: any }
+  Context: {}
   Metadata: {
     bad_kpi: KPI
     event_type: 'APP_ANOMALY'
