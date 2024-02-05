@@ -121,5 +121,5 @@ export const useCardsStore = defineStore('cards', () => {
     }
   }
 
-  return { cards, getCards, hydrateCard, closeCards }
+  return { _cards, cards, getCards, hydrateCard, closeCards }
 })
