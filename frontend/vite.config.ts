@@ -22,5 +22,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  envDir: 'env'
+  envDir: 'env',
+  build: {
+    sourcemap: true
+  }
 })
