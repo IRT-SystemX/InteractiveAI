@@ -1,7 +1,7 @@
 <template>
   <section class="cab-panel">
     <h1>{{ $t('cab.timeline') }}</h1>
-    <Timeline v-slot="{ card }" :cards="cardsStore.cards" :start="-120" :end="120">
+    <Timeline v-slot="{ card }" :cards="cardsStore.cards('DA')" :start="-120" :end="120">
       <SVG
         src="icons/warning_hex"
         :fill="`var(--color-${severityToColor(card.severity)})`"
