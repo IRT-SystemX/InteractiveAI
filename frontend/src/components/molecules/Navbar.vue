@@ -22,7 +22,7 @@
         <RouterLink
           v-for="entity of authStore.entities"
           :key="entity"
-          class="flex flex-center-v entity"
+          class="flex flex-center-y entity"
           :to="{ name: 'cab', params: { entity } }">
           <img :src="asset(`assets/img/entities/${entity}.svg`)" width="32" height="32" />
         </RouterLink>

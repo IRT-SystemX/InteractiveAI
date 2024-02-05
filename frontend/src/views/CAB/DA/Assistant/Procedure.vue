@@ -1,7 +1,7 @@
 <template>
-  <main>
+  <div>
     <ProcedureBlock v-for="block of procedure" :key="block.blockIndex" :block="block" />
-  </main>
+  </div>
 </template>
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'

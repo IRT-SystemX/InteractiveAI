@@ -2,7 +2,7 @@
   <Context v-model="tab" :tabs="[$t('cab.tab.graph')]">
     <Graph v-if="tab === 0" />
     <div id="graph-tooltip">
-      <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-v">
+      <div v-for="datum of tooltipData" :key="datum[0]" class="flex flex-center-y">
         <SVG
           :src="`icons/kpi/${datum[0]}`"
           fill="var(--color-primary)"

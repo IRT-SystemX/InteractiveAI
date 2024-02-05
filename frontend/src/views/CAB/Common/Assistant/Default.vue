@@ -9,7 +9,7 @@
       </div>
     </slot>
   </main>
-  <footer class="flex flex-center-v cab-chat">
+  <footer class="flex flex-center-y cab-chat">
     <div class="cab-chat-input">
       <input class="cab-input" :placeholder="$t('assistant.placeholder')" />
       <Mic color="var(--color-grey-600)" :height="24" />
@@ -26,9 +26,12 @@ import SVG from '@/components/atoms/SVG.vue'
 .cab-assistant {
   gap: var(--spacing-1);
   main {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     gap: var(--spacing-2);
     overflow: hidden auto;
+    scrollbar-gutter: stable both-edges;
   }
 }
 .cab-chat {

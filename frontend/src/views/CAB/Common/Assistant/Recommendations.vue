@@ -10,7 +10,7 @@
       </i18n-t>
     </slot>
   </Modal>
-  <div class="flex flex-wrap flex-center-v flex-gap">
+  <div class="flex flex-wrap flex-center-y flex-gap">
     <Settings />
     <Button v-for="button of buttons" :key="button">
       <slot name="buttons" :button="button">{{ button }}</slot>

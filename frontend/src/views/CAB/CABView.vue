@@ -242,6 +242,7 @@ onBeforeRouteLeave(() => {
 
     .card-container {
       overflow: auto;
+      scrollbar-gutter: stable;
       height: 100%;
       display: flex;
       gap: var(--spacing-1);

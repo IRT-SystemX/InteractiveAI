@@ -66,11 +66,11 @@ $types: (
   flex: 1;
 }
 
-.flex-center-h {
+.flex-center-x {
   justify-content: center;
 }
 
-.flex-center-v {
+.flex-center-y {
   align-items: center;
 }
 
@@ -103,4 +103,19 @@ $types: (
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0 !important;
+}
+
+.scrollable {
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.scrollable-y {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.scrollable-x {
+  overflow-x: auto;
+  scrollbar-gutter: stable;
 }

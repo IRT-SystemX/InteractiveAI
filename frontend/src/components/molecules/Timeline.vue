@@ -120,7 +120,8 @@ repeatEvery(() => {
 .cab-timeline {
   display: grid;
   row-gap: var(--spacing-1);
-  overflow: visible scroll;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
   scroll-snap-type: y mandatory;
   height: 100%;
 
@@ -128,7 +129,9 @@ repeatEvery(() => {
     display: grid;
     height: calc(var(--unit) * 2);
     // Because of scrollbar
-    padding-right: var(--spacing-2);
+    // TODO
+    overflow: visible;
+    scrollbar-gutter: stable;
     grid-template-rows: 1fr;
     > * {
       grid-row: events-start / events-end;

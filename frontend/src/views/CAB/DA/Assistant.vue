@@ -110,7 +110,7 @@ function onSelection(recommendation: any) {
 </script>
 <style lang="scss" scoped>
 .cab-assistant main {
-  overflow: auto;
   scroll-snap-type: y mandatory;
+  scrollbar-gutter: stable both-edges;
 }
 </style>

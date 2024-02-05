@@ -1,34 +1,22 @@
 <template>
-  <main class="cab-event">
-    <SVG src="logo" fill="var(--color-primary)" :width="56" class="self-center"></SVG>
-    <div>
-      <SpeechBubble>
-        <i18n-t scope="global" keypath="event.text">
-          <template #event>
-            <strong :style="{ color: `var(--color-${severityToColor(card.severity)})` }">
-              {{ card.titleTranslated }}
-            </strong>
-          </template>
-        </i18n-t>
-      </SpeechBubble>
-    </div>
-    <div class="row">
-      <Button type="button" @click="askRecommendations">{{ $t('event.button.primary') }}</Button>
-      <Info
-        fill="var(--color-grey-600)"
-        stroke="var(--color-background)"
-        :width="20"
-        class="ml-1" />
-    </div>
-    <div class="row">
-      <Button type="button" color="secondary">{{ $t('event.button.secondary') }}</Button>
-      <Info
-        fill="var(--color-grey-600)"
-        stroke="var(--color-background)"
-        :width="20"
-        class="ml-1" />
-    </div>
-  </main>
+  <SVG src="logo" fill="var(--color-primary)" :width="56" class="self-center"></SVG>
+  <SpeechBubble>
+    <i18n-t scope="global" keypath="event.text">
+      <template #event>
+        <strong :style="{ color: `var(--color-${severityToColor(card.severity)})` }">
+          {{ card.titleTranslated }}
+        </strong>
+      </template>
+    </i18n-t>
+  </SpeechBubble>
+  <div class="flex flex-center-y">
+    <Button type="button" @click="askRecommendations">{{ $t('event.button.primary') }}</Button>
+    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
+  </div>
+  <div class="flex flex-center-y">
+    <Button type="button" color="secondary">{{ $t('event.button.secondary') }}</Button>
+    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
+  </div>
 </template>
 <script setup lang="ts">
 import { Info } from 'lucide-vue-next'
@@ -56,36 +44,3 @@ function askRecommendations() {
   eventBus.emit('assistant:tab', 2)
 }
 </script>
-<style lang="scss">
-.cab-event {
-  box-sizing: border-box;
-  background: #fff;
-
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-
-  h1 {
-    font-size: 20px;
-    margin: 0;
-    margin-bottom: 8px;
-  }
-  main {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .logo {
-    width: 58px;
-    align-self: center;
-  }
-  .icon {
-    width: 16px;
-    margin-left: 8px;
-  }
-  .row {
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
