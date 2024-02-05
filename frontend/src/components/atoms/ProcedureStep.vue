@@ -39,7 +39,7 @@ watch(
 .procedure-step {
   scroll-snap-align: start;
   display: flex;
-  margin-left: 16px;
+  margin-left: var(--spacing-2);
   cursor: not-allowed;
   * {
     transition: var(--duration);
@@ -71,7 +71,7 @@ watch(
   }
 
   .step {
-    padding: 4px 8px;
+    padding: calc(var(--spacing-1) / 2) var(--spacing-1);
   }
 
   .timeline {

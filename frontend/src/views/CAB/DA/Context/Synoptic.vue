@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="synoptique" class="imgMarged btn-group">
+    <div class="imgMarged btn-group">
       <button
         v-for="button of tabs"
         :key="button"
         :class="{ active: tab === button }"
-        @click="emit('update:tab', tab)">
+        @click="$emit('update:tab', button)">
         {{ button }}
       </button>
     </div>
@@ -90,8 +90,8 @@ const emit = defineEmits<{
 
 #synoptic_back {
   background-color: black;
-  height: 340px;
+  height: calc(var(--unit) * 42);
   width: 91%;
-  border-radius: 7px;
+  border-radius: 9px;
 }
 </style>

@@ -45,7 +45,7 @@ withDefaults(
 
   footer {
     display: flex;
-    gap: 8px;
+    gap: var(--spacing-1);
   }
 }
 </style>
