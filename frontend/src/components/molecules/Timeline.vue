@@ -128,11 +128,12 @@ repeatEvery(() => {
   &-top {
     display: grid;
     height: calc(var(--unit) * 2);
+    grid-template-rows: 1fr;
     // Because of scrollbar
     // TODO
+    padding-right: 10px;
     overflow: visible;
     scrollbar-gutter: stable;
-    grid-template-rows: 1fr;
     > * {
       grid-row: events-start / events-end;
     }
