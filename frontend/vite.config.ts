@@ -25,5 +25,10 @@ export default defineConfig({
   envDir: 'env',
   build: {
     sourcemap: true
+  },
+  server: {
+    watch: {
+      ignored: ['**/coverage/**']
+    }
   }
 })
