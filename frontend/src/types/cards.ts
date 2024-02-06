@@ -1,4 +1,5 @@
 import type { Entities, Entity, Metadata } from './entities'
+import type { UUID } from './formats'
 
 export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'
 
@@ -20,7 +21,7 @@ export type Card<T extends Entity = Entity> = {
   summaryTranslated: string
   keepChildCards: boolean
   hasBeenAcknowledged?: boolean
-  processInstanceId: `${string}-${string}-${string}-${string}-${string}`
+  processInstanceId: UUID
   process: `${Lowercase<T>}Process`
   publisherType: PublisherType
   endDate: number
@@ -31,7 +32,7 @@ export type Card<T extends Entity = Entity> = {
   uid: string
   publisher: string
   entityRecipients: [T]
-  id: `${Lowercase<T>}Process.${string}-${string}-${string}-${string}-${string}`
+  id: `${Lowercase<T>}Process.${UUID}`
   state: string
   startDate: number
   data: (typeof Entities)[T]['hydrated'] extends true

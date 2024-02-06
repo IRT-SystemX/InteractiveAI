@@ -5,13 +5,13 @@ import * as servicesApi from '@/api/services'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import type { Context, Entity } from '@/types/entities'
-import type { Recommendations } from '@/types/services'
+import type { Recommendation } from '@/types/services'
 
 const { t } = i18n.global
 
 export const useServicesStore = defineStore('services', () => {
   const context = ref<Context>()
-  const recommendations = ref<Recommendations[]>([])
+  const recommendations = ref<Recommendation[]>([])
 
   async function getContext<E extends Entity>(
     entity: E,
@@ -45,9 +45,9 @@ export const useServicesStore = defineStore('services', () => {
     return contextPID
   }
 
-  async function getRecommendation<T extends Recommendations[]>(newContext?: any) {
-    const payload = newContext || context.value
-    const { data } = await servicesApi.getRecommendation<T>(payload)
+  async function getRecommendation<T extends Entity = Entity>(newContext?: Context<T> | {}) {
+    const payload = newContext || context.value || {}
+    const { data } = await servicesApi.getRecommendation(payload)
     recommendations.value = data
   }
 

@@ -26,7 +26,7 @@
               <MoveRight :height="12" />
               <User :height="12" />
             </Button>
-            <Button size="small" color="secondary" @click.stop="deleteCard(card.id)">
+            <Button size="small" color="secondary" @click.stop="acknowledgeCard(card)">
               <Trash2 :height="12" />
             </Button>
           </template>
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { MoveRight, Star, Trash2, User } from 'lucide-vue-next'
 
-import { deleteCard } from '@/api/cards'
+import { acknowledgeCard } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notification from '@/components/molecules/Notification.vue'

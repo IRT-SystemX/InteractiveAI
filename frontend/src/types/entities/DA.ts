@@ -5,6 +5,7 @@ export type DA = {
     Longitude: number
   }
   Metadata: { event_type: string; system: string }
+  Action: null
 }
 
 export const Systems = ['STAT', 'ENG', 'ELEC', 'FUEL', 'HYD', 'ECS', 'BLD'] as const

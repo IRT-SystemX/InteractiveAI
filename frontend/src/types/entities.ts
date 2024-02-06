@@ -1,7 +1,7 @@
-import { type DA } from './entities/DA'
-import { type ORANGE } from './entities/ORANGE'
-import { type RTE } from './entities/RTE'
-import { type SNCF } from './entities/SNCF'
+import type { DA } from './entities/DA'
+import type { ORANGE } from './entities/ORANGE'
+import type { RTE } from './entities/RTE'
+import type { SNCF } from './entities/SNCF'
 // You can add your custom types here
 
 export const Entities = <const>{
@@ -23,5 +23,5 @@ export const EntitiesArray = Object.keys(Entities) as (keyof typeof Entities)[]
 export type Entity = keyof typeof Entities
 
 export type Metadata<T extends Entity = Entity> = EntitiesTypes[T]['Metadata']
-
 export type Context<T extends Entity = Entity> = EntitiesTypes[T]['Context']
+export type Action<T extends Entity = Entity> = EntitiesTypes[T]['Action']

@@ -1,16 +1,17 @@
-import type { Context, Entity } from './entities'
+import type { Action, Context, Entity } from './entities'
+import type { DateMillisecondsFormat, UUID } from './formats'
 
-export type Recommendations = {
+export type Recommendation<T extends Entity = Entity> = {
+  agent_type: 'IA'
+  use_case: Entity
   description: string
   title: string
-  actions: RecommendationAction[]
+  actions: Action<T>[]
 }
-
-export type RecommendationAction = { [key: string]: any }
 
 export type ContextResponse<T extends Entity = Entity> = {
   data: Context<T>
-  date: `${number}-${number}-${number}T${number}:${number}:${number}.${number}`
-  id_context: `${string}-${string}-${string}-${string}-${string}`
+  date: DateMillisecondsFormat
+  id_context: UUID
   use_case: T
 }[]

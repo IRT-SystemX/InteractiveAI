@@ -22,12 +22,13 @@ import ProgressBar from './components/atoms/ProgressBar.vue'
 import Navbar from './components/molecules/Navbar.vue'
 import { mode } from './plugins/colorMode'
 import eventBus from './plugins/eventBus'
+import type { UUID } from './types/formats'
 
 mode.value = 'auto'
 
 const modals = ref<
   {
-    id: `${string}-${string}-${string}-${string}-${string}`
+    id: UUID
     data: string
     type: 'choice' | 'info'
   }[]
@@ -37,7 +38,7 @@ eventBus.on('modal:open', (message) => {
   modals.value.push({ id: crypto.randomUUID(), ...message })
 })
 
-function modalClose(id: `${string}-${string}-${string}-${string}-${string}`, res: 'ok' | 'ko') {
+function modalClose(id: UUID, res: 'ok' | 'ko') {
   eventBus.emit('modal:close', { id, res })
   modals.value.splice(
     modals.value.findIndex((el) => el.id === id),

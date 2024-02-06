@@ -17,17 +17,19 @@
   </dialog>
 </template>
 <script setup lang="ts">
+import type { UUID } from '@/types/formats'
+
 import Button from './Button.vue'
 
 withDefaults(
   defineProps<{
     type: 'choice' | 'info'
-    id?: `${string}-${string}-${string}-${string}-${string}`
+    id?: UUID
   }>(),
   { id: crypto.randomUUID() }
 )
 defineEmits<{
-  close: [id: `${string}-${string}-${string}-${string}-${string}`, res: 'ok' | 'ko']
+  close: [id: UUID, res: 'ok' | 'ko']
 }>()
 </script>
 <style lang="scss">

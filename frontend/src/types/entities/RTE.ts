@@ -68,4 +68,5 @@ export type RTE = {
     line: string
     flux: number | `${number}`
   }
+  Action: any // TODO
 }

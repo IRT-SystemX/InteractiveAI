@@ -23,4 +23,15 @@ export type SNCF = {
     agent_id: string
     delay: number
   }
+  Action: {
+    simulation_name: string
+    targets_list: {
+      agent_id: string
+      targets: {
+        passengers: number
+        target_id: number
+        target_type: 'STATION'
+      }[]
+    }[]
+  }
 }

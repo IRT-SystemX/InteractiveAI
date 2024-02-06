@@ -76,14 +76,12 @@ export function getCard(id: string) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
-// TODO: typing
 export function deleteCard(id: string) {
-  http.delete(`/cardspub/cards/${id}`)
+  return http.delete<null>(`/cardspub/cards/${id}`)
 }
 
-// TODO: typing
 export function acknowledgeCard(card: Card) {
-  http.post(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
+  return http.post<null>(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }
 
 export function closeCardSubscription() {
