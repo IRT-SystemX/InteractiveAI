@@ -4,7 +4,7 @@
     <i18n-t scope="global" keypath="event.text">
       <template #event>
         <strong style="color: var(--color-error)">
-          {{ card.data?.metadata.id_app }}
+          {{ card.data.metadata.id_app }}
         </strong>
       </template>
     </i18n-t>

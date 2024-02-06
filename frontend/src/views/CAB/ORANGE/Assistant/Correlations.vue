@@ -67,7 +67,7 @@ const size = ref('5')
 getCorrelations()
 
 async function getCorrelations() {
-  const app_id = /App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
+  const app_id = /App_(\d+)/.exec(props.card.data.metadata.id_app!)![1]
   const { data } = await getCorrelationsApi({
     size: +size.value / 5,
     app_id
@@ -79,7 +79,7 @@ async function getCorrelations() {
 }
 
 function more() {
-  const app_id = +/App_(\d+)/.exec(props.card.data?.metadata.id_app!)![1]
+  const app_id = +/App_(\d+)/.exec(props.card.data.metadata.id_app!)![1]
   graphStore.shown += 5
   graphStore.d3Correlations()
   nextTick(() => graphStore.zoomToNode(app_id))

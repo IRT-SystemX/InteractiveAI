@@ -45,7 +45,7 @@ onBeforeMount(async () => {
         id: train.id_train,
         options: {
           severity: cardsStore.cards('SNCF').reduce((acc: Severity | undefined, curr) => {
-            if (curr.data?.metadata.id_train === train.id_train) return curr.severity
+            if (curr.data.metadata.id_train === train.id_train) return curr.severity
             return acc
           }, undefined)
         }

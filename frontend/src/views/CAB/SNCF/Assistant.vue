@@ -3,7 +3,7 @@
     <Default>
       <Event v-if="tab === 1 && card" :card="card" />
       <Recommendations
-        v-if="tab === 2"
+        v-if="tab === 2 && card"
         :recommendations="servicesStore.recommendations"
         :buttons="[
           $t('recommendations.button1'),
@@ -37,7 +37,7 @@
             </template>
             <template #train>
               <strong style="color: var(--color-primary)">
-                {{ card?.data?.metadata.id_train }}
+                {{ card.data.metadata.id_train }}
               </strong>
             </template>
           </i18n-t>
