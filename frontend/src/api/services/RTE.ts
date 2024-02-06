@@ -1,7 +1,9 @@
 import http from '@/plugins/http'
-import type { RTE } from '@/types/entities/RTE'
+import type { Action } from '@/types/entities'
 
-// TODO: typing
-export function applyRecommendation(data: RTE['Action']) {
-  return http.post(import.meta.env.VITE_RTE_SIMU + '/api/v1/recommendations', data)
+export function applyRecommendation(data: Action<'RTE'>) {
+  return http.post<{ message: string }>(
+    import.meta.env.VITE_RTE_SIMU + '/api/v1/recommendations',
+    data
+  )
 }

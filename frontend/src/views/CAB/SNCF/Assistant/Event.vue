@@ -29,6 +29,7 @@ import SVG from '@/components/atoms/SVG.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Trace } from '@/types/services'
 import { severityToColor } from '@/utils/utils'
 
 defineProps<{ card: Card<'SNCF'> }>()
@@ -37,7 +38,7 @@ const route = useRoute()
 
 function askRecommendations() {
   sendTrace({
-    data: {},
+    data: {} as Trace['data'],
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })

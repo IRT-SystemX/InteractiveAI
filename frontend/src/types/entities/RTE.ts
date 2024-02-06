@@ -68,5 +68,14 @@ export type RTE = {
     line: string
     flux: number | `${number}`
   }
-  Action: any // TODO
+  Action: {
+    _change_bus_vect: boolean[]
+    _curtail: number[]
+    _raise_alarm: boolean[]
+    _redispatch: number[]
+    _set_line_status: number[]
+    _set_topo_vect: number[]
+    _storage_power: []
+    _switch_line_status: boolean[]
+  }
 }

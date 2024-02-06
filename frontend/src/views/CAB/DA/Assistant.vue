@@ -4,7 +4,7 @@
       <Procedure v-if="tab === 1" />
       <Recommendations
         v-if="tab === 2"
-        :recommendations="servicesStore.recommendations"
+        :recommendations="servicesStore.recommendations('DA')"
         :buttons="[
           $t('recommendations.button1'),
           $t('recommendations.button2'),
@@ -30,6 +30,7 @@ import { ref } from 'vue'
 import eventBus from '@/plugins/eventBus'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
+import type { Context } from '@/types/entities'
 
 import Default from '../Common/Assistant/Default.vue'
 import Recommendations from '../Common/Assistant/Recommendations.vue'
@@ -48,8 +49,8 @@ eventBus.on('assistant:tab', async (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      await servicesStore.getRecommendation({})
-      for (const recommendation of servicesStore.recommendations)
+      await servicesStore.getRecommendation({} as Context<'DA'>) // FIXME
+      for (const recommendation of servicesStore.recommendations('DA'))
         for (const action of recommendation.actions) {
           for (const { latitude, longitude, wpid } of action.waypoints)
             mapStore.addWaypoint({ lat: latitude, lng: longitude, id: wpid })

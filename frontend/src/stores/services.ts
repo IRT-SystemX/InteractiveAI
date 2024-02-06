@@ -10,8 +10,18 @@ import type { Recommendation } from '@/types/services'
 const { t } = i18n.global
 
 export const useServicesStore = defineStore('services', () => {
-  const context = ref<Context>()
-  const recommendations = ref<Recommendation[]>([])
+  const _context = ref<Context>()
+  const _recommendations = ref<Recommendation[]>([])
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function context<T extends Entity>(entity: T) {
+    return _context.value as Context<T>
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function recommendations<T extends Entity>(entity: T) {
+    return _recommendations.value as Recommendation<T>[]
+  }
 
   async function getContext<E extends Entity>(
     entity: E,
@@ -29,8 +39,8 @@ export const useServicesStore = defineStore('services', () => {
     const handler = async () => {
       try {
         const { data } = await servicesApi.getContext<E>()
-        context.value = data.find((el) => el.use_case === entity)?.data
-        if (context.value) callback(context.value)
+        _context.value = data.find((el) => el.use_case === entity)?.data
+        if (_context.value) callback(_context.value)
       } catch (err) {
         clearInterval(contextPID)
         eventBus.emit('modal:open', {
@@ -45,10 +55,10 @@ export const useServicesStore = defineStore('services', () => {
     return contextPID
   }
 
-  async function getRecommendation<T extends Entity = Entity>(newContext?: Context<T> | {}) {
-    const payload = newContext || context.value || {}
+  async function getRecommendation<T extends Entity = Entity>(newContext?: Context<T>) {
+    const payload = newContext || _context.value
     const { data } = await servicesApi.getRecommendation(payload)
-    recommendations.value = data
+    _recommendations.value = data
   }
 
   return {

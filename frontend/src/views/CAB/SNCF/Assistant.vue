@@ -4,7 +4,7 @@
       <Event v-if="tab === 1 && card" :card="card" />
       <Recommendations
         v-if="tab === 2 && card"
-        :recommendations="servicesStore.recommendations"
+        :recommendations="servicesStore.recommendations('SNCF')"
         :buttons="[
           $t('recommendations.button1'),
           $t('recommendations.button2'),
@@ -56,7 +56,8 @@ import { applyRecommendation } from '@/api/services/SNCF'
 import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
-import type { Entity } from '@/types/entities'
+import type { Context, Entity } from '@/types/entities'
+import type { Trace } from '@/types/services'
 
 import Default from '../Common/Assistant/Default.vue'
 import Recommendations from '../Common/Assistant/Recommendations.vue'
@@ -77,13 +78,13 @@ eventBus.on('assistant:tab', (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation({})
+      servicesStore.getRecommendation({} as Context<'SNCF'>) // FIXME
   }
 })
 
 function onSelection(recommendation: any) {
   sendTrace({
-    data: {},
+    data: {} as Trace['data'], // FIXME
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })

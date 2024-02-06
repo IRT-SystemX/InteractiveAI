@@ -5,7 +5,20 @@ export type DA = {
     Longitude: number
   }
   Metadata: { event_type: string; system: string }
-  Action: null
+  Action: {
+    airport_destination: {
+      apcity: string
+      apid: Uppercase<string>
+      apname: Uppercase<string>
+      latitude: number
+      longitude: number
+    }
+    waypoints: {
+      latitude: number
+      longitude: number
+      wpid: Uppercase<string>
+    }[]
+  }
 }
 
 export const Systems = ['STAT', 'ENG', 'ELEC', 'FUEL', 'HYD', 'ECS', 'BLD'] as const

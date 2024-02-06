@@ -4,7 +4,7 @@
       <Event v-if="tab === 1 && card" :card="card" />
       <Recommendations
         v-if="tab === 2"
-        :recommendations="servicesStore.recommendations"
+        :recommendations="servicesStore.recommendations('RTE')"
         :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         @selected="onSelection">
         <template #default="{ recommendation }">
@@ -59,13 +59,13 @@ eventBus.on('assistant:tab', (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation(context)
+      servicesStore.getRecommendation(context as any)
   }
 })
 
 function onSelection(selected: any) {
   sendTrace({
-    data: {},
+    data: selected,
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })

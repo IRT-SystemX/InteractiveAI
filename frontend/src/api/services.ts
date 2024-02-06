@@ -1,11 +1,9 @@
 import http from '@/plugins/http'
-import type { Context, Entity } from '@/types/entities'
-import type { ContextResponse, Recommendation } from '@/types/services'
-import type { Trace } from '@/types/trace'
+import type { Action, Context, Entity } from '@/types/entities'
+import type { ContextResponse, Recommendation, Trace } from '@/types/services'
 
-// TODO: typing
-export function getRecommendation<T extends Entity = Entity>(context: Context<T> | {}) {
-  return http.post<Recommendation<T>[]>('/cab_recommendation/api/v1/recommendation', context)
+export function getRecommendation<T extends Entity = Entity>(context?: Context<T>) {
+  return http.post<Recommendation<T>[]>('/cab_recommendation/api/v1/recommendation', context || {})
 }
 
 export function getContext<E extends Entity = Entity>() {
@@ -17,4 +15,8 @@ export function sendTrace(payload: Trace) {
     ...payload,
     date: new Date().toISOString()
   })
+}
+
+export function applyRecommendation(data: Action) {
+  return http.post<{ message: string }>('/api/v1/recommendations', data)
 }
