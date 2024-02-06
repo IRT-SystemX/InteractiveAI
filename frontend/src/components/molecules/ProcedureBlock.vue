@@ -7,9 +7,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import type { Block } from '@/types/entities/DA'
+
 import ProcedureStep from '../atoms/ProcedureStep.vue'
 
-const props = defineProps<{ block: any }>()
+const props = defineProps<{ block: Block }>()
 
 const state = computed(() => {
   if (props.block.tasks.every((task: any) => task.state === 'done')) return 'done'

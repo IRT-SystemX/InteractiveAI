@@ -14,6 +14,7 @@ export function login(username: string, password: string) {
   )
 }
 
+// TODO: typing
 export function checkToken(token: string) {
   return http.post(
     '/auth/check_token',
@@ -23,10 +24,12 @@ export function checkToken(token: string) {
   )
 }
 
+// TODO: typing
 export function synchronizeWithToken() {
   return http.post('/users/users/synchronizeWithToken')
 }
 
+// TODO: typing
 export function getCurrentUser() {
   return http.get<UserResponse>('/users/CurrentUserWithPerimeters')
 }

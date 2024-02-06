@@ -76,10 +76,12 @@ export function getCard(id: string) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
+// TODO: typing
 export function deleteCard(id: string) {
   http.delete(`/cardspub/cards/${id}`)
 }
 
+// TODO: typing
 export function acknowledgeCard(card: Card) {
   http.post(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }
