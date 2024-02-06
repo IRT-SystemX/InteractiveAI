@@ -194,8 +194,6 @@ def create_usecases(client):
         # Load use cases from the database
         load_usecases_db(use_case_factory)
 
-        # client.use_case_factory = use_case_factory
-
 
 @pytest.fixture(scope="function")
 def create_events(client, create_usecases, rte_auth_mocker):
