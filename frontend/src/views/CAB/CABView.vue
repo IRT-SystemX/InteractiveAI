@@ -148,7 +148,7 @@ function reset(panel: 'left' | 'right' | 'bottom') {
 setup(route.params.entity as Entity)
 
 function setup(entity: Entity) {
-  cardsStore.getCards(entity, Entities[entity].hydrated)
+  cardsStore.getCards(entity)
   locale.value = `${locale.value.slice(0, 2)}-${entity}`
   toggleMode(entity)
 

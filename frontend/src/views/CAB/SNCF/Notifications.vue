@@ -10,7 +10,7 @@
           @click="eventBus.emit('assistant:selected:SNCF', card)">
           <template #title>{{ card.titleTranslated }}</template>
           <template #severity>
-            {{ $t(`card.event_type.${card.data!.metadata.event_type}`) }}
+            {{ $t(`card.event_type.${card.data.metadata.event_type}`) }}
             <SVG
               src="icons/warning_hex"
               :fill="`var(--color-${severityToColor(card.severity)})`"

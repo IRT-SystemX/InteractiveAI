@@ -1,4 +1,4 @@
-import type { Entity, Metadata } from './entities'
+import type { Entities, Entity, Metadata } from './entities'
 
 export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'
 
@@ -34,8 +34,9 @@ export type Card<T extends Entity = Entity> = {
   id: `${Lowercase<T>}Process.${string}-${string}-${string}-${string}-${string}`
   state: string
   startDate: number
-  hydrated: boolean
-  data?: { metadata: Metadata<T> }
+  data: (typeof Entities)[T]['hydrated'] extends true
+    ? { metadata: Metadata<T> }
+    : { metadata: Metadata<T> } | undefined
 }
 
 export type CardAck = {

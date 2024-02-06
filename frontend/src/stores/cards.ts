@@ -6,7 +6,7 @@ import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
-import type { Entity } from '@/types/entities'
+import { Entities, type Entity } from '@/types/entities'
 
 const { t } = i18n.global
 
@@ -19,7 +19,7 @@ export const useCardsStore = defineStore('cards', () => {
     )
   }
 
-  async function getCards(entity: Entity, hydrated = false) {
+  async function getCards(entity: Entity, hydrated?: boolean) {
     _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
@@ -34,7 +34,7 @@ export const useCardsStore = defineStore('cards', () => {
         (data) => data.id === id && data.res === 'ok' && _getCards(entity, hydrated)
       )
     } else {
-      _getCards(entity, hydrated)
+      _getCards(entity, hydrated === undefined ? Entities[entity].hydrated : hydrated)
     }
   }
 
@@ -67,14 +67,12 @@ export const useCardsStore = defineStore('cards', () => {
           if (existingCard !== -1)
             _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
-              ...hydratedCard,
-              hydrated
+              ...hydratedCard
             })
           else
             _cards.value.push({
               ...cardEvent.card,
-              ...hydratedCard,
-              hydrated
+              ...hydratedCard
             })
           break
         case CardOperationType.DELETE:
