@@ -71,7 +71,7 @@ import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { toggleMode } from '@/plugins/colorMode'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import { Entities, EntitiesArray, type Entity } from '@/types/entities'
+import { EntitiesArray, type Entity } from '@/types/entities'
 
 let Assistant = defineAsyncComponent(() => import(`./${route.params.entity}/Assistant.vue`))
 let Context = defineAsyncComponent(() => import(`./${route.params.entity}/Context.vue`))
