@@ -1,7 +1,7 @@
 import { type BasicColorSchema, useColorMode } from '@vueuse/core'
 import { nextTick } from 'vue'
 
-import { Entities, EntitiesArray, type Entity } from '@/entities/entities'
+import { Entities, EntitiesArray, type Entity } from '@/types/entities'
 
 export const mode = useColorMode({
   emitAuto: true,

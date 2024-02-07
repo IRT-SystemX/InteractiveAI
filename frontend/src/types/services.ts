@@ -1,4 +1,4 @@
-import type { Action, Context, Entity } from '../entities/entities'
+import type { Action, Context, Entity } from './entities'
 import type { DateMillisecondsFormat, UUID } from './formats'
 export type Recommendation<T extends Entity = Entity> = {
   agent_type: 'IA'

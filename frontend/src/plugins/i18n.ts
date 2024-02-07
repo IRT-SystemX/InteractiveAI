@@ -1,9 +1,9 @@
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 
-import { EntitiesArray } from '@/entities/entities'
 import en from '@/locales/en.json'
 import fr from '@/locales/fr.json'
+import { EntitiesArray } from '@/types/entities'
 
 export const SUPPORT_LOCALES = ['en', 'fr'] as const
 

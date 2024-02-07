@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { EntitiesArray, type Entity } from '@/entities/entities'
 import { useAuthStore } from '@/stores/auth'
+import { EntitiesArray, type Entity } from '@/types/entities'
 
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'

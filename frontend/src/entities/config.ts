@@ -21,19 +21,9 @@ export const Entities = <const>{
 }
 
 // Bind your types here
-type EntitiesTypes = {
+export type EntitiesTypes = {
   DA: DA
   ORANGE: ORANGE
   RTE: RTE
   SNCF: SNCF
 }
-
-// Nothing to do here, types are automatically
-// inferred from what you typed above
-export const EntitiesArray = Object.keys(Entities) as (keyof typeof Entities)[]
-
-export type Entity = keyof typeof Entities
-
-export type Metadata<T extends Entity = Entity> = EntitiesTypes[T]['Metadata']
-export type Context<T extends Entity = Entity> = EntitiesTypes[T]['Context']
-export type Action<T extends Entity = Entity> = EntitiesTypes[T]['Action']

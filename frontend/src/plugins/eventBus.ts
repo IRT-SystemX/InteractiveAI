@@ -1,7 +1,7 @@
 import mitt from 'mitt'
 
-import type { Entity } from '@/entities/entities'
 import type { Card } from '@/types/cards'
+import type { Entity } from '@/types/entities'
 import type { UUID } from '@/types/formats'
 
 const eventBus = mitt<
