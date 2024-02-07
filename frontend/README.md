@@ -45,19 +45,21 @@ Make sure its name matches exactly the entity created in OperatorFabric.
 ```sh
 src/entities/ENTITY
 ├── assets
-│   ├── logo.svg           # Your logo in svg
-│   └── theme.scss         # CSS variables to overwrite default theme
-├── CAB                    # Define your own panels
-│   ├── Assistant          # You can define your custom components in a folder
+│   ├── img                 # Custom assets
+│   │   └── example.webp
+│   ├── logo.svg            # Your logo in svg
+│   └── theme.scss          # CSS variables to overwrite default theme
+├── CAB                     # Define your own panels
+│   ├── components          # Custom components
 │   │   └── Example.vue
-│   ├── Assistant.vue      # Your assistant
-│   ├── Context.vue        # Your context
-│   ├── Notifications.vue  # Your notification
-│   └── Timeline.vue       # Your timeline
-├── locales                # Custom locales
+│   ├── Assistant.vue       # Your assistant
+│   ├── Context.vue         # Your context
+│   ├── Notifications.vue   # Your notifications
+│   └── Timeline.vue        # Your timeline
+├── locales                 # Custom locales
 │   ├── en.json
 │   └── fr.json
-└── types.ts               # Your custom types
+└── types.ts                # Your custom types
 ```
 
 ### Config file
