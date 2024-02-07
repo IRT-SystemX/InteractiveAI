@@ -1,14 +1,14 @@
-import { useColorMode } from '@vueuse/core'
+import { type BasicColorSchema, useColorMode } from '@vueuse/core'
 import { nextTick } from 'vue'
 
-import { Entities, EntitiesArray } from '@/entities/entities'
+import { Entities, EntitiesArray, type Entity } from '@/entities/entities'
 
 export const mode = useColorMode({
   emitAuto: true,
   modes: EntitiesArray.reduce(
     (a, v) => ({ ...a, [v]: `${Entities[v].darkMode ? 'dark' : 'light'} ${v}` }),
     {}
-  )
+  ) as Record<BasicColorSchema | Entity, string>
 })
 
 const isAppearanceTransition =
