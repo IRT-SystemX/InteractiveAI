@@ -3,6 +3,7 @@
     <input
       v-model="username"
       type="text"
+      autofocus
       autocomplete="username"
       class="cab-input mb-2"
       :placeholder="$t('input.placeholder.username')" />
