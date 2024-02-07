@@ -1,5 +1,5 @@
+import type { Action, Context, Entity } from '@/entities/entities'
 import http from '@/plugins/http'
-import type { Action, Context, Entity } from '@/types/entities'
 import type { ContextResponse, Recommendation, Trace } from '@/types/services'
 
 export function getRecommendation<T extends Entity = Entity>(context?: Context<T>) {

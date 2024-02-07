@@ -1,4 +1,4 @@
-import type { Entities, Entity, Metadata } from './entities'
+import type { Entities, Entity, Metadata } from '../entities/entities'
 import type { UUID } from './formats'
 
 export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'

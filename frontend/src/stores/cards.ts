@@ -3,10 +3,10 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import * as cardsApi from '@/api/cards'
+import { Entities, type Entity } from '@/entities/entities'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
-import { Entities, type Entity } from '@/types/entities'
 
 const { t } = i18n.global
 

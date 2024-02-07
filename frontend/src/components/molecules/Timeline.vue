@@ -7,11 +7,11 @@
       :key="card.id"
       class="cab-timeline-event"
       :style="{
-        'grid-column': `${minmax(
+        'grid-column': `${clamp(
           differenceInMinutes(new Date(card.startDate), window.start) + 2,
           window.length + 1,
           2
-        )} / ${minmax(
+        )} / ${clamp(
           differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) + 2,
           window.length + 1,
           2
@@ -57,11 +57,11 @@
       <div
         :style="{
           'grid-row': index + 1,
-          'grid-column': `${minmax(
+          'grid-column': `${clamp(
             differenceInMinutes(new Date(card.startDate), window.start) + 2,
             window.length + 1,
             2
-          )} / ${minmax(
+          )} / ${clamp(
             differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) +
               2,
             window.length + 1,
@@ -93,7 +93,7 @@ import { computed, ref } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
-import { minmax, repeatEvery, severityToColor } from '@/utils/utils'
+import { clamp, repeatEvery, severityToColor } from '@/utils/utils'
 
 import Notification from './Notification.vue'
 

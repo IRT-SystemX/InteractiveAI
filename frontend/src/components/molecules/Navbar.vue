@@ -24,7 +24,7 @@
           :key="entity"
           class="flex flex-center-y entity"
           :to="{ name: 'cab', params: { entity } }">
-          <img :src="asset(`assets/img/entities/${entity}.svg`)" width="32" height="32" />
+          <img :src="asset(`entities/${entity}/assets/logo.svg`)" width="32" height="32" />
         </RouterLink>
       </template>
     </div>

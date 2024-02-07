@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import * as servicesApi from '@/api/services'
+import type { Context, Entity } from '@/entities/entities'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
-import type { Context, Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
 
 const { t } = i18n.global

@@ -6,7 +6,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import i18n from './plugins/i18n'
+import i18n, { setupEntitiesLocales } from './plugins/i18n'
 import router from './router'
 
 const app = createApp(App)
@@ -16,6 +16,8 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 
 app.use(router)
+
+await setupEntitiesLocales(i18n)
 app.use(i18n)
 
 app.mount('#app')

@@ -11,10 +11,10 @@ import {
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
+import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
 import eventBus from '@/plugins/eventBus'
 import type { Severity } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
-import type { CorrelationData, CorrelationKey, KPI } from '@/types/entities/ORANGE'
 
 export const useGraphStore = defineStore('graph', () => {
   const data = ref<{

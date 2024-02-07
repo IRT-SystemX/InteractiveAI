@@ -6,7 +6,7 @@
       :to="{ name: 'cab', params: { entity } }">
       <Card>
         <template #outer>
-          <img :src="asset(`assets/img/entities/${entity}.svg`)" />
+          <img :src="asset(`entities/${entity}/assets/logo.svg`)" />
         </template>
         {{ $t(`entity.${entity}`) }}
       </Card>

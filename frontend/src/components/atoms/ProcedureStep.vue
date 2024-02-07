@@ -20,8 +20,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
+import type { Step } from '@/entities/DA/types'
 import eventBus from '@/plugins/eventBus'
-import type { Step } from '@/types/entities/DA'
 
 import Button from './Button.vue'
 

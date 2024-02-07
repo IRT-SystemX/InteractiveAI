@@ -1,14 +1,14 @@
 import { useColorMode } from '@vueuse/core'
 import { nextTick } from 'vue'
 
+import { Entities, EntitiesArray } from '@/entities/entities'
+
 export const mode = useColorMode({
   emitAuto: true,
-  modes: {
-    DA: 'dark DA',
-    ORANGE: 'ORANGE',
-    RTE: 'RTE',
-    SNCF: 'SNCF'
-  }
+  modes: EntitiesArray.reduce(
+    (a, v) => ({ ...a, [v]: `${Entities[v].darkMode ? 'dark' : 'light'} ${v}` }),
+    {}
+  )
 })
 
 const isAppearanceTransition =

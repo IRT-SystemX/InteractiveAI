@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import type { Block } from '@/types/entities/DA'
+import type { Block } from '@/entities/DA/types'
 
 import ProcedureStep from '../atoms/ProcedureStep.vue'
 

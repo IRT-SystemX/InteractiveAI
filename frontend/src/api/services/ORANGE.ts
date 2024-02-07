@@ -1,5 +1,5 @@
+import type { CorrelationResponse } from '@/entities/ORANGE/types'
 import http from '@/plugins/http'
-import type { CorrelationResponse } from '@/types/entities/ORANGE'
 
 export function getCorrelations(params: { size: number; app_id?: string; kpi_name?: string }) {
   return http.get<CorrelationResponse>('cab_correlation/api/v1/correlation', {

@@ -1,15 +1,11 @@
+import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 
-import en from '@/locales/en/en.json'
-import enDA from '@/locales/en/en-DA.json'
-import enORANGE from '@/locales/en/en-ORANGE.json'
-import enRTE from '@/locales/en/en-RTE.json'
-import enSNCF from '@/locales/en/en-SNCF.json'
-import fr from '@/locales/fr/fr.json'
-import frDA from '@/locales/fr/fr-DA.json'
-import frORANGE from '@/locales/fr/fr-ORANGE.json'
-import frRTE from '@/locales/fr/fr-RTE.json'
-import frSNCF from '@/locales/fr/fr-SNCF.json'
+import { EntitiesArray } from '@/entities/entities'
+import en from '@/locales/en.json'
+import fr from '@/locales/fr.json'
+
+export const SUPPORT_LOCALES = ['en', 'fr'] as const
 
 export default createI18n({
   locale: window.navigator.language.split('-')[0] || import.meta.env.VITE_DEFAULT_LOCALE || 'en',
@@ -19,14 +15,17 @@ export default createI18n({
   fallbackWarn: false,
   messages: {
     en,
-    'en-DA': enDA,
-    'en-ORANGE': enORANGE,
-    'en-RTE': enRTE,
-    'en-SNCF': enSNCF,
-    fr,
-    'fr-DA': frDA,
-    'fr-ORANGE': frORANGE,
-    'fr-RTE': frRTE,
-    'fr-SNCF': frSNCF
+    fr
   }
 })
+
+export async function setupEntitiesLocales(i18n: ReturnType<typeof createI18n>) {
+  for (const entity of EntitiesArray)
+    for (const locale of SUPPORT_LOCALES) {
+      i18n.global.setLocaleMessage(
+        `${locale}-${entity}`,
+        (await import(`../entities/${entity}/locales/${locale}.json`)).default
+      )
+    }
+  return nextTick()
+}
