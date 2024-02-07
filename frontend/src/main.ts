@@ -17,7 +17,7 @@ app.use(pinia)
 
 app.use(router)
 
-await setupEntitiesLocales(i18n)
+setupEntitiesLocales(i18n)
 app.use(i18n)
 
 app.mount('#app')
