@@ -15,14 +15,13 @@ const http = axios.create({
 http.interceptors.request.use(
   function (config) {
     eventBus.emit('progress:start')
-    // Do something before request is sent
+    // Add access token to all requests
     const authStore = useAuthStore()
     config.headers.Authorization = `Bearer ${authStore.token?.access_token}`
     return config
   },
   function (error) {
     eventBus.emit('progress:stop')
-    // Do something with request error
     return Promise.reject(error)
   }
 )
@@ -33,8 +32,9 @@ http.interceptors.response.use(
     return response
   },
   async function (error) {
+    const authStore = useAuthStore()
+    // If request failed, check if token is expired
     if (error.config.url !== '/auth/check_token') {
-      const authStore = useAuthStore()
       const res = await authStore.checkToken()
       if (!res) {
         eventBus.emit('modal:open', {
@@ -45,6 +45,11 @@ http.interceptors.response.use(
         router.push({ name: 'login' })
         return
       }
+    } else {
+      // If the request that failed was the token check,
+      // then it is probably a network error and simply log out the user
+      authStore.logout()
+      router.push({ name: 'login' })
     }
     eventBus.emit('progress:stop')
     if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))
