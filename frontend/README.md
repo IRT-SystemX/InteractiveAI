@@ -85,9 +85,9 @@ In `src/entities/ENTITY/types.ts`, you can define your custom types as follow:
 
 ```ts
 export type ENTITY = {
-  Context: any // Context returned by context service
+  Context: any  // Context returned by context service
   Metadata: any // Custom metadata added on cards
-  Action: any // Actions returned by recommendation service
+  Action: any   // Actions returned by recommendation service
 }
 ```
 
