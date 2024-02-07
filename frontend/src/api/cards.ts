@@ -6,7 +6,6 @@ import type { Card, CardEvent } from '@/types/cards'
 
 let controller: AbortController = new AbortController()
 
-const authStore = useAuthStore()
 const { t } = i18n.global
 
 export async function subscribe(
@@ -18,6 +17,7 @@ export async function subscribe(
   },
   handler: (card: CardEvent) => void
 ) {
+  const authStore = useAuthStore()
   controller = new AbortController()
   const response = await fetch(
     import.meta.env.VITE_API +
