@@ -9,7 +9,7 @@ let controller: AbortController = new AbortController()
 const authStore = useAuthStore()
 const { t } = i18n.global
 
-export async function getCardsSubscription(
+export async function subscribe(
   config: {
     clientId: string
     rangeEnd?: string
@@ -72,18 +72,18 @@ export function isSubscriptionActive() {
   return http.get<boolean>('/cards/willNewSubscriptionDisconnectAnExistingSubscription')
 }
 
-export function getCard(id: string) {
+export function get(id: string) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
-export function deleteCard(id: string) {
+export function remove(id: string) {
   return http.delete<null>(`/cardspub/cards/${id}`)
 }
 
-export function acknowledgeCard(card: Card) {
+export function acknowledge(card: Card) {
   return http.post<null>(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }
 
-export function closeCardSubscription() {
+export function unsubscribe() {
   controller.abort()
 }

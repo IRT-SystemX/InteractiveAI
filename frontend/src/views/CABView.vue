@@ -148,7 +148,7 @@ function reset(panel: 'left' | 'right' | 'bottom') {
 setup(route.params.entity as Entity)
 
 function setup(entity: Entity) {
-  cardsStore.getCards(entity)
+  cardsStore.subscribe(entity)
   locale.value = `${locale.value.slice(0, 2)}-${entity}`
   toggleMode(entity)
 
@@ -163,7 +163,7 @@ function remove() {
   for (const entity of EntitiesArray) eventBus.off(`assistant:selected:${entity}`)
   eventBus.off('tabs:selected')
   eventBus.off('graph:showTooltip')
-  cardsStore.closeCards()
+  cardsStore.unsubscribe()
 }
 
 onBeforeRouteUpdate((to) => {

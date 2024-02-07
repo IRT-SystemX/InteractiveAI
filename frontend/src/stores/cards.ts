@@ -19,7 +19,7 @@ export const useCardsStore = defineStore('cards', () => {
     )
   }
 
-  async function getCards(entity: Entity, hydrated?: boolean) {
+  async function subscribe(entity: Entity, hydrated?: boolean) {
     _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
@@ -31,14 +31,14 @@ export const useCardsStore = defineStore('cards', () => {
       })
       eventBus.on(
         'modal:close',
-        (data) => data.id === id && data.res === 'ok' && _getCards(entity, hydrated)
+        (data) => data.id === id && data.res === 'ok' && _subscribe(entity, hydrated)
       )
     } else {
-      _getCards(entity, hydrated === undefined ? Entities[entity].hydrated : hydrated)
+      _subscribe(entity, hydrated === undefined ? Entities[entity].hydrated : hydrated)
     }
   }
 
-  async function _getCards(entity: Entity, hydrated = false) {
+  async function _subscribe(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent) => {
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
@@ -61,7 +61,7 @@ export const useCardsStore = defineStore('cards', () => {
           // eslint-disable-next-line no-case-declarations
           let hydratedCard = {}
           if (hydrated) {
-            const { data } = await cardsApi.getCard(cardEvent.card.id)
+            const { data } = await cardsApi.get(cardEvent.card.id)
             hydratedCard = data.card
           }
           if (existingCard !== -1)
@@ -85,7 +85,7 @@ export const useCardsStore = defineStore('cards', () => {
     }
 
     const id = crypto.randomUUID()
-    cardsApi.getCardsSubscription(
+    cardsApi.subscribe(
       {
         clientId: id,
         rangeEnd: String(endOfDay(new Date()).getTime()),
@@ -94,7 +94,7 @@ export const useCardsStore = defineStore('cards', () => {
       handler
     )
     cardsApi
-      .getCardsSubscription(
+      .subscribe(
         {
           clientId: id,
           notification: 'true'
@@ -104,13 +104,13 @@ export const useCardsStore = defineStore('cards', () => {
       .finally(() => (_cards.value = []))
   }
 
-  function closeCards() {
-    cardsApi.closeCardSubscription()
+  function unsubscribe() {
+    cardsApi.unsubscribe()
     _cards.value = []
   }
 
-  async function hydrateCard(id: string) {
-    const { data } = await cardsApi.getCard(id)
+  async function hydrate(id: string) {
+    const { data } = await cardsApi.get(id)
     const i = _cards.value.findIndex((card) => card.id === data.card.id)
     if (i !== -1) {
       _cards.value[i] = { ..._cards.value[i], ...data.card }
@@ -119,5 +119,5 @@ export const useCardsStore = defineStore('cards', () => {
     }
   }
 
-  return { _cards, cards, getCards, hydrateCard, closeCards }
+  return { _cards, cards, subscribe, hydrate, unsubscribe }
 })
