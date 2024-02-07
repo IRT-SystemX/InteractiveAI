@@ -11,6 +11,8 @@ The platform make use of the project OperatorFabric for notification management 
     <li>
       <a href="#adding-your-custom-entity">Adding your custom entity</a>
       <ul>
+        <li><a href="#structure">Structure</a></li>
+        <li><a href="#config-file">Config file</a></li>
         <li><a href="#type-support-for-your-custom-entity">Type Support for your custom entity</a></li>
       </ul>
     </li>
@@ -35,13 +37,15 @@ The platform make use of the project OperatorFabric for notification management 
 
 ## Adding your custom entity
 
-Adding your own entity (eg `ENTITY`) is made simply by adding your folder in `src/entities/ENTITY`.
-Make sure it matches exactly the entity created in OperatorFabric
+Adding your own entity (eg `ENTITY`) is done simply by adding your folder in `src/entities/ENTITY`.
+Make sure its name matches exactly the entity created in OperatorFabric.
+
+### Structure
 
 ```sh
 src/entities/ENTITY
 ├── assets
-│   ├── logo.svg           # Your own logo in svg
+│   ├── logo.svg           # Your logo in svg
 │   └── theme.scss         # CSS variables to overwrite default theme
 ├── CAB                    # Define your own panels
 │   ├── Assistant          # You can define your custom components in a folder
@@ -56,7 +60,9 @@ src/entities/ENTITY
 └── types.ts               # Your custom types
 ```
 
-Then, in `src/entities.ts`, you must add your new entity :
+### Config file
+
+In `src/config.ts`, add your new entity :
 
 ```ts
 // Import your theme here
@@ -85,15 +91,14 @@ In `src/entities/ENTITY/types.ts`, you can define your custom types as follow:
 
 ```ts
 export type ENTITY = {
-  Context: any  // Context returned by context service
+  Context: any // Context returned by context service
   Metadata: any // Custom metadata added on cards
-  Action: any   // Actions returned by recommendation service
+  Action: any // Actions returned by recommendation service
 }
 ```
 
-It is also the right place to define your other custom types.
-
-You can then add your types to `src/entities.ts`.
+It is also the right place to define your other custom types.  
+You can then import and add your types to `src/config.ts` (cf. [Adding your custom entity](#adding-your-custom-entity))
 
 ## Project Setup
 
