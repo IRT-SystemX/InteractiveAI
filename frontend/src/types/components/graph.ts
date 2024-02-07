@@ -1,4 +1,4 @@
-import type { Severity } from '../cards'
+import type { Severity } from '@/types/cards'
 
 export type Node = {
   id: number
