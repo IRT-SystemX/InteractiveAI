@@ -8,7 +8,7 @@ import { useGraphStore } from '@/stores/components/graph'
 
 const graphStore = useGraphStore()
 
-const graphHTML = ref<HTMLDivElement | null>(null)
+const graphHTML = ref<HTMLDivElement>()
 
 onMounted(() => {
   graphStore.setup(

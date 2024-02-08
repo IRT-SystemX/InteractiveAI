@@ -27,7 +27,7 @@ import Button from './Button.vue'
 
 const props = defineProps<{ task: Step }>()
 
-const step = ref<HTMLDivElement | null>(null)
+const step = ref<HTMLDivElement>()
 
 watch(
   () => props.task.state,

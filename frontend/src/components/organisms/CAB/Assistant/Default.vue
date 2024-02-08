@@ -3,7 +3,7 @@
   <main class="flex flex-1 flex-col">
     <slot>
       <div class="flex flex-1 flex-col color-primary flex-center">
-        <SVG src="logo" fill="var(--color-primary)" :width="56" class="mb-3"></SVG>
+        <Avatar :size="200" />
         <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>
         <p class="text-center">{{ $t('assistant.cab.presentation') }}</p>
       </div>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { Mic } from 'lucide-vue-next'
 
+import Avatar from '@/components/atoms/Avatar.vue'
 import SVG from '@/components/atoms/SVG.vue'
 </script>
 <style lang="scss">

@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="login">
+    <Avatar :size="300" />
     <input
       v-model="username"
       type="text"
@@ -19,6 +20,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import Avatar from '@/components/atoms/Avatar.vue'
 import Button from '@/components/atoms/Button.vue'
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
