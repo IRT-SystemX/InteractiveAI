@@ -12,6 +12,7 @@
   </Card>
 </template>
 <script setup lang="ts">
+import type { Severity } from '@/types/cards'
 import { severityToColor } from '@/utils/utils'
 
 import Card from '../atoms/Card.vue'
@@ -19,7 +20,7 @@ import Card from '../atoms/Card.vue'
 withDefaults(
   defineProps<{
     orientation?: 'left' | 'right' | 'top' | 'bottom'
-    severity: 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'
+    severity: Severity
   }>(),
   { orientation: 'left' }
 )

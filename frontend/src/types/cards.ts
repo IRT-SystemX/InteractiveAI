@@ -1,7 +1,7 @@
 import type { Entities, Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION'
+export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION' | 'ND'
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
 

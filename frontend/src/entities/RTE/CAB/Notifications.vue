@@ -6,14 +6,15 @@
         v-if="
           cardsStore
             .cards('RTE')
-            .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity)).length
+            // TODO: better filter
+            .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT', 'ND'].includes(card.severity)).length
         "
         class="card-container">
         <TransitionGroup name="fade">
           <Notification
             v-for="card of cardsStore
               .cards('RTE')
-              .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT'].includes(card.severity))"
+              .filter((card) => ['ALARM', 'ACTION', 'COMPLIANT', 'ND'].includes(card.severity))"
             :key="card.id"
             :severity="card.severity"
             @click="eventBus.emit('assistant:selected:RTE', card)">

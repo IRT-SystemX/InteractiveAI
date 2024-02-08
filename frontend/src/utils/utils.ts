@@ -23,6 +23,8 @@ export function severityToColor(severity: Severity) {
       return 'success'
     case 'COMPLIANT':
       return 'primary'
+    case 'ND':
+      return 'secondary'
   }
 }
 
