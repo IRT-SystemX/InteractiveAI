@@ -1,4 +1,4 @@
-from .base_context_manager import BaseContextManager
+from api.context_manager.base_context_manager import BaseContextManager
 
 
 class RTEContextManager(BaseContextManager):

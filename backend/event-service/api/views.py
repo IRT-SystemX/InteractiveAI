@@ -3,7 +3,11 @@ import importlib
 from api.exceptions import InvalidUseCase
 from apiflask import APIBlueprint
 from apiflask.views import MethodView
-from cab_common_auth.decorators import get_use_cases, protected, protected_admin
+from cab_common_auth.decorators import (
+    get_use_cases,
+    protected,
+    protected_admin,
+)
 from settings import logger
 
 from .models import EventModel, UseCaseModel, db
