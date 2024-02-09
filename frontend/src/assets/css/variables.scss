@@ -1,0 +1,48 @@
+:root {
+  // 8pt grid
+  --unit: 8px;
+
+  --duration: 0.2s;
+
+  // Radius
+  --radius-circular: 2147483647px;
+  --radius-big: calc(var(--unit) * 1.5);
+  --radius-medium: var(--unit);
+  --radius-small: calc(var(--unit) * 0.5);
+
+  // Spacing
+  @for $i from 1 through 20 {
+    --spacing-#{$i}: calc(var(--unit) * #{$i});
+  }
+
+  --color-grey-100: #ffffff;
+  --color-grey-200: #f3f3f3;
+  --color-grey-300: #c6c6c6;
+  --color-grey-400: #9b9b9b;
+  --color-grey-600: #727272;
+  --color-grey-800: #4b4b4b;
+  --color-grey-900: #393939;
+  --color-blue-500: #00a3ff;
+  --color-green-500: #009e8f;
+  --color-orange-500: #ec775c;
+  --color-red-500: #c81640;
+
+  --color-primary: var(--color-blue-500);
+  --color-secondary: var(--color-grey-300);
+  --color-success: var(--color-green-500);
+  --color-warning: var(--color-orange-500);
+  --color-error: var(--color-red-500);
+
+  --color-background: var(--color-grey-100);
+  --color-text: var(--color-grey-900);
+  --color-text-inverted: var(--color-grey-100);
+}
+html.dark {
+  --color-grey-900: #ffffff;
+  --color-grey-800: #f3f3f3;
+  --color-grey-600: #c6c6c6;
+  --color-grey-400: #9b9b9b;
+  --color-grey-300: #727272;
+  --color-grey-200: #4b4b4b;
+  --color-grey-100: #393939;
+}

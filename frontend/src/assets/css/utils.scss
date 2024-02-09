@@ -1,0 +1,121 @@
+@use 'sass:string';
+
+$spaces: ('margin', 'padding');
+$negative: ('', '-');
+$types: (
+  'top': 'y',
+  'bottom': 'y',
+  'right': 'x',
+  'left': 'x'
+);
+@each $space in $spaces {
+  @each $unit in $negative {
+    @for $i from 0 through 20 {
+      .#{$unit}#{string.slice($space,1,1)}-#{$i} {
+        #{$space}: calc(var(--unit) * #{$unit}#{$i}) !important;
+      }
+    }
+
+    @each $type, $axis in $types {
+      @for $i from 0 through 20 {
+        .#{$unit}#{string.slice($space,1,1)}#{string.slice($type,1,1)}-#{$i},
+        .#{$unit}#{string.slice($space,1,1)}#{string.slice($axis,1,1)}-#{$i} {
+          #{$space}-#{$type}: calc(var(--unit) * #{$unit}#{$i}) !important;
+        }
+      }
+    }
+  }
+}
+
+@each $type, $axis in $types {
+  .m#{string.slice($type,1,1)}-auto,
+  .m#{string.slice($axis,1,1)}-auto {
+    margin-#{$type}: auto !important;
+  }
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.float-right {
+  float: right;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-gap {
+  gap: var(--spacing-1);
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-center-x {
+  justify-content: center;
+}
+
+.flex-center-y {
+  align-items: center;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--duration) ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0 !important;
+}
+
+.scrollable {
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.scrollable-y {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.scrollable-x {
+  overflow-x: auto;
+  scrollbar-gutter: stable;
+}

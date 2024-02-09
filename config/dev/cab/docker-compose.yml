@@ -145,7 +145,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ../../../frontend/main
+      context: ../../../frontend
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:

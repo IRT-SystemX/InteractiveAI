@@ -1,0 +1,7 @@
+{
+  "all": true,
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "check-coverage": true,
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["cypress/**/*.*", "**/*.d.ts", "**/*.cy.ts"]
+}
