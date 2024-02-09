@@ -270,7 +270,7 @@ onBeforeRouteLeave(() => {
   }
   .cab-context {
     flex: 1;
-    width: 0;
+    width: 100%;
   }
 }
 </style>
