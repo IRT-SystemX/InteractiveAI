@@ -1,6 +1,6 @@
 {
   "cab.assistant": "Recommendations",
-  "cab.notifications": "Alerts",
+  "cab.notifications.main": "Alerts",
   "cab.notifications.sub": "Tasks",
   "event.button.primary": "Consult the recommendations",
   "event.button.secondary": "Use the analysis tool",

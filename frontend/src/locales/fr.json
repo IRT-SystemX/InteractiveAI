@@ -11,7 +11,7 @@
   "button.yes": "Oui",
   "cab": "CAB",
   "cab.assistant": "Assistant",
-  "cab.notifications": "Notifications",
+  "cab.notifications.main": "Notifications",
   "cab.notifications.empty": "Aucun événement à afficher",
   "cab.tab.context": "Contexte",
   "cab.tab.dependencies": "Dépendances",
