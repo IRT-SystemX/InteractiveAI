@@ -113,7 +113,7 @@ onMounted(() => {
   renderer.setAnimationLoop(() => {
     const time = clock.getElapsedTime()
     // changeTexture(Math.floor(time) % 2 ? 'error' : 'default')
-    base.position.y = Math.cos(time) * 0.2
+    base.position.y = Math.cos(time * 2) * 0.3
     if (visible !== !!canvas.offsetParent) {
       visible = !!canvas.offsetParent
       renderer.setSize(props.size, props.size, false)
@@ -151,11 +151,15 @@ onBeforeUnmount(() => {
     position: absolute;
   }
   canvas {
+    cursor: grab;
     position: absolute;
     opacity: 0;
     transition: 2s;
     &.visible {
       opacity: 1;
+    }
+    &:active {
+      cursor: grabbing;
     }
   }
 }

@@ -34,7 +34,7 @@ import { useRoute } from 'vue-router'
 
 import { sendTrace } from '@/api/services'
 import { applyRecommendation } from '@/api/services/RTE'
-import Default from '@/components/organisms/CAB/Assistant/Default.vue'
+import Default from '@/components/organisms/CAB/Assistant.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
 import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
