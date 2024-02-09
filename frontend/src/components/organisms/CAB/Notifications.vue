@@ -54,7 +54,7 @@
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { Trash2 } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
@@ -80,7 +80,7 @@ const props = withDefaults(
   }
 )
 
-const cards = cardsStore.cards(props.entity)
+const cards = computed(() => cardsStore.cards(props.entity))
 
 const modals = ref<any[]>([])
 
