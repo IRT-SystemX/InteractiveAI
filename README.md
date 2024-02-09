@@ -13,6 +13,9 @@
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
+      <a href="#frontend">Frontend</a>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -32,6 +35,11 @@
 Cockpit and Bidirectional Assistant (CAB) platform provides support in augmented decision-making for complex steering systems.
 
 The platform make use of the project OperatorFabric for notification management and authentication.
+
+<!-- FRONTEND -->
+## Frontend
+
+You can find more informations on how to contribute, modify and create new use cases in the specific [frontend README](./frontend/README.md)
 
 <!-- GETTING STARTED -->
 ## Getting Started
