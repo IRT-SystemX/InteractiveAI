@@ -9,6 +9,7 @@ class ContextModel(db.Model):
     date = db.Column(db.DateTime)
     data = db.Column(db.PickleType)
 
+
 class UseCaseModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
