@@ -19,7 +19,7 @@ then
 fi
 
 echo "Will delete all bundles on $url"
-source ../getToken.sh "admin" $url
+source ../getToken.sh "admin" $url:3200/auth/token
 curl -s -X DELETE "$url:2100/businessconfig/processes/" -H "Authorization:Bearer $token"
 echo ""
 

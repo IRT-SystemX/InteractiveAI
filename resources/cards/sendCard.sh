@@ -36,7 +36,7 @@ if [ -z $1 ]
 then
     echo "Usage : sendCard cardFile opfab_url"
 else
-    source ../getToken.sh "publisher_test" $url
+    source ../getToken.sh "publisher_test" $url:3200/auth/token
     export current_date_in_milliseconds_from_epoch=$(($current_date_millis))
     export current_date_in_milliseconds_from_epoch_plus_3minutes=$(($current_date_millis + 3*60*1000))
     export current_date_in_milliseconds_from_epoch_plus_1hours=$(($current_date_millis + 60*60*1000))

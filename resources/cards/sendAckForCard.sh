@@ -17,6 +17,6 @@ if [ "$#" -lt 3 ]
 then
     echo "Usage : sendAckForCard user card_uid entitiesAcks opfab_url"
 else
-    source ../getToken.sh $1 $url
+    source ../getToken.sh $1 $url:3200/auth/token
     curl -X POST $url:2102/cards/userAcknowledgement/$2 -H "Authorization: Bearer $token" -H "Content-type:application/json" --data $3
 fi
