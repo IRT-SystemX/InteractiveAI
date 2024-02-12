@@ -28,4 +28,8 @@ fi
 	./createAllPerimeter.sh $url
 	cd ../realTimeScreens
 	./loadRealTimeScreens.sh realTimeScreens.json $url
+	cd ../cabUsecasesEvent
+	./loadEventServicesUseCase.sh $url
+	cd ../cabUsecasesContext
+	./loadContextServicesUseCase.sh $url
 )
