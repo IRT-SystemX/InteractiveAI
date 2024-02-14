@@ -55,6 +55,7 @@
 <script setup lang="ts" generic="T extends Entity">
 import { Trash2 } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
@@ -68,6 +69,7 @@ import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { severityToColor } from '@/utils/utils'
 
+const { t } = useI18n()
 const cardsStore = useCardsStore()
 
 const props = withDefaults(
@@ -97,7 +99,7 @@ function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
 function confirmDeletion(card: Card) {
   if (card.severity !== 'ND')
     modals.value.push({
-      message: `Are you sure you want to delete?`,
+      message: t('cab.notifications.delete', { event: card.titleTranslated }),
       callback: (res) => {
         if (res === 'ok') {
           acknowledge(card)

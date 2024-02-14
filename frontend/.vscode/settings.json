@@ -1,5 +1,5 @@
 {
-  "i18n-ally.localesPaths": ["src/locales/*", "src/entities/*/locales/*"],
+  "i18n-ally.localesPaths": ["src/locales", "src/entities/*/locales"],
   "i18n-ally.keystyle": "flat",
   "i18n-ally.sortKeys": true,
   "i18n-ally.sourceLanguage": "fr",
