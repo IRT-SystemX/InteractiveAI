@@ -2,10 +2,10 @@
   <section class="cab-panel">
     <Modal
       v-for="modal of modals"
-      :key="modal"
+      :key="modal.message"
       type="choice"
-      @close="modals.splice(modals.indexOf(modal), 1)">
-      {{ modal }}
+      @close="(...$event) => closeModal(...$event, modal)">
+      {{ modal.message }}
     </Modal>
     <section
       v-for="section of sections"
@@ -39,7 +39,7 @@
             <template #actions>
               <slot name="actions" :card="card">
                 <Button size="small" color="secondary">
-                  <Trash2 :height="12" @click.stop="acknowledge(card)" />
+                  <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
                 </Button>
               </slot>
             </template>
@@ -82,11 +82,29 @@ const props = withDefaults(
 
 const cards = computed(() => cardsStore.cards(props.entity))
 
-const modals = ref<any[]>([])
+const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string }[]>([])
 
 function selected(card: Card<T>) {
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.entity}`, card)
+}
+
+function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
+  modals.value.splice(modals.value.indexOf(modal), 1)
+  if (modal.callback) modal.callback(res)
+}
+
+function confirmDeletion(card: Card) {
+  if (card.severity !== 'ND')
+    modals.value.push({
+      message: `Are you sure you want to delete?`,
+      callback: (res) => {
+        if (res === 'ok') {
+          acknowledge(card)
+        }
+      }
+    })
+  else acknowledge(card)
 }
 </script>
 <style lang="scss">
