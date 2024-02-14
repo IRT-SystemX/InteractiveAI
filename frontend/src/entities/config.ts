@@ -13,12 +13,12 @@ import type { SNCF } from './SNCF/types'
 // Add your entity and config here
 // hydrated: automatically fetch metadata for cards
 // darkMode: use dark mode
-export const Entities = <const>{
+export const Entities = {
   DA: { hydrated: false, darkMode: true },
   ORANGE: { hydrated: true, darkMode: false },
   RTE: { hydrated: false, darkMode: false },
   SNCF: { hydrated: true, darkMode: false }
-}
+} as const
 
 // Bind your types here
 export type EntitiesTypes = {
