@@ -1,0 +1,9 @@
+{
+	"orangeProcess":{
+		"title":"{{title}}",
+		"startDate": "{{startDate}}",
+		"endDate": "{{endDate}}",
+		"summary":"{{summary}}",
+        "metadata": "{{metadata}}"
+	}
+}

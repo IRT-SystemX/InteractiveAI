@@ -22,7 +22,7 @@ then
     echo "Usage : loadRealTimeScreens file_name opfab_url"
 else
 	echo "Will load realTimeScreens $1 on $url"
-	source ../getToken.sh "admin" $url:3200/auth/token
+	source ../getToken.sh "admin" $url
 	curl -s -X POST "$url:2100/businessconfig/realtimescreens" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -H "Authorization:Bearer $token" -F "file=@$1"
 	echo ""
 fi

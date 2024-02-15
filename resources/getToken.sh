@@ -17,13 +17,13 @@ fi
 url=$2 
 if [[ -z $url ]]
 then
-	url="http://localhost:3200/auth/token"
+	url="http://localhost"
 fi
 
 echo "Get token for user $username on $url"
 
 access_token_pattern='"access_token":"([^"]+)"'
-response=$(curl -s -X POST -d "username="$username"&password=test&grant_type=password&client_id=opfab-client" $url)
+response=$(curl -s -X POST -d "username="$username"&password=test&grant_type=password&client_id=opfab-client" $url:3200/auth/token)
 if [[ $response =~ $access_token_pattern ]] ; then
 	export token=${BASH_REMATCH[1]}
 fi
