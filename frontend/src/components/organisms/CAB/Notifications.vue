@@ -37,7 +37,7 @@
             </template>
             {{ card.summaryTranslated }}
             <template #actions>
-              <slot name="actions" :card="card">
+              <slot name="actions" :card="card" :deletion="confirmDeletion">
                 <Button size="small" color="secondary">
                   <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
                 </Button>
