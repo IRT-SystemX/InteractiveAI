@@ -64,7 +64,7 @@ src/entities/ENTITY
 
 ### Config file
 
-In `src/config.ts`, add your new entity :
+In `src/entities/config.ts`, add your new entity :
 
 ```ts
 // Import your theme here
