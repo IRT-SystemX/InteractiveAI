@@ -18,6 +18,7 @@
 </template>
 <script setup lang="ts">
 import type { UUID } from '@/types/formats'
+import { uuid } from '@/utils/utils'
 
 import Button from './Button.vue'
 
@@ -26,7 +27,7 @@ withDefaults(
     type: 'choice' | 'info'
     id?: UUID
   }>(),
-  { id: crypto.randomUUID() }
+  { id: uuid() }
 )
 defineEmits<{
   close: [id: UUID, res: 'ok' | 'ko']

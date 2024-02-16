@@ -23,6 +23,7 @@ import Navbar from './components/molecules/Navbar.vue'
 import { mode } from './plugins/colorMode'
 import eventBus from './plugins/eventBus'
 import type { UUID } from './types/formats'
+import { uuid } from './utils/utils'
 
 mode.value = 'auto'
 
@@ -35,7 +36,7 @@ const modals = ref<
 >([])
 
 eventBus.on('modal:open', (message) => {
-  modals.value.push({ id: crypto.randomUUID(), ...message })
+  modals.value.push({ id: uuid(), ...message })
 })
 
 function modalClose(id: UUID, res: 'ok' | 'ko') {

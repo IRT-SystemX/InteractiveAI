@@ -6,6 +6,7 @@ import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import type { Context, Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
+import { uuid } from '@/utils/utils'
 
 const { t } = i18n.global
 
@@ -28,7 +29,7 @@ export const useServicesStore = defineStore('services', () => {
     callback: (context: Context<E>) => void,
     delay = 5000
   ) {
-    const modalID = crypto.randomUUID()
+    const modalID = uuid()
     let contextPID = 0
     eventBus.on('modal:close', (data) => {
       if (data.id === modalID && data.res === 'ok') {

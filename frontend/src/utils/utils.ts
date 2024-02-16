@@ -1,4 +1,5 @@
 import type { Severity } from '@/types/cards'
+import type { UUID } from '@/types/formats'
 
 /**
  * Get dynamic asset url
@@ -113,4 +114,12 @@ export function addOrUpdate<T>(
   if (index > -1) array.splice(index, 1, value)
   else array.push(value)
   return array
+}
+
+export function uuid() {
+  return window.isSecureContext
+    ? crypto.randomUUID()
+    : ('10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+        (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16)
+      ) as UUID)
 }

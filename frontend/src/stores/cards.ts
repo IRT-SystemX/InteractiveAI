@@ -7,6 +7,7 @@ import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import { Entities, type Entity } from '@/types/entities'
+import { uuid } from '@/utils/utils'
 
 const { t } = i18n.global
 
@@ -23,7 +24,7 @@ export const useCardsStore = defineStore('cards', () => {
     _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
-      const id = crypto.randomUUID()
+      const id = uuid()
       eventBus.emit('modal:open', {
         id,
         data: t('modal.info.SUBSCRIPTION_ACTIVE'),
@@ -84,7 +85,7 @@ export const useCardsStore = defineStore('cards', () => {
       }
     }
 
-    const id = crypto.randomUUID()
+    const id = uuid()
     cardsApi.subscribe(
       {
         clientId: id,
