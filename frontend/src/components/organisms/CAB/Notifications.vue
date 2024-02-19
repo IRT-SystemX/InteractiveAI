@@ -84,7 +84,7 @@ const props = withDefaults(
 
 const cards = computed(() => cardsStore.cards(props.entity))
 
-const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string }[]>([])
+const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
 
 function selected(card: Card<T>) {
   // @ts-ignore
