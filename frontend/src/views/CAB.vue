@@ -236,38 +236,6 @@ onBeforeRouteLeave(() => {
       transform: rotate(180deg);
     }
   }
-
-  .cab-notifications {
-    resize: horizontal;
-
-    .card-container {
-      overflow: auto;
-      scrollbar-gutter: stable;
-      height: 100%;
-      display: flex;
-      gap: var(--spacing-1);
-      flex-direction: column;
-      scroll-snap-type: y mandatory;
-    }
-
-    .card-container-empty {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-grey-300);
-      font-weight: 400;
-      text-align: center;
-    }
-
-    &-main {
-      height: 67%;
-    }
-
-    &-sub {
-      height: 33%;
-    }
-  }
   .cab-context {
     flex: 1;
     width: 100%;
