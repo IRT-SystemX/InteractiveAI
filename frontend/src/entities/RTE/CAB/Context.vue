@@ -5,24 +5,33 @@
       style="user-drag: none"
       :src="`data:image/png;base64, ${topology}`"
       class="cab-context-topology" />
+    <Notification :card="card"></Notification>
   </Context>
 </template>
 <script setup lang="ts">
 import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
+import Notification from '@/components/organisms/CAB/Context/Notification.vue'
+import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
+import type { Card } from '@/types/cards'
 
 const servicesStore = useServicesStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
 const topology = ref('')
+const card = ref<Card<'RTE'> | undefined>(undefined)
 
 onBeforeMount(async () => {
   contextPID.value = await servicesStore.getContext('RTE', (context: any) => {
     topology.value = context.topology
   })
+})
+
+eventBus.on('assistant:selected:RTE', (selected) => {
+  card.value = selected
 })
 
 onUnmounted(() => {
