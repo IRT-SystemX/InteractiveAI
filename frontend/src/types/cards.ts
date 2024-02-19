@@ -1,7 +1,8 @@
 import type { Entities, Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export type Severity = 'ALARM' | 'ACTION' | 'COMPLIANT' | 'INFORMATION' | 'ND'
+export const SeverityArray = ['ALARM', 'ACTION', 'COMPLIANT', 'INFORMATION', 'ND'] as const
+export type Severity = (typeof SeverityArray)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
 
