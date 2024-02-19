@@ -89,6 +89,19 @@ const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>
 
 const active = ref<Card['id'][]>([])
 
+eventBus.on('notifications:close', (card) => {
+  active.value.push(card.id)
+  modals.value.push({
+    message: t('cab.notifications.ended'),
+    callback: (res) => {
+      active.value = []
+      if (res === 'ok') {
+        acknowledge(card)
+      }
+    }
+  })
+})
+
 function selected(card: Card<T>) {
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.entity}`, card)
