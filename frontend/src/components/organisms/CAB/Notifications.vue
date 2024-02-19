@@ -21,6 +21,7 @@
             v-for="card of cards.filter(section.filter)"
             :key="card.id"
             :severity="card.severity"
+            :class="{ selected: active.includes(card.id) }"
             @click="selected(card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>
@@ -86,6 +87,21 @@ const cards = computed(() => cardsStore.cards(props.entity))
 
 const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
 
+const active = ref<Card['id'][]>([])
+
+eventBus.on('notifications:close', (card) => {
+  active.value.push(card.id)
+  modals.value.push({
+    message: t('cab.notifications.ended'),
+    callback: (res) => {
+      active.value = []
+      if (res === 'ok') {
+        acknowledge(card)
+      }
+    }
+  })
+})
+
 function selected(card: Card<T>) {
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.entity}`, card)
@@ -97,16 +113,18 @@ function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
 }
 
 function confirmDeletion(card: Card) {
-  if (card.severity !== 'ND')
+  if (card.severity !== 'ND') {
+    active.value.push(card.id)
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
       callback: (res) => {
+        active.value = []
         if (res === 'ok') {
           acknowledge(card)
         }
       }
     })
-  else acknowledge(card)
+  } else acknowledge(card)
 }
 </script>
 <style lang="scss">
@@ -129,6 +147,10 @@ function confirmDeletion(card: Card) {
     color: var(--color-grey-300);
     font-weight: 400;
     text-align: center;
+  }
+
+  .cab-notification.selected {
+    z-index: 2500;
   }
 }
 </style>

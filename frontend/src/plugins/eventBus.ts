@@ -19,6 +19,7 @@ const eventBus = mitt<
     'graph:showTooltip': any
     'assistant:tab': number
     'assistant:procedure:checked': any
+    'notifications:close': Card
   } & {
     [key in Entity as `assistant:selected:${key}`]: Card<key>
   }

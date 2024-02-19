@@ -14,9 +14,11 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function cards<T extends Entity>(entity: T) {
-    return _cards.value.filter<Card<T>>((card): card is Card<T> =>
-      card.entityRecipients.includes(entity)
+  function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
+    return _cards.value.filter<Card<T>>(
+      (card): card is Card<T> =>
+        card.entityRecipients.includes(entity) &&
+        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === card.hasBeenAcknowledged)
     )
   }
 
@@ -58,19 +60,20 @@ export const useCardsStore = defineStore('cards', () => {
       switch (cardEvent.type) {
         case CardOperationType.ADD:
         case CardOperationType.UPDATE:
-          if (cardEvent.card.hasBeenAcknowledged) return
           // eslint-disable-next-line no-case-declarations
           let hydratedCard = {}
           if (hydrated) {
             const { data } = await cardsApi.get(cardEvent.card.id)
             hydratedCard = data.card
           }
-          if (existingCard !== -1)
+          if (existingCard !== -1) {
+            if (_cards.value[existingCard].severity !== 'ND' && cardEvent.card.severity === 'ND')
+              eventBus.emit('notifications:close', _cards.value[existingCard])
             _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
               ...hydratedCard
             })
-          else
+          } else
             _cards.value.push({
               ...cardEvent.card,
               ...hydratedCard
@@ -80,7 +83,7 @@ export const useCardsStore = defineStore('cards', () => {
           _cards.value.splice(existingCard, 1)
           break
         case CardOperationType.ACK:
-          _cards.value.splice(existingCard, 1)
+          _cards.value[existingCard].hasBeenAcknowledged = true
           break
       }
     }
