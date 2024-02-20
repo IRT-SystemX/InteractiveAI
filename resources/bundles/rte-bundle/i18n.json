@@ -1,7 +1,0 @@
-{
-	"rteProcess":{
-		"title":"{{title}}",
-		"summary":"{{summary}}",
-        "metadata": "{{metadata}}"
-	}
-}

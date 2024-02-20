@@ -7,7 +7,7 @@ class RTEEventManager(BaseEventManager):
     def __init__(self) -> None:
         super().__init__()
         self.use_case = "RTE"
-        self.use_case_process = "rteProcess"
+        self.use_case_process = "cabProcess"
 
     def create_event(self, data):
         input_line = data["data"].get("line")

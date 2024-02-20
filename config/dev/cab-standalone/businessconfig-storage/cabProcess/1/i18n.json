@@ -1,5 +1,5 @@
 {
-	"daProcess":{
+	"cabProcess":{
 		"title":"{{title}}",
 		"summary":"{{summary}}",
         "metadata": "{{metadata}}"

@@ -17,16 +17,8 @@ for d in *.json; do
     ./createPerimeter.sh  $perimeter $1
 done
 
- ./addPerimeterToGroup.sh rteProcess Dispatcher $1
- ./addPerimeterToGroup.sh rteProcess Planner $1
- ./addPerimeterToGroup.sh rteProcess Supervisor $1
- ./addPerimeterToGroup.sh sncfProcess Dispatcher $1
- ./addPerimeterToGroup.sh sncfProcess Planner $1
- ./addPerimeterToGroup.sh sncfProcess Supervisor $1
- ./addPerimeterToGroup.sh daProcess Dispatcher $1
- ./addPerimeterToGroup.sh daProcess Planner $1
- ./addPerimeterToGroup.sh daProcess Supervisor $1
- ./addPerimeterToGroup.sh orangeProcess Dispatcher $1
- ./addPerimeterToGroup.sh orangeProcess Planner $1
- ./addPerimeterToGroup.sh orangeProcess Supervisor $1
+ ./addPerimeterToGroup.sh cabProcess Dispatcher $1
+ ./addPerimeterToGroup.sh cabProcess Planner $1
+ ./addPerimeterToGroup.sh cabProcess Supervisor $1
+
  
