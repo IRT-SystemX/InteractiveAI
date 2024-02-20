@@ -20,8 +20,8 @@
       </div>
     </Notification>
     <TransitionGroup name="fade">
-      <div v-if="showChildren && children.length" class="mt-1">
-        <div v-for="child of children" :key="child.id" class="flex flex-center-y flex-gap">
+      <div v-if="showChildren && children.length">
+        <div v-for="child of children" :key="child.id" class="flex flex-gap mt-1">
           <CornerDownRight />
           <NotificationTreeNode :card="child">
             <template #outer>
