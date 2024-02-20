@@ -34,6 +34,7 @@ export type Card<T extends Entity = Entity> = {
   publisher: string
   entityRecipients: [T]
   id: `${Lowercase<T>}Process.${UUID}`
+  idMainEvent?: `${Lowercase<T>}Process.${UUID}`
   state: string
   startDate: number
   data: (typeof Entities)[T]['hydrated'] extends true

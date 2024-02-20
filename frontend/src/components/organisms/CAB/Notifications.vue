@@ -17,11 +17,10 @@
       <h1>{{ $t(`cab.notifications.${section.name}`) }}</h1>
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <TransitionGroup name="fade">
-          <Notification
-            v-for="card of cards.filter(section.filter)"
+          <NotificationTreeNode
+            v-for="card of cards.filter((c) => !c.idMainEvent).filter(section.filter)"
             :key="card.id"
-            :severity="card.severity"
-            :class="{ selected: active.includes(card.id) }"
+            :card="card"
             @click="selected(card)">
             <template #title>{{ card.titleTranslated }}</template>
             <template #severity>
@@ -44,7 +43,7 @@
                 </Button>
               </slot>
             </template>
-          </Notification>
+          </NotificationTreeNode>
         </TransitionGroup>
       </div>
       <div v-else class="card-container-empty">
@@ -62,7 +61,7 @@ import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
-import Notification from '@/components/molecules/Notification.vue'
+import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vue'
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
