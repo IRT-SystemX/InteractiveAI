@@ -7,9 +7,9 @@ export function getCorrelations(params: { size: number; app_id?: string; kpi_nam
     params
   })
 }
-export function sendFeedback(card: Card, feedback: boolean) {
+export function sendFeedback(card: Card<'ORANGE'>, feedback: boolean) {
   const data = {
-    card: card,
+    card: card.data.metadata,
     feedback: feedback,
     feedback_date: Date.now()
   }
