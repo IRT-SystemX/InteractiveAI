@@ -1,6 +1,6 @@
 {
-  "id" : "rteProcess",
-  "process" : "rteProcess",
+  "id" : "cabProcess",
+  "process" : "cabProcess",
   "stateRights" : [
     {
       "state" : "messageState",
