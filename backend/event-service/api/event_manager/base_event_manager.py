@@ -11,7 +11,6 @@ from ..models import EventModel, db
 class BaseEventManager:
     def __init__(self) -> None:
         self.severity_map = {
-            "ND": "ND",
             "HIGH": "ALARM",
             "MEDIUM": "ACTION",
             "LOW": "COMPLIANT",
@@ -77,7 +76,10 @@ class BaseEventManager:
 
     def create_card(self, start_date, end_date, data):
         card_pub_client = CardPubClient()
-        severity = self.severity_map[data.get("criticality")]
+        severity = self.severity_map.get(
+            data.get("criticality"), "INFORMATION"
+        )
+        criticality = data.get("criticality")
 
         timestamp_start_date = int(round(start_date.timestamp() * 1000))
         data["start_date"] = timestamp_start_date
@@ -105,7 +107,7 @@ class BaseEventManager:
                 "key": self.use_case_process + ".title",
                 "parameters": {"title": data["title"]},
             },
-            "data": {"metadata": data["data"]},
+            "data": {"metadata": data["data"], "criticality": criticality},
         }
 
         return card_pub_client.create_card(card_payload)
