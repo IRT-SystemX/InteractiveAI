@@ -12,7 +12,7 @@ from settings import logger
 
 from .models import UseCaseModel, db
 from .schemas import ContextIn, ContextOut, UseCaseIn, UseCaseOut
-
+from sqlalchemy.exc import IntegrityError
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
 
 
@@ -129,8 +129,19 @@ class UseCases(MethodView):
         getattr(metadata_schema_module, f"{use_case_db.metadata_schema_class}")
 
         # save use case to db
-        db.session.add(use_case_db)
-        db.session.commit()
+        # db.session.add(use_case_db)
+        # db.session.commit()
+        try:
+            # Attempt to add the use case to the database
+            db.session.add(use_case_db)
+            db.session.commit()
+        except IntegrityError as e:
+            # If a unique constraint violation occurs, update the existing record
+            db.session.rollback()
+            existing_use_case = UseCaseModel.query.filter_by(name=use_case_db.name).first()
+            existing_use_case.__dict__.update(use_case_db.__dict__)
+
+            db.session.commit()
 
         return use_case_db
 

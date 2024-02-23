@@ -3,12 +3,10 @@ import importlib
 from api.exceptions import InvalidUseCase
 from apiflask import APIBlueprint
 from apiflask.views import MethodView
-from cab_common_auth.decorators import (
-    get_use_cases,
-    protected,
-    protected_admin,
-)
+from cab_common_auth.decorators import (get_use_cases, protected,
+                                        protected_admin)
 from settings import logger
+from sqlalchemy.exc import IntegrityError
 
 from .models import EventModel, UseCaseModel, db
 from .schemas import EventIn, EventOut, UseCaseIn, UseCaseOut
@@ -104,9 +102,19 @@ class UseCases(MethodView):
         getattr(metadata_schema_module, f"{use_case_db.metadata_schema_class}")
 
         # save use case to db
-        db.session.add(use_case_db)
-        db.session.commit()
+        try:
+            # Attempt to add the use case to the database
+            db.session.add(use_case_db)
+            db.session.commit()
+        except IntegrityError:
+            # If a unique constraint violation occurs, update the existing record
+            db.session.rollback()
+            existing_use_case = UseCaseModel.query.filter_by(
+                name=use_case_db.name
+            ).first()
+            existing_use_case.__dict__.update(use_case_db.__dict__)
 
+            db.session.commit()
         return use_case_db
 
 
