@@ -1,7 +1,7 @@
 <template>
   <section class="cab-panel">
     <Default>
-      <Event v-if="tab === 1 && card" :card="card" />
+      <Event v-if="tab === 1 && card" :card="card" :primary-action="primaryAction"></Event>
       <Recommendations
         v-if="tab === 2"
         :recommendations="servicesStore.recommendations('RTE')"
@@ -35,14 +35,15 @@ import { useRoute } from 'vue-router'
 import { sendTrace } from '@/api/services'
 import { applyRecommendation } from '@/api/services/RTE'
 import Default from '@/components/organisms/CAB/Assistant.vue'
+import Event from '@/components/organisms/CAB/Assistant/Event.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
 import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Trace } from '@/types/services'
 
 import context from '../assets/context.json'
-import Event from './Assistant/Event.vue'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
@@ -71,5 +72,14 @@ function onSelection(selected: any) {
   })
   applyRecommendation(selected.actions[0])
   tab.value = 0
+}
+
+function primaryAction() {
+  sendTrace({
+    data: {} as Trace['data'],
+    use_case: route.params.entity as Entity,
+    step: 'ASKFORHELP'
+  })
+  eventBus.emit('assistant:tab', 2)
 }
 </script>
