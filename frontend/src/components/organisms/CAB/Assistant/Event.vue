@@ -1,6 +1,6 @@
 <template>
   <Avatar :size="200" class="self-center" status="error" />
-  <SpeechBubble>
+  <SpeechBubble position="bottom" arrow="left">
     <i18n-t scope="global" keypath="event.text">
       <template #event>
         <strong :style="{ color: severityToColor(card.severity) }">
