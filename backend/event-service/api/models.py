@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -14,19 +15,27 @@ class EventModel(db.Model):
     criticality = db.Column(db.String(10))
     data = db.Column(db.PickleType)
     is_active = db.Column(db.Boolean, default=True)
+    parent_event_id = db.Column(
+        db.String,
+        db.ForeignKey("event_model.id_event"),
+        nullable=True,
+        default=None,
+    )
+    parent_event = relationship("EventModel", remote_side=[id_event])
 
     def to_dict(self):
         return {
-            'id_event': self.id_event,
-            'of_uid': self.of_uid,
-            'use_case': self.use_case,
-            'title': self.title,
-            'description': self.description,
-            'start_date': self.start_date,
-            'end_date': self.end_date,
-            'criticality': self.criticality,
-            'data': self.data,
-            'is_active': self.is_active
+            "id_event": self.id_event,
+            "of_uid": self.of_uid,
+            "use_case": self.use_case,
+            "title": self.title,
+            "description": self.description,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "criticality": self.criticality,
+            "data": self.data,
+            "is_active": self.is_active,
+            "parent_event_id": self.parent_event_id,
         }
 
 

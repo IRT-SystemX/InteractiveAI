@@ -39,7 +39,7 @@ class Events(MethodView):
         try:
             event_manager = use_case_factory.get_event_manager(use_case)
         except InvalidUseCase as invalid_use_case:
-            logger.error(f"invalid use case {use_case} detected")
+            logger.error(f"Invalid use case {use_case} detected")
             raise invalid_use_case
         event = event_manager.create_event(data)
         return event
@@ -58,6 +58,9 @@ class EventsList(MethodView):
         events_list = []
         for use_case in use_cases:
             event_manager = use_case_factory.get_event_manager(use_case)
+            # Ensure parent_event_id is processed for each event in the list
+            for event_data in data:
+                event_data["parent_event_id"] = event_data.get("parent_event_id")
             events = event_manager.create_events_list(data)
             events_list += events
         return events_list
