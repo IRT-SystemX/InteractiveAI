@@ -23,6 +23,7 @@ class EventIn(Schema):
     )
     data = Dict()
     is_active = Boolean()
+    parent_event_id = String()
 
     @validates_schema
     def validate_metadata(self, data, **kwargs):
@@ -58,6 +59,7 @@ class EventOut(Schema):
     criticality = String()
     data = Dict()
     is_active = Boolean()
+    parent_event_id = String()
 
 
 class UseCaseIn(Schema):

@@ -17,6 +17,7 @@ class Event(Schema):
         ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
     data = Dict()
     is_active = Boolean()
+    parent_event_id = String()
 
 
 class Solution(Schema):

@@ -107,7 +107,11 @@ class BaseEventManager:
                 "key": self.use_case_process + ".title",
                 "parameters": {"title": data["title"]},
             },
-            "data": {"metadata": data["data"], "criticality": criticality},
+            "data": {
+                "metadata": data["data"],
+                "criticality": criticality,
+                "parent_event_id": data.get("parent_event_id"),
+            },
         }
 
         return card_pub_client.create_card(card_payload)
@@ -115,12 +119,16 @@ class BaseEventManager:
     def create_event(self, data):
         event_id = self.get_event_id()
         data["id_event"] = str(event_id)
+
+        # Set parent_event_id if provided
+        data["parent_event_id"] = data.get("parent_event_id")
+
         start_date = data.get("start_date", datetime.now())
         end_date = data.get("end_date")
         # Create a new card (notification)
         of_response = self.create_card(start_date, end_date, data)
         data["of_uid"] = of_response.get("uid")
-        # Trace in histric service
+        # Trace in historic service
         self.trace_event(start_date, end_date, data)
 
         # Save event to database
@@ -131,6 +139,10 @@ class BaseEventManager:
         created_events_list = []
         for event_data in events_list:
             if event_data["use_case"] == self.use_case:
+                # Set parent_event_id if provided
+                event_data["parent_event_id"] = event_data.get(
+                    "parent_event_id"
+                )
                 created_event = self.create_event(event_data)
                 created_events_list.append(created_event)
         return created_events_list
