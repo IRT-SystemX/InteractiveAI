@@ -3,7 +3,7 @@
   <SpeechBubble position="bottom" arrow="left">
     <i18n-t scope="global" keypath="event.text">
       <template #event>
-        <strong :style="{ color: severityToColor(card.severity) }">
+        <strong :style="{ color: criticalityToColor(card.data.criticality) }">
           <slot></slot>
         </strong>
       </template>
@@ -30,7 +30,7 @@ import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
-import { severityToColor } from '@/utils/utils'
+import { criticalityToColor } from '@/utils/utils'
 
 withDefaults(
   defineProps<{

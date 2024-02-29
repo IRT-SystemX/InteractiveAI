@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <Notification :severity="card.severity">
+    <Notification :criticality="card.data.criticality">
       <template #outer>
         <aside><slot name="outer"></slot></aside>
       </template>
@@ -56,7 +56,7 @@ const cardsStore = useCardsStore()
 const children = computed(() =>
   cardsStore
     .cards(props.card.entityRecipients[0])
-    .filter((child) => child.idMainEvent === props.card.id)
+    .filter((child) => child.data.parent_event_id === props.card.processInstanceId)
 )
 
 const showChildren = ref(true)

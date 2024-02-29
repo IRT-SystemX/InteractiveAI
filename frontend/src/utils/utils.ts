@@ -1,4 +1,4 @@
-import type { Severity } from '@/types/cards'
+import type { Criticality } from '@/types/cards'
 import type { UUID } from '@/types/formats'
 
 /**
@@ -11,18 +11,18 @@ export function asset(path: string) {
 }
 
 /**
- * Returns the standard color keyword for CSS styling associated to a severity
- * @param severity the severity
+ * Returns the standard color keyword for CSS styling associated to a criticality
+ * @param criticality the criticality
  */
-export function severityToColor(severity: Severity) {
-  switch (severity) {
-    case 'ALARM':
+export function criticalityToColor(criticality: Criticality) {
+  switch (criticality) {
+    case 'HIGH':
       return 'error'
-    case 'ACTION':
+    case 'MEDIUM':
       return 'warning'
-    case 'INFORMATION':
+    case 'LOW':
       return 'success'
-    case 'COMPLIANT':
+    case 'ROUTINE':
       return 'primary'
     case 'ND':
       return 'secondary'

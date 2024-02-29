@@ -43,7 +43,7 @@
     </div>
     <template v-for="(card, index) of cards" :key="card.id">
       <Notification
-        :severity="card.severity"
+        :criticality="card.data.criticality"
         class="cab-timeline-card"
         :style="{ 'grid-row': index + 1 }">
         <template #title>
@@ -72,7 +72,9 @@
         <div class="cab-timeline-event-icon">
           <slot :card="card"></slot>
         </div>
-        <div class="cab-timeline-event-line" :class="severityToColor(card.severity)"></div>
+        <div
+          class="cab-timeline-event-line"
+          :class="criticalityToColor(card.data.criticality)"></div>
         <div class="cab-timeline-event-time">
           <div
             v-if="card.startDate && isAfter(new Date(card.startDate), window.start)"
@@ -93,7 +95,7 @@ import { computed, ref } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
-import { clamp, repeatEvery, severityToColor } from '@/utils/utils'
+import { clamp, criticalityToColor, repeatEvery } from '@/utils/utils'
 
 import Notification from './Notification.vue'
 

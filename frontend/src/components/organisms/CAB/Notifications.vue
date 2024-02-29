@@ -18,7 +18,7 @@
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <TransitionGroup name="fade">
           <NotificationTreeNode
-            v-for="card of cards.filter((c) => !c.idMainEvent).filter(section.filter)"
+            v-for="card of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
             :key="card.id"
             :card="card"
             @click="selected(card)">
@@ -30,7 +30,7 @@
               <slot name="icon" :card="card">
                 <SVG
                   src="icons/warning_hex"
-                  :fill="`var(--color-${severityToColor(card.severity)})`"
+                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
                   :width="16"
                   class="ml-1"></SVG>
               </slot>
@@ -67,7 +67,7 @@ import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import { severityToColor } from '@/utils/utils'
+import { criticalityToColor } from '@/utils/utils'
 
 const { t } = useI18n()
 const cardsStore = useCardsStore()
@@ -112,7 +112,7 @@ function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
 }
 
 function confirmDeletion(card: Card) {
-  if (card.severity !== 'ND') {
+  if (card.data.criticality !== 'ND') {
     active.value.push(card.id)
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),

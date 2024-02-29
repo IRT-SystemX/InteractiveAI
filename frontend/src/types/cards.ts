@@ -1,8 +1,10 @@
-import type { Entities, Entity, Metadata } from './entities'
+import type { Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export const SeverityArray = ['ALARM', 'ACTION', 'COMPLIANT', 'INFORMATION', 'ND'] as const
+export const SeverityArray = ['ALARM', 'ACTION', 'COMPLIANT', 'INFORMATION'] as const
 export type Severity = (typeof SeverityArray)[number]
+export const CriticalityArray = ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE'] as const
+export type Criticality = (typeof CriticalityArray)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
 
@@ -34,12 +36,13 @@ export type Card<T extends Entity = Entity> = {
   publisher: string
   entityRecipients: [T]
   id: `${Lowercase<T>}Process.${UUID}`
-  idMainEvent?: `${Lowercase<T>}Process.${UUID}`
   state: string
   startDate: number
-  data: (typeof Entities)[T]['hydrated'] extends true
-    ? { metadata: Metadata<T> }
-    : { metadata: Metadata<T> } | undefined
+  data: {
+    criticality: Criticality
+    metadata: Metadata<T>
+    parent_event_id: Card['processInstanceId']
+  }
 }
 
 export type CardAck = {
