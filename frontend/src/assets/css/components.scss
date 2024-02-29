@@ -40,7 +40,6 @@ a.router-link-exact-active {
 }
 
 .cab-btn,
-.cab-card,
 a {
   transition: var(--duration);
 
@@ -50,5 +49,18 @@ a {
 
   &:active {
     filter: brightness(0.9);
+  }
+}
+
+.cab-card {
+  &-inner {
+    transition: var(--duration);
+    &:hover {
+      background: var(--color-grey-200);
+    }
+
+    &:active {
+      background: var(--color-grey-300);
+    }
   }
 }

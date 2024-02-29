@@ -8,7 +8,6 @@
 <style lang="scss">
 .cab-tooltip {
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
   &:hover &-container {
     visibility: visible;
   }

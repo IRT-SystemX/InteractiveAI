@@ -27,9 +27,12 @@
         class="ml-1"></SVG>
     </template>
     <template #actions>
-      <Button size="small" color="secondary">
-        <ChevronUp :height="16" />
-      </Button>
+      <Tooltip>
+        <template #tooltip>test</template>
+        <Button size="small" color="secondary">
+          <ChevronUp :height="16" />
+        </Button>
+      </Tooltip>
       <Button size="small" color="secondary">
         <ChevronDown :height="16" />
       </Button>
@@ -45,6 +48,7 @@ import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
 
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
+import Tooltip from '@/components/atoms/Tooltip.vue'
 import Notifications from '@/components/organisms/CAB/Notifications.vue'
 import type { Criticality } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
