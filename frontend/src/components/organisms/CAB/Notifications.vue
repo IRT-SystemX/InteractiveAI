@@ -17,34 +17,35 @@
       <h1>{{ $t(`cab.notifications.${section.name}`) }}</h1>
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <TransitionGroup name="fade">
-          <Notification
-            v-for="card of cards.filter(section.filter)"
-            :key="card.id"
-            :severity="card.severity"
-            :class="{ selected: active.includes(card.id) }"
-            @click="selected(card)">
-            <template #title>{{ card.titleTranslated }}</template>
-            <template #severity>
+          <NotificationTreeNode
+            v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
+            :key="c.id"
+            :card="c"
+            @click="selected(c)">
+            <template #title="{ card }">{{ card.titleTranslated }}</template>
+            <template #severity="{ card }">
               <slot name="severity" :card="card">
                 {{ format(new Date(card.startDate), 'p') }}
               </slot>
               <slot name="icon" :card="card">
                 <SVG
                   src="icons/warning_hex"
-                  :fill="`var(--color-${severityToColor(card.severity)})`"
+                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
                   :width="16"
                   class="ml-1"></SVG>
               </slot>
             </template>
-            {{ card.summaryTranslated }}
-            <template #actions>
+            <template #default="{ card }">
+              {{ card.summaryTranslated }}
+            </template>
+            <template #actions="{ card }">
               <slot name="actions" :card="card" :deletion="confirmDeletion">
                 <Button size="small" color="secondary">
                   <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
                 </Button>
               </slot>
             </template>
-          </Notification>
+          </NotificationTreeNode>
         </TransitionGroup>
       </div>
       <div v-else class="card-container-empty">
@@ -62,13 +63,13 @@ import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
-import Notification from '@/components/molecules/Notification.vue'
+import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vue'
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import { severityToColor } from '@/utils/utils'
+import { criticalityToColor } from '@/utils/utils'
 
 const { t } = useI18n()
 const cardsStore = useCardsStore()
@@ -113,7 +114,7 @@ function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
 }
 
 function confirmDeletion(card: Card) {
-  if (card.severity !== 'ND') {
+  if (card.data.criticality !== 'ND') {
     active.value.push(card.id)
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),

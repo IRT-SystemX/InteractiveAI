@@ -5,24 +5,24 @@
       {
         name: 'main',
         weight: 2,
-        filter: (card) => filter.includes(card.severity)
+        filter: (card) => filter.includes(card.data.criticality)
       },
       {
         name: 'sub',
         weight: 1,
-        filter: (card) => !filter.includes(card.severity)
+        filter: (card) => !filter.includes(card.data.criticality)
       }
     ]">
     <template #severity>Sûreté</template>
     <template #icon="{ card }">
       <Zap
         v-if="card.severity === 'ALARM'"
-        :fill="`var(--color-${severityToColor(card.severity)})`"
+        :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
         :height="16" />
       <SVG
         v-else
         src="icons/toolbox"
-        :fill="`var(--color-${severityToColor(card.severity)})`"
+        :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
         :width="16"
         class="ml-1"></SVG>
     </template>
@@ -46,7 +46,8 @@ import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Notifications from '@/components/organisms/CAB/Notifications.vue'
-import { severityToColor } from '@/utils/utils'
+import type { Criticality } from '@/types/cards'
+import { criticalityToColor } from '@/utils/utils'
 
-const filter = ['ALARM', 'ACTION', 'COMPLIANT', 'ND']
+const filter: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
 </script>

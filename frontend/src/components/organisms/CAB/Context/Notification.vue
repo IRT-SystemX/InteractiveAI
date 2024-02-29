@@ -4,7 +4,7 @@
     class="cab-context-notification"
     :class="{ expanded }"
     :style="{
-      'border-color': `var(--color-${severityToColor(card.severity)})`
+      'border-color': `var(--color-${criticalityToColor(card.data.criticality)})`
     }">
     <Button icon style="float: right" @click="expanded = !expanded">
       <Minimize2 v-if="expanded"></Minimize2>
@@ -22,7 +22,7 @@ import { ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
 import type { Card } from '@/types/cards'
-import { severityToColor } from '@/utils/utils'
+import { criticalityToColor } from '@/utils/utils'
 
 defineProps<{ card?: Card }>()
 

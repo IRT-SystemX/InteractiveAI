@@ -1,5 +1,8 @@
 <template>
-  <Card :orientation="orientation" class="cab-notification" :color="severityToColor(severity)">
+  <Card
+    :orientation="orientation"
+    class="cab-notification"
+    :color="criticalityToColor(criticality)">
     <template #outer>
       <aside><slot name="outer"></slot></aside>
     </template>
@@ -12,15 +15,15 @@
   </Card>
 </template>
 <script setup lang="ts">
-import type { Severity } from '@/types/cards'
-import { severityToColor } from '@/utils/utils'
+import type { Criticality } from '@/types/cards'
+import { criticalityToColor } from '@/utils/utils'
 
 import Card from '../atoms/Card.vue'
 
 withDefaults(
   defineProps<{
     orientation?: 'left' | 'right' | 'top' | 'bottom'
-    severity: Severity
+    criticality: Criticality
   }>(),
   { orientation: 'left' }
 )

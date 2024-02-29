@@ -6,7 +6,7 @@ import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
-import { Entities, type Entity } from '@/types/entities'
+import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
 const { t } = i18n.global
@@ -18,11 +18,11 @@ export const useCardsStore = defineStore('cards', () => {
     return _cards.value.filter<Card<T>>(
       (card): card is Card<T> =>
         card.entityRecipients.includes(entity) &&
-        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === card.hasBeenAcknowledged)
+        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === !!card.hasBeenAcknowledged)
     )
   }
 
-  async function subscribe(entity: Entity, hydrated?: boolean) {
+  async function subscribe(entity: Entity, hydrated = true) {
     _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
@@ -37,7 +37,7 @@ export const useCardsStore = defineStore('cards', () => {
         (data) => data.id === id && data.res === 'ok' && _subscribe(entity, hydrated)
       )
     } else {
-      _subscribe(entity, hydrated === undefined ? Entities[entity].hydrated : hydrated)
+      _subscribe(entity, hydrated)
     }
   }
 
@@ -61,13 +61,16 @@ export const useCardsStore = defineStore('cards', () => {
         case CardOperationType.ADD:
         case CardOperationType.UPDATE:
           // eslint-disable-next-line no-case-declarations
-          let hydratedCard = {}
+          let hydratedCard: Card<Entity> | undefined = undefined
           if (hydrated) {
             const { data } = await cardsApi.get(cardEvent.card.id)
             hydratedCard = data.card
           }
           if (existingCard !== -1) {
-            if (_cards.value[existingCard].severity !== 'ND' && cardEvent.card.severity === 'ND')
+            if (
+              _cards.value[existingCard].data.criticality !== 'ND' &&
+              hydratedCard?.data.criticality === 'ND'
+            )
               eventBus.emit('notifications:close', _cards.value[existingCard])
             _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
