@@ -141,37 +141,6 @@ defineProps<{
   transform: scaleY(-1);
 }
 
-/* for demo */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  cursor: default;
-}
-body {
-  max-width: 60rem;
-  margin-inline: auto;
-  font-family: sans-serif;
-  display: grid;
-  grid-template-areas:
-    'br bc bl'
-    'rb cc lb'
-    'rc cc lc'
-    'rt cc lt'
-    'tr tc tl';
-  padding: 2rem;
-  gap: 2rem;
-  background: #141518;
-}
-
-.middle {
-  grid-area: cc;
-  align-self: center;
-  justify-self: center;
-  text-align: center;
-  color: white;
-}
-
 [speech-bubble][pbottom][aleft] {
   grid-area: bl;
 }
@@ -224,23 +193,5 @@ body {
 [speech-bubble]:hover {
   transform: scale(1.05);
   filter: drop-shadow(0px 0px 0.2rem black) drop-shadow(0px 0px 1rem var(--bbColor));
-}
-
-[speech-bubble] .title {
-  font-weight: 600;
-  color: white;
-  text-shadow: 1px 1px 2px black;
-  margin-bottom: 0.5rem;
-}
-[speech-bubble] code {
-  background: white;
-  margin: 0.125rem;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
-  font-size: 0.9rem;
-}
-
-.middle code {
-  font-size: 1rem;
 }
 </style>
