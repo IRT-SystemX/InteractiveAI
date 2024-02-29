@@ -2,7 +2,7 @@
   <div class="w-100">
     <Notification :criticality="card.data.criticality">
       <template #outer>
-        <aside><slot name="outer"></slot></aside>
+        <aside><slot name="outer" :card="card"></slot></aside>
       </template>
       <div class="flex flex-center-y flex-gap">
         <ChevronDown
@@ -11,11 +11,11 @@
           @click="showChildren = !showChildren" />
         <div class="w-100">
           <header>
-            <b><slot name="title"></slot></b>
-            <aside><slot name="severity"></slot></aside>
+            <b><slot name="title" :card="card"></slot></b>
+            <aside><slot name="severity" :card="card"></slot></aside>
           </header>
-          <main><slot></slot></main>
-          <footer><slot name="actions"></slot></footer>
+          <main><slot :card="card"></slot></main>
+          <footer><slot name="actions" :card="card"></slot></footer>
         </div>
       </div>
     </Notification>
@@ -25,14 +25,14 @@
           <CornerDownRight />
           <NotificationTreeNode :card="child">
             <template #outer>
-              <aside><slot name="outer"></slot></aside>
+              <aside><slot name="outer" :card="child"></slot></aside>
             </template>
             <header>
-              <b><slot name="title"></slot></b>
-              <aside><slot name="severity"></slot></aside>
+              <b><slot name="title" :card="child"></slot></b>
+              <aside><slot name="severity" :card="child"></slot></aside>
             </header>
-            <main><slot></slot></main>
-            <footer><slot name="actions"></slot></footer>
+            <main><slot :card="child"></slot></main>
+            <footer><slot name="actions" :card="child"></slot></footer>
           </NotificationTreeNode>
         </div>
       </div>

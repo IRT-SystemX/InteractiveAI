@@ -18,12 +18,12 @@
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <TransitionGroup name="fade">
           <NotificationTreeNode
-            v-for="card of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
-            :key="card.id"
-            :card="card"
-            @click="selected(card)">
-            <template #title>{{ card.titleTranslated }}</template>
-            <template #severity>
+            v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
+            :key="c.id"
+            :card="c"
+            @click="selected(c)">
+            <template #title="{ card }">{{ card.titleTranslated }}</template>
+            <template #severity="{ card }">
               <slot name="severity" :card="card">
                 {{ format(new Date(card.startDate), 'p') }}
               </slot>
@@ -35,8 +35,10 @@
                   class="ml-1"></SVG>
               </slot>
             </template>
-            {{ card.summaryTranslated }}
-            <template #actions>
+            <template #default="{ card }">
+              {{ card.summaryTranslated }}
+            </template>
+            <template #actions="{ card }">
               <slot name="actions" :card="card" :deletion="confirmDeletion">
                 <Button size="small" color="secondary">
                   <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
