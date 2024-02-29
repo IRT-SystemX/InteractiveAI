@@ -1,6 +1,9 @@
 <!--from https://codepen.io/MarkBoots/pen/RwLPXgJ-->
 <template>
-  <div speech-bubble v-bind="[`p${position}`, `a${arrow}`]" aleft :flip="flip">
+  <div
+    speech-bubble
+    v-bind="{ [`p${position}`]: true, [`a${arrow}`]: true }"
+    :flip="flip || undefined">
     <slot></slot>
   </div>
 </template>
@@ -18,7 +21,7 @@ defineProps<{
 }
 
 [speech-bubble] {
-  --bbColor: var(--color-grey-200);
+  --bbColor: var(--color-grey-300);
   --bbArrowSize: 1.5rem;
   --bbBorderRadius: var(--radius-medium);
   --bbPadding: var(--spacing-1);
@@ -181,17 +184,7 @@ defineProps<{
   grid-area: tr;
 }
 
-[speech-bubble][pbottom],
-[speech-bubble][ptop] {
-  margin: 0;
-}
-
 [speech-bubble] {
-  filter: drop-shadow(0px 0px 0.2rem black);
-  transition: transform 0.25s ease;
-}
-[speech-bubble]:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0px 0px 0.2rem black) drop-shadow(0px 0px 1rem var(--bbColor));
+  transition: transform var(--duration) ease;
 }
 </style>
