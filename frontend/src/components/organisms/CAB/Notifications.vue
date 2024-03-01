@@ -40,9 +40,12 @@
             </template>
             <template #actions="{ card }">
               <slot name="actions" :card="card" :deletion="confirmDeletion">
-                <Button size="small" color="secondary">
-                  <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
-                </Button>
+                <Tooltip>
+                  <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+                  <Button size="small" color="secondary">
+                    <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
+                  </Button>
+                </Tooltip>
               </slot>
             </template>
           </NotificationTreeNode>
@@ -63,6 +66,7 @@ import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
+import Tooltip from '@/components/atoms/Tooltip.vue'
 import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vue'
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'

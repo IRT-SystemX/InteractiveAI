@@ -28,18 +28,24 @@
     </template>
     <template #actions>
       <Tooltip>
-        <template #tooltip>test</template>
+        <template #tooltip>{{ $t('card.actions.upvote.tooltip') }}</template>
         <Button size="small" color="secondary">
           <ChevronUp :height="16" />
         </Button>
       </Tooltip>
-      <Button size="small" color="secondary">
-        <ChevronDown :height="16" />
-      </Button>
-      <Button size="small" color="secondary">
-        <MoveRight :height="12" />
-        <User :height="12" />
-      </Button>
+      <Tooltip>
+        <template #tooltip>{{ $t('card.actions.downvote.tooltip') }}</template>
+        <Button size="small" color="secondary">
+          <ChevronDown :height="16" />
+        </Button>
+      </Tooltip>
+      <Tooltip>
+        <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+        <Button size="small" color="secondary">
+          <MoveRight :height="12" />
+          <User :height="12" />
+        </Button>
+      </Tooltip>
     </template>
   </Notifications>
 </template>

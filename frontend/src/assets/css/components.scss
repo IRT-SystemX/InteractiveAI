@@ -51,16 +51,3 @@ a {
     filter: brightness(0.9);
   }
 }
-
-.cab-card {
-  &-inner {
-    transition: var(--duration);
-    &:hover {
-      background: var(--color-grey-200);
-    }
-
-    &:active {
-      background: var(--color-grey-300);
-    }
-  }
-}

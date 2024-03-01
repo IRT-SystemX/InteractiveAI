@@ -68,7 +68,14 @@ withDefaults(
     background-color: var(--color-grey-100);
     height: auto;
     flex: 1;
-    overflow: hidden;
+    transition: var(--duration);
+    &:hover {
+      background: var(--color-grey-200);
+    }
+
+    &:active {
+      background: var(--color-grey-300);
+    }
   }
 }
 </style>

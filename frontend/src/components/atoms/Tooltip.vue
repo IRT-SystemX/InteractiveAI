@@ -1,39 +1,57 @@
 <template>
-  <div class="cab-tooltip">
+  <div ref="slot" class="cab-tooltip-slot">
     <slot />
-    <div class="cab-tooltip-container"><slot name="tooltip"></slot></div>
+    <div ref="tooltip" class="cab-tooltip-content" :style="floatingStyles">
+      <slot name="tooltip"></slot>
+      <div
+        ref="floatingArrow"
+        class="cab-tooltip-arrow"
+        :style="{
+          position: 'absolute',
+          left: middlewareData.arrow?.x != null ? `${middlewareData.arrow.x}px` : '',
+          top: middlewareData.arrow?.y != null ? `${middlewareData.arrow.y}px` : ''
+        }"></div>
+    </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { arrow, autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
+import { ref } from 'vue'
+
+const slot = ref<HTMLElement | null>(null)
+const tooltip = ref<HTMLDivElement | null>(null)
+const floatingArrow = ref<HTMLDivElement | null>(null)
+
+const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
+  placement: 'top',
+  middleware: [offset(8), flip(), shift(), arrow({ element: floatingArrow, padding: 8 })],
+  whileElementsMounted: autoUpdate
+})
+</script>
 <style lang="scss">
 .cab-tooltip {
-  display: inline-block;
-  &:hover &-container {
-    visibility: visible;
+  &-slot:hover .cab-tooltip-content {
+    pointer-events: none;
+    opacity: 1;
   }
-  &-container {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
+  &-content {
+    transition: var(--duration);
+    opacity: 0;
+    width: max-content;
+    display: block;
+    background-color: var(--color-grey-800);
+    color: var(--color-text-inverted);
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    transform: translateX(-50%);
-
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
-    &::after {
-      content: ' ';
-      position: absolute;
-      bottom: 100%; /* At the top of the tooltip */
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: transparent transparent black transparent;
-    }
+    padding: var(--spacing-1);
+    border-radius: var(--radius-medium);
+    z-index: 3000;
+  }
+  &-arrow {
+    margin-top: calc(var(--unit) / 2);
+    width: var(--unit);
+    height: var(--unit);
+    transform: rotate(45deg);
+    background: var(--color-grey-800);
   }
 }
 </style>
