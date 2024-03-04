@@ -117,7 +117,7 @@ class BaseEventManager:
         return card_pub_client.create_card(card_payload)
 
     def create_event(self, data):
-        event_id = self.get_event_id()
+        event_id, _ = self.get_event_id()
         data["id_event"] = str(event_id)
 
         # Set parent_event_id if provided
