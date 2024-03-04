@@ -80,6 +80,10 @@ export function remove(id: string) {
   return http.delete<null>(`/cardspub/cards/${id}`)
 }
 
+export function removeEvent(id: string) {
+  return http.delete<null>(`cab_event/api/v1/event/${id}`)
+}
+
 export function acknowledge(card: Card) {
   return http.post<null>(`/cardspub/cards/userAcknowledgement/${card.uid}`, card.entityRecipients)
 }

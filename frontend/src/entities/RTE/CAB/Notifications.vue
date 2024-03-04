@@ -26,16 +26,16 @@
         :width="16"
         class="ml-1"></SVG>
     </template>
-    <template #actions>
+    <template #actions="{ card }">
       <Tooltip>
         <template #tooltip>{{ $t('card.actions.upvote.tooltip') }}</template>
-        <Button size="small" color="secondary">
+        <Button size="small" color="secondary" @click.stop="vote(card, true)">
           <ChevronUp :height="16" />
         </Button>
       </Tooltip>
       <Tooltip>
         <template #tooltip>{{ $t('card.actions.downvote.tooltip') }}</template>
-        <Button size="small" color="secondary">
+        <Button size="small" color="secondary" @click.stop="vote(card, false)">
           <ChevronDown :height="16" />
         </Button>
       </Tooltip>
@@ -52,12 +52,17 @@
 <script setup lang="ts">
 import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
 
+import { removeEvent } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
 import Notifications from '@/components/organisms/CAB/Notifications.vue'
-import type { Criticality } from '@/types/cards'
+import type { Card, Criticality } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
 const filter: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
+
+function vote(card: Card, up: boolean) {
+  if (!up) removeEvent(card.processInstanceId)
+}
 </script>
