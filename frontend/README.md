@@ -59,6 +59,7 @@ src/entities/ENTITY
 ├── locales                 # Custom locales
 │   ├── en.json
 │   └── fr.json
+├── api.ts                  # Your custom api (optional)
 └── types.ts                # Your custom types
 ```
 
@@ -77,14 +78,14 @@ import type { ENTITY } from './ENTITY/types'
 // Add your entity and config here
 // hydrated: automatically fetch metadata for cards
 // darkMode: use dark mode
-export const Entities = <const>{
+export const Entities = {
   ENTITY: { hydrated: true, darkMode: true }
 }
 
 // Bind your types here
 type EntitiesTypes = {
   ENTITY: ENTITY
-}
+} as const
 ```
 
 ### Type Support for your custom entity
