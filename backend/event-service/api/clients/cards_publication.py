@@ -16,3 +16,12 @@ class CardPubClient:
         logger.info(response.status_code)
         response.raise_for_status()
         return json.loads(response.text)
+
+    def delete_card(self, card_id):
+        url = f"{self.base_url}/cards/{card_id}"
+        headers = {"Content-Type": "application/json"}
+
+        response = requests.request("DELETE", url, headers=headers)
+        logger.info(response.status_code)
+        response.raise_for_status()
+
