@@ -19,6 +19,33 @@ class HealthCheck(MethodView):
         return {"message": "Ok"}
 
 
+class Event(MethodView):
+    @api_bp.output(EventOut)
+    @protected
+    def get(self, event_id):
+        """Get an event by ID"""
+        event = EventModel.query.get(event_id)
+        if event:
+            return event
+
+        return {"error": "Event not found"}, 404
+
+    @protected
+    def delete(self, event_id):
+        """Delete an event by ID"""
+        from flask import current_app
+
+        use_case_factory = current_app.use_case_factory
+        use_cases = get_use_cases()
+        for use_case in use_cases:
+            try:
+                event_manager = use_case_factory.get_event_manager(use_case)
+            except InvalidUseCase:
+                logger.error(f"Invalid use case {use_case} detected")
+
+        return event_manager.delete_event(event_id)
+
+
 class Events(MethodView):
     @api_bp.output(EventOut(many=True))
     @protected
@@ -60,7 +87,9 @@ class EventsList(MethodView):
             event_manager = use_case_factory.get_event_manager(use_case)
             # Ensure parent_event_id is processed for each event in the list
             for event_data in data:
-                event_data["parent_event_id"] = event_data.get("parent_event_id")
+                event_data["parent_event_id"] = event_data.get(
+                    "parent_event_id"
+                )
             events = event_manager.create_events_list(data)
             events_list += events
         return events_list
@@ -137,6 +166,7 @@ class UseCase(MethodView):
 
 
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
+api_bp.add_url_rule("/event/<event_id>", view_func=Event.as_view("event"))
 api_bp.add_url_rule("/events", view_func=Events.as_view("events"))
 api_bp.add_url_rule(
     "/events-list", view_func=EventsList.as_view("events-list")

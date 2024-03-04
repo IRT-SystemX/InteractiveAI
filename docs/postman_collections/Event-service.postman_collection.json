@@ -77,7 +77,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88210\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\",\r\n        \"agent_id\": \"TGV 88210\"\r\n    },\r\n    \"parent_event_id\": \"1b7444e5-54bd-4700-9c36-6bfca42d81ed\"\r\n}",
+					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88210\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\",\r\n        \"agent_id\": \"TGV 88210\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1159,6 +1159,170 @@
 						"v1",
 						"usecase",
 						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "sncf_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/event/7648dc4b-c63c-4fae-8ee9-76521eb682f5",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"event",
+						"7648dc4b-c63c-4fae-8ee9-76521eb682f5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "sncf_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/event/9ea16045-c18d-43af-8b38-44fce35ae920",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"event",
+						"9ea16045-c18d-43af-8b38-44fce35ae920"
 					]
 				}
 			},

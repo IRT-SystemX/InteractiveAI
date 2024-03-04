@@ -146,3 +146,16 @@ class BaseEventManager:
                 created_event = self.create_event(event_data)
                 created_events_list.append(created_event)
         return created_events_list
+
+    def delete_event(self, event_id):
+        event = EventModel.query.get(event_id)
+        if event:
+            self.delete_card(f"cabProcess.{event_id}")
+            db.session.delete(event)
+            db.session.commit()
+            return '', 204  # No content, indicating successful deletion
+        return {"error": "Event not found"}, 404
+
+    def delete_card(self, card_id):
+        card_pub_client = CardPubClient()
+        card_pub_client.delete_card(card_id)
