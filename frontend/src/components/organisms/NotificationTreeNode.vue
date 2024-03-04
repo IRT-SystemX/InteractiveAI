@@ -8,7 +8,7 @@
         <ChevronDown
           v-if="children.length"
           :class="{ rotate: !showChildren }"
-          @click="showChildren = !showChildren" />
+          @click.stop="showChildren = !showChildren" />
         <div class="w-100">
           <header>
             <b><slot name="title" :card="card"></slot></b>
