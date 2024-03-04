@@ -31,14 +31,12 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
 <style lang="scss">
 .cab-tooltip {
   &-slot:hover .cab-tooltip-content {
+    display: block;
     pointer-events: none;
-    opacity: 1;
   }
   &-content {
-    transition: var(--duration);
-    opacity: 0;
+    display: none;
     width: max-content;
-    display: block;
     background-color: var(--color-grey-800);
     color: var(--color-text-inverted);
     text-align: center;
