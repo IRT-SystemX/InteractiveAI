@@ -1,5 +1,5 @@
 <template>
-  <div ref="slot" class="cab-tooltip-slot">
+  <div ref="slot" class="cab-tooltip-slot" :class="[placement, toggle]">
     <slot />
     <div ref="tooltip" class="cab-tooltip-content" :style="floatingStyles">
       <slot name="tooltip"></slot>
@@ -15,37 +15,63 @@
   </div>
 </template>
 <script setup lang="ts">
-import { arrow, autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
+import { arrow, autoUpdate, flip, type Placement, shift, useFloating } from '@floating-ui/vue'
 import { ref } from 'vue'
+
+const props = withDefaults(
+  defineProps<{
+    placement?: Placement
+    textAlign?: 'center' | 'left' | 'right' | 'justified'
+    toggle?: 'hover' | 'click'
+  }>(),
+  { placement: 'top', textAlign: 'center', toggle: 'hover' }
+)
 
 const slot = ref<HTMLElement | null>(null)
 const tooltip = ref<HTMLDivElement | null>(null)
 const floatingArrow = ref<HTMLDivElement | null>(null)
 
 const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
-  placement: 'top',
-  middleware: [offset(8), flip(), shift(), arrow({ element: floatingArrow, padding: 8 })],
+  placement: props.placement,
+  middleware: [flip(), shift(), arrow({ element: floatingArrow, padding: 8 })],
   whileElementsMounted: autoUpdate
 })
 </script>
 <style lang="scss">
 .cab-tooltip {
-  &-slot:hover .cab-tooltip-content {
-    display: block;
-    pointer-events: none;
+  &-slot {
+    display: inline-block;
+    width: min-content;
+    cursor: pointer;
+    &.hover:hover .cab-tooltip-content,
+    &.click:focus .cab-tooltip-content {
+      display: block;
+    }
+
+    &[class*='top'] .cab-tooltip-arrow {
+      bottom: calc(var(--unit) / -2);
+    }
+    &[class*='bottom'] .cab-tooltip-arrow {
+      top: calc(var(--unit) / -2);
+    }
+    &[class*='left'] .cab-tooltip-arrow {
+      right: calc(var(--unit) / -2);
+    }
+    &[class*='right'] .cab-tooltip-arrow {
+      left: calc(var(--unit) / -2);
+    }
   }
   &-content {
     display: none;
     width: max-content;
     background-color: var(--color-grey-800);
     color: var(--color-text-inverted);
-    text-align: center;
+    text-align: v-bind('props.textAlign');
     padding: var(--spacing-1);
     border-radius: var(--radius-medium);
     z-index: 3000;
   }
   &-arrow {
-    margin-top: calc(var(--unit) / 2);
     width: var(--unit);
     height: var(--unit);
     transform: rotate(45deg);
