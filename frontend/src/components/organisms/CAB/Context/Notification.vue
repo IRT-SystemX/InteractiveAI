@@ -11,8 +11,10 @@
       <Maximize2 v-else></Maximize2>
     </Button>
     <main v-if="expanded">
-      <h1>{{ card.titleTranslated }}</h1>
-      {{ card.summaryTranslated }}
+      <slot name="title">
+        <h1>{{ format(card.startDate, 'p') }}: {{ card.titleTranslated }}</h1>
+      </slot>
+      <slot>{{ card.summaryTranslated }}</slot>
     </main>
   </div>
 </template>
@@ -21,6 +23,7 @@ import { Maximize2, Minimize2 } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
+import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 

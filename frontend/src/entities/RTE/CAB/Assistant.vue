@@ -1,7 +1,9 @@
 <template>
   <section class="cab-panel">
     <Default>
-      <Event v-if="tab === 1 && card" :card="card" :primary-action="primaryAction"></Event>
+      <Event v-if="tab === 1 && card" :card="card" :primary-action="primaryAction">
+        {{ card.titleTranslated }}
+      </Event>
       <Recommendations
         v-if="tab === 2"
         :recommendations="servicesStore.recommendations('RTE')"
