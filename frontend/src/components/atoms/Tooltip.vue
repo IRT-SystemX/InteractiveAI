@@ -40,7 +40,7 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
 <style lang="scss">
 .cab-tooltip {
   &-slot {
-    display: inline-block;
+    display: inline-flex;
     width: min-content;
     cursor: pointer;
     &.hover:hover .cab-tooltip-content,
