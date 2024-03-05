@@ -3,7 +3,7 @@
   <SpeechBubble position="bottom" arrow="left">
     <i18n-t scope="global" keypath="event.text">
       <template #event>
-        <strong :style="{ color: criticalityToColor(card.data.criticality) }">
+        <strong :style="{ color: `var(--color-${criticalityToColor(card.data.criticality)}` }">
           <slot></slot>
         </strong>
       </template>
