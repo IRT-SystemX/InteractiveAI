@@ -45,7 +45,7 @@
   "modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION": "A new connection has been opened, you have been disconnected",
   "modal.error.ECONNABORTED": "Connection interrupted",
   "modal.error.ERR_BAD_REQUEST": "Bad request",
-  "modal.error.ERR_BAD_RESPONSE": "Server resonse error",
+  "modal.error.ERR_BAD_RESPONSE": "Server response error",
   "modal.error.ERR_NETWORK": "Network error",
   "modal.info.SUBSCRIPTION_ACTIVE": "A user is logged in, log them out?",
   "recommendations.description": "Description",
