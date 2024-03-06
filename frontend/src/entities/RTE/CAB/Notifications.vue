@@ -26,7 +26,7 @@
         :width="16"
         class="ml-1"></SVG>
     </template>
-    <template #actions="{ card }">
+    <template #actions="{ card, deletion, hasBeenAcknowledged }">
       <Tooltip>
         <template #tooltip>{{ $t('card.actions.upvote.tooltip') }}</template>
         <Button size="small" color="secondary" @click.stop="vote(card, true)">
@@ -39,18 +39,17 @@
           <ChevronDown :height="16" />
         </Button>
       </Tooltip>
-      <Tooltip>
+      <Tooltip v-if="!hasBeenAcknowledged">
         <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-        <Button size="small" color="secondary">
-          <MoveRight :height="12" />
-          <User :height="12" />
+        <Button size="small" color="secondary" @click.stop="deletion(card)">
+          <Inbox :height="12" />
         </Button>
       </Tooltip>
     </template>
   </Notifications>
 </template>
 <script setup lang="ts">
-import { ChevronDown, ChevronUp, MoveRight, User, Zap } from 'lucide-vue-next'
+import { ChevronDown, ChevronUp, Inbox, Zap } from 'lucide-vue-next'
 
 import { removeEvent } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'

@@ -14,7 +14,14 @@
       :style="{
         height: `${(section.weight / sections.reduce((a, b) => a + b.weight, 0)) * 100}%`
       }">
-      <h1>{{ $t(`cab.notifications.${section.name}`) }}</h1>
+      <header class="flex flex-between">
+        <h1>{{ $t(`cab.notifications.${section.name}`) }}</h1>
+        <button>
+          <Inbox
+            :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
+            @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
+        </button>
+      </header>
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <TransitionGroup name="fade">
           <NotificationTreeNode
@@ -39,11 +46,15 @@
               {{ card.summaryTranslated }}
             </template>
             <template #actions="{ card }">
-              <slot name="actions" :card="card" :deletion="confirmDeletion">
-                <Tooltip>
+              <slot
+                name="actions"
+                :card="card"
+                :deletion="confirmDeletion"
+                :has-been-acknowledged="hasBeenAcknowledged">
+                <Tooltip v-if="!hasBeenAcknowledged">
                   <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
                   <Button size="small" color="secondary">
-                    <Trash2 :height="12" @click.stop="confirmDeletion(card)" />
+                    <Inbox :height="12" @click.stop="confirmDeletion(card)" />
                   </Button>
                 </Tooltip>
               </slot>
@@ -58,7 +69,7 @@
   </section>
 </template>
 <script setup lang="ts" generic="T extends Entity">
-import { Trash2 } from 'lucide-vue-next'
+import { Inbox } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -88,8 +99,9 @@ const props = withDefaults(
   }
 )
 
-const cards = computed(() => cardsStore.cards(props.entity))
+const cards = computed(() => cardsStore.cards(props.entity, hasBeenAcknowledged.value))
 
+const hasBeenAcknowledged = ref(false)
 const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
 
 const active = ref<Card['id'][]>([])
