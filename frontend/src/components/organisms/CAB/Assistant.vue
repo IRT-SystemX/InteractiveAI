@@ -9,7 +9,7 @@
       </div>
     </slot>
   </main>
-  <footer class="flex flex-center-y cab-chat">
+  <footer v-if="chatbot" class="flex flex-center-y cab-chat">
     <div class="cab-chat-input">
       <input class="cab-input" :placeholder="$t('assistant.placeholder')" />
       <Mic color="var(--color-grey-600)" :height="24" />
@@ -22,6 +22,8 @@ import { Mic } from 'lucide-vue-next'
 
 import Avatar from '@/components/atoms/Avatar.vue'
 import SVG from '@/components/atoms/SVG.vue'
+
+withDefaults(defineProps<{ chatbot?: boolean }>(), { chatbot: true })
 </script>
 <style lang="scss">
 .cab-assistant {
