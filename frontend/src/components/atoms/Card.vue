@@ -1,14 +1,15 @@
 <template>
-  <div class="cab-card" :class="[orientation, color]">
+  <div class="cab-card" :class="[orientation, color, { customColor: customColor }]">
     <div class="cab-card-outer"><slot name="outer"></slot></div>
     <div class="cab-card-inner"><slot></slot></div>
   </div>
 </template>
 <script setup lang="ts">
-withDefaults(
+const props = withDefaults(
   defineProps<{
     orientation?: 'left' | 'right' | 'top' | 'bottom'
     color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+    customColor?: string
   }>(),
   { orientation: 'left', color: 'primary' }
 )
@@ -35,6 +36,9 @@ withDefaults(
   }
   &.error {
     --color-card: var(--color-error);
+  }
+  &.customColor {
+    --color-card: v-bind(props.customColor);
   }
 
   &.left {
