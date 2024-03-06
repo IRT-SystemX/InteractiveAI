@@ -1,66 +1,24 @@
 from apiflask import Schema
-from apiflask.fields import DateTime, Dict, String, Boolean
-from apiflask.validators import Length, OneOf
-from marshmallow import ValidationError, validates_schema
-
-
-class Event(Schema):
-    id_event = String()
-    of_uid = String()
-    use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA', 'ORANGE']))
-    title = String(required=True, validate=Length(1, 255))
-    description = String(required=True, validate=Length(1, 255))
-    start_date = DateTime(format="iso", allow_none=True)
-    end_date = DateTime(format="iso", allow_none=True)
-    criticality = String(required=True, validate=OneOf(
-        ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE']))
-    data = Dict()
-    is_active = Boolean()
-    parent_event_id = String()
-
-
-class Solution(Schema):
-    pass
-
-
-class Actions(Schema):
-    pass
-
-
-class AskForHelp(Schema):
-    id_event = String()
+from apiflask.fields import DateTime, Dict, String
+from apiflask.validators import OneOf
 
 
 class TraceIn(Schema):
-    use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA', 'ORANGE']))
-    step = String(required=True, validate=OneOf(
-        ['EVENT', 'ASKFORHELP', 'SOLUTION', 'AWARD']))
+    use_case = String(required=True)
+    step = String(
+        required=True,
+        validate=OneOf(["EVENT", "ASKFORHELP", "SOLUTION", "AWARD"]),
+    )
     date = DateTime(format="iso")
     data = Dict()
-
-    @validates_schema
-    def validate_data(self, validate_data, **kwargs):
-        step = validate_data.get("step")
-        trace_data = validate_data.get("data")
-        if step == "EVENT":
-            Event().load(trace_data)
-        elif step == "ASKFORHELP":
-            AskForHelp().load(trace_data)
-        elif step == "SOLUTION":
-            Actions().load(trace_data)
-        elif step == "AWARD":
-            Solution().load(trace_data)
-        else:
-            raise ValidationError("Invalid use case")
 
 
 class TraceOut(Schema):
     id_trace = String()
-    use_case = String(required=True, validate=OneOf(
-        ['RTE', 'SNCF', 'DA', 'ORANGE']))
-    step = String(required=True, validate=OneOf(
-        ['EVENT', 'ASKFORHELP', 'SOLUTION', 'AWARD']))
+    use_case = String(required=True)
+    step = String(
+        required=True,
+        validate=OneOf(["EVENT", "ASKFORHELP", "SOLUTION", "AWARD"]),
+    )
     date = DateTime(format="iso")
     data = Dict()
