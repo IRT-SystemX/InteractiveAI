@@ -1,7 +1,9 @@
 <template>
+  <!--Header section-->
   <div
     class="cab-timeline-top"
     :style="{ 'grid-template-columns': style['grid-template-columns'] }">
+    <!--Event icons-->
     <div
       v-for="card of cards"
       :key="card.id"
@@ -21,7 +23,9 @@
         <slot :card="card"></slot>
       </div>
     </div>
+    <!--Bottom border-->
     <div class="cab-timeline-border"></div>
+    <!--Current time and cursor-->
     <div
       class="cab-timeline-now"
       :style="{ 'grid-column': `${Math.abs(start) + 2} / ${Math.abs(start) + 4} ` }">
@@ -30,8 +34,11 @@
       </div>
     </div>
   </div>
+  <!--Cards section-->
   <div v-if="cards.length" class="cab-timeline" :style="style">
+    <!--Current time vertical line-->
     <div class="cab-timeline-now" :style="{ 'grid-column': `${Math.abs(start) + 2}` }"></div>
+    <!--Time steps for hover informations-->
     <div
       v-for="(_, time) in end - start"
       :key="time"
@@ -41,63 +48,26 @@
         {{ format(addMinutes(now, start + time), 'p') }}
       </div>
     </div>
-    <template v-for="(card, index) of cards" :key="card.id">
-      <Notification
-        :criticality="card.data.criticality"
-        class="cab-timeline-card"
-        :style="{ 'grid-row': index + 1 }">
-        <template #title>
-          {{ card.titleTranslated }}
-        </template>
-        <template #severity>
-          <slot :card="card"></slot>
-        </template>
-      </Notification>
-      <div class="cab-timeline-line" :style="{ 'grid-row': index + 1 }"></div>
-      <div
-        :style="{
-          'grid-row': index + 1,
-          'grid-column': `${clamp(
-            differenceInMinutes(new Date(card.startDate), window.start) + 2,
-            window.length + 1,
-            2
-          )} / ${clamp(
-            differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) +
-              2,
-            window.length + 1,
-            2
-          )}`
-        }"
-        class="cab-timeline-event">
-        <div class="cab-timeline-event-icon">
-          <slot :card="card"></slot>
-        </div>
-        <div
-          class="cab-timeline-event-line"
-          :class="criticalityToColor(card.data.criticality)"></div>
-        <div class="cab-timeline-event-time">
-          <div
-            v-if="card.startDate && isAfter(new Date(card.startDate), window.start)"
-            class="start">
-            {{ format(new Date(card.startDate), 'p') }}
-          </div>
-          <div v-if="card.endDate && isBefore(new Date(card.endDate), window.end)" class="end">
-            {{ format(new Date(card.endDate), 'p') }}
-          </div>
-        </div>
-      </div>
-    </template>
+    <!--Cards-->
+    <TimelineTreeNode
+      v-for="(card, index) of cards"
+      :key="card.id"
+      :card="card"
+      :window="window"
+      :index="index"
+      :children="
+        cards.filter((child) => child.data.parent_event_id === card.processInstanceId)
+      "></TimelineTreeNode>
   </div>
 </template>
 <script setup lang="ts">
-import { addMinutes, differenceInMinutes, isAfter, isBefore } from 'date-fns'
+import { addMinutes, differenceInMinutes } from 'date-fns'
 import { computed, ref } from 'vue'
 
+import TimelineTreeNode from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
-import { clamp, criticalityToColor, repeatEvery } from '@/utils/utils'
-
-import Notification from './Notification.vue'
+import { clamp, repeatEvery } from '@/utils/utils'
 
 const props = defineProps<{ start: number; end: number; cards: Card[] }>()
 
@@ -118,7 +88,7 @@ repeatEvery(() => {
   now.value = new Date()
 }, 60 * 1000)
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .cab-timeline {
   display: grid;
   row-gap: var(--spacing-1);

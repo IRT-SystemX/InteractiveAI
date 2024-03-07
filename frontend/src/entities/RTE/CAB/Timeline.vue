@@ -19,7 +19,7 @@
 import { Zap } from 'lucide-vue-next'
 
 import SVG from '@/components/atoms/SVG.vue'
-import Timeline from '@/components/molecules/Timeline.vue'
+import Timeline from '@/components/organisms/Timeline.vue'
 import { useCardsStore } from '@/stores/cards'
 import { criticalityToColor } from '@/utils/utils'
 
