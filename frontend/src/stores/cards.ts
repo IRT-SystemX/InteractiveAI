@@ -1,4 +1,4 @@
-import { endOfDay, startOfDay } from 'date-fns'
+import { addDays, subDays } from 'date-fns'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -95,8 +95,8 @@ export const useCardsStore = defineStore('cards', () => {
     cardsApi.subscribe(
       {
         clientId: id,
-        rangeEnd: String(endOfDay(new Date()).getTime()),
-        rangeStart: String(startOfDay(new Date()).getTime())
+        rangeEnd: String(addDays(new Date(), 1).getTime()),
+        rangeStart: String(subDays(new Date(), 1).getTime())
       },
       handler
     )

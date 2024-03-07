@@ -23,44 +23,42 @@
         </button>
       </header>
       <div v-if="cards.filter(section.filter).length" class="card-container">
-        <TransitionGroup name="fade">
-          <NotificationTreeNode
-            v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
-            :key="c.id"
-            :card="c"
-            @click="selected(c)">
-            <template #title="{ card }">{{ card.titleTranslated }}</template>
-            <template #severity="{ card }">
-              <slot name="severity" :card="card">
-                {{ format(new Date(card.startDate), 'p') }}
-              </slot>
-              <slot name="icon" :card="card">
-                <SVG
-                  src="icons/warning_hex"
-                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
-                  :width="16"
-                  class="ml-1"></SVG>
-              </slot>
-            </template>
-            <template #default="{ card }">
-              {{ card.summaryTranslated }}
-            </template>
-            <template #actions="{ card }">
-              <slot
-                name="actions"
-                :card="card"
-                :deletion="confirmDeletion"
-                :has-been-acknowledged="hasBeenAcknowledged">
-                <Tooltip v-if="!hasBeenAcknowledged">
-                  <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                  <Button size="small" color="secondary">
-                    <Inbox :height="12" @click.stop="confirmDeletion(card)" />
-                  </Button>
-                </Tooltip>
-              </slot>
-            </template>
-          </NotificationTreeNode>
-        </TransitionGroup>
+        <NotificationTreeNode
+          v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
+          :key="c.id"
+          :card="c"
+          @click="selected(c)">
+          <template #title="{ card }">{{ card.titleTranslated }}</template>
+          <template #severity="{ card }">
+            <slot name="severity" :card="card">
+              {{ format(new Date(card.startDate), 'p') }}
+            </slot>
+            <slot name="icon" :card="card">
+              <SVG
+                src="icons/warning_hex"
+                :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
+                :width="16"
+                class="ml-1"></SVG>
+            </slot>
+          </template>
+          <template #default="{ card }">
+            {{ card.summaryTranslated }}
+          </template>
+          <template #actions="{ card }">
+            <slot
+              name="actions"
+              :card="card"
+              :deletion="confirmDeletion"
+              :has-been-acknowledged="hasBeenAcknowledged">
+              <Tooltip v-if="!hasBeenAcknowledged">
+                <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+                <Button size="small" color="secondary">
+                  <Inbox :height="12" @click.stop="confirmDeletion(card)" />
+                </Button>
+              </Tooltip>
+            </slot>
+          </template>
+        </NotificationTreeNode>
       </div>
       <div v-else class="card-container-empty">
         {{ $t('cab.notifications.empty') }}

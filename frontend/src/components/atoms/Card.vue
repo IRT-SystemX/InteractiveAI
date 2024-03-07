@@ -11,7 +11,7 @@ const props = withDefaults(
     color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
     customColor?: string
   }>(),
-  { orientation: 'left', color: 'primary' }
+  { orientation: 'left', color: 'primary', customColor: undefined }
 )
 </script>
 <style lang="scss">

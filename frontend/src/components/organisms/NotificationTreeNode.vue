@@ -19,24 +19,22 @@
         </div>
       </div>
     </Notification>
-    <TransitionGroup name="fade">
-      <div v-if="showChildren && children.length">
-        <div v-for="child of children" :key="child.id" class="flex flex-gap mt-1">
-          <CornerDownRight />
-          <NotificationTreeNode :card="child">
-            <template #outer>
-              <aside><slot name="outer" :card="child"></slot></aside>
-            </template>
-            <header>
-              <b><slot name="title" :card="child"></slot></b>
-              <aside><slot name="severity" :card="child"></slot></aside>
-            </header>
-            <main><slot :card="child"></slot></main>
-            <footer><slot name="actions" :card="child"></slot></footer>
-          </NotificationTreeNode>
-        </div>
+    <div v-if="showChildren && children.length">
+      <div v-for="child of children" :key="child.id" class="flex flex-gap mt-1">
+        <CornerDownRight />
+        <NotificationTreeNode :card="child">
+          <template #outer>
+            <aside><slot name="outer" :card="child"></slot></aside>
+          </template>
+          <header>
+            <b><slot name="title" :card="child"></slot></b>
+            <aside><slot name="severity" :card="child"></slot></aside>
+          </header>
+          <main><slot :card="child"></slot></main>
+          <footer><slot name="actions" :card="child"></slot></footer>
+        </NotificationTreeNode>
       </div>
-    </TransitionGroup>
+    </div>
   </div>
 </template>
 <script setup lang="ts" generic="T extends Entity">
