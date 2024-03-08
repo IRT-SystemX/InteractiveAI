@@ -1,19 +1,30 @@
 <template>
-  <Notification
-    :criticality="card.data.criticality"
-    class="cab-timeline-card"
-    :style="{ 'grid-row': index + 1 }">
-    <template #title>
-      {{ card.titleTranslated }}
-    </template>
-    <template #severity>
-      <slot :card="card"></slot>
-    </template>
-  </Notification>
-  <div class="cab-timeline-line" :style="{ 'grid-row': index + 1 }"></div>
   <div
+    class="cab-timeline-top cab-timeline-top-event"
     :style="{
-      'grid-row': index + 1,
+      'grid-column': `${clamp(
+        differenceInMinutes(new Date(card.startDate), window.start) + 2,
+        window.length + 1,
+        2
+      )}`
+    }">
+    <slot :card="card"></slot>
+  </div>
+  <div class="flex">
+    <slot name="child-icon"></slot>
+    <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
+      <template #title>
+        {{ card.titleTranslated }}
+      </template>
+      <template #severity>
+        <slot :card="card"></slot>
+      </template>
+    </Notification>
+  </div>
+  <div class="cab-timeline-line"></div>
+  <div
+    v-if="!children"
+    :style="{
       'grid-column': `${clamp(
         differenceInMinutes(new Date(card.startDate), window.start) + 2,
         window.length + 1,
@@ -38,9 +49,19 @@
       </div>
     </div>
   </div>
+  <TimelineTreeNode
+    v-for="(child, i) of children"
+    :key="child.id"
+    :window="window"
+    :card="child"
+    :index="index + i + 1">
+    <template #child-icon><CornerDownRight /></template>
+    <slot :card="card"></slot>
+  </TimelineTreeNode>
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { differenceInMinutes, isAfter, isBefore } from 'date-fns'
+import { CornerDownRight } from 'lucide-vue-next'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
@@ -51,7 +72,7 @@ import Notification from '../molecules/Notification.vue'
 
 defineProps<{
   card: Card<T>
-  children: Card<T>[]
+  children?: Card<T>[]
   window: { start: Date; end: Date; length: number }
   index: number
 }>()

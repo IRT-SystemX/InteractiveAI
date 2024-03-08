@@ -1,44 +1,21 @@
 <template>
-  <!--Header section-->
-  <div
-    class="cab-timeline-top"
-    :style="{ 'grid-template-columns': style['grid-template-columns'] }">
-    <!--Event icons-->
-    <div
-      v-for="card of cards"
-      :key="card.id"
-      class="cab-timeline-event"
-      :style="{
-        'grid-column': `${clamp(
-          differenceInMinutes(new Date(card.startDate), window.start) + 2,
-          window.length + 1,
-          2
-        )} / ${clamp(
-          differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) + 2,
-          window.length + 1,
-          2
-        )}`
-      }">
-      <div class="cab-timeline-event-icon">
-        <slot :card="card"></slot>
-      </div>
-    </div>
+  <div class="cab-timeline" :style="style">
+    <!--Header section-->
+    <div style="grid-row: 1; grid-column: 1"></div>
     <!--Bottom border-->
-    <div class="cab-timeline-border"></div>
+    <div class="cab-timeline-top cab-timeline-top-border"></div>
     <!--Current time and cursor-->
     <div
-      class="cab-timeline-now"
+      class="cab-timeline-top cab-timeline-top-now"
       :style="{ 'grid-column': `${Math.abs(start) + 2} / ${Math.abs(start) + 4} ` }">
       <div class="cab-timeline-time">
         {{ format(now, 'p') }}
       </div>
     </div>
-  </div>
-  <!--Cards section-->
-  <div v-if="cards.length" class="cab-timeline" :style="style">
+    <!--Cards section-->
     <!--Current time vertical line-->
     <div class="cab-timeline-now" :style="{ 'grid-column': `${Math.abs(start) + 2}` }"></div>
-    <!--Time steps for hover informations-->
+    <!--Time steps for hover informations
     <div
       v-for="(_, time) in end - start"
       :key="time"
@@ -47,27 +24,27 @@
       <div class="cab-timeline-hover-time">
         {{ format(addMinutes(now, start + time), 'p') }}
       </div>
-    </div>
+    </div>-->
     <!--Cards-->
     <TimelineTreeNode
-      v-for="(card, index) of cards"
+      v-for="(card, index) of cards.filter((c) => !c.data.parent_event_id)"
       :key="card.id"
       :card="card"
       :window="window"
       :index="index"
-      :children="
-        cards.filter((child) => child.data.parent_event_id === card.processInstanceId)
-      "></TimelineTreeNode>
+      :children="cards.filter((child) => child.data.parent_event_id === card.processInstanceId)">
+      <slot :card="card"></slot>
+    </TimelineTreeNode>
   </div>
 </template>
 <script setup lang="ts">
-import { addMinutes, differenceInMinutes } from 'date-fns'
+import { addMinutes } from 'date-fns'
 import { computed, ref } from 'vue'
 
 import TimelineTreeNode from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
-import { clamp, repeatEvery } from '@/utils/utils'
+import { repeatEvery } from '@/utils/utils'
 
 const props = defineProps<{ start: number; end: number; cards: Card[] }>()
 
@@ -79,9 +56,7 @@ const window = computed(() => ({
 }))
 const style = computed(() => ({
   'grid-template-columns': `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
-  'grid-template-rows': `[events-start] ${
-    props.cards.length ? `repeat(${props.cards.length}, 40px) [events-end]` : ''
-  }`
+  'grid-auto-rows': `40px`
 }))
 
 repeatEvery(() => {
@@ -98,37 +73,35 @@ repeatEvery(() => {
   height: 100%;
 
   &-top {
-    display: grid;
-    height: calc(var(--unit) * 2);
-    grid-template-rows: 1fr;
-    // Because of scrollbar
-    // TODO
-    padding-right: 10px;
-    overflow: visible;
-    scrollbar-gutter: stable;
-    > * {
-      grid-row: events-start / events-end;
+    position: sticky;
+    top: 0;
+    grid-row: 1;
+    &-border {
+      border-bottom: 2px solid var(--color-grey-400);
+      grid-column: events-start / events-end;
+      background: var(--color-background);
     }
-    .cab-timeline-event {
-      margin-bottom: calc(var(--unit) / 2);
+    &-event {
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: var(--unit);
+      min-width: 0;
+      overflow: visible;
+      svg {
+        position: absolute;
+      }
     }
-  }
-
-  &-border {
-    border-bottom: 2px solid var(--color-grey-400);
-    grid-column: events-start / events-end;
   }
 
   &-now {
-    grid-row: events-start / events-end;
     border-left: 2px solid var(--color-grey-400);
-    position: relative;
+    grid-row: 1 / v-bind('cards.length - 1');
   }
 
   &-time {
-    position: absolute;
+    position: sticky;
     transform: translateX(-50%);
-    bottom: 0;
+    top: 0;
     padding-bottom: var(--spacing-2);
     width: max-content;
     &:after {
@@ -147,7 +120,7 @@ repeatEvery(() => {
   }
 
   &-hover {
-    grid-row: events-start / events-end;
+    grid-row: 1 / v-bind('cards.length - 1');
     z-index: 1;
     opacity: 0;
     cursor: cell;
@@ -174,7 +147,7 @@ repeatEvery(() => {
   &-card {
     grid-column: cards-start;
     margin-right: var(--spacing-1);
-    scroll-snap-align: start;
+    scroll-snap-align: end;
   }
 
   &-line {
@@ -185,6 +158,7 @@ repeatEvery(() => {
 
   &-event {
     align-self: center;
+    grid-row: top-start / events-start;
 
     &-icon {
       margin-left: calc(var(--spacing-1) * -1);
