@@ -1,5 +1,9 @@
 <template>
-  <div ref="slot" class="cab-tooltip-slot" :class="[placement, toggle]">
+  <div
+    ref="slot"
+    class="cab-tooltip-slot"
+    :class="[placement, toggle, { visible }]"
+    @click="visible = !visible">
     <slot />
     <div ref="tooltip" class="cab-tooltip-content" :style="floatingStyles">
       <slot name="tooltip"></slot>
@@ -27,6 +31,7 @@ const props = withDefaults(
   { placement: 'top', textAlign: 'center', toggle: 'hover' }
 )
 
+const visible = ref(false)
 const slot = ref<HTMLElement | null>(null)
 const tooltip = ref<HTMLDivElement | null>(null)
 const floatingArrow = ref<HTMLDivElement | null>(null)
@@ -43,8 +48,9 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
     display: inline-flex;
     width: min-content;
     cursor: pointer;
-    &.hover:hover .cab-tooltip-content,
-    &.click:focus .cab-tooltip-content {
+    &.hover:hover > .cab-tooltip-content,
+    &.click.visible > .cab-tooltip-content,
+    &.click:focus > .cab-tooltip-content {
       display: block;
     }
 
