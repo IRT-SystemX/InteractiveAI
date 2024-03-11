@@ -3,7 +3,7 @@
   <main class="flex flex-1 flex-col">
     <slot>
       <div class="flex flex-1 flex-col color-primary flex-center">
-        <Avatar :size="200" />
+        <Avatar v-if="chatbot" :size="200" />
         <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>
         <p class="text-center">{{ $t('assistant.cab.presentation') }}</p>
       </div>

@@ -11,6 +11,7 @@
   "button.yes": "Yes",
   "cab": "CAB",
   "cab.assistant": "Assistant",
+  "cab.notifications.archived": "(archives)",
   "cab.notifications.delete": "Are you sure you want to remove the {event} notification?",
   "cab.notifications.empty": "No events to display",
   "cab.notifications.ended": "Event ended, would you like to close the corresponding cards?",

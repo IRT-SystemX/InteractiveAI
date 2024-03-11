@@ -15,7 +15,10 @@
         height: `${(section.weight / sections.reduce((a, b) => a + b.weight, 0)) * 100}%`
       }">
       <header class="flex flex-between">
-        <h1>{{ $t(`cab.notifications.${section.name}`) }}</h1>
+        <h1>
+          {{ $t(`cab.notifications.${section.name}`) }}
+          {{ hasBeenAcknowledged ? $t('cab.notifications.archived') : '' }}
+        </h1>
         <button>
           <Inbox
             :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
