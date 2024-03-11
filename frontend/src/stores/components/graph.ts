@@ -197,16 +197,13 @@ export const useGraphStore = defineStore('graph', () => {
 
     ctx.zoom(select(element))
 
-    ctx.svg
-      .transition()
-      .duration(750)
-      .call(
-        ctx.zoom.transform,
-        zoomIdentity.translate(
-          document.getElementById('d3-graph')!.clientWidth / 2,
-          document.getElementById('d3-graph')!.clientHeight / 2
-        )
+    ctx.svg.call(
+      ctx.zoom.transform,
+      zoomIdentity.translate(
+        document.getElementById('d3-graph')!.clientHeight / 2,
+        document.getElementById('d3-graph')!.clientWidth / 2
       )
+    )
   }
 
   function setStatus(node: Node['id'], severity: 'active' | Severity) {
@@ -289,9 +286,11 @@ export const useGraphStore = defineStore('graph', () => {
       .call(
         ctx.zoom.transform,
         zoomIdentity
-          .translate(document.getElementById('cab-graph')!.clientWidth / 2, 0)
+          .translate(
+            -node!.x! + document.getElementById('d3-graph')!.clientWidth / 2,
+            -node!.y! + document.getElementById('d3-graph')!.clientHeight / 2
+          )
           .scale(zoom)
-          .translate(-node!.x!, -node!.y!)
       )
   }
 
