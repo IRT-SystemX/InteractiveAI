@@ -1,6 +1,6 @@
 <template>
   <div class="w-100">
-    <Notification :criticality="card.data.criticality">
+    <Notification :criticality="card.data.criticality" @click.stop="selected(card)">
       <template #outer>
         <aside><slot name="outer" :card="card"></slot></aside>
       </template>
@@ -41,6 +41,7 @@
 import { ChevronDown, CornerDownRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
+import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
@@ -58,6 +59,11 @@ const children = computed(() =>
 )
 
 const showChildren = ref(true)
+
+function selected(card: Card<T>) {
+  // @ts-ignore
+  eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)
+}
 </script>
 <style lang="scss">
 .lucide {

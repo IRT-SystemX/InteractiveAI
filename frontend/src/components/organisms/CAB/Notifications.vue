@@ -29,8 +29,7 @@
         <NotificationTreeNode
           v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
           :key="c.id"
-          :card="c"
-          @click="selected(c)">
+          :card="c">
           <template #title="{ card }">{{ card.titleTranslated }}</template>
           <template #severity="{ card }">
             <slot name="severity" :card="card">
@@ -119,11 +118,6 @@ eventBus.on('notifications:close', (card) => {
     }
   })
 })
-
-function selected(card: Card<T>) {
-  // @ts-ignore
-  eventBus.emit(`assistant:selected:${props.entity}`, card)
-}
 
 function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
   modals.value.splice(modals.value.indexOf(modal), 1)
