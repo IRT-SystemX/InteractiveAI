@@ -41,18 +41,30 @@
         {{ format(addMinutes(now, start + time), 'p') }}
       </div>
     </div>
-    <template v-for="(card, index) of cards" :key="card.id">
-      <Notification
-        :criticality="card.data.criticality"
-        class="cab-timeline-card"
-        :style="{ 'grid-row': index + 1 }">
-        <template #title>
-          {{ card.titleTranslated }}
-        </template>
-        <template #severity>
-          <slot :card="card"></slot>
-        </template>
-      </Notification>
+    <template
+      v-for="(card, index) of [...cards]
+        .filter(
+          (c) =>
+            !c.data.parent_event_id ||
+            cards.find((c2) => c2.processInstanceId === c.data.parent_event_id)
+        )
+        .sort((a, b) => {
+          if (a.processInstanceId === b.data.parent_event_id) return -1
+          if (a.data.parent_event_id === b.processInstanceId) return 1
+          return 0
+        })"
+      :key="card.id">
+      <div :style="{ 'grid-row': index + 1 }" class="flex">
+        <CornerDownRight v-if="card.data.parent_event_id" />
+        <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
+          <template #title>
+            {{ card.titleTranslated }}
+          </template>
+          <template #severity>
+            <slot :card="card"></slot>
+          </template>
+        </Notification>
+      </div>
       <div class="cab-timeline-line" :style="{ 'grid-row': index + 1 }"></div>
       <div
         :style="{
@@ -91,6 +103,7 @@
 </template>
 <script setup lang="ts">
 import { addMinutes, differenceInMinutes, isAfter, isBefore } from 'date-fns'
+import { CornerDownRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
 import { format } from '@/plugins/date'
