@@ -1,5 +1,5 @@
 <template>
-  <Avatar :size="200" class="self-center" status="error" />
+  <Avatar v-if="chatbot" :size="200" class="self-center" status="error" />
   <SpeechBubble position="bottom" arrow="left">
     <i18n-t scope="global" keypath="event.text">
       <template #event>
@@ -34,10 +34,15 @@ import { criticalityToColor } from '@/utils/utils'
 
 withDefaults(
   defineProps<{
+    chatbot?: boolean
     card: Card
     primaryAction?: (card?: Card) => void
     secondaryAction?: (card?: Card) => void
   }>(),
-  { primaryAction: () => eventBus.emit('assistant:tab', 2), secondaryAction: () => {} }
+  {
+    primaryAction: () => eventBus.emit('assistant:tab', 2),
+    secondaryAction: () => {},
+    chatbot: true
+  }
 )
 </script>
