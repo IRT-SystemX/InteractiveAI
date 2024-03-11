@@ -286,7 +286,13 @@ export const useGraphStore = defineStore('graph', () => {
     ctx.svg
       .transition()
       .duration(750)
-      .call(ctx.zoom.transform, zoomIdentity.scale(zoom).translate(-node!.x!, -node!.y!))
+      .call(
+        ctx.zoom.transform,
+        zoomIdentity
+          .translate(document.getElementById('cab-graph')!.clientWidth / 2, 0)
+          .scale(zoom)
+          .translate(-node!.x!, -node!.y!)
+      )
   }
 
   async function setCorrelation(
