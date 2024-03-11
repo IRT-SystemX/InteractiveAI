@@ -44,7 +44,9 @@
             </slot>
           </template>
           <template #default="{ card }">
-            {{ card.summaryTranslated }}
+            <slot>
+              {{ card.summaryTranslated }}
+            </slot>
           </template>
           <template #actions="{ card }">
             <slot
