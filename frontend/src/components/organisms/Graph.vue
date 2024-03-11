@@ -116,8 +116,13 @@ watch(
   }
 
   .node.ACTION {
-    --node-stroke: var(--orange-500);
-    --node-text: var(--orange-500);
+    --node-stroke: var(--color-error);
+    --node-text: var(--color-error);
+  }
+
+  .node.ALARM {
+    --node-stroke: var(--color-error);
+    --node-text: var(--color-error);
   }
 
   .link {

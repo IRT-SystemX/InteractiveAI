@@ -317,6 +317,8 @@ export const useGraphStore = defineStore('graph', () => {
     setup,
     d3Correlations,
     zoomToNode,
+    setStatus,
+    removeStatus,
     showLink,
     hideLinks,
     focusLink,
