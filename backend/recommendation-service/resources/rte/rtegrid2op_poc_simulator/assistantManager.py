@@ -4,7 +4,7 @@ try:
     from lightsim2grid import LightSimBackend
     bkClass = LightSimBackend
 except ImportError:
-    # TODO: logger here
+    from grid2op.Backend import PandaPowerBackend
     bkClass = PandaPowerBackend
 
 import toml
@@ -15,6 +15,8 @@ from settings import logger
 import numpy as np
 from flask import current_app
 from enum import Enum
+import importlib
+
 
 class AgentType(Enum):
     onto = 1
@@ -22,70 +24,54 @@ class AgentType(Enum):
 
 class AgentManager:
     def __init__(self):
-        try:
-            # Load RTE simulator configuration
-            self.root_path = current_app.config['ROOT_PATH']
-            abs_path = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
+        # Load RTE simulator configuration
+        self.root_path = current_app.config['ROOT_PATH']
+        abs_path = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
 
-            config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
+        config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
 
-            # grid2op Environment and observation definition and loading
-            env_name = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
-            self.env = grid2op.make(env_name, backend=bkClass())
-            self.env.seed(config_assistant['env_seed'])
-            # Search scenario with provided name
-            for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
-                sp_end = os.path.basename(sp)
-                if sp_end == config_assistant['scenario_name']:
-                    id_scenario = id
-            #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
-            self.env.set_id(id_scenario)  # Scenario choice
-            self.obs = self.env.reset()
+        # grid2op Environment and observation definition and loading
+        env_name = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
+        self.env = grid2op.make(env_name, backend=bkClass())
+        self.env.seed(config_assistant['env_seed'])
+        # Search scenario with provided name
+        for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
+            sp_end = os.path.basename(sp)
+            if sp_end == config_assistant['scenario_name']:
+                id_scenario = id
+        #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
+        self.env.set_id(id_scenario)  # Scenario choice
+        self.obs = self.env.reset()
 
-            #self.obs = self.env.observation_space(self.env)
-            if self.obs.current_step is None:
-                self.previous_step = "1"
-            else:
-                self.previous_step = self.obs.current_step
+        #self.obs = self.env.observation_space(self.env)
+        if self.obs.current_step is None:
+            self.previous_step = "1"
+        else:
+            self.previous_step = self.obs.current_step
 
-            # assistant definition and loading
-            assistant_path = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
-            assistant_seed = config_assistant['assistant_seed']
+        # assistant definition and loading
+        assistant_path = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
+        assistant_seed = config_assistant['assistant_seed']
 
-            # lazy loading
-            self.assistant = None
-            if assistant_path is not None:
-                abs_assistant_path = os.path.abspath(assistant_path)
-                if not os.path.exists(assistant_path):
-                    msg_ = f"Nothing found at \"{assistant_path}\""
-                    raise RuntimeError(msg_)
-                if not os.path.isdir(assistant_path):
-                    msg_ = f"\"{assistant_path}\" should be a folder"
-                    raise RuntimeError(msg_)
-                if not os.path.exists(os.path.join(assistant_path, "submission")):
-                    msg_ = f"\"{assistant_path}\" should contain a folder named \"submission\""
-                    raise RuntimeError(msg_)
-                sys.path.append(abs_assistant_path)
-                try:
-                    from submission import make_agent
-                    self.assistant = make_agent(
-                        self.env.copy(), os.path.join(abs_assistant_path, "submission"))
-                    if not isinstance(self.assistant, BaseAgent):
-                        msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
-                        raise RuntimeError(msg_)
-                except Exception as exc_:
-                    raise exc_
-                self.assistant.seed(int(assistant_seed))
-                self.nb_timestep = int(0)
+        # lazy loading
+        abs_assistant_path = os.path.abspath(assistant_path)
 
-            # Action "do nothing"
-            self.action_do_nothing = self.env.action_space({})
-        except Exception as e:
-            logger.error(e)
-            # exit()
+        submission = importlib.import_module(f"resources.rte.rtegrid2op_poc_simulator.XD_silly_repo.submission")
+        self.assistant = submission.make_agent(
+            self.env.copy(), os.path.join(abs_assistant_path, "submission"))
+        if not isinstance(self.assistant, BaseAgent):
+            msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
+            raise RuntimeError(msg_)
+
+        self.assistant.seed(int(assistant_seed))
+        self.nb_timestep = int(0)
+
+        # Action "do nothing"
+        self.action_do_nothing = self.env.action_space({})
+
 
     def get_nbOfTimestepSinceLastObs(self, obs_dict):
         self.nb_timestep = int(obs_dict.get("current_step")[
