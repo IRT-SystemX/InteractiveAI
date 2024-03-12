@@ -73,13 +73,14 @@ const props = withDefaults(
     height: auto;
     flex: 1;
     transition: var(--duration);
-    &:hover {
-      background: var(--color-grey-200);
-    }
-
-    &:active {
-      background: var(--color-grey-300);
-    }
+  }
+  &:hover .cab-card-inner {
+    background: var(--color-grey-300);
+  }
+  &:focus .cab-card-inner,
+  &:focus-within .cab-card-inner,
+  &:active .cab-card-inner {
+    background: var(--color-grey-400);
   }
 }
 </style>
