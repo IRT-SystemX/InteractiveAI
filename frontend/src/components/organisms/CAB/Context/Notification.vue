@@ -11,9 +11,10 @@
       <Maximize2 v-else></Maximize2>
     </Button>
     <main v-if="expanded">
-      <slot name="title">
-        <h1>{{ format(card.startDate, 'p') }}: {{ card.titleTranslated }}</h1>
-      </slot>
+      <h1>
+        <slot name="title">{{ format(card.startDate, 'p') }}: {{ card.titleTranslated }}</slot>
+      </h1>
+
       <slot>{{ card.summaryTranslated }}</slot>
     </main>
   </div>
