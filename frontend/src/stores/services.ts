@@ -26,7 +26,7 @@ export const useServicesStore = defineStore('services', () => {
 
   async function getContext<E extends Entity>(
     entity: E,
-    callback: (context: Context<E>) => void,
+    callback: (context: Context<E>, data: any) => void,
     delay = 5000
   ) {
     const modalID = uuid()
@@ -41,7 +41,11 @@ export const useServicesStore = defineStore('services', () => {
       try {
         const { data } = await servicesApi.getContext<E>()
         _context.value = data.find((el) => el.use_case === entity)?.data
-        if (_context.value) callback(_context.value)
+        if (_context.value)
+          callback(
+            _context.value,
+            data.find((el) => el.use_case === entity)
+          )
       } catch (err) {
         clearInterval(contextPID)
         eventBus.emit('modal:open', {
