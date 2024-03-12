@@ -1,10 +1,13 @@
 <template>
   <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
-    <img
-      v-if="tab === 0"
-      style="user-drag: none"
-      :src="`data:image/png;base64, ${topology}`"
-      class="cab-context-topology" />
+    <template v-if="tab === 0">
+      <img
+        v-if="topology"
+        style="user-drag: none"
+        :src="`data:image/png;base64, ${topology}`"
+        class="cab-context-topology" />
+      <h1 v-else>Pas de contexte</h1>
+    </template>
     <Notification :card="card"></Notification>
   </Context>
 </template>
@@ -21,12 +24,14 @@ const servicesStore = useServicesStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
+const previousContext = ref('')
 const topology = ref('')
 const card = ref<Card<'RTE'> | undefined>(undefined)
 
 onBeforeMount(async () => {
-  contextPID.value = await servicesStore.getContext('RTE', (context: any) => {
-    topology.value = context.topology
+  contextPID.value = await servicesStore.getContext('RTE', (context, data) => {
+    if (!previousContext.value) previousContext.value = data.id
+    if (previousContext.value !== data.id) topology.value = context.topology
   })
 })
 
