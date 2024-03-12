@@ -19,7 +19,7 @@ services:
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
 
     restart: unless-stopped
-    command: sh -c "./entrypoint.sh"
+    # command: sh -c "./entrypoint.sh"
     ports:
       - 5100:5000
     volumes:
@@ -46,7 +46,7 @@ services:
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
-    command: sh -c "./entrypoint.sh"
+    # command: sh -c "./entrypoint.sh"
     ports:
       - 5000:5000
     volumes:
@@ -68,7 +68,7 @@ services:
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
     restart: unless-stopped
-    command: sh -c "./entrypoint.sh"
+    # command: sh -c "./entrypoint.sh"
     ports:
       - 5200:5000
     volumes:
@@ -174,7 +174,7 @@ services:
       - AUTH_DISABLED=True
       - DEFAULT_USE_CASE=ORANGE
 
-    command: sh -c "./entrypoint.sh"
+    # command: sh -c "./entrypoint.sh"
     ports:
       - 5300:5000
     volumes:
@@ -213,7 +213,7 @@ services:
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
-    command: sh -c "./entrypoint.sh"
+    # command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
     volumes:
@@ -246,7 +246,7 @@ services:
 #      - "5672:5672"
 #      - "15672:15672"
   keycloak:
-    image: jboss/keycloak:16.1.1
+    image: quay.io/keycloak/keycloak:16.1.1
     command: -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/cab-keycloak/export -Dkeycloak.profile.feature.upload_scripts=enabled
     environment:
     - KEYCLOAK_USER=admin
