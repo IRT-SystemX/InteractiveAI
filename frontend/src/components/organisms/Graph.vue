@@ -127,17 +127,16 @@ watch(
 
   .link {
     stroke-width: 12;
-    stroke: var(--color-primary);
     cursor: pointer;
   }
 
+  .link.active {
+    stroke: var(--color-grey-900) !important;
+  }
   .link:hover,
   .link.focus {
+    stroke-width: 20;
     stroke: var(--color-grey-600) !important;
-  }
-
-  .link.active {
-    stroke: var(--color-grey-900);
   }
 }
 </style>

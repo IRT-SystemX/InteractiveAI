@@ -74,7 +74,10 @@ export const useGraphStore = defineStore('graph', () => {
       setStatus(link.target as number, 'active')
     }
 
-    const res = { nodes, links } as { nodes: Node[]; links: Link[] }
+    const res = { nodes, links: links.sort((a, b) => b.rank - a.rank) } as {
+      nodes: Node[]
+      links: Link[]
+    }
     data.value = res
 
     return res
@@ -123,6 +126,9 @@ export const useGraphStore = defineStore('graph', () => {
       .enter()
       .append('line')
       .attr('class', 'link')
+      .style('stroke', (d: any) => {
+        return `color-mix(in srgb, var(--color-primary) ${(1 - d.rank / 10) * 100}%, #BCCAD1)`
+      })
       .on('mouseenter.tooltip', function (event: MouseEvent, d: Link) {
         eventBus.emit('graph:showTooltip', d.data)
         ctx.tooltip.style('opacity', 0.9)
