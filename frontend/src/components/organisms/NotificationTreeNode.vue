@@ -10,8 +10,10 @@
           :class="{ rotate: !showChildren }"
           @click.stop="showChildren = !showChildren" />
         <div class="w-100">
-          <header>
-            <b><slot name="title" :card="card"></slot></b>
+          <header :style="{ color: read ? 'var(--color-grey-600)' : undefined }">
+            <b>
+              <slot name="title" :card="card"></slot>
+            </b>
             <aside><slot name="severity" :card="card"></slot></aside>
           </header>
           <main><slot :card="card"></slot></main>
@@ -24,14 +26,20 @@
         <CornerDownRight />
         <NotificationTreeNode :card="child">
           <template #outer>
-            <aside><slot name="outer" :card="child"></slot></aside>
+            <slot name="outer" :card="child"></slot>
           </template>
-          <header>
-            <b><slot name="title" :card="child"></slot></b>
-            <aside><slot name="severity" :card="child"></slot></aside>
-          </header>
-          <main><slot :card="child"></slot></main>
-          <footer><slot name="actions" :card="child"></slot></footer>
+          <template #title>
+            <slot name="title" :card="child"></slot>
+          </template>
+          <template #severity>
+            <slot name="severity" :card="child"></slot>
+          </template>
+          <template #default>
+            <slot :card="child"></slot>
+          </template>
+          <template #actions>
+            <slot name="actions" :card="child"></slot>
+          </template>
         </NotificationTreeNode>
       </div>
     </div>
@@ -49,6 +57,7 @@ import type { Entity } from '@/types/entities'
 import Notification from '../molecules/Notification.vue'
 
 const props = defineProps<{ card: Card<T> }>()
+const read = ref(false)
 
 const cardsStore = useCardsStore()
 
@@ -61,6 +70,7 @@ const children = computed(() =>
 const showChildren = ref(true)
 
 function selected(card: Card<T>) {
+  read.value = true
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)
 }

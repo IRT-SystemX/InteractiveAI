@@ -19,11 +19,17 @@
           {{ $t(`cab.notifications.${section.name}`) }}
           {{ hasBeenAcknowledged ? $t('cab.notifications.archived') : '' }}
         </h1>
-        <button>
-          <Inbox
-            :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
-            @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
-        </button>
+        <Tooltip>
+          <template #tooltip>
+            {{ $t(`cab.notifications.${section.name}`) }}
+            {{ $t('cab.notifications.archived') }}
+          </template>
+          <button>
+            <Inbox
+              :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
+              @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
+          </button>
+        </Tooltip>
       </header>
       <div v-if="cards.filter(section.filter).length" class="card-container">
         <NotificationTreeNode
