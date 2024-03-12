@@ -56,7 +56,7 @@ export const useServicesStore = defineStore('services', () => {
     return contextPID
   }
 
-  async function getRecommendation<T extends Entity = Entity>(newContext?: Context<T>) {
+  async function getRecommendation(newContext?: any) {
     const payload = newContext || _context.value
     const { data } = await servicesApi.getRecommendation(payload)
     _recommendations.value = data

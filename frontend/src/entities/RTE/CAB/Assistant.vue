@@ -45,8 +45,6 @@ import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { Trace } from '@/types/services'
 
-import context from '../assets/context.json'
-
 const route = useRoute()
 const servicesStore = useServicesStore()
 
@@ -62,7 +60,23 @@ eventBus.on('assistant:tab', (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation(context as any)
+      servicesStore.getRecommendation({
+        context: {
+          ...servicesStore.context('RTE').observation,
+          active_alert: undefined,
+          alert_duration: undefined,
+          attack_under_alert: undefined,
+          time_since_last_alert: undefined,
+          time_since_last_attack: undefined,
+          total_number_of_alert: undefined,
+          was_alert_used_after_attack: undefined
+        },
+        event: {
+          event_flow: card.value?.data.metadata.flux,
+          event_id: card.value?.uid,
+          event_line: card.value?.data.metadata.line
+        }
+      })
   }
 })
 
