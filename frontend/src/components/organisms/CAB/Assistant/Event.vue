@@ -9,17 +9,20 @@
       </template>
     </i18n-t>
   </SpeechBubble>
-  <div class="flex flex-center-y">
+  <!--<div class="flex flex-center-y">
     <Button color="secondary" type="button" @click="secondaryAction">
       {{ $t('event.button.secondary') }}
     </Button>
     <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
-  </div>
+  </div>-->
   <div class="flex flex-center-y">
     <Button type="button" @click="primaryAction">
       {{ $t('event.button.primary') }}
     </Button>
-    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
+    <Tooltip placement="top-end" class="ml-1">
+      <template #tooltip>Sollicitation de CAB pour calculer des corrélations</template>
+      <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
+    </Tooltip>
   </div>
 </template>
 <script setup lang="ts">
@@ -28,6 +31,7 @@ import { Info } from 'lucide-vue-next'
 import Avatar from '@/components/atoms/Avatar.vue'
 import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
+import Tooltip from '@/components/atoms/Tooltip.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
