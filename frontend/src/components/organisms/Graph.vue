@@ -116,8 +116,8 @@ watch(
   }
 
   .node.ACTION {
-    --node-stroke: var(--color-error);
-    --node-text: var(--color-error);
+    --node-stroke: var(--color-warning);
+    --node-text: var(--color-warning);
   }
 
   .node.ALARM {
