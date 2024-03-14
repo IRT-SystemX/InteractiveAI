@@ -55,7 +55,7 @@ import type { Entity } from '@/types/entities'
 
 import Notification from '../molecules/Notification.vue'
 
-defineProps<{ card: CardTree<T> }>()
+const props = defineProps<{ card: CardTree<T> }>()
 const read = ref(false)
 
 const showChildren = ref(true)

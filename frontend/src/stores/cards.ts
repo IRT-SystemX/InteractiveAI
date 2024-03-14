@@ -5,7 +5,13 @@ import { ref } from 'vue'
 import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
-import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
+import {
+  type Card,
+  type CardEvent,
+  type CardGroup,
+  CardOperationType,
+  type CardTree
+} from '@/types/cards'
 import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
@@ -14,25 +20,27 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function tree(
-    list: any[],
+  function tree<T extends Entity>(
+    list: Card<T>[],
     groupBy: ((card: any) => string) | undefined,
     childKey: (card: any) => string,
     parentKey: (card: any) => string
   ) {
+    const newList = [...list] as CardTree<T>[]
     const map: { [key: string]: any } = {}
-    let roots: typeof list = []
+    let roots: typeof groupBy extends Function ? CardGroup<T>[] : typeof newList = []
     let node, i
     if (groupBy) {
-      roots = list.map((c) => groupBy(c))
+      // @ts-ignore
+      roots = list.map((c) => ({ name: groupBy(c), children: [] }))
     }
 
     for (i = 0; i < list.length; i++) {
       map[parentKey(list[i])] = i
-      list[i].children = []
-      node = list[i]
+      newList[i].children = []
+      node = list[i] as CardTree<T>
       if (childKey(node)) {
-        list[map[childKey(node)]].children.push(node)
+        newList[map[childKey(node)]].children.push(node)
       } else {
         roots.push(node)
       }
@@ -43,7 +51,7 @@ export const useCardsStore = defineStore('cards', () => {
   function cards<T extends Entity>(
     entity: T,
     hasBeenAcknowledged: boolean | 'all' = false,
-    groupBy: ((card: any) => string) | undefined,
+    groupBy?: ((card: any) => string) | undefined,
     childKey: (card: Card) => string = (card) => card.data.parent_event_id,
     parentKey: (card: Card) => string = (card) => card.processInstanceId
   ) {
