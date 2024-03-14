@@ -6,7 +6,7 @@
       </template>
       <div class="flex flex-center-y flex-gap">
         <ChevronDown
-          v-if="children.length"
+          v-if="card.children.length"
           :class="{ rotate: !showChildren }"
           @click.stop="showChildren = !showChildren" />
         <div class="w-100">
@@ -21,8 +21,8 @@
         </div>
       </div>
     </Notification>
-    <div v-if="showChildren && children.length">
-      <div v-for="child of children" :key="child.id" class="flex flex-gap mt-1">
+    <div v-if="showChildren && card.children.length">
+      <div v-for="child of card.children" :key="child.id" class="flex flex-gap mt-1">
         <CornerDownRight />
         <NotificationTreeNode :card="child">
           <template #outer>
@@ -47,29 +47,20 @@
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { ChevronDown, CornerDownRight } from 'lucide-vue-next'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
-import { useCardsStore } from '@/stores/cards'
-import type { Card } from '@/types/cards'
+import type { CardTree } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 
 import Notification from '../molecules/Notification.vue'
 
-const props = defineProps<{ card: Card<T> }>()
+defineProps<{ card: CardTree<T> }>()
 const read = ref(false)
-
-const cardsStore = useCardsStore()
-
-const children = computed(() =>
-  cardsStore
-    .cards(props.card.entityRecipients[0])
-    .filter((child) => child.data.parent_event_id === props.card.processInstanceId)
-)
 
 const showChildren = ref(true)
 
-function selected(card: Card<T>) {
+function selected(card: CardTree<T>) {
   read.value = true
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)

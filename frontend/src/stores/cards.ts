@@ -14,11 +14,59 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
-    return _cards.value.filter<Card<T>>(
-      (card): card is Card<T> =>
-        card.entityRecipients.includes(entity) &&
-        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === !!card.hasBeenAcknowledged)
+  function tree(
+    list: any[],
+    groupBy: ((card: any) => string) | undefined,
+    childKey: (card: any) => string,
+    parentKey: (card: any) => string
+  ) {
+    const map: { [key: string]: any } = {}
+    let roots: typeof list = []
+    let node, i
+    if (groupBy) {
+      roots = list.map((c) => groupBy(c))
+    }
+
+    for (i = 0; i < list.length; i++) {
+      map[parentKey(list[i])] = i
+      list[i].children = []
+      node = list[i]
+      if (childKey(node)) {
+        list[map[childKey(node)]].children.push(node)
+      } else {
+        roots.push(node)
+      }
+    }
+    return roots
+  }
+
+  function cards<T extends Entity>(
+    entity: T,
+    hasBeenAcknowledged: boolean | 'all' = false,
+    groupBy: ((card: any) => string) | undefined,
+    childKey: (card: Card) => string = (card) => card.data.parent_event_id,
+    parentKey: (card: Card) => string = (card) => card.processInstanceId
+  ) {
+    return tree(
+      [..._cards.value]
+        .filter<Card<T>>(
+          (card): card is Card<T> =>
+            card.entityRecipients.includes(entity) &&
+            (hasBeenAcknowledged === 'all'
+              ? true
+              : hasBeenAcknowledged === !!card.hasBeenAcknowledged) &&
+            !!(
+              !childKey(card) || _cards.value.find((parent) => childKey(card) === parentKey(parent))
+            )
+        )
+        .sort((a, b) => {
+          if (parentKey(a) === childKey(b)) return -1
+          if (childKey(b) === parentKey(b)) return 1
+          return 0
+        }),
+      groupBy,
+      childKey,
+      parentKey
     )
   }
 

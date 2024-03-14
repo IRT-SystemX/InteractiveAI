@@ -45,6 +45,8 @@ export type Card<T extends Entity = Entity> = {
   }
 }
 
+export type CardTree<T extends Entity = Entity> = Card<T> & { children: CardTree<T>[] }
+
 export type CardAck = {
   cardUid: string
   entitiesAcks: Entity[]
