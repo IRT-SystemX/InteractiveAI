@@ -130,7 +130,10 @@ export const useGraphStore = defineStore('graph', () => {
         return `color-mix(in srgb, var(--color-primary) ${(1 - d.rank / 10) * 100}%, #BCCAD1)`
       })
       .on('mouseenter.tooltip', function (event: MouseEvent, d: Link) {
-        eventBus.emit('graph:showTooltip', d.data)
+        eventBus.emit('graph:showTooltip', {
+          app: d.target,
+          correlations: d.data
+        })
         ctx.tooltip.style('opacity', 0.9)
         ctx.tooltip.style('left', event.pageX + 20 + 'px').style('top', event.pageY + 20 + 'px')
       })
@@ -265,16 +268,16 @@ export const useGraphStore = defineStore('graph', () => {
       )
       .node()
       .getBoundingClientRect()
-    eventBus.emit(
-      'graph:showTooltip',
-      ctx.data!.links.find(
+    eventBus.emit('graph:showTooltip', {
+      app: target,
+      correlations: ctx.data!.links.find(
         (link) =>
           typeof link.source === 'object' &&
           source === link.source.id &&
           typeof link.target === 'object' &&
           target === link.target.id
       )!.data
-    )
+    })
     ctx.tooltip.style('opacity', 0.9)
     ctx.tooltip.style('left', d3link.x + 20 + 'px').style('top', d3link.y + 20 + 'px')
   }
