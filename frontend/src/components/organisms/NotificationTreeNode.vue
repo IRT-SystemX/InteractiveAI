@@ -1,30 +1,35 @@
 <template>
   <div class="w-100">
-    <Notification :criticality="card.data.criticality" @click.stop="selected(card)">
-      <template #outer>
-        <aside><slot name="outer" :card="card"></slot></aside>
-      </template>
-      <div class="flex flex-center-y flex-gap">
-        <ChevronDown
-          v-if="card.children.length"
-          :class="{ rotate: !showChildren }"
-          @click.stop="showChildren = !showChildren" />
-        <div class="w-100">
-          <header :style="{ color: read ? 'var(--color-grey-600)' : undefined }">
-            <b>
-              <slot name="title" :card="card"></slot>
-            </b>
-            <aside><slot name="severity" :card="card"></slot></aside>
-          </header>
-          <main><slot :card="card"></slot></main>
-          <footer><slot name="actions" :card="card"></slot></footer>
+    <div class="flex">
+      <CornerDownRight v-if="isChild" />
+      <Notification
+        :criticality="card.data.criticality"
+        class="flex-1"
+        @click.stop="selected(card)">
+        <template #outer>
+          <aside><slot name="outer" :card="card"></slot></aside>
+        </template>
+        <div class="flex flex-center-y flex-gap">
+          <ChevronDown
+            v-if="card.children?.length"
+            :class="{ rotate: !showChildren }"
+            @click.stop="showChildren = !showChildren" />
+          <div class="w-100">
+            <header :style="{ color: read ? 'var(--color-grey-600)' : undefined }">
+              <b>
+                <slot name="title" :card="card"></slot>
+              </b>
+              <aside><slot name="severity" :card="card"></slot></aside>
+            </header>
+            <main><slot :card="card"></slot></main>
+            <footer><slot name="actions" :card="card"></slot></footer>
+          </div>
         </div>
-      </div>
-    </Notification>
+      </Notification>
+    </div>
     <div v-if="showChildren && card.children.length">
       <div v-for="child of card.children" :key="child.id" class="flex flex-gap mt-1">
-        <CornerDownRight />
-        <NotificationTreeNode :card="child">
+        <NotificationTreeNode :card="child" :grouped="false" :is-child="true">
           <template #outer>
             <slot name="outer" :card="child"></slot>
           </template>
@@ -45,7 +50,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts" generic="T extends Entity">
+<script setup lang="ts" generic="E extends Entity">
 import { ChevronDown, CornerDownRight } from 'lucide-vue-next'
 import { ref } from 'vue'
 
@@ -55,12 +60,15 @@ import type { Entity } from '@/types/entities'
 
 import Notification from '../molecules/Notification.vue'
 
-const props = defineProps<{ card: CardTree<T> }>()
+const props = defineProps<{
+  card: CardTree<E>
+  isChild: boolean
+}>()
 const read = ref(false)
 
 const showChildren = ref(true)
 
-function selected(card: CardTree<T>) {
+function selected(card: CardTree<E>) {
   read.value = true
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)

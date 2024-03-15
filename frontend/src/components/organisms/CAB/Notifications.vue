@@ -31,44 +31,66 @@
           </button>
         </Tooltip>
       </header>
-      <div v-if="cards.filter(section.filter).length" class="card-container">
-        <NotificationTreeNode
-          v-for="c of cards.filter((c) => !c.data.parent_event_id).filter(section.filter)"
-          :key="c.id"
-          :card="c">
-          <template #title="{ card }">{{ card.titleTranslated }}</template>
-          <template #severity="{ card }">
-            <slot name="severity" :card="card">
-              {{ format(new Date(card.startDate), 'p') }}
-            </slot>
-            <slot name="icon" :card="card">
-              <SVG
-                src="icons/warning_hex"
-                :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
-                :width="16"
-                class="ml-1"></SVG>
-            </slot>
-          </template>
-          <template #default="{ card }">
-            <slot>
-              {{ card.summaryTranslated }}
-            </slot>
-          </template>
-          <template #actions="{ card }">
-            <slot
-              name="actions"
-              :card="card"
-              :deletion="confirmDeletion"
-              :has-been-acknowledged="hasBeenAcknowledged">
-              <Tooltip v-if="!hasBeenAcknowledged">
-                <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                <Button size="small" color="secondary">
-                  <Inbox :height="12" @click.stop="confirmDeletion(card)" />
-                </Button>
-              </Tooltip>
-            </slot>
-          </template>
-        </NotificationTreeNode>
+      <div v-if="Object.keys(cards).length" class="card-container">
+        <template v-for="(tree, key) of cards" :key="key">
+          <Notification
+            v-if="key !== '_DEFAULT'"
+            :criticality="
+              tree.reduce(
+                (prev: Criticality, curr) =>
+                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                    ? curr.data.criticality
+                    : prev,
+                'ND'
+              )
+            ">
+            <div class="flex flex-center-y flex-gap">
+              <ChevronDown />
+              <header class="flex flex-1">
+                <b class="flex-1">{{ key }}</b>
+                <aside>{{ $t('cab.notifications.group', tree.length) }}</aside>
+              </header>
+            </div>
+          </Notification>
+          <NotificationTreeNode
+            v-for="c of tree"
+            :key="c.id"
+            :card="c"
+            :is-child="key !== '_DEFAULT'">
+            <template #title="{ card }">{{ card.titleTranslated }}</template>
+            <template #severity="{ card }">
+              <slot name="severity" :card="card">
+                {{ format(new Date(card.startDate), 'p') }}
+              </slot>
+              <slot name="icon" :card="card">
+                <SVG
+                  src="icons/warning_hex"
+                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
+                  :width="16"
+                  class="ml-1"></SVG>
+              </slot>
+            </template>
+            <template #default="{ card }">
+              <slot>
+                {{ card.summaryTranslated }}
+              </slot>
+            </template>
+            <template #actions="{ card }">
+              <slot
+                name="actions"
+                :card="card"
+                :deletion="confirmDeletion"
+                :has-been-acknowledged="hasBeenAcknowledged">
+                <Tooltip v-if="!hasBeenAcknowledged">
+                  <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+                  <Button size="small" color="secondary">
+                    <Inbox :height="12" @click.stop="confirmDeletion(card)" />
+                  </Button>
+                </Tooltip>
+              </slot>
+            </template>
+          </NotificationTreeNode>
+        </template>
       </div>
       <div v-else class="card-container-empty">
         {{ $t('cab.notifications.empty') }}
@@ -77,7 +99,8 @@
   </section>
 </template>
 <script setup lang="ts" generic="T extends Entity">
-import { Inbox } from 'lucide-vue-next'
+import { ChevronDown, Inbox } from 'lucide-vue-next'
+import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -86,11 +109,12 @@ import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
+import Notification from '@/components/molecules/Notification.vue'
 import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vue'
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import type { Card } from '@/types/cards'
+import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { criticalityToColor } from '@/utils/utils'
 
@@ -100,14 +124,18 @@ const cardsStore = useCardsStore()
 const props = withDefaults(
   defineProps<{
     sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
+    groupFn?: (card: Card<T>) => string
     entity: T
   }>(),
   {
-    sections: () => [{ name: 'main', weight: 1, filter: () => true }]
+    sections: () => [{ name: 'main', weight: 1, filter: () => true }],
+    groupFn: () => '_DEFAULT'
   }
 )
 
-const cards = computed(() => cardsStore.cards(props.entity, hasBeenAcknowledged.value))
+const cards = computed(() =>
+  groupBy(cardsStore.tree(cardsStore.cards(props.entity, hasBeenAcknowledged.value)), props.groupFn)
+)
 
 const hasBeenAcknowledged = ref(false)
 const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])

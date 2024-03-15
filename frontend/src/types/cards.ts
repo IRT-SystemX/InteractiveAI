@@ -1,9 +1,9 @@
 import type { Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export const SeverityArray = ['ALARM', 'ACTION', 'COMPLIANT', 'INFORMATION'] as const
+export const SeverityArray = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
 export type Severity = (typeof SeverityArray)[number]
-export const CriticalityArray = ['ND', 'HIGH', 'MEDIUM', 'LOW', 'ROUTINE'] as const
+export const CriticalityArray = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
 export type Criticality = (typeof CriticalityArray)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
@@ -46,11 +46,6 @@ export type Card<T extends Entity = Entity> = {
 }
 
 export interface CardTree<T extends Entity = Entity> extends Card<T> {
-  children: CardTree<T>[]
-}
-
-export type CardGroup<T extends Entity = Entity> = {
-  name: string
   children: CardTree<T>[]
 }
 
