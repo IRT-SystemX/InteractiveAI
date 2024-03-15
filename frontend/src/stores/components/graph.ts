@@ -47,22 +47,22 @@ export const useGraphStore = defineStore('graph', () => {
     const links = formattedData.value
       .slice(0, shown.value)
       .reduce<Link[]>((acc, [key, value], index) => {
-        const target = +/App_(\d+).*/.exec(key)![1]
+        const target = +/.*(\d+).*/.exec(key)![1]
         const link = acc.find((link) => link.source === source && link.target === target)
         if (link) {
-          link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
+          link.data.push([/.*\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
           return acc
         }
         return acc.concat({
           source,
           target,
           rank: Math.floor(index / 5) + 1,
-          data: [[/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value]]
+          data: [[/.*\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value]]
         })
       }, [])
 
     const nodes = [
-      ...new Set(formattedData.value.map(([key]) => +/App_(\d+).*/.exec(key)![1])),
+      ...new Set(formattedData.value.map(([key]) => +/.*(\d+).*/.exec(key)![1])),
       source
     ].map((key) => ({
       id: key,
