@@ -110,7 +110,7 @@ watch(
     --node-fill: var(--white-800);
   }
 
-  .node.INFORMATION {
+  .node.COMPLIANT {
     --node-stroke: var(--green-500);
     --node-text: var(--green-500);
   }

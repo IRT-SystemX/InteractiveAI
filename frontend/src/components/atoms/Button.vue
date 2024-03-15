@@ -40,7 +40,7 @@ withDefaults(
     background: var(--color-primary);
   }
   &.secondary {
-    background: var(--color-secondary);
+    background: var(--color-grey-300);
     color: var(--color-text);
   }
   &.success {

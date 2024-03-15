@@ -76,6 +76,7 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
     padding: var(--spacing-1);
     border-radius: var(--radius-medium);
     z-index: 3000;
+    max-width: 300px;
   }
   &-arrow {
     width: var(--unit);

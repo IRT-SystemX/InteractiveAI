@@ -274,6 +274,9 @@ repeatEvery(() => {
       &.primary {
         background: var(--color-primary);
       }
+      &.secondary {
+        background: var(--color-secondary);
+      }
     }
   }
 }

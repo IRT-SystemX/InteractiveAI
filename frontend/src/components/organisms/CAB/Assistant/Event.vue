@@ -19,8 +19,10 @@
     <Button type="button" @click="primaryAction">
       {{ $t('event.button.primary') }}
     </Button>
-    <Tooltip placement="top-end" class="ml-1">
-      <template #tooltip>Sollicitation de CAB pour calculer des corrélations</template>
+    <Tooltip placement="bottom-end" class="ml-1">
+      <template #tooltip>
+        {{ $t('event.tooltip') }}
+      </template>
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>
   </div>
