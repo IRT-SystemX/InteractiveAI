@@ -47,7 +47,7 @@ export const useGraphStore = defineStore('graph', () => {
     const links = formattedData.value
       .slice(0, shown.value)
       .reduce<Link[]>((acc, [key, value], index) => {
-        const target = +key
+        const target = +/App_(\d+).*/.exec(key)![1]
         const link = acc.find((link) => link.source === source && link.target === target)
         if (link) {
           link.data.push([/App_\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
@@ -61,7 +61,10 @@ export const useGraphStore = defineStore('graph', () => {
         })
       }, [])
 
-    const nodes = [...new Set(formattedData.value.map(([key]) => +key)), source].map((key) => ({
+    const nodes = [
+      ...new Set(formattedData.value.map(([key]) => +/App_(\d+).*/.exec(key)![1])),
+      source
+    ].map((key) => ({
       id: key,
       selected: key === source,
       status: links.find((link) => link.target === key) ? ['active'] : []
