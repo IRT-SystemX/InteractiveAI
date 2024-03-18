@@ -13,8 +13,8 @@
       </div>
     </div>
     <!--Cards section-->
-    <!--Current time vertical line-->
-    <div class="cab-timeline-now" :style="{ 'grid-column': `${Math.abs(start) + 2}` }"></div>
+    <!--Current time vertical line
+    <div class="cab-timeline-now" :style="{ 'grid-column': `${Math.abs(start) + 2}` }"></div>-->
     <!--Time steps for hover informations
     <div
       v-for="(_, time) in end - start"
@@ -32,6 +32,7 @@
       :card="card"
       :window="window"
       :index="index"
+      :grid="style"
       :children="cards.filter((child) => child.data.parent_event_id === card.processInstanceId)">
       <slot :card="card"></slot>
     </TimelineTreeNode>
@@ -158,7 +159,6 @@ repeatEvery(() => {
 
   &-event {
     align-self: center;
-    grid-row: top-start / events-start;
 
     &-icon {
       margin-left: calc(var(--spacing-1) * -1);
