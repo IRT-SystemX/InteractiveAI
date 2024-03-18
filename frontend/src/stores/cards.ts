@@ -15,20 +15,19 @@ export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
   function tree<T extends Entity>(list: Card<T>[]) {
-    list.sort((a, b) => {
+    const newList = [...list].sort((a, b) => {
       if (a.processInstanceId === b.data.parent_event_id) return -1
       if (a.data.parent_event_id === b.processInstanceId) return 1
       return 0
-    })
-    const newList = [...list] as CardTree<T>[]
+    }) as CardTree<T>[]
     const map: { [key: string]: any } = {},
       roots = []
     let node, i
 
-    for (i = 0; i < list.length; i++) {
-      map[list[i].processInstanceId] = i
+    for (i = 0; i < newList.length; i++) {
+      map[newList[i].processInstanceId] = i
       newList[i].children = []
-      node = list[i] as CardTree<T>
+      node = newList[i] as CardTree<T>
       if (node.data.parent_event_id) {
         newList[map[node.data.parent_event_id]].children.push(node)
       } else {
