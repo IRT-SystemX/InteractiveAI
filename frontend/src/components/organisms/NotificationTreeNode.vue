@@ -15,7 +15,7 @@
             :class="{ rotate: !showChildren }"
             @click.stop="showChildren = !showChildren" />
           <div class="w-100">
-            <header :style="{ color: read ? 'var(--color-grey-600)' : undefined }">
+            <header :style="{ color: card.read ? 'var(--color-grey-600)' : undefined }">
               <b>
                 <slot name="title" :card="card"></slot>
               </b>
@@ -64,12 +64,10 @@ const props = defineProps<{
   card: CardTree<E>
   isChild: boolean
 }>()
-const read = ref(false)
-
 const showChildren = ref(true)
 
 function selected(card: CardTree<E>) {
-  read.value = true
+  card.read = true
   // @ts-ignore
   eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)
 }

@@ -34,11 +34,34 @@
         'row-gap': '8px',
         display: 'grid'
       }">
-      <template v-for="(tree, key) of cards" :key="key">
+      <template
+        v-for="key of Object.keys(cards).sort((a, b) => {
+          return (
+            CriticalityArray.indexOf(
+              cards[b].reduce(
+                (prev: Criticality, curr) =>
+                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                    ? curr.data.criticality
+                    : prev,
+                'ND'
+              )
+            ) -
+            CriticalityArray.indexOf(
+              cards[a].reduce(
+                (prev: Criticality, curr) =>
+                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                    ? curr.data.criticality
+                    : prev,
+                'ND'
+              )
+            )
+          )
+        })"
+        :key="key">
         <Notification
           v-if="key !== '_DEFAULT'"
           :criticality="
-            tree.reduce(
+            cards[key].reduce(
               (prev: Criticality, curr) =>
                 CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                   ? curr.data.criticality
@@ -50,12 +73,12 @@
             <ChevronDown />
             <header class="flex flex-1">
               <b class="flex-1">Application {{ key }}</b>
-              <aside>{{ $t('cab.notifications.group', tree.length) }}</aside>
+              <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
             </header>
           </div>
         </Notification>
         <TimelineTreeNode
-          v-for="(c, index) of tree"
+          v-for="(c, index) of cards[key]"
           :key="c.id"
           :is-child="key !== '_DEFAULT'"
           :card="c"
