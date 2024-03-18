@@ -34,7 +34,7 @@ export const useGraphStore = defineStore('graph', () => {
           .sort(([, a], [, b]) => Number(b) - Number(a)) as [CorrelationKey, number][])
       : []
   )
-  function d3Correlations(source = 1) {
+  function d3Correlations(source: number) {
     if (!correlations.value)
       return {
         nodes: Array.from(Array(28).keys()).map((i) => ({
