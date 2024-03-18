@@ -57,7 +57,9 @@
             :key="c.id"
             :card="c"
             :is-child="key !== '_DEFAULT'">
-            <template #title="{ card }">{{ card.titleTranslated }}</template>
+            <template #title="{ card }">
+              <slot name="title" :card="card">{{ card.titleTranslated }}</slot>
+            </template>
             <template #severity="{ card }">
               <slot name="severity" :card="card">
                 {{ format(new Date(card.startDate), 'p') }}

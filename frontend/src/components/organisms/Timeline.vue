@@ -55,14 +55,17 @@
           </div>
         </Notification>
         <TimelineTreeNode
-          v-for="(card, index) of tree"
-          :key="card.id"
+          v-for="(c, index) of tree"
+          :key="c.id"
           :is-child="key !== '_DEFAULT'"
-          :card="card"
+          :card="c"
           :window="window"
           :index="index"
-          :children="card.children">
-          <slot :card="card"></slot>
+          :children="c.children">
+          <slot :card="c"></slot>
+          <template #title="{ card }">
+            <slot name="title" :card="card"></slot>
+          </template>
         </TimelineTreeNode>
       </template>
     </div>

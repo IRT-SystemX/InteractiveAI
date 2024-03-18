@@ -19,7 +19,7 @@
       <CornerDownRight v-if="isChild" />
       <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
         <template #title>
-          {{ card.titleTranslated }}
+          <slot name="title" :card="card">{{ card.titleTranslated }}</slot>
         </template>
         <template #severity>
           <slot :card="card"></slot>
