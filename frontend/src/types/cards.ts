@@ -47,6 +47,7 @@ export type Card<T extends Entity = Entity> = {
 
 export interface CardTree<T extends Entity = Entity> extends Card<T> {
   children: CardTree<T>[]
+  read?: boolean
 }
 
 export type CardAck = {

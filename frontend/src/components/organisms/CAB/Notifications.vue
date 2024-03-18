@@ -32,11 +32,34 @@
         </Tooltip>
       </header>
       <div v-if="Object.keys(cards).length" class="card-container">
-        <template v-for="(tree, key) of cards" :key="key">
+        <template
+          v-for="key of Object.keys(cards).sort((a, b) => {
+            return (
+              CriticalityArray.indexOf(
+                cards[b].reduce(
+                  (prev: Criticality, curr) =>
+                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                      ? curr.data.criticality
+                      : prev,
+                  'ND'
+                )
+              ) -
+              CriticalityArray.indexOf(
+                cards[a].reduce(
+                  (prev: Criticality, curr) =>
+                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                      ? curr.data.criticality
+                      : prev,
+                  'ND'
+                )
+              )
+            )
+          })"
+          :key="key">
           <Notification
             v-if="key !== '_DEFAULT'"
             :criticality="
-              tree.reduce(
+              cards[key].reduce(
                 (prev: Criticality, curr) =>
                   CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                     ? curr.data.criticality
@@ -46,14 +69,18 @@
             ">
             <div class="flex flex-center-y flex-gap">
               <ChevronDown />
-              <header class="flex flex-1">
+              <header
+                class="flex flex-1"
+                :style="{
+                  color: cards[key].every((c) => c.read) ? 'var(--color-grey-600)' : undefined
+                }">
                 <b class="flex-1">Application {{ key }}</b>
-                <aside>{{ $t('cab.notifications.group', tree.length) }}</aside>
+                <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
               </header>
             </div>
           </Notification>
           <NotificationTreeNode
-            v-for="c of tree"
+            v-for="c of cards[key]"
             :key="c.id"
             :card="c"
             :is-child="key !== '_DEFAULT'">
