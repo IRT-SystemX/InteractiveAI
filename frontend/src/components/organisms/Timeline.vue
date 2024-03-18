@@ -26,28 +26,76 @@
       </div>
     </div>-->
     <!--Cards-->
-    <TimelineTreeNode
-      v-for="(card, index) of cards.filter((c) => !c.data.parent_event_id)"
-      :key="card.id"
-      :card="card"
-      :window="window"
-      :index="index"
-      :grid="style"
-      :children="cards.filter((child) => child.data.parent_event_id === card.processInstanceId)">
-      <slot :card="card"></slot>
-    </TimelineTreeNode>
+    <div
+      v-if="Object.keys(cards).length"
+      :style="{
+        ...style,
+        'grid-column': 'cards-start / event-end',
+        'row-gap': '8px',
+        display: 'grid'
+      }">
+      <template v-for="(tree, key) of cards" :key="key">
+        <Notification
+          v-if="key !== '_DEFAULT'"
+          :criticality="
+            tree.reduce(
+              (prev: Criticality, curr) =>
+                CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+                  ? curr.data.criticality
+                  : prev,
+              'ND'
+            )
+          ">
+          <div class="flex flex-center-y flex-gap">
+            <ChevronDown />
+            <header class="flex flex-1">
+              <b class="flex-1">Application {{ key }}</b>
+              <aside>{{ $t('cab.notifications.group', tree.length) }}</aside>
+            </header>
+          </div>
+        </Notification>
+        <TimelineTreeNode
+          v-for="(card, index) of tree"
+          :key="card.id"
+          :is-child="key !== '_DEFAULT'"
+          :card="card"
+          :window="window"
+          :index="index"
+          :children="card.children">
+          <slot :card="card"></slot>
+        </TimelineTreeNode>
+      </template>
+    </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Entity">
 import { addMinutes } from 'date-fns'
+import { ChevronDown } from 'lucide-vue-next'
+import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
+import Notification from '@/components/molecules/Notification.vue'
 import TimelineTreeNode from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
-import type { Card } from '@/types/cards'
+import { useCardsStore } from '@/stores/cards'
+import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
+import type { Entity } from '@/types/entities'
 import { repeatEvery } from '@/utils/utils'
 
-const props = defineProps<{ start: number; end: number; cards: Card[] }>()
+const props = withDefaults(
+  defineProps<{
+    start: number
+    end: number
+    cards: Card<T>[]
+    groupFn?: (card: Card<T>) => string
+    entity: T
+  }>(),
+  {
+    groupFn: () => '_DEFAULT'
+  }
+)
+
+const cardsStore = useCardsStore()
 
 const now = ref(new Date())
 const window = computed(() => ({
@@ -59,6 +107,10 @@ const style = computed(() => ({
   'grid-template-columns': `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
   'grid-auto-rows': `40px`
 }))
+
+const cards = computed(() =>
+  groupBy(cardsStore.tree(cardsStore.cards(props.entity, false)), props.groupFn)
+)
 
 repeatEvery(() => {
   now.value = new Date()
@@ -77,6 +129,11 @@ repeatEvery(() => {
     position: sticky;
     top: 0;
     grid-row: 1;
+    background: var(--color-background);
+    z-index: 100;
+    &-now {
+      z-index: 101;
+    }
     &-border {
       border-bottom: 2px solid var(--color-grey-400);
       grid-column: events-start / events-end;
@@ -96,7 +153,6 @@ repeatEvery(() => {
 
   &-now {
     border-left: 2px solid var(--color-grey-400);
-    grid-row: 1 / v-bind('cards.length - 1');
   }
 
   &-time {
@@ -121,7 +177,6 @@ repeatEvery(() => {
   }
 
   &-hover {
-    grid-row: 1 / v-bind('cards.length - 1');
     z-index: 1;
     opacity: 0;
     cursor: cell;

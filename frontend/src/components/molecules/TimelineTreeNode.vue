@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!--<div
     class="cab-timeline-top cab-timeline-top-event"
     :style="{
       'grid-column': `${clamp(
@@ -9,10 +9,14 @@
       )}`
     }">
     <slot :card="card"></slot>
-  </div>
-  <div class="cab-timeline-event" :style="grid">
-    <div class="">
-      <slot name="child-icon"></slot>
+  </div>-->
+  <div
+    class="cab-timeline-row"
+    :style="{
+      'grid-template-columns': `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
+    }">
+    <div class="flex">
+      <CornerDownRight v-if="isChild" />
       <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
         <template #title>
           {{ card.titleTranslated }}
@@ -24,7 +28,7 @@
     </div>
     <div class="cab-timeline-line"></div>
     <div
-      v-if="!children"
+      v-if="!children?.length"
       :style="{
         'grid-column': `${clamp(
           differenceInMinutes(new Date(card.startDate), window.start) + 2,
@@ -56,9 +60,8 @@
     :key="child.id"
     :window="window"
     :card="child"
-    :grid="grid"
-    :index="index + i + 1">
-    <template #child-icon><CornerDownRight /></template>
+    :index="index + i + 1"
+    :is-child="true">
     <slot :card="card"></slot>
   </TimelineTreeNode>
 </template>
@@ -78,16 +81,16 @@ defineProps<{
   children?: Card<T>[]
   window: { start: Date; end: Date; length: number }
   index: number
-  grid: {
-    'grid-template-columns': string
-    'grid-auto-rows': string
-  }
+  isChild: boolean
 }>()
 </script>
 <style lang="scss">
-.cab-timeline-event {
+.cab-timeline-row {
   display: grid;
   grid-column: cards-start / event-end;
+  > * {
+    grid-row: 1;
+  }
 }
 .lucide {
   transition: var(--duration);

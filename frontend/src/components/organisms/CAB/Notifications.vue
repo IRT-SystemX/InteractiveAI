@@ -47,7 +47,7 @@
             <div class="flex flex-center-y flex-gap">
               <ChevronDown />
               <header class="flex flex-1">
-                <b class="flex-1">{{ key }}</b>
+                <b class="flex-1">Application {{ key }}</b>
                 <aside>{{ $t('cab.notifications.group', tree.length) }}</aside>
               </header>
             </div>
