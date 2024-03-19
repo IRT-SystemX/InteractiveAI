@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# comment to trigger ci
 FROM harbor.irtsysx.fr/cab/cab-common:3.8.10-slim
 
 RUN mkdir -p /usr/share/man/man1 \
