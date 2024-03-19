@@ -1,4 +1,4 @@
-# Cab-Frontend Dockerfile
+# Add comment to Dockerfile
 FROM node:alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
