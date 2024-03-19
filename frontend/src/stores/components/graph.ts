@@ -217,7 +217,7 @@ export const useGraphStore = defineStore('graph', () => {
 
   function setStatuses(cards: Card<'ORANGE'>[]) {
     for (const criticality of CriticalityArray) {
-      ctx.nodes.classed(criticality, false)
+      ctx.nodes?.classed(criticality, false)
     }
     for (const card of cards) {
       ctx.nodes
