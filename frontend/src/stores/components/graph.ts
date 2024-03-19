@@ -39,7 +39,6 @@ export const useGraphStore = defineStore('graph', () => {
       return {
         nodes: Array.from(Array(28).keys()).map((i) => ({
           id: i + 1,
-          status: [],
           selected: false
         })),
         links: []
@@ -66,13 +65,8 @@ export const useGraphStore = defineStore('graph', () => {
       source
     ].map((key) => ({
       id: key,
-      selected: key === source,
-      status: links.find((link) => link.target === key) ? ['active'] : []
+      selected: key === source
     }))
-
-    for (const link of links) {
-      ctx.nodes?.filter((d: Node) => d.id === +link).classed('active', true)
-    }
 
     const res = { nodes, links: links.sort((a, b) => b.rank - a.rank) } as {
       nodes: Node[]
@@ -94,7 +88,6 @@ export const useGraphStore = defineStore('graph', () => {
   }
 
   const ctx: {
-    statuses: { [k: Node['id']]: Node['status'] }
     data?: { nodes: Node[]; links: Link[] }
     svg?: any
     simulation?: any
@@ -103,7 +96,7 @@ export const useGraphStore = defineStore('graph', () => {
     links?: any
     zoom?: any
     rawData?: any
-  } = { statuses: {} }
+  } = {}
 
   function setup(data: { nodes: Node[]; links: Link[] }, element: HTMLElement) {
     element.innerHTML = ''
@@ -151,7 +144,10 @@ export const useGraphStore = defineStore('graph', () => {
       .data(ctx.data.nodes)
       .enter()
       .append('g')
-      .attr('class', (d: Node) => 'node ' + ctx.statuses[d.id]?.join(' '))
+      .attr('class', 'node')
+      .classed('active', (d: Node) =>
+        ctx.data!.links.some((link) => link.source === d.id || link.target === d.id)
+      )
       .classed('focus', (d: Node) => d.selected)
       .call(
         drag<SVGGElement, Node>()

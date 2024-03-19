@@ -13,7 +13,7 @@ const graphHTML = ref<HTMLDivElement>()
 onMounted(() => {
   graphStore.setup(
     {
-      nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, status: [], selected: false })),
+      nodes: Array.from(Array(28).keys()).map((i) => ({ id: i + 1, selected: false })),
       links: []
     },
     graphHTML.value!
