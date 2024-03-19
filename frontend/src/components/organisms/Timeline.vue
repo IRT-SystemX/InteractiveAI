@@ -72,7 +72,7 @@
           <div class="flex flex-center-y flex-gap">
             <ChevronDown />
             <header class="flex flex-1">
-              <b class="flex-1">Application {{ key }}</b>
+              <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
               <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
             </header>
           </div>
@@ -155,7 +155,6 @@ repeatEvery(() => {
     position: sticky;
     top: 0;
     grid-row: 1;
-    background: var(--color-background);
     z-index: 100;
     &-now {
       z-index: 101;

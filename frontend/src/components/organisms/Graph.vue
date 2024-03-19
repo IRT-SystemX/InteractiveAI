@@ -110,17 +110,17 @@ watch(
     --node-fill: var(--white-800);
   }
 
-  .node.COMPLIANT {
+  .node.LOW {
     --node-stroke: var(--green-500);
     --node-text: var(--green-500);
   }
 
-  .node.ACTION {
+  .node.MEDIUM {
     --node-stroke: var(--color-warning);
     --node-text: var(--color-warning);
   }
 
-  .node.ALARM {
+  .node.HIGH {
     --node-stroke: var(--color-error);
     --node-text: var(--color-error);
   }

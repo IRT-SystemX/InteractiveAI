@@ -74,7 +74,7 @@
                 :style="{
                   color: cards[key].every((c) => c.read) ? 'var(--color-grey-600)' : undefined
                 }">
-                <b class="flex-1">Application {{ key }}</b>
+                <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
                 <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
               </header>
             </div>

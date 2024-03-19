@@ -13,7 +13,7 @@ import { computed, ref } from 'vue'
 
 import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
 import eventBus from '@/plugins/eventBus'
-import type { Severity } from '@/types/cards'
+import { type Card, CriticalityArray } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
 
 export const useGraphStore = defineStore('graph', () => {
@@ -47,7 +47,7 @@ export const useGraphStore = defineStore('graph', () => {
     const links = formattedData.value
       .slice(0, shown.value)
       .reduce<Link[]>((acc, [key, value], index) => {
-        const target = +/.*?(\d+).*/.exec(key)![1]
+        const target = +/\d+/.exec(key)![0]
         const link = acc.find((link) => link.source === source && link.target === target)
         if (link) {
           link.data.push([/.*?\d+\.KPI(|_composite)\.(.*)/.exec(key)![2], value])
@@ -62,7 +62,7 @@ export const useGraphStore = defineStore('graph', () => {
       }, [])
 
     const nodes = [
-      ...new Set(formattedData.value.map(([key]) => +/.*?(\d+).*/.exec(key)![1])),
+      ...new Set(formattedData.value.map(([key]) => +/\d+/.exec(key)![0])),
       source
     ].map((key) => ({
       id: key,
@@ -71,7 +71,7 @@ export const useGraphStore = defineStore('graph', () => {
     }))
 
     for (const link of links) {
-      setStatus(link.target as number, 'active')
+      ctx.nodes?.filter((d: Node) => d.id === +link).classed('active', true)
     }
 
     const res = { nodes, links: links.sort((a, b) => b.rank - a.rank) } as {
@@ -215,22 +215,15 @@ export const useGraphStore = defineStore('graph', () => {
     )
   }
 
-  function setStatus(node: Node['id'], severity: 'active' | Severity) {
-    if (ctx.statuses[node]) {
-      ctx.statuses[node].includes(severity) && ctx.statuses[node].push(severity)
-    } else ctx.statuses[node] = [severity]
-    ctx.nodes?.filter((d: Node) => d.id === +node).classed(severity, true)
-    if (severity === 'INFORMATION') {
-      removeStatus(node, 'ACTION')
+  function setStatuses(cards: Card<'ORANGE'>[]) {
+    for (const criticality of CriticalityArray) {
+      ctx.nodes.classed(criticality, false)
     }
-  }
-
-  function removeStatus(node: Node['id'], severity: Severity) {
-    ctx.nodes?.filter((d: Node) => d.id === +node).classed(severity, false)
-    ctx.statuses[node].splice(
-      ctx.statuses[node].findIndex((el) => el === severity),
-      1
-    )
+    for (const card of cards) {
+      ctx.nodes
+        ?.filter((d: Node) => d.id === +/\d+/.exec(card.data.metadata.id_app)![0])
+        .classed(card.data.criticality, true)
+    }
   }
 
   function showLink(source: Node['id'], target: Node['id']) {
@@ -306,15 +299,14 @@ export const useGraphStore = defineStore('graph', () => {
   async function setCorrelation(
     data: { nodes: Node[]; links: Link[] },
     source: number,
-    shown: number,
     kpi: KPI,
-    severity: Severity,
-    element: HTMLElement
+    element: HTMLElement,
+    cards: Card<'ORANGE'>[]
   ) {
     ctx.rawData = data
     config.kpi = kpi
     setup(d3Correlations(source), element)
-    setStatus(source, severity)
+    setStatuses(cards)
     setTimeout(() => zoomToNode(+source, 1.2), 200)
   }
 
@@ -326,8 +318,7 @@ export const useGraphStore = defineStore('graph', () => {
     setup,
     d3Correlations,
     zoomToNode,
-    setStatus,
-    removeStatus,
+    setStatuses,
     showLink,
     hideLinks,
     focusLink,
