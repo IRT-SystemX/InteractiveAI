@@ -20,18 +20,21 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import type { Step } from '@/entities/DA/types'
 import eventBus from '@/plugins/eventBus'
 
 import Button from './Button.vue'
 
-const props = defineProps<{ task: Step }>()
+export type Task = { taskIndex: number; taskText: string; state: 'doing' | 'done' }
+
+const props = defineProps<{
+  task: Task
+}>()
 
 const step = ref<HTMLDivElement>()
 
 watch(
   () => props.task.state,
-  (value: Step['state']) => {
+  (value: (typeof props.task)['state']) => {
     if (value === 'doing') step.value?.scrollIntoView({ behavior: 'smooth' })
   }
 )

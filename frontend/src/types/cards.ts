@@ -35,7 +35,7 @@ export type Card<T extends Entity = Entity> = {
   uid: string
   publisher: string
   entityRecipients: [T]
-  id: `${Lowercase<T>}Process.${UUID}`
+  id: `${Card['process']}.${Card['processInstanceId']}`
   state: string
   startDate: number
   data: {
