@@ -11,7 +11,7 @@ import {
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
+//import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
 import eventBus from '@/plugins/eventBus'
 import { type Card, CriticalityArray } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
@@ -21,7 +21,7 @@ export const useGraphStore = defineStore('graph', () => {
     nodes: Node[]
     links: Link[]
   }>()
-  const correlations = ref<CorrelationData>()
+  const correlations = ref<any>()
   const shown = ref(5)
 
   const formattedData = computed(() =>
@@ -31,7 +31,7 @@ export const useGraphStore = defineStore('graph', () => {
             Object.entries(correlations.value![key as keyof typeof correlations.value])
           )
           .filter(([, value]) => value)
-          .sort(([, a], [, b]) => Number(b) - Number(a)) as [CorrelationKey, number][])
+          .sort(([, a], [, b]) => Number(b) - Number(a)) as [any, number][])
       : []
   )
   function d3Correlations(source: number) {
@@ -211,13 +211,13 @@ export const useGraphStore = defineStore('graph', () => {
     )
   }
 
-  function setStatuses(cards: Card<'ORANGE'>[]) {
+  function setStatuses(cards: Card[]) {
     for (const criticality of CriticalityArray) {
       ctx.nodes?.classed(criticality, false)
     }
     for (const card of cards) {
       ctx.nodes
-        ?.filter((d: Node) => d.id === +/\d+/.exec(card.data.metadata.id_app)![0])
+        ?.filter((d: Node) => d.id === +/\d+/.exec((card as any).data.metadata.id_app)![0])
         .classed(card.data.criticality, true)
     }
   }
@@ -295,9 +295,9 @@ export const useGraphStore = defineStore('graph', () => {
   async function setCorrelation(
     data: { nodes: Node[]; links: Link[] },
     source: number,
-    kpi: KPI,
+    kpi: string,
     element: HTMLElement,
-    cards: Card<'ORANGE'>[]
+    cards: Card[]
   ) {
     ctx.rawData = data
     config.kpi = kpi
