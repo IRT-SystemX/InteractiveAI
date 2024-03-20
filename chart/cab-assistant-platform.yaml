@@ -109,7 +109,6 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
-      kompose.controller.type: statefulset
 
   db-postgres-event:
     image: postgres:14.7
@@ -132,7 +131,6 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
-      kompose.controller.type: statefulset
 
   db-postgres-historic:
     image: postgres:14.7
@@ -155,7 +153,6 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
-      kompose.controller.type: statefulset
 
   pgadmin:
     image: dpage/pgadmin4
@@ -264,7 +261,6 @@ services:
           memory: 50M
     labels:
       kompose.volume.subpath: pg-data
-      kompose.controller.type: statefulset
 
   cab-recommendation:
     image: ${CAB_RECOMMENDATION_IMAGE_WITH_TAG}
