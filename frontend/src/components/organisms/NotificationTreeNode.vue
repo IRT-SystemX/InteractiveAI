@@ -27,7 +27,7 @@
         </div>
       </Notification>
     </div>
-    <div v-if="showChildren && card.children.length">
+    <template v-if="showChildren && card.children.length">
       <div v-for="child of card.children" :key="child.id" class="flex flex-gap mt-1">
         <NotificationTreeNode :card="child" :grouped="false" :is-child="true">
           <template #outer>
@@ -47,7 +47,7 @@
           </template>
         </NotificationTreeNode>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 <script setup lang="ts" generic="E extends Entity">

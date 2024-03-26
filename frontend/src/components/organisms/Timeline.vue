@@ -29,9 +29,9 @@
     <div
       v-if="Object.keys(cards).length"
       :style="{
-        ...style,
-        'grid-column': 'cards-start / event-end',
-        'row-gap': '8px',
+        gridTemplateColumns: style.gridTemplateColumns,
+        gridColumn: 'cards-start / event-end',
+        rowGap: '8px',
         display: 'grid'
       }">
       <template
@@ -130,12 +130,12 @@ const window = computed(() => ({
   length: props.end - props.start
 }))
 const style = computed(() => ({
-  'grid-template-columns': `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
-  'grid-auto-rows': `40px`
+  gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
+  gridAutoRows: `40px`
 }))
 
 const cards = computed(() =>
-  groupBy(cardsStore.tree(cardsStore.cards(props.entity, false)), props.groupFn)
+  groupBy(cardsStore.parseTree(cardsStore.cards(props.entity, false)), props.groupFn)
 )
 
 repeatEvery(() => {
