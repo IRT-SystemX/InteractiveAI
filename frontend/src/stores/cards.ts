@@ -18,7 +18,10 @@ export const useCardsStore = defineStore('cards', () => {
     return _cards.value.filter<Card<T>>(
       (card): card is Card<T> =>
         card.entityRecipients.includes(entity) &&
-        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === !!card.hasBeenAcknowledged)
+        (hasBeenAcknowledged === 'all'
+          ? true
+          : hasBeenAcknowledged === !!card.hasBeenAcknowledged) &&
+        !card.hasBeenRead
     )
   }
 

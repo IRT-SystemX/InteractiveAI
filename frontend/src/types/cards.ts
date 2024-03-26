@@ -24,6 +24,7 @@ export type Card<T extends Entity = Entity> = {
   summaryTranslated: string
   keepChildCards: boolean
   hasBeenAcknowledged?: boolean
+  hasBeenRead?: boolean
   processInstanceId: UUID
   process: `${Lowercase<T>}Process`
   publisherType: PublisherType
