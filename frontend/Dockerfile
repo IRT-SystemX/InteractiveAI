@@ -2,7 +2,7 @@ FROM node:alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
-RUN npm install
+RUN npm ci
 RUN npm run build
 
 FROM nginx:alpine
