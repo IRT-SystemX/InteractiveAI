@@ -135,8 +135,8 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
-      - VITE_SNCF_SIMU=$VITE_SNCF_SIMU
-      - VITE_RTE_SIMU=$VITE_RTE_SIMU
+      - VITE_SNCF_SIMU=${VITE_SNCF_SIMU}
+      - VITE_RTE_SIMU=${VITE_RTE_SIMU}
     volumes:
       - "./ui-config:/usr/share/nginx/html/opfab"
       - "./nginx-cors-permissive.conf:/etc/nginx/conf.d/default.conf"

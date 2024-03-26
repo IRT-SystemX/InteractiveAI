@@ -186,6 +186,9 @@ services:
         target: /usr/share/nginx/html/opfab/ui-menu.json
       - source: cab-nginx-conf-nginx
         target: /etc/nginx/conf.d/default.conf
+    environment:
+      - VITE_SNCF_SIMU=${VITE_SNCF_SIMU}
+      - VITE_RTE_SIMU=${VITE_RTE_SIMU}
     ports:
       - 80
     depends_on:
