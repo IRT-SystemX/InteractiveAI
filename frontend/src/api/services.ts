@@ -11,7 +11,7 @@ export function getContext<E extends Entity = Entity>() {
 }
 
 export function sendTrace(payload: Trace) {
-  return http.post<Required<Trace>>(import.meta.env.VITE_TRACE + '/api/v1/traces', {
+  return http.post<Required<Trace>>('/cabhistoric/api/v1/traces', {
     ...payload,
     date: new Date().toISOString()
   })
