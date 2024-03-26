@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
-import { type Card, type CardEvent, CardOperationType, type CardTree } from '@/types/cards'
+import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
