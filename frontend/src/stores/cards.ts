@@ -14,29 +14,6 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function tree<T extends Entity>(list: Card<T>[]) {
-    const newList = [...list].sort((a, b) => {
-      if (a.processInstanceId === b.data.parent_event_id) return -1
-      if (a.data.parent_event_id === b.processInstanceId) return 1
-      return 0
-    }) as CardTree<T>[]
-    const map: { [key: string]: any } = {},
-      roots = []
-    let node, i
-
-    for (i = 0; i < newList.length; i++) {
-      map[newList[i].processInstanceId] = i
-      newList[i].children = []
-      node = newList[i] as CardTree<T>
-      if (node.data.parent_event_id) {
-        newList[map[node.data.parent_event_id]].children.push(node)
-      } else {
-        roots.push(node)
-      }
-    }
-    return roots
-  }
-
   function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
     return _cards.value.filter<Card<T>>(
       (card): card is Card<T> =>
@@ -59,16 +36,13 @@ export const useCardsStore = defineStore('cards', () => {
         []
       )
 
-  const parseTree = (arr: Card[]) => {
-    const machin = arr
+  const parseTree = (arr: Card[]) =>
+    arr
       .filter((c) => !c.data.parent_event_id)
       .map((node) => ({
         ...node,
         children: traverse(arr, node.processInstanceId)
       }))
-    console.log(machin)
-    return machin
-  }
 
   async function subscribe(entity: Entity, hydrated = true) {
     _cards.value = []
