@@ -30,18 +30,20 @@ export const useCardsStore = defineStore('cards', () => {
           ...result,
           {
             ...current,
-            children: traverse(arr, current.processInstanceId)
+            children: traverse(arr, current.processInstanceId),
+            read: false
           }
         ],
         []
       )
 
-  const parseTree = (arr: Card[]) =>
+  const parseTree = <E extends Entity>(arr: Card<E>[]) =>
     arr
       .filter((c) => !c.data.parent_event_id)
       .map((node) => ({
         ...node,
-        children: traverse(arr, node.processInstanceId)
+        children: traverse(arr, node.processInstanceId),
+        read: false
       }))
 
   async function subscribe(entity: Entity, hydrated = true) {
