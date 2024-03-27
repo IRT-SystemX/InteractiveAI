@@ -133,6 +133,9 @@ services:
     build:
       context: ../../../frontend
       dockerfile: Dockerfile
+      args:
+        VITE_SNCF_SIMU: ${VITE_SNCF_SIMU}
+        VITE_RTE_SIMU: ${VITE_RTE_SIMU}
     restart: unless-stopped
     environment:
       - VITE_SNCF_SIMU=${VITE_SNCF_SIMU}
