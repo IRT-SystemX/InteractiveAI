@@ -52,11 +52,19 @@ http.interceptors.response.use(
       router.push({ name: 'login' })
     }
     eventBus.emit('progress:stop')
-    if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))
-      eventBus.emit('modal:open', {
-        data: t(`modal.error.${error.code}`) ?? error.message ?? error,
-        type: 'info'
-      })
+    if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code)) console.error(error)
+    eventBus.emit('modal:open', {
+      data:
+        t('modal.error.default', {
+          url: error.config.url,
+          code: error.code,
+          message: error.message
+        }) ??
+        error.message ??
+        t(`modal.error.${error.code}`) ??
+        error,
+      type: 'info'
+    })
     return Promise.reject(error)
   }
 )
