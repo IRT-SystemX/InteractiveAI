@@ -2,6 +2,8 @@ FROM node:alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
+ENV VITE_SNCF_SIMU=$VITE_SNCF_SIMU
+ENV VITE_RTE_SIMU=$VITE_RTE_SIMU
 RUN npm ci
 RUN npm run build
 
