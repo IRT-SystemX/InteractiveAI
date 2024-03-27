@@ -40,6 +40,7 @@ router.beforeEach((to) => {
   const authStore = useAuthStore()
 
   if (to.meta.auth && !authStore.user) return { name: 'login' }
+  if (!to.meta.auth && authStore.user) return { name: 'home' }
   if (to.name === 'home' && authStore.entities.length === 1)
     return { name: 'cab', params: { entity: authStore.entities[0] } }
   if (!to.name || (to.name === 'cab' && !authStore.entities.includes(to.params.entity as Entity)))
