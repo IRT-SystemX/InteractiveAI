@@ -58,8 +58,8 @@ services:
     container_name: cabhistoric
     image: cab/cabhistoric
     build:
-      context: ../../../backend/historic-service
-      dockerfile: Dockerfile
+      context: ../../../backend
+      dockerfile: Historic-Service-Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_historic:5432/cab-historic
       # - FLASK_APP=app:create_app('dev')
