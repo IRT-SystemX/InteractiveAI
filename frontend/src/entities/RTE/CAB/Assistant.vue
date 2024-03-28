@@ -43,7 +43,6 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import type { Trace } from '@/types/services'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
@@ -76,7 +75,7 @@ function onSelection(selected: any) {
 
 function primaryAction() {
   sendTrace({
-    data: {} as Trace['data'],
+    data: card.value!.id,
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })

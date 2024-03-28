@@ -1,3 +1,4 @@
+import type { Card } from './cards'
 import type { Action, Context, Entity } from './entities'
 import type { DateMillisecondsFormat, UUID } from './formats'
 export type Recommendation<T extends Entity = Entity> = {
@@ -18,7 +19,7 @@ export type ContextResponse<T extends Entity = Entity> = {
 export type TraceType = 'EVENT' | 'ASKFORHELP' | 'SOLUTION' | 'AWARD'
 
 export type Trace = {
-  data: Action
+  data: Action | Card['id']
   date?: DateMillisecondsFormat
   id_trace?: UUID
   step: TraceType
