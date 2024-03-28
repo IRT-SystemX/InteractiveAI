@@ -12,7 +12,7 @@
     <div class="step">[{{ task.taskIndex }}]&nbsp;{{ task.taskText }}</div>
   </div>
   <Button
-    v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
+    v-if="'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
     @click="eventBus.emit('assistant:tab', 2), eventBus.emit('tabs:selected', 0)">
     {{ $t('assistant.plan') }}
   </Button>

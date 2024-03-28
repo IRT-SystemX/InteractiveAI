@@ -1,9 +1,13 @@
 import http from '@/plugins/http'
+import type { Card } from '@/types/cards'
 import type { Action, Context, Entity } from '@/types/entities'
 import type { ContextResponse, Recommendation, Trace } from '@/types/services'
 
-export function getRecommendation<T extends Entity = Entity>(context?: Context<T>) {
-  return http.post<Recommendation<T>[]>('/cab_recommendation/api/v1/recommendation', context || {})
+export function getRecommendation<E extends Entity = Entity>(payload: {
+  event: Card<E>['data']['metadata']
+  context: Context<E>
+}) {
+  return http.post<Recommendation<E>[]>('/cab_recommendation/api/v1/recommendation', payload)
 }
 
 export function getContext<E extends Entity = Entity>() {
