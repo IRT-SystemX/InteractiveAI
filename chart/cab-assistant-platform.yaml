@@ -5,7 +5,11 @@ services:
     image: ${CAB_CONTEXT_IMAGE_WITH_TAG}
     environment:
       - CORRELATION_SERVICE=http://cab-correlation.cab-dev.svc.cluster.local:5000
-      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-context.cab-dev.svc.cluster.local:5432/cab-context
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db-postgres-context.cab-dev.svc.cluster.local
+      - DB_PORT=5432
+      - DB_NAME=cab-context
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
@@ -37,7 +41,11 @@ services:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
       - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
-      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-event.cab-dev.svc.cluster.local:5432/cab-event
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db-postgres-event.cab-dev.svc.cluster.local
+      - DB_PORT=5432
+      - DB_NAME=cab-event
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
@@ -64,9 +72,13 @@ services:
   cab-historic:
     image: ${CAB_HISTORIC_IMAGE_WITH_TAG}
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-historic.cab-dev.svc.cluster.local:5432/cab-historic
-      # - FLASK_APP=app:create_app('dev')
-      # - FLASK_ENV=development
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db-postgres-historic.cab-dev.svc.cluster.local
+      - DB_PORT=5432
+      - DB_NAME=cab-historic
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
       - URL_INTROSPECT=http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://web-ui.cab-dev.svc.cluster.local:80/auth/
       - OPFAB_CLIENT_SECRET=${OPFAB_CLIENT_SECRET}
@@ -216,7 +228,11 @@ services:
       - CARDS_PUBLICATION_SERVICE=http://cards-publication.cab-dev.svc.cluster.local:8080
       - GATEWAY_SERVICE=http://web-ui.cab-dev.svc.cluster.local:80
       - HISTORIC_SERVICE=http://cab-historic.cab-dev.svc.cluster.local:5000
-      - DATABASE_URL=postgresql://postgres:postgres@db-postgres-correlation.cab-dev.svc.cluster.local:5432/cab-correlation
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db-postgres-correlation.cab-dev.svc.cluster.local
+      - DB_PORT=5432
+      - DB_NAME=cab-correlation
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev', scheduler=True)
       - URL_INTROSPECT=http://web-ui.cab-dev.svc.cluster.local:80/auth/check_token
