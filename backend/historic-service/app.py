@@ -19,13 +19,13 @@ def create_app(config_mode):
 
     # intiate database
     db.init_app(app)
-    db.create_all(app=app)
+    db.create_all()
 
     return app
 
 
 if __name__ == "__main__":
     app = create_app("dev")
-    # Clean up the application context when you"re done
+    # Clean up the application context when you're done
     app_ctx = app.app_context()
     app_ctx.pop()
