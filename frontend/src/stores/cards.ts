@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import * as cardsApi from '@/api/cards'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
-import { type Card, type CardEvent, CardOperationType, type CardTree } from '@/types/cards'
+import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
@@ -14,36 +14,40 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function tree<T extends Entity>(list: Card<T>[]) {
-    const newList = [...list].sort((a, b) => {
-      if (a.processInstanceId === b.data.parent_event_id) return -1
-      if (a.data.parent_event_id === b.processInstanceId) return 1
-      return 0
-    }) as CardTree<T>[]
-    const map: { [key: string]: any } = {},
-      roots = []
-    let node, i
-
-    for (i = 0; i < newList.length; i++) {
-      map[newList[i].processInstanceId] = i
-      newList[i].children = []
-      node = newList[i] as CardTree<T>
-      if (node.data.parent_event_id) {
-        newList[map[node.data.parent_event_id]].children.push(node)
-      } else {
-        roots.push(node)
-      }
-    }
-    return roots
-  }
-
   function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
     return _cards.value.filter<Card<T>>(
       (card): card is Card<T> =>
         card.entityRecipients.includes(entity) &&
-        (hasBeenAcknowledged === 'all' ? true : hasBeenAcknowledged === !!card.hasBeenAcknowledged)
+        (hasBeenAcknowledged === 'all'
+          ? true
+          : hasBeenAcknowledged === !!card.hasBeenAcknowledged) &&
+        !card.hasBeenRead
     )
   }
+
+  const traverse = (arr: any[], parentId: string): any[] =>
+    arr
+      .filter((node) => node.data.parent_event_id === parentId)
+      .reduce(
+        (result, current) => [
+          ...result,
+          {
+            ...current,
+            children: traverse(arr, current.processInstanceId),
+            read: false
+          }
+        ],
+        []
+      )
+
+  const parseTree = <E extends Entity>(arr: Card<E>[]) =>
+    arr
+      .filter((c) => !c.data.parent_event_id)
+      .map((node) => ({
+        ...node,
+        children: traverse(arr, node.processInstanceId),
+        read: false
+      }))
 
   async function subscribe(entity: Entity, hydrated = true) {
     _cards.value = []
@@ -149,5 +153,5 @@ export const useCardsStore = defineStore('cards', () => {
     }
   }
 
-  return { _cards, tree, cards, subscribe, hydrate, unsubscribe }
+  return { _cards, parseTree, cards, subscribe, hydrate, unsubscribe }
 })

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
@@ -9,7 +9,8 @@ import i18n from './i18n'
 const { t } = i18n.global
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API
+  baseURL: import.meta.env.VITE_API,
+  headers: { Accept: 'application/json' }
 })
 
 http.interceptors.request.use(
@@ -31,10 +32,10 @@ http.interceptors.response.use(
     eventBus.emit('progress:stop')
     return response
   },
-  async function (error) {
+  async function (error: AxiosError<any, any>) {
     const authStore = useAuthStore()
     // If request failed, check if token is expired
-    if (error.config.url !== '/auth/check_token') {
+    if (error.config?.url !== '/auth/check_token' && authStore.token?.access_token) {
       const res = await authStore.checkToken()
       if (!res) {
         eventBus.emit('modal:open', {
@@ -52,9 +53,21 @@ http.interceptors.response.use(
       router.push({ name: 'login' })
     }
     eventBus.emit('progress:stop')
-    if (!['ERR_CANCELED', 'ERR_BAD_REQUEST'].includes(error.code))
+    if (error.code && !['ERR_CANCELED'].includes(error.code))
       eventBus.emit('modal:open', {
-        data: t(`modal.error.${error.code}`) ?? error.message ?? error,
+        data:
+          t('modal.error.default', {
+            url: error.config?.url,
+            code: error.code,
+            message:
+              error.response?.data?.error_description ??
+              error.response?.data?.message ??
+              error.response?.data?.error ??
+              error.message
+          }) ??
+          error.message ??
+          t(`modal.error.${error.code}`) ??
+          error,
         type: 'info'
       })
     return Promise.reject(error)

@@ -1,8 +1,12 @@
-FROM node:alpine as build-step
+FROM node:20-alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
-RUN npm install
+ARG VITE_SNCF_SIMU
+ARG VITE_RTE_SIMU
+ENV VITE_SNCF_SIMU=$VITE_SNCF_SIMU
+ENV VITE_RTE_SIMU=$VITE_RTE_SIMU
+RUN npm ci
 RUN npm run build
 
 FROM nginx:alpine

@@ -2,9 +2,11 @@
 
 FROM python:3.11.6-slim
 
-RUN mkdir /code
-COPY . /code/
-WORKDIR /code
+RUN mkdir /my_app
+
+COPY ./historic-service/ /my_app/
+
+WORKDIR /my_app
 
 RUN pip3 install -r requirements.txt
 

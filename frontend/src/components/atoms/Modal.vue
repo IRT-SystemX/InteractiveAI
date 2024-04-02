@@ -35,7 +35,6 @@ defineEmits<{
 </script>
 <style lang="scss">
 .cab-modal {
-  min-width: 25%;
   margin: auto;
   padding: var(--spacing-2);
   color: var(--color-text);
@@ -45,6 +44,7 @@ defineEmits<{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  overflow-wrap: break-word;
   .cab-modal-buttons {
     display: flex;
     justify-content: flex-end;
@@ -62,6 +62,11 @@ defineEmits<{
     background: #72727233;
     top: 0;
     left: 0;
+  }
+}
+@media (min-width: 768px) {
+  .cab-modal {
+    max-width: calc(var(--unit) * 60);
   }
 }
 </style>

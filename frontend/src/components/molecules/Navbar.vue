@@ -5,7 +5,7 @@
         <SVG src="logo" :fill="modeColor()" :width="60"></SVG>
         <h1>
           {{ $t('cab') }}
-          <div class="logo-infos">
+          <div class="logo-infos" :title="JSON.stringify(env)">
             v{{ pkg.version }}
             <i
               v-if="env.MODE !== 'production'"

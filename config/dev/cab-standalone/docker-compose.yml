@@ -58,12 +58,13 @@ services:
     container_name: cabhistoric
     image: cab/cabhistoric
     build:
-      context: ../../../backend/historic-service
-      dockerfile: Dockerfile
+      context: ../../../backend
+      dockerfile: Historic-Service-Dockerfile
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_historic:5432/cab-historic
-      # - FLASK_APP=app:create_app('dev')
-      # - FLASK_ENV=development
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - PYTHONPATH=/my_app
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
@@ -133,10 +134,13 @@ services:
     build:
       context: ../../../frontend
       dockerfile: Dockerfile
+      args:
+        VITE_SNCF_SIMU: ${VITE_SNCF_SIMU}
+        VITE_RTE_SIMU: ${VITE_RTE_SIMU}
     restart: unless-stopped
     environment:
-      - VITE_SNCF_SIMU=$VITE_SNCF_SIMU
-      - VITE_RTE_SIMU=$VITE_RTE_SIMU
+      - VITE_SNCF_SIMU=${VITE_SNCF_SIMU}
+      - VITE_RTE_SIMU=${VITE_RTE_SIMU}
     volumes:
       - "./ui-config:/usr/share/nginx/html/opfab"
       - "./nginx-cors-permissive.conf:/etc/nginx/conf.d/default.conf"

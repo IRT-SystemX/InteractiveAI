@@ -1,19 +1,8 @@
 <template>
-  <!--<div
-    class="cab-timeline-top cab-timeline-top-event"
-    :style="{
-      'grid-column': `${clamp(
-        differenceInMinutes(new Date(card.startDate), window.start) + 2,
-        window.length + 1,
-        2
-      )}`
-    }">
-    <slot :card="card"></slot>
-  </div>-->
   <div
     class="cab-timeline-row"
     :style="{
-      'grid-template-columns': `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
+      gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }">
     <div class="flex">
       <CornerDownRight v-if="isChild" />
