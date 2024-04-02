@@ -4,7 +4,7 @@
     :width="width ?? height"
     :height="height ?? width"
     @contextmenu.prevent>
-    <use :href="`/img/${src}.svg#root`" :color="fill" :stroke="stroke" />
+    <use :href="`/img/${src}.svg#root`" :color="fill" :stroke />
   </svg>
 </template>
 <script setup lang="ts">

@@ -1,8 +1,5 @@
 <template>
-  <Card
-    :orientation="orientation"
-    class="cab-notification"
-    :color="criticalityToColor(criticality)">
+  <Card :orientation class="cab-notification" :color="criticalityToColor(criticality)">
     <template #outer>
       <aside><slot name="outer"></slot></aside>
     </template>

@@ -1,8 +1,8 @@
 <template>
-  <div class="procedure-block" :state="state">
+  <div class="procedure-block" :state>
     <slot name="block">{{ block.blockText }}</slot>
   </div>
-  <ProcedureStep v-for="task of block.tasks" :key="task.taskIndex" :task="task"></ProcedureStep>
+  <ProcedureStep v-for="task of block.tasks" :key="task.taskIndex" :task></ProcedureStep>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'

@@ -7,7 +7,7 @@
         class="flex-1"
         @click.stop="selected(card)">
         <template #outer>
-          <aside><slot name="outer" :card="card"></slot></aside>
+          <aside><slot name="outer" :card></slot></aside>
         </template>
         <div class="flex flex-center-y flex-gap">
           <ChevronDown
@@ -17,12 +17,12 @@
           <div class="w-100">
             <header :style="{ color: card.read ? 'var(--color-grey-600)' : undefined }">
               <b>
-                <slot name="title" :card="card"></slot>
+                <slot name="title" :card></slot>
               </b>
-              <aside><slot name="severity" :card="card"></slot></aside>
+              <aside><slot name="severity" :card></slot></aside>
             </header>
-            <main><slot :card="card"></slot></main>
-            <footer><slot name="actions" :card="card"></slot></footer>
+            <main><slot :card></slot></main>
+            <footer><slot name="actions" :card></slot></footer>
           </div>
         </div>
       </Notification>
