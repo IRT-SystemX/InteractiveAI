@@ -1,5 +1,5 @@
 <template>
-  <div class="cab-timeline" :style="style">
+  <div class="cab-timeline" :style>
     <!--Header section-->
     <div style="grid-row: 1; grid-column: 1"></div>
     <!--Bottom border-->
@@ -57,7 +57,7 @@
             )
           )
         })"
-        :key="key">
+        :key>
         <Notification
           v-if="key !== '_DEFAULT'"
           :criticality="
@@ -82,12 +82,12 @@
           :key="c.id"
           :is-child="key !== '_DEFAULT'"
           :card="c"
-          :window="window"
-          :index="index"
+          :window
+          :index
           :children="c.children">
           <slot :card="c"></slot>
           <template #title="{ card }">
-            <slot name="title" :card="card"></slot>
+            <slot name="title" :card></slot>
           </template>
         </TimelineTreeNode>
       </template>

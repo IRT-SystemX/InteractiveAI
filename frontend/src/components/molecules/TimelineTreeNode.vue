@@ -8,10 +8,10 @@
       <CornerDownRight v-if="isChild" />
       <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
         <template #title>
-          <slot name="title" :card="card">{{ card.titleTranslated }}</slot>
+          <slot name="title" :card>{{ card.titleTranslated }}</slot>
         </template>
         <template #severity>
-          <slot :card="card"></slot>
+          <slot :card></slot>
         </template>
       </Notification>
     </div>
@@ -31,7 +31,7 @@
       }"
       class="cab-timeline-event">
       <div class="cab-timeline-event-icon">
-        <slot :card="card"></slot>
+        <slot :card></slot>
       </div>
       <div class="cab-timeline-event-line" :class="criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
@@ -47,11 +47,11 @@
   <TimelineTreeNode
     v-for="(child, i) of children"
     :key="child.id"
-    :window="window"
+    :window
     :card="child"
     :index="index + i + 1"
     :is-child="true">
-    <slot :card="card"></slot>
+    <slot :card></slot>
   </TimelineTreeNode>
 </template>
 <script setup lang="ts" generic="T extends Entity">

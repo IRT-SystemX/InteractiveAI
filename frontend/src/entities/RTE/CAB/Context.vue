@@ -8,7 +8,7 @@
         class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
     </template>
-    <Notification :card="card"></Notification>
+    <Notification :card></Notification>
   </Context>
 </template>
 <script setup lang="ts">

@@ -1,5 +1,6 @@
 import http from '@/plugins/http'
 import type { Action, Context, Entity } from '@/types/entities'
+import type { Procedure } from '@/types/procedure'
 import type { ContextResponse, Recommendation, Trace } from '@/types/services'
 
 export function getRecommendation<T extends Entity = Entity>(context?: Context<T>) {
@@ -19,4 +20,12 @@ export function sendTrace(payload: Trace) {
 
 export function applyRecommendation(data: Action) {
   return http.post<{ message: string }>('/api/v1/recommendations', data)
+}
+
+export function getProcedure(event_type: string = 'ENG1: AUTO SHUTDOWN') {
+  return http.post<Procedure>('/cab_recommendation/api/v1/procedure', {
+    event: {
+      event_type
+    }
+  })
 }

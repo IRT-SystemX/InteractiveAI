@@ -1,5 +1,5 @@
 <template>
-  <button class="cab-btn" :class="[size, color, { icon }]" :type="type">
+  <button class="cab-btn" :class="[size, color, { icon }]" :type>
     <slot></slot>
   </button>
 </template>

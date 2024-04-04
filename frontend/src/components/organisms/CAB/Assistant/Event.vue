@@ -1,13 +1,15 @@
 <template>
   <Avatar v-if="chatbot" :size="200" class="self-center" status="error" />
   <SpeechBubble position="bottom" arrow="left">
-    <i18n-t scope="global" keypath="event.text">
-      <template #event>
-        <strong :style="{ color: `var(--color-${criticalityToColor(card.data.criticality)}` }">
-          <slot></slot>
-        </strong>
-      </template>
-    </i18n-t>
+    <slot name="event">
+      <i18n-t scope="global" keypath="event.text">
+        <template #event>
+          <strong :style="{ color: `var(--color-${criticalityToColor(card.data.criticality)}` }">
+            <slot></slot>
+          </strong>
+        </template>
+      </i18n-t>
+    </slot>
   </SpeechBubble>
   <!--<div class="flex flex-center-y">
     <Button color="secondary" type="button" @click="secondaryAction">
@@ -17,11 +19,26 @@
   </div>-->
   <div class="flex flex-center-y">
     <Button type="button" @click="primaryAction">
-      {{ $t('event.button.primary') }}
+      <slot name="button-primary">
+        {{ $t('event.button.primary') }}
+      </slot>
     </Button>
     <Tooltip placement="bottom-end" class="ml-1">
       <template #tooltip>
-        {{ $t('event.tooltip') }}
+        {{ $t('event.tooltip.primary') }}
+      </template>
+      <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
+    </Tooltip>
+  </div>
+  <div class="flex flex-center-y">
+    <Button type="button" color="secondary" @click="secondaryAction">
+      <slot name="button-secondary">
+        {{ $t('event.button.secondary') }}
+      </slot>
+    </Button>
+    <Tooltip placement="bottom-end" class="ml-1">
+      <template #tooltip>
+        {{ $t('event.tooltip.secondary') }}
       </template>
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>

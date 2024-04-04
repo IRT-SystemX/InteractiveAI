@@ -1,6 +1,6 @@
 <template>
   <Modal v-if="confirm" type="choice" @close="close">
-    <slot name="modal" :selected="selected">
+    <slot name="modal" :selected>
       <i18n-t scope="global" keypath="recommendations.modal">
         <template #recommendation>
           <strong style="color: var(--color-primary)">
@@ -13,7 +13,7 @@
   <div class="flex flex-wrap flex-center-y flex-gap">
     <Settings />
     <Button v-for="button of buttons" :key="button">
-      <slot name="buttons" :button="button">{{ button }}</slot>
+      <slot name="buttons" :button>{{ button }}</slot>
     </Button>
   </div>
   <Card
@@ -23,10 +23,10 @@
     :class="{ selected: recommendation?.title === selected?.title }"
     orientation="right"
     @click="selected = recommendation">
-    <slot :recommendation="recommendation">
+    <slot :recommendation>
       <h1>{{ recommendation.title }}</h1>
     </slot>
-    <template #outer><slot name="outer" :recommendation="recommendation"></slot></template>
+    <template #outer><slot name="outer" :recommendation></slot></template>
   </Card>
   <Button v-if="selected" class="self-end" @click="confirm = true">
     {{ $t('button.apply') }}

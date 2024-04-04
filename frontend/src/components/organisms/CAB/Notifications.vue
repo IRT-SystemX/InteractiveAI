@@ -55,7 +55,7 @@
               )
             )
           })"
-          :key="key">
+          :key>
           <Notification
             v-if="key !== '_DEFAULT'"
             :criticality="
@@ -85,13 +85,13 @@
             :card="c"
             :is-child="key !== '_DEFAULT'">
             <template #title="{ card }">
-              <slot name="title" :card="card">{{ card.titleTranslated }}</slot>
+              <slot name="title" :card>{{ card.titleTranslated }}</slot>
             </template>
             <template #severity="{ card }">
-              <slot name="severity" :card="card">
+              <slot name="severity" :card>
                 {{ format(new Date(card.startDate), 'p') }}
               </slot>
-              <slot name="icon" :card="card">
+              <slot name="icon" :card>
                 <SVG
                   src="icons/warning_hex"
                   :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
@@ -107,7 +107,7 @@
             <template #actions="{ card }">
               <slot
                 name="actions"
-                :card="card"
+                :card
                 :deletion="confirmDeletion"
                 :has-been-acknowledged="hasBeenAcknowledged">
                 <Tooltip v-if="!hasBeenAcknowledged">

@@ -6,6 +6,9 @@ export const EntitiesArray = Object.keys(Entities) as (keyof typeof Entities)[]
 
 export type Entity = keyof typeof Entities
 
-export type Metadata<T extends Entity = Entity> = EntitiesTypes[T]['Metadata']
-export type Context<T extends Entity = Entity> = EntitiesTypes[T]['Context']
-export type Action<T extends Entity = Entity> = EntitiesTypes[T]['Action']
+export type Metadata<E extends Entity = Entity> = EntitiesTypes[E]['Metadata']
+export type Context<E extends Entity = Entity> = EntitiesTypes[E]['Context']
+export type Action<E extends Entity = Entity> = EntitiesTypes[E]['Action']
+export type TaskTypes<E extends Entity = Entity> = EntitiesTypes[E] extends { TaskTypes: unknown }
+  ? EntitiesTypes[E]['TaskTypes']
+  : undefined

@@ -1,15 +1,18 @@
 <template>
-  <div class="procedure-block" :state="state">
+  <div class="procedure-block" :state>
     <slot name="block">{{ block.blockText }}</slot>
   </div>
-  <ProcedureStep v-for="task of block.tasks" :key="task.taskIndex" :task="task"></ProcedureStep>
+  <ProcedureStep v-for="task of block.tasks" :key="task.taskIndex" :task></ProcedureStep>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" generic="E extends Entity">
 import { computed } from 'vue'
 
-import ProcedureStep, { type Task } from '../atoms/ProcedureStep.vue'
+import type { Entity } from '@/types/entities'
+import type { Block } from '@/types/procedure'
 
-const props = defineProps<{ block: { blockText: string; tasks: Task[] } }>()
+import ProcedureStep from '../atoms/ProcedureStep.vue'
+
+const props = defineProps<{ block: Block<Entity> }>()
 
 const state = computed(() => {
   if (props.block.tasks.every((task: any) => task.state === 'done')) return 'done'

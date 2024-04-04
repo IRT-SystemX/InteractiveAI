@@ -11,23 +11,25 @@
     </div>
     <div class="step">[{{ task.taskIndex }}]&nbsp;{{ task.taskText }}</div>
   </div>
-  <Button
-    v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
-    @click="eventBus.emit('assistant:tab', 2), eventBus.emit('tabs:selected', 0)">
-    {{ $t('assistant.plan') }}
-  </Button>
+  <slot name="footer">
+    <Button
+      v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
+      @click="eventBus.emit('assistant:tab', 2), eventBus.emit('tabs:selected', 0)">
+      {{ $t('assistant.plan') }}
+    </Button>
+  </slot>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" generic="E extends Entity">
 import { ref, watch } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
+import type { Entity } from '@/types/entities'
+import type { Step } from '@/types/procedure'
 
 import Button from './Button.vue'
 
-export type Task = { taskIndex: number; taskText: string; state: 'doing' | 'done' }
-
 const props = defineProps<{
-  task: Task
+  task: Step<E>
 }>()
 
 const step = ref<HTMLDivElement>()
