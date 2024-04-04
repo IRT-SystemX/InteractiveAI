@@ -17,7 +17,9 @@
   </div>-->
   <div class="flex flex-center-y">
     <Button type="button" @click="primaryAction">
-      {{ $t('event.button.primary') }}
+      <slot name="button">
+        {{ $t('event.button.primary') }}
+      </slot>
     </Button>
     <Tooltip placement="bottom-end" class="ml-1">
       <template #tooltip>
