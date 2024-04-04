@@ -11,9 +11,6 @@
         @selected="onSelection">
         <template #default="{ recommendation }">
           <div class="flex">
-            <aside class="flex flex-center mr-1">
-              <Star stroke="var(--color-primary)" fill="var(--color-primary)" />
-            </aside>
             <main>
               <h2>{{ recommendation.title }}</h2>
             </main>
@@ -30,7 +27,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { FileBarChart2, Pin, Star } from 'lucide-vue-next'
+import { FileBarChart2, Pin } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
