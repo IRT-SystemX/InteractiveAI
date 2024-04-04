@@ -11,7 +11,6 @@
     </slot>
   </Modal>
   <div class="flex flex-wrap flex-center-y flex-gap">
-    <Settings />
     <Button v-for="button of buttons" :key="button">
       <slot name="buttons" :button>{{ button }}</slot>
     </Button>
