@@ -38,7 +38,16 @@ The platform make use of the project OperatorFabric for notification management 
 
 ## Environment variables
 
-If you're using a different API location than the root location of the frontend, you can use env variables to set it: `VITE_API` for the default API, `VITE_ENTITY_SIMU` for entity-specific API (`VITE_RTE_SIMU` in the example).
+If you're using a different API location than the root location of the frontend, you can use env variables to set it:
+
+- `VITE_API` for the default API
+- `VITE_ENTITY_SIMU` for entity-specific API (`VITE_RTE_SIMU` in the example).
+
+In this case, you may need to disable CORS protection if the APIs are not configured properly.
+
+```
+chromium-browser --disable-web-security --user-data-dir="[some directory here]"
+```
 
 ## Adding your custom entity
 
