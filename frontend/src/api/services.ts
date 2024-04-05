@@ -22,7 +22,7 @@ export function applyRecommendation(data: Action) {
   return http.post<{ message: string }>('/api/v1/recommendations', data)
 }
 
-export function getProcedure(event_type: string = 'ENG1: AUTO SHUTDOWN') {
+export function getProcedure(event_type: string) {
   return http.post<Procedure>('/cab_recommendation/api/v1/procedure', {
     event: {
       event_type
