@@ -8,6 +8,7 @@ The platform make use of the project OperatorFabric for notification management 
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#environment-variables">Environment variables</a></li>
     <li>
       <a href="#adding-your-custom-entity">Adding your custom entity</a>
       <ul>
@@ -34,6 +35,10 @@ The platform make use of the project OperatorFabric for notification management 
 
   </ol>
 </details>
+
+## Environment variables
+
+If you're using a different API location than the root location of the frontend, you can use env variables to set it: `VITE_API` for the default API, `VITE_ENTITY_SIMU` for entity-specific API (`VITE_RTE_SIMU` in the example).
 
 ## Adding your custom entity
 
