@@ -9,11 +9,61 @@
 			"name": "Get recommendation",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1FkMjFNNzlVRUZjQl9BeFhDcWhUZDlrZDBKZGZpbmxyQnJNbFJqTEVzIn0.eyJleHAiOjE3MDA4NTQ1NDEsImlhdCI6MTcwMDgxODU0MSwianRpIjoiN2RhNzM4ZDItMWRjOC00ZTBhLTlmYTMtY2JmNTc5ZDU0MzVlIiwiaXNzIjoiaHR0cHM6Ly9mcm9udGVuZC5jYWItZGV2LmlydHN5c3RlbXgub3JnLyovcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJkYV91c2VyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib3BmYWItY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjU0ZTNlN2VmLWNiZTUtNDdmNy04YTU1LTBmZWUxZTVlMjhiNyIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjU0ZTNlN2VmLWNiZTUtNDdmNy04YTU1LTBmZWUxZTVlMjhiNyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZ3JvdXBzIjoiUlRFO0FETUlOO1JlYWRPbmx5IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZGFfdXNlciIsImVudGl0aWVzSWQiOiJEQSJ9.BLzBq0-bAPktUAVToRqhA6DVlhFpTNWhYcyfw70ChMI8yeP7w_HNHGgPjcAD2qfNZoOb0sawB0tGza9PxTp13Z0yF_dkg_pGFSLcI_kZMzO4hETrEYYFB9ir86ZZTD3HKpRolxs1HEKRyL77cG3rPu79FLPmun-n1PxzdumyVwerWU-6kaeIzRFlkBmYT-ALwecfcd-_f7fVYsWJ5-aWIdiG1dGsxNEea8DxrFhT68-OfKE2ipxdIBfMZ721K0WXHTtf7uEkRIS13srAL47MOSIpHUkeSt6y_kNhDZmDbjqnzsr-LPc4WHAOwzq9ZudVHs6It4Dnw_ZC0wwD6B0WGw",
+							"key": "username",
+							"value": "da_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
 							"type": "string"
 						}
 					]
@@ -22,7 +72,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"event\": {\n        \"event_type\": \"ENG1: AUTO SHUTDOWN\"\n    }\n}",
+					"raw": "{\n    \"context\": {\n        \"position_agents\": {\n            \"0\": [\n                3,\n                2\n            ],\n            \"1\": [\n                3,\n                2\n            ],\n            \"2\": [\n                3,\n                2\n            ]\n        },\n        \"direction_agents\": [\n            2,\n            0,\n            0\n        ],\n        \"list_of_target\": {\n            \"0\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"1\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ],\n            \"2\": [\n                [\n                    297,\n                    2\n                ],\n                [\n                    204,\n                    7\n                ],\n                [\n                    176,\n                    2\n                ],\n                [\n                    100,\n                    6\n                ],\n                [\n                    94,\n                    2\n                ],\n                [\n                    8,\n                    7\n                ]\n            ]\n        }\n    },\n    \"event\": {\n        \"agent_id\": 0,\n        \"agent_position\": [\n            9,\n            12\n        ],\n        \"delay\": 15\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -513,7 +563,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "da_user",
+							"value": "sncf_user",
 							"type": "string"
 						},
 						{
@@ -572,7 +622,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"event\": {\n        \"event_type\": \"ENG1: AUTO SHUTDOWN\"\n    }\n}",
+					"raw": "{\n    \"event\": {\n        \"event_type\": \"PASSENGER\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -593,7 +643,113 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Get procedure DA",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": {\n        \"event_type\": \"90 PRESS : CABIN ALT TOO HIGH\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_recommendation/api/v1/procedure",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_recommendation",
+								"api",
+								"v1",
+								"procedure"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Get procedure SNCF",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": {\n        \"event_type\": \"PASSENGER\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_recommendation/api/v1/procedure",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_recommendation",
+								"api",
+								"v1",
+								"procedure"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.25.4"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Apr 2024 16:39:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "809"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Procedure\": [\n        {\n            \"blockIndex\": 1,\n            \"description\": \"Vérification\",\n            \"tasks\": [\n                {\n                    \"taskIndex\": \"01\",\n                    \"taskText\": \"Vérification de la conformité du signal\"\n                }\n            ]\n        },\n        {\n            \"blockIndex\": 2,\n            \"description\": \"Evaluation gravité\",\n            \"tasks\": [\n                {\n                    \"taskIndex\": \"02\",\n                    \"taskText\": \"Entrer en contact avec le TA\"\n                },\n                {\n                    \"taskIndex\": \"03\",\n                    \"taskText\": \"Victime consciente ?\"\n                },\n                {\n                    \"taskIndex\": \"04\",\n                    \"taskText\": \"Besoin de prise en charge\"\n                }\n            ]\n        },\n        {\n            \"blockIndex\": 3,\n            \"description\": \"Aide externe\",\n            \"tasks\": [\n                {\n                    \"taskIndex\": \"05\",\n                    \"taskText\": \"Sollicitation personnel médical\"\n                },\n                {\n                    \"taskIndex\": \"06\",\n                    \"taskText\": \"Personne avec connaissances médicales à bord ?\"\n                },\n                {\n                    \"taskIndex\": \"07\",\n                    \"taskText\": \"Besoin des pompiers ou du SAMU ?\"\n                }\n            ]\n        },\n        {\n            \"blockIndex\": 5,\n            \"description\": \"Cloture Procedure\",\n            \"tasks\": [\n                {\n                    \"taskIndex\": \"11\",\n                    \"taskText\": \"Remplir la déclaration d'accident\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "http://localhost:5000/api/v1/recommendation",
