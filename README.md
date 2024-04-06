@@ -13,9 +13,6 @@
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
-      <a href="#frontend">Frontend</a>
-    </li>
-    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
@@ -36,10 +33,6 @@ Cockpit and Bidirectional Assistant (CAB) platform provides support in augmented
 
 The platform make use of the project OperatorFabric for notification management and authentication.
 
-<!-- FRONTEND -->
-## Frontend
-
-You can find more informations on how to contribute, modify and create new use cases in the specific [frontend README](./frontend/README.md)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -48,29 +41,18 @@ Before starting cab-platform you need a running version of [OperatorFabric](http
 ### Prerequisites
 
 * Docker
-* OperatorFabric
 
 ### Setting Up the Environment
 
-1. Clone the repo of OperatorFabric
-```sh
-git clone https://github.com/opfab/operatorfabric-core
-```
-
-2. Clone the repo of cab assistant
+1. Clone the repo of cab assistant
 ```sh
 git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
 ```
 
-3. Set new configuration to OperatorFabric
-```sh
-cd cab-assistant-platform
-./config_of.sh
-```
-4. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
+2. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
 
+3. Download correlation-service ai_models and copy them into `backend/correlation-service/api/ai_models`
 
-**Note** config_of.sh will copy the folder of-config in cab-assistant-platform to operatorfabric-core/config/
 
 ## Usage
 
@@ -80,22 +62,51 @@ cd cab-assistant-platform
 
 ### Running All Services (Dev Mode)
 
-1. Run OperatorFabric
+1. Set-up Envirement varaible
+
+VITE_SNCF_SIMU & VITE_RTE_SIMU are the simulators endpoints 
 ```sh
-cd ../operatorfabric-core/config/cab-docker
-./docker-compose.bash
+export VITE_SNCF_SIMU=http://192.168.209.166:5000
+export VITE_RTE_SIMU=http://192.168.209.166:5100
 ```
 
 2. Run Cab-assistant
 ```sh
-cd ../../../cab-assistant-platform/config/dev/cab
-./docker-compose.bash
+cd config/dev/cab-standalone
+./docker-compose.sh
 ```
 
-3. Load resources into OperatorFabric
+3. Setting Up Keycloak FrontendUrl
+
+a. **Access Keycloak Interface**: 
+   - Ensure that your Keycloak instance is running and accessible.
+   - Open a web browser and navigate to the Keycloak admin console, typically available at `http://localhost:89/auth/admin`.
+
+b. **Login to Keycloak Admin Console**: 
+   - Log in to the Keycloak admin console using your administrator credentials.
+
+c. **Navigate to Client Settings**:
+   - On the Keycloak admin console, locate and click on the "Clients" section.
+   - Select the client representing your CAB Assistant Platform application.
+
+d. **Configure FrontendUrl**:
+   - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
+   - Add the URL of your CAB Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
+   - Ensure that the frontend URL you specify matches the actual URL where your frontend application is accessible.
+
+f. **Save Changes**:
+   - After adding the frontend URL, save the changes to update the client settings.
+
+4. Load resources
 ```sh
 cd resources
 ./loadTestConf.sh
+```
+
+5. If you encounter CORS errors (which can happen if you start CAB in a non-HTTPS environment), you can start your browser with security mode disabled.
+
+```sh
+google-chrome --disable-web-security
 ```
 
 ### Default ports
@@ -105,6 +116,7 @@ This project is based on a microservice architecture. Every service run on a spe
 * Context Service: 5100
 * Event Service: 5000
 * Historic Service: 5200
+* Keycloak: 89
 
 ### Authentication data
 
