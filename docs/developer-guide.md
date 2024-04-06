@@ -129,6 +129,10 @@ Contributions to the Cab Assistant Platform are welcome! To contribute please ma
 5. Push to the branch: `git push origin 1-your-branch`.
 6. Create a pull request, explaining your changes and their purpose.
 
+### Frontend
+
+You can find more informations on how to contribute, modify and create new use cases in the specific [frontend README](../frontend/README.md)
+
 
 ## Test CAB
 
