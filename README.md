@@ -55,9 +55,8 @@ git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
 
 ## Usage
 
-- Development Mode:
-  - Run the Recommendation Service independently for local development.
-  - Run all services together on the dev server for comprehensive testing.
+CAB offers versatile deployment options, leveraging either Docker or Kubernetes. The primary method entails initiating CAB via Docker to launch all services concurrently. However, recognizing potential resource strain in this mode, we've introduced alternative configurations. These configurations enable selective startup of essential services with minimal dependencies, catering to streamlined versions of certain APIs.
+Below are the steps to start all services. For other methods, please consult the developer guide.
 
 ### Running All Services (Dev Mode)
 
