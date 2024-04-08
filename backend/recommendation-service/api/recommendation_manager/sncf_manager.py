@@ -102,10 +102,10 @@ WHERE {
         ]
 
         result = {
-            "Procedure": [
+            "procedure": [
                 {
                     "blockIndex": block["index"],
-                    "description": block["description"],
+                    "blockText": block["description"],
                     "tasks": [
                         {"taskIndex": task["index"], "taskText": task["text"]}
                         for task in block["tasks"]
