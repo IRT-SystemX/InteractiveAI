@@ -100,7 +100,7 @@ cd resources
 5. If you encounter CORS errors (which can happen if you start CAB in a non-HTTPS environment), you can start your browser with security mode disabled.
 
 ```sh
-your-chromium-chromium --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium browser with your browser
+your-chromium-browser --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium-browser with your browser
 ```
 
 ### Default ports
