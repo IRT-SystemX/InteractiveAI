@@ -31,7 +31,7 @@
 
 Cockpit and Bidirectional Assistant (CAB) platform provides support in augmented decision-making for complex steering systems.
 
-The platform make use of the project OperatorFabric for notification management and authentication.
+The platform make use of the project OperatorFabric for notification management.
 
 
 <!-- GETTING STARTED -->
@@ -103,6 +103,8 @@ cd resources
 your-chromium-browser --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium-browser with your browser
 ```
 
+> **_NOTE:_** If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
+
 ### Default ports
 
 This project is based on a microservice architecture. Every service run on a specific port. Some of th default ports are as fellow:
@@ -114,9 +116,8 @@ This project is based on a microservice architecture. Every service run on a spe
 
 ### Authentication data
 
-The system use the authentication data of OperatorFabric.
-OperatorFabric use keycloak to manage users  authentication data. You can check it on port 89.
-You can find authentication data in OperatorFabric repository under config/docker/users-docker.yml and config/keycloak
+For a development environment, the system uses predefined initial data for Keycloak setup.
+You can find authentication data under config/dev/cab-keycloak
 
 Some examples of credentials:
 
