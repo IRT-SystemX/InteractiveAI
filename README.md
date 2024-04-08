@@ -31,12 +31,11 @@
 
 Cockpit and Bidirectional Assistant (CAB) platform provides support in augmented decision-making for complex steering systems.
 
-The platform make use of the project OperatorFabric for notification management and authentication.
+The platform make use of the project OperatorFabric for notification management.
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-Before starting cab-platform you need a running version of [OperatorFabric](https://github.com/opfab/operatorfabric-core)
 
 ### Prerequisites
 
@@ -62,7 +61,7 @@ git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
 
 ### Running All Services (Dev Mode)
 
-1. Set-up Envirement varaible
+1. Set-up environement variables
 
 VITE_SNCF_SIMU & VITE_RTE_SIMU are the simulators endpoints 
 ```sh
@@ -76,26 +75,21 @@ cd config/dev/cab-standalone
 ./docker-compose.sh
 ```
 
-3. Setting Up Keycloak FrontendUrl
-
-a. **Access Keycloak Interface**: 
-   - Ensure that your Keycloak instance is running and accessible.
-   - Open a web browser and navigate to the Keycloak admin console, typically available at `http://localhost:89/auth/admin`.
-
-b. **Login to Keycloak Admin Console**: 
-   - Log in to the Keycloak admin console using your administrator credentials.
-
-c. **Navigate to Client Settings**:
-   - On the Keycloak admin console, locate and click on the "Clients" section.
-   - Select the client representing your CAB Assistant Platform application.
-
-d. **Configure FrontendUrl**:
-   - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
-   - Add the URL of your CAB Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
-   - Ensure that the frontend URL you specify matches the actual URL where your frontend application is accessible.
-
-f. **Save Changes**:
-   - After adding the frontend URL, save the changes to update the client settings.
+3. Setting up Keycloak `Frontend URL`  
+    * **Access Keycloak Interface**: 
+      - Ensure that your Keycloak instance is running and accessible.
+      - Open a web browser and navigate to the Keycloak admin console, typically available at `http://localhost:89/auth/admin`.  
+    * **Login to Keycloak Admin Console**: 
+      - Log in to the Keycloak admin console using your administrator credentials (`admin:admin` by default)
+    * **Navigate to Client Settings**:
+      - On the Keycloak admin console, locate and click on the "Clients" section.
+      - Select the client representing your CAB Assistant Platform application.  
+    * **Configure FrontendUrl**:
+      - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
+      - Add the URL of your CAB Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
+      - Ensure that the frontend URL you specify matches the actual URL where your frontend application is accessible.
+    * **Save Changes**:
+      - After adding the frontend URL, save the changes to update the client settings.
 
 4. Load resources
 ```sh
@@ -106,8 +100,10 @@ cd resources
 5. If you encounter CORS errors (which can happen if you start CAB in a non-HTTPS environment), you can start your browser with security mode disabled.
 
 ```sh
-google-chrome --disable-web-security
+your-chromium-browser --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium-browser with your browser
 ```
+
+> **_NOTE:_** If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
 ### Default ports
 
@@ -120,9 +116,8 @@ This project is based on a microservice architecture. Every service run on a spe
 
 ### Authentication data
 
-The system use the authentication data of OperatorFabric.
-OperatorFabric use keycloak to manage users  authentication data. You can check it on port 89.
-You can find authentication data in OperatorFabric repository under config/docker/users-docker.yml and config/keycloak
+For a development environment, the system uses predefined initial data for Keycloak setup.
+You can find authentication data under config/dev/cab-keycloak
 
 Some examples of credentials:
 

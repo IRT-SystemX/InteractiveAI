@@ -5,9 +5,10 @@ Welcome to the development guide for the Cab Assistant Platform. This guide prov
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
-2. [Setting Up the Environment](#setting-up-the-environment)
-3. [Running the Application](#running-the-application)
-4. [Contributing](#contributing)
+2. [Running the Application](#running-the-application)
+3. [Contributing](#contributing)
+4. [Unittest](#Unittest)
+
 
 ## 1. Prerequisites<a name="prerequisites"></a>
 
@@ -17,36 +18,13 @@ Before getting started with the development process, ensure that you have the fo
 - [Docker (version 24.0.2)](https://www.docker.com/)
 - [Docker Compose (version 1.25.0)](https://www.docker.com/) 
 
-## 2. Setting Up the Environment<a name="setting-up-the-environment"></a>
-
-To set up the development environment, follow these steps:
-
-1. Clone the repo of OperatorFabric
-  ```sh
-  git clone https://github.com/opfab/operatorfabric-core
-  ```
-
-2. Clone the repo of cab assistant
-   ```sh
-   git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
-   ```
-
-3. Set new configuration to OperatorFabric
-   ```sh
-   cd cab-assistant-platform
-   ./config_of.sh
-   ```
-
-4. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
-
-
 ## 3. Running the Application<a name="running-the-application"></a>
 
-The Cab Assistant Platform can be run in different modes depending on your development needs.
+The Cab Assistant Platform can be run in different modes, depending on your development needs. The initial setup mentioned in the README file remains mandatory anyway. If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
 ### Running Recommendation Service (Dev Mode using docker)
 
-To run the Recommendation Service on your local machine:
+To run the Recommendation Service on your local machine using docker:
 
 1. Navigate to Recommendation Service.
 ```sh
@@ -81,7 +59,7 @@ pip install -r requirements.txt
 
 3. If you usecase uses Owlready2, Install Java
 
-4. 
+4. Start the web service
    * Option 1:
       Update envirement variables as felow:
          FLASK_APP="app:create_app('test')"
@@ -98,25 +76,7 @@ python -m flask run --host=0.0.0.0 --reload
 
 ### Running All Services (Dev Mode)
 
-To run all services on the dev server:
-
-1. Run OperatorFabric
-```sh
-cd ../operatorfabric-core/config/cab-docker
-./docker-compose.bash
-```
-
-2. Run Cab-assistant
-```sh
-cd ../../../cab-assistant-platform/config/dev/cab
-./docker-compose.bash
-```
-
-3. Load resources into OperatorFabric
-```sh
-cd resources
-./loadTestConf.sh
-```
+To run all services on the dev server you can check the steps in the main README file
 
 ## Contributing
 
@@ -134,7 +94,7 @@ Contributions to the Cab Assistant Platform are welcome! To contribute please ma
 You can find more informations on how to contribute, modify and create new use cases in the specific [frontend README](../frontend/README.md)
 
 
-## Test CAB
+## Unittest
 
 Every service have it's unittest with it. Here is an example of how you can run a service unittest.
 
@@ -158,25 +118,3 @@ pip install -r requirements.txt
 ```sh
 pytest --cov=. --cov-report=html
 ```
-
-
-## Troubleshooting
-
-Are you having issues with setting up your environment? Here are some tips that might help.
-
-### EoL Sequence Configuration errors.
-
-Some users may encounter issues if their system is automatically converting end of line sequence from LF to CRLF.
-If the problem is related to git configuration, [here is a link that can help. ](https://medium.com/@csmunuku/windows-and-linux-eol-sequence-configure-vs-code-and-git-37be98ef71df)
-
-
-### Always unauthorized
-
-Sometimes we have issues setting up .env file with the correct value.
-The .env should contain:
-
-```env
-HOST_IP=<IP_Address>
-```
-
-If the IP_Address is not your network IP address, please set it manually and run the system using native docker-compose commands.
