@@ -11,9 +11,15 @@
     </slot>
   </Modal>
   <div class="flex flex-wrap flex-center-y flex-gap">
-    <Button v-for="button of buttons" :key="button">
-      <slot name="buttons" :button>{{ button }}</slot>
-    </Button>
+    <div v-for="button of buttons" :key="button" class="cab-recommendation-kpi">
+      <Button>
+        <slot name="buttons" :button>{{ button }}</slot>
+      </Button>
+      <Button color="secondary" class="cab-recommendation-kpi-actions flex flex-gap">
+        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+        <CircleX color="var(--color-grey-100)" :size="16" />
+      </Button>
+    </div>
   </div>
   <Card
     v-for="recommendation of recommendations"
@@ -36,7 +42,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Settings } from 'lucide-vue-next'
+import { CircleX, ThumbsDown } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
@@ -54,7 +60,7 @@ function close(_: any, res: 'ok' | 'ko') {
   confirm.value = false
 }
 </script>
-<style land="scss">
+<style lang="scss">
 .cab-recommendation {
   scroll-snap-align: start;
   .cab-card-outer {
@@ -72,6 +78,25 @@ function close(_: any, res: 'ok' | 'ko') {
   }
   &.selected .cab-card-inner {
     background: var(--color-grey-200);
+  }
+  &-kpi {
+    position: relative;
+    &:hover .cab-recommendation-kpi-actions {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      transform: translateY(80%);
+      display: flex;
+      z-index: 100;
+    }
+    &-actions {
+      display: none;
+
+      svg:hover {
+        fill: var(--color-grey-100);
+        stroke: var(--color-grey-300);
+      }
+    }
   }
   &:hover .cab-card-outer,
   &.selected .cab-card-outer {
