@@ -34,7 +34,19 @@ class AgentManager:
         # grid2op Environment and observation definition and loading
         env_name = os.path.join(
             self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
-        self.env = grid2op.make(env_name, backend=bkClass())
+        #self.env = grid2op.make(env_name, backend=bkClass())
+        forecasts_horizons = [5, 10, 15, 20, 25, 30]
+        self.env = grid2op.make(config_assistant['env_name'], backend=bkClass(), data_feeding_kwargs={"gridvalueClass": FromHandlers,
+                                    "gen_p_handler": CSVHandler("prod_p"),
+                                    "load_p_handler": CSVHandler("load_p"),
+                                    "gen_v_handler": CSVHandler("prod_v"),
+                                    "load_q_handler": CSVHandler("load_q"),
+                                    "h_forecast": forecasts_horizons,
+                                    "gen_p_for_handler": PerfectForecastHandler("prod_p_forecasted"),
+                                    "load_p_for_handler": PerfectForecastHandler("load_p_forecasted"),
+                                    "load_q_for_handler": PerfectForecastHandler("load_q_forecasted"),
+                                    }
+                )
         self.env.seed(config_assistant['env_seed'])
         # Search scenario with provided name
         for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
@@ -80,13 +92,16 @@ class AgentManager:
 
     def recommendate(self, obs_dict, n_actions=3):
         self.get_nbOfTimestepSinceLastObs(obs_dict)
-        if self.nb_timestep > 0:
+        if self.nb_timestep > 1: #no sense to fast-forward only for next time step ?
             self.env.fast_forward_chronics(self.nb_timestep)
             self.previous_step = obs_dict.get("current_step")[0]
+        elif self.nb_timestep ==1:
+            self.env.step(self.action_do_nothing)
+            self.previous_step = obs_dict.get("current_step")[0]
         self.obs = self.env.get_obs()
-        self.obs.from_json(obs_dict)
-        self.recommendations = self.assistant.make_recommandations(
-            self.obs, n_actions)
+        self.obs.from_json(obs_dict)#il faut aussi modifier les _env_internal_params
+        self.obs._env_internal_params["_line_status_env"]=self.obs.line_status.astype(int)
+        self.recommendations = self.assistant.make_recommandations(self.obs, n_actions)
         return self.recommendations
 
     def getParadeInfo(self, act):
