@@ -1,4 +1,6 @@
 import grid2op
+from grid2op.Chronics import FromHandlers
+from grid2op.Chronics.handlers import PerfectForecastHandler, CSVHandler
 from grid2op.Agent import BaseAgent
 try:
     from lightsim2grid import LightSimBackend
@@ -8,10 +10,8 @@ except ImportError:
     bkClass = PandaPowerBackend
 
 import toml
-import sys
 import os
 import json
-from settings import logger
 import numpy as np
 from flask import current_app
 from enum import Enum
