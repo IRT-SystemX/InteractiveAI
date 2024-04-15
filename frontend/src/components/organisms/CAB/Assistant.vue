@@ -1,5 +1,7 @@
 <template>
-  <h1>{{ $t('cab.assistant') }}</h1>
+  <h1>
+    <slot name="title">{{ $t('cab.assistant') }}</slot>
+  </h1>
   <main class="flex flex-1 flex-col">
     <slot>
       <div class="flex flex-1 flex-col color-primary flex-center">

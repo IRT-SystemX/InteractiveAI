@@ -6,8 +6,8 @@
       </Event>
       <Recommendations
         v-if="tab === 2"
+        v-model:buttons="buttons"
         :recommendations="servicesStore.recommendations('RTE')"
-        :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         @selected="onSelection">
         <template #default="{ recommendation }">
           <div class="flex">
@@ -16,18 +16,14 @@
             </main>
           </div>
         </template>
-        <template #outer>
-          <div class="flex flex-col flex-gap">
-            <Pin />
-            <FileBarChart2 />
-          </div>
+        <template #button>
+          <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
       </Recommendations>
     </Default>
   </section>
 </template>
 <script setup lang="ts">
-import { FileBarChart2, Pin } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -47,6 +43,7 @@ const servicesStore = useServicesStore()
 
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
+const buttons = ref(['recommendations.button1', 'recommendations.button2'])
 
 eventBus.on('assistant:selected:RTE', (selected) => {
   card.value = selected
