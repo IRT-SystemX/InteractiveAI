@@ -13,11 +13,11 @@
   <div class="flex flex-wrap flex-center-y flex-gap">
     <div v-for="button of buttons" :key="button" class="cab-recommendation-kpi">
       <Button>
-        <slot name="buttons" :button>{{ button }}</slot>
+        <slot name="buttons" :button>{{ $t(button) }}</slot>
       </Button>
       <Button color="secondary" class="cab-recommendation-kpi-actions flex flex-gap">
-        <ThumbsDown color="var(--color-grey-100)" :size="16" />
-        <CircleX color="var(--color-grey-100)" :size="16" />
+        <ThumbsDown color="var(--color-grey-100)" :size="16" @click="downvoteKpi(button)" />
+        <CircleX color="var(--color-grey-100)" :size="16" @click="closeKpi(button)" />
       </Button>
     </div>
   </div>
@@ -31,11 +31,18 @@
     <slot :recommendation>
       <h1>{{ recommendation.title }}</h1>
     </slot>
-    <template #outer><slot name="outer" :recommendation></slot></template>
+    <template #outer>
+      <slot name="outer" :recommendation>
+        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+      </slot>
+    </template>
   </Card>
-  <Button v-if="selected" class="self-end" @click="confirm = true">
-    {{ $t('button.apply') }}
-  </Button>
+  <div class="flex flex-end flex-gap">
+    <slot name="button"></slot>
+    <Button v-if="selected" @click="confirm = true">
+      {{ $t('button.apply') }}
+    </Button>
+  </div>
   <div v-if="selected">
     <h2>{{ $t('recommendations.description') }}</h2>
     {{ selected.description }}
@@ -49,8 +56,11 @@ import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
 
-defineProps<{ buttons: any[]; recommendations: any[] }>()
-const emit = defineEmits<{ selected: [recommendation: any] }>()
+const props = defineProps<{ buttons: string[]; recommendations: any[] }>()
+const emit = defineEmits<{
+  selected: [recommendation: any]
+  'update:buttons': [buttons: string[]]
+}>()
 
 const selected = ref<any>()
 const confirm = ref(false)
@@ -58,6 +68,15 @@ const confirm = ref(false)
 function close(_: any, res: 'ok' | 'ko') {
   if (res === 'ok') emit('selected', selected.value)
   confirm.value = false
+}
+
+function downvoteKpi(kpi: (typeof props)['buttons'][number]) {}
+
+function closeKpi(kpi: (typeof props)['buttons'][number]) {
+  emit(
+    'update:buttons',
+    props.buttons.filter((k) => k !== kpi)
+  )
 }
 </script>
 <style lang="scss">
