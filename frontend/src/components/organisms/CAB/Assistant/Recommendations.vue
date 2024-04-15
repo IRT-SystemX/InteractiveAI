@@ -43,9 +43,14 @@
       {{ $t('button.apply') }}
     </Button>
   </div>
-  <div v-if="selected">
+  <div v-if="selected" class="cab-recommendation-description">
     <h2>{{ $t('recommendations.description') }}</h2>
-    {{ selected.description }}
+    <div :class="{ collapsed: collapsed && !details }">
+      {{ selected.description }}
+    </div>
+    <Button v-if="collapsed" class="float-right" @click="details = !details">
+      {{ $t('recommendations.description.more', { sign: details ? '-' : '+' }) }}
+    </Button>
   </div>
 </template>
 <script setup lang="ts">
@@ -56,7 +61,10 @@ import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
 
-const props = defineProps<{ buttons: string[]; recommendations: any[] }>()
+const props = withDefaults(
+  defineProps<{ buttons: string[]; recommendations: any[]; collapsed?: boolean }>(),
+  { collapsed: false }
+)
 const emit = defineEmits<{
   selected: [recommendation: any]
   'update:buttons': [buttons: string[]]
@@ -64,13 +72,16 @@ const emit = defineEmits<{
 
 const selected = ref<any>()
 const confirm = ref(false)
+const details = ref(false)
 
 function close(_: any, res: 'ok' | 'ko') {
   if (res === 'ok') emit('selected', selected.value)
   confirm.value = false
 }
 
-function downvoteKpi(kpi: (typeof props)['buttons'][number]) {}
+function downvoteKpi(kpi: (typeof props)['buttons'][number]) {
+  console.log('do something with kpi', kpi) // TODO
+}
 
 function closeKpi(kpi: (typeof props)['buttons'][number]) {
   emit(
@@ -116,6 +127,12 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
         stroke: var(--color-grey-300);
       }
     }
+  }
+  &-description .collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   &:hover .cab-card-outer,
   &.selected .cab-card-outer {

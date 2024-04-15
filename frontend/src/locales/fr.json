@@ -54,6 +54,7 @@
   "modal.error.default": "La requête à {url} a échoué avec le code {code} et le message {message}",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",
+  "recommendations.description.more": "{sign} détails",
   "recommendations.modal": "Vous êtes sur le point d'appliquer {recommendation}. Voulez-vous continuer ?",
   "recommendations.title": "Recommandations",
   "to": "à"
