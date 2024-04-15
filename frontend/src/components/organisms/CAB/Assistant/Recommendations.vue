@@ -15,9 +15,12 @@
       <Button>
         <slot name="buttons" :button>{{ $t(button) }}</slot>
       </Button>
-      <Button color="secondary" class="cab-recommendation-kpi-actions flex flex-gap">
-        <ThumbsDown color="var(--color-grey-100)" :size="16" @click="downvoteKpi(button)" />
-        <CircleX color="var(--color-grey-100)" :size="16" @click="closeKpi(button)" />
+      <Button
+        color="secondary"
+        class="cab-recommendation-kpi-actions flex flex-gap"
+        @click="closeKpi(button)">
+        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+        <CircleX color="var(--color-grey-100)" :size="16" />
       </Button>
     </div>
   </div>
@@ -121,11 +124,6 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
     }
     &-actions {
       display: none;
-
-      svg:hover {
-        fill: var(--color-grey-100);
-        stroke: var(--color-grey-300);
-      }
     }
   }
   &-description .collapsed {
