@@ -36,7 +36,7 @@
     </slot>
     <template #outer>
       <slot name="outer" :recommendation>
-        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+        <ThumbsDown color="var(--color-grey-100)" :size="16" @click="downvote(recommendation)" />
       </slot>
     </template>
   </Card>
@@ -89,6 +89,10 @@ function close(_: any, res: 'ok' | 'ko') {
 
 function closeKpi(kpi: (typeof props)['buttons'][number]) {
   buttons.value?.splice(buttons.value.indexOf(kpi), 1)
+}
+
+function downvote(kpi: (typeof props)['buttons'][number]) {
+  console.log(kpi) // TODO
 }
 </script>
 <style lang="scss">
