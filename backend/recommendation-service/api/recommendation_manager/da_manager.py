@@ -15,7 +15,7 @@ class DAManager(BaseRecommendation):
     def __init__(self):
         self.root_path = current_app.config["ROOT_PATH"]
         self.owl_file_path = os.path.join(
-            self.root_path, "resources/da/ontology/AlarmsOntoDA.owl"
+            self.root_path, "resources/da/ontology/final_populate_v20.rdf"
         )
         self.json_file_path = os.path.join(
             self.root_path, 'resources/da/procedures/'
