@@ -56,20 +56,22 @@
     </Button>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Entity">
 import { CircleX, ThumbsDown } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
+import type { Entity } from '@/types/entities'
+import type { Recommendation } from '@/types/services'
 
 const props = withDefaults(
-  defineProps<{ buttons: string[]; recommendations: any[]; collapsed?: boolean }>(),
+  defineProps<{ buttons: string[]; recommendations: Recommendation<T>[]; collapsed?: boolean }>(),
   { collapsed: false }
 )
 const emit = defineEmits<{
-  selected: [recommendation: any]
+  selected: [recommendation: Recommendation<T>]
 }>()
 
 const selected = ref<any>()
@@ -91,8 +93,8 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
   buttons.value?.splice(buttons.value.indexOf(kpi), 1)
 }
 
-function downvote(kpi: (typeof props)['buttons'][number]) {
-  console.log(kpi) // TODO
+function downvote(recommendation: Recommendation<T>) {
+  console.log(recommendation) // TODO
 }
 </script>
 <style lang="scss">
