@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import * as servicesApi from '@/api/services'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
+import type { Card } from '@/types/cards'
 import type { Context, Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
 import { uuid } from '@/utils/utils'
@@ -60,9 +61,11 @@ export const useServicesStore = defineStore('services', () => {
     return contextPID
   }
 
-  async function getRecommendation(newContext?: any) {
-    const payload = newContext || _context.value
-    const { data } = await servicesApi.getRecommendation(payload)
+  async function getRecommendation<E extends Entity>(
+    event: Card<E>['data']['metadata'],
+    context = _context.value as Context<E>
+  ) {
+    const { data } = await servicesApi.getRecommendation<E>({ event, context })
     _recommendations.value = data
   }
 

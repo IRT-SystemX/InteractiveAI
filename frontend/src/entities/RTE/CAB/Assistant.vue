@@ -9,7 +9,7 @@
       </Event>
       <Recommendations
         v-if="tab === 2"
-        v-model:buttons="buttons"
+        :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         :recommendations="servicesStore.recommendations('RTE')"
         @selected="onSelection">
         <template #default="{ recommendation }">
@@ -31,6 +31,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { sendTrace } from '@/api/services'
+import Button from '@/components/atoms/Button.vue'
 import Default from '@/components/organisms/CAB/Assistant.vue'
 import Event from '@/components/organisms/CAB/Assistant/Event.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
@@ -39,14 +40,12 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import type { Trace } from '@/types/services'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
 
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
-const buttons = ref(['recommendations.button1', 'recommendations.button2'])
 
 eventBus.on('assistant:selected:RTE', (selected) => {
   card.value = selected
@@ -57,23 +56,7 @@ eventBus.on('assistant:tab', (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation({
-        context: {
-          ...servicesStore.context('RTE').observation,
-          active_alert: undefined,
-          alert_duration: undefined,
-          attack_under_alert: undefined,
-          time_since_last_alert: undefined,
-          time_since_last_attack: undefined,
-          total_number_of_alert: undefined,
-          was_alert_used_after_attack: undefined
-        },
-        event: {
-          event_flow: card.value?.data.metadata.flux,
-          event_id: card.value?.uid,
-          event_line: card.value?.data.metadata.line
-        }
-      })
+      servicesStore.getRecommendation(card.value?.data.metadata!)
   }
 })
 
@@ -89,7 +72,7 @@ function onSelection(selected: any) {
 
 function primaryAction() {
   sendTrace({
-    data: {} as Trace['data'],
+    data: card.value!.id,
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })
