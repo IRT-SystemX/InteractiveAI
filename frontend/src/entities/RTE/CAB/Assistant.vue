@@ -31,6 +31,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { sendTrace } from '@/api/services'
+import Button from '@/components/atoms/Button.vue'
 import Default from '@/components/organisms/CAB/Assistant.vue'
 import Event from '@/components/organisms/CAB/Assistant/Event.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
