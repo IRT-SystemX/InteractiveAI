@@ -11,10 +11,18 @@
     </slot>
   </Modal>
   <div class="flex flex-wrap flex-center-y flex-gap">
-    <Settings />
-    <Button v-for="button of buttons" :key="button">
-      <slot name="buttons" :button>{{ button }}</slot>
-    </Button>
+    <div v-for="button of buttons" :key="button" class="cab-recommendation-kpi">
+      <Button>
+        <slot name="buttons" :button>{{ $t(button) }}</slot>
+      </Button>
+      <Button
+        color="secondary"
+        class="cab-recommendation-kpi-actions flex flex-gap"
+        @click="closeKpi(button)">
+        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+        <CircleX color="var(--color-grey-100)" :size="16" />
+      </Button>
+    </div>
   </div>
   <Card
     v-for="recommendation of recommendations"
@@ -26,36 +34,66 @@
     <slot :recommendation>
       <h1>{{ recommendation.title }}</h1>
     </slot>
-    <template #outer><slot name="outer" :recommendation></slot></template>
+    <template #outer>
+      <slot name="outer" :recommendation>
+        <ThumbsDown color="var(--color-grey-100)" :size="16" />
+      </slot>
+    </template>
   </Card>
-  <Button v-if="selected" class="self-end" @click="confirm = true">
-    {{ $t('button.apply') }}
-  </Button>
-  <div v-if="selected">
+  <div class="flex flex-end flex-gap">
+    <slot name="button"></slot>
+    <Button v-if="selected" @click="confirm = true">
+      {{ $t('button.apply') }}
+    </Button>
+  </div>
+  <div v-if="selected" class="cab-recommendation-description">
     <h2>{{ $t('recommendations.description') }}</h2>
-    {{ selected.description }}
+    <div :class="{ collapsed: collapsed && !details }">
+      {{ selected.description }}
+    </div>
+    <Button v-if="collapsed" class="float-right" @click="details = !details">
+      {{ $t('recommendations.description.more', { sign: details ? '-' : '+' }) }}
+    </Button>
   </div>
 </template>
 <script setup lang="ts">
-import { Settings } from 'lucide-vue-next'
+import { CircleX, ThumbsDown } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
 
-defineProps<{ buttons: any[]; recommendations: any[] }>()
-const emit = defineEmits<{ selected: [recommendation: any] }>()
+const props = withDefaults(
+  defineProps<{ buttons: string[]; recommendations: any[]; collapsed?: boolean }>(),
+  { collapsed: false }
+)
+const emit = defineEmits<{
+  selected: [recommendation: any]
+  'update:buttons': [buttons: string[]]
+}>()
 
 const selected = ref<any>()
 const confirm = ref(false)
+const details = ref(false)
 
 function close(_: any, res: 'ok' | 'ko') {
   if (res === 'ok') emit('selected', selected.value)
   confirm.value = false
 }
+
+function downvoteKpi(kpi: (typeof props)['buttons'][number]) {
+  console.log('do something with kpi', kpi) // TODO
+}
+
+function closeKpi(kpi: (typeof props)['buttons'][number]) {
+  emit(
+    'update:buttons',
+    props.buttons.filter((k) => k !== kpi)
+  )
+}
 </script>
-<style land="scss">
+<style lang="scss">
 .cab-recommendation {
   scroll-snap-align: start;
   .cab-card-outer {
@@ -73,6 +111,26 @@ function close(_: any, res: 'ok' | 'ko') {
   }
   &.selected .cab-card-inner {
     background: var(--color-grey-200);
+  }
+  &-kpi {
+    position: relative;
+    &:hover .cab-recommendation-kpi-actions {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      transform: translateY(80%);
+      display: flex;
+      z-index: 100;
+    }
+    &-actions {
+      display: none;
+    }
+  }
+  &-description .collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   &:hover .cab-card-outer,
   &.selected .cab-card-outer {

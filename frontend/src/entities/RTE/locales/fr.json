@@ -5,6 +5,7 @@
   "event.button.primary": "Consulter les recommendations",
   "event.button.secondary": "Utiliser l'outil d'étude",
   "event.text": "{event} détectée. Souhaitez-vous de l'aide pour traiter l'événement ?",
+  "recommendations.button.secondary": "Utiliser l'outil d'étude",
   "recommendations.button1": "Coût",
   "recommendations.button2": "LTTD > 2h",
   "recommendations.description": "Description parade",
