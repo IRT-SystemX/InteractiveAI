@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-# A comment
 ARG PYTHON_TAG=3.11.6-slim
 FROM python:${PYTHON_TAG}
 
