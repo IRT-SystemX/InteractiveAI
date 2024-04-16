@@ -58,7 +58,7 @@
 </template>
 <script setup lang="ts">
 import { CircleX, ThumbsDown } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
@@ -70,27 +70,25 @@ const props = withDefaults(
 )
 const emit = defineEmits<{
   selected: [recommendation: any]
-  'update:buttons': [buttons: string[]]
 }>()
 
 const selected = ref<any>()
+const buttons = ref<typeof props.buttons>()
 const confirm = ref(false)
 const details = ref(false)
+
+onBeforeMount(() => {
+  console.log('test')
+  buttons.value = props.buttons
+})
 
 function close(_: any, res: 'ok' | 'ko') {
   if (res === 'ok') emit('selected', selected.value)
   confirm.value = false
 }
 
-function downvoteKpi(kpi: (typeof props)['buttons'][number]) {
-  console.log('do something with kpi', kpi) // TODO
-}
-
 function closeKpi(kpi: (typeof props)['buttons'][number]) {
-  emit(
-    'update:buttons',
-    props.buttons.filter((k) => k !== kpi)
-  )
+  buttons.value?.splice(buttons.value.indexOf(kpi), 1)
 }
 </script>
 <style lang="scss">

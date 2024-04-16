@@ -9,7 +9,7 @@
       </Event>
       <Recommendations
         v-if="tab === 2"
-        v-model:buttons="buttons"
+        :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         :recommendations="servicesStore.recommendations('RTE')"
         @selected="onSelection">
         <template #default="{ recommendation }">
@@ -47,7 +47,6 @@ const servicesStore = useServicesStore()
 
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
-const buttons = ref(['recommendations.button1', 'recommendations.button2'])
 
 eventBus.on('assistant:selected:RTE', (selected) => {
   card.value = selected
