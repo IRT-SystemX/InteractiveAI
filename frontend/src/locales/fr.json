@@ -13,6 +13,7 @@
   "cab.assistant": "Assistant",
   "cab.assistant.correlations": "Corrélations",
   "cab.assistant.procedure": "Suivi de procédure",
+  "cab.assistant.procedure.collaborate": "Collaborer avec CAB",
   "cab.assistant.recommendations": "Recommandations",
   "cab.notifications.archived": "(archives)",
   "cab.notifications.delete": "Voulez-vous vraiment supprimer la notification {event} ?",

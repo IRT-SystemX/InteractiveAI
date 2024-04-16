@@ -8,6 +8,7 @@ export type Step<E extends Entity = Entity> = {
 }
 
 export type Block<E extends Entity = Entity> = {
+  enableAssistance: boolean
   blockIndex: number
   blockText: string
   tasks: Step<E>[]
