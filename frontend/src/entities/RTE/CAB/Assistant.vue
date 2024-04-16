@@ -1,6 +1,9 @@
 <template>
   <section class="cab-panel">
     <Default>
+      <template #title>
+        <template v-if="tab === 2">{{ $t('cab.assistant.recommendations') }}</template>
+      </template>
       <Event v-if="tab === 1 && card" :card :primary-action="primaryAction">
         {{ card.titleTranslated }}
       </Event>
