@@ -17,9 +17,7 @@ class DAManager(BaseRecommendation):
         self.owl_file_path = os.path.join(
             self.root_path, "resources/da/ontology/final_populate_v20.rdf"
         )
-        self.json_file_path = os.path.join(
-            self.root_path, 'resources/da/procedures/'
-        )
+
         self.recommender = DaCabRecommender()
 
         super().__init__()
