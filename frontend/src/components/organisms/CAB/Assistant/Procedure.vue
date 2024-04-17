@@ -1,7 +1,7 @@
 <template>
   <label>
-    {{ $t('cab.assistant.procedure.collaborate') }}
-    <Switch v-model="collaboration" type="checkbox" />
+    <b>{{ $t('cab.assistant.procedure.collaborate') }}</b>
+    <Switch v-model="collaboration" type="checkbox" class="ml-1" />
   </label>
   <div v-if="collaboration" class="cab-procredure-header">
     <User :size="24" style="justify-self: left" class="ml-2" />
@@ -39,7 +39,8 @@ eventBus.on('assistant:procedure:checked', (task) => {
   height: calc(var(--unit) * 5);
   grid-template-columns: calc(50% - var(--unit)) calc(var(--unit) * 2) calc(50% - var(--unit));
   justify-items: center;
-  margin-bottom: calc(var(--unit) * -8);
+  margin-bottom: calc(var(--unit) * -7);
+  align-content: center;
   z-index: 101;
 }
 </style>
