@@ -9,7 +9,11 @@
       <div class="circle"></div>
       <div class="line bottom"></div>
     </div>
-    <div class="step">[{{ task.taskIndex }}]&nbsp;{{ task.taskText }}</div>
+    <div
+      class="step"
+      :style="{ gridColumn: cab ? 3 : 1, gridRow: 1, textAlign: cab ? 'left' : 'right' }">
+      [{{ task.taskIndex }}]&nbsp;{{ task.taskText }}
+    </div>
   </div>
   <slot name="footer">
     <Button
@@ -30,6 +34,7 @@ import Button from './Button.vue'
 
 const props = defineProps<{
   task: Step<E>
+  cab?: boolean
 }>()
 
 const step = ref<HTMLDivElement>()
@@ -43,9 +48,10 @@ watch(
 </script>
 <style lang="scss">
 .procedure-step {
+  word-break: break-word;
   scroll-snap-align: start;
-  display: flex;
-  margin-left: var(--spacing-2);
+  display: grid;
+  grid-template-columns: calc(50% - var(--unit)) calc(var(--unit) * 2) calc(50% - var(--unit));
   cursor: not-allowed;
   * {
     transition: var(--duration);
@@ -84,6 +90,7 @@ watch(
     display: flex;
     flex-direction: column;
     align-items: center;
+    grid-column: 2;
   }
 
   .line {

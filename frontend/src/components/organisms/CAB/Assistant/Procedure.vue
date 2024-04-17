@@ -2,14 +2,15 @@
   <div>
     <label>
       {{ $t('cab.assistant.procedure.collaborate') }}
-      <input v-model="collaboration" type="checkbox" />
+      <Switch v-model="collaboration" type="checkbox" />
     </label>
-    <ProcedureBlock v-for="block of procedure" :key="block.blockIndex" :block />
+    <ProcedureBlock v-for="block of procedure" :key="block.blockIndex" :block :collaboration />
   </div>
 </template>
 <script setup lang="ts" generic="E extends Entity">
 import { computed, ref } from 'vue'
 
+import Switch from '@/components/atoms/Switch.vue'
 import ProcedureBlock from '@/components/molecules/ProcedureBlock.vue'
 import eventBus from '@/plugins/eventBus'
 import type { Entity } from '@/types/entities'

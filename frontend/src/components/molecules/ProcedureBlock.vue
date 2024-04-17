@@ -2,7 +2,11 @@
   <div class="procedure-block" :state>
     <slot name="block">{{ block.blockText }}</slot>
   </div>
-  <ProcedureStep v-for="task of block.tasks" :key="task.taskIndex" :task></ProcedureStep>
+  <ProcedureStep
+    v-for="task of block.tasks"
+    :key="task.taskIndex"
+    :task
+    :cab="collaboration && block.enableAssistance"></ProcedureStep>
 </template>
 <script setup lang="ts" generic="E extends Entity">
 import { computed } from 'vue'
@@ -12,7 +16,7 @@ import type { Block } from '@/types/procedure'
 
 import ProcedureStep from '../atoms/ProcedureStep.vue'
 
-const props = defineProps<{ block: Block<Entity> }>()
+const props = defineProps<{ block: Block<Entity>; collaboration: boolean }>()
 
 const state = computed(() => {
   if (props.block.tasks.every((task: any) => task.state === 'done')) return 'done'
