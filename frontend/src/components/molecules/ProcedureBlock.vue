@@ -27,6 +27,7 @@ const state = computed(() => {
 <style lang="scss">
 .procedure-block {
   scroll-snap-align: start;
+  align-self: center;
   transition: var(--duration);
   border-radius: 8px;
   background: var(--color-grey-300);
