@@ -36,7 +36,7 @@ class AgentManager:
             self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
         #self.env = grid2op.make(env_name, backend=bkClass())
         forecasts_horizons = [5, 10, 15, 20, 25, 30]
-        self.env = grid2op.make(config_assistant['env_name'], backend=bkClass(), data_feeding_kwargs={"gridvalueClass": FromHandlers,
+        self.env = grid2op.make(env_name, backend=bkClass(), data_feeding_kwargs={"gridvalueClass": FromHandlers,
                                     "gen_p_handler": CSVHandler("prod_p"),
                                     "load_p_handler": CSVHandler("load_p"),
                                     "gen_v_handler": CSVHandler("prod_v"),
