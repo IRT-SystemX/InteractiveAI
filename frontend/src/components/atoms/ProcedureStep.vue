@@ -50,6 +50,7 @@ watch(
 .procedure-step {
   word-break: break-word;
   scroll-snap-align: start;
+  scroll-margin: calc(var(--unit) * 5);
   display: grid;
   grid-template-columns: calc(50% - var(--unit)) calc(var(--unit) * 2) calc(50% - var(--unit));
   cursor: not-allowed;
@@ -108,7 +109,7 @@ watch(
     background: var(--color-background);
     border: 2px solid var(--color-grey-600);
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 99;
   }
 }
 </style>
