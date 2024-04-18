@@ -1,4 +1,3 @@
-# Comment
 FROM node:20-alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
