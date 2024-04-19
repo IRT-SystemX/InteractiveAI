@@ -90,12 +90,8 @@ class DAManager(BaseRecommendation):
             "90 PRESS: CABIN ALT TOO HIGH": updated_alarms[1],
             "38 ELEC: GEN 1+2+3 FAULT": updated_alarms[0],
                 }
-        print("PRINTING EVENTS")
-        print(all_events)
-        print("PRINTING alarm Name ")
         alarm_name = all_events[event_type]
-        print(alarm_name)
-
+        
         alarm_uri = "http://www.dassault-aviation.com/ontologies/2023/10/FalconProcedures#"+alarm_name
         procedure_query = f"""
             PREFIX core: <http://www.w3.org/2004/02/skos/core#>
@@ -122,14 +118,10 @@ class DAManager(BaseRecommendation):
                 ?blockElement cab:TaskText ?taskText .
             }} ORDER BY ?blockIndex
         """
-        print("PRINTING PROCEDURE")
         
         results = list(default_world.sparql(procedure_query))
-        print(results)
         updated_results = []
         for result in results:
-            print("RESULT IN FOR LOOP")
-            print(result)
             block_index, block_description, block_assign, task_index, task_text = result
             block_assign = block_assign.name if hasattr(block_assign, 'name') else block_assign
             if block_assign in ['ASSIGNABLE_CREW', 'ASSIGNABLE_LOCKED']:
@@ -139,29 +131,22 @@ class DAManager(BaseRecommendation):
             updated_results.append([block_index, block_description, block_assign, task_index, task_text ])
             blocks = {}
 
-            print("UPDATED RESULTS in FOR LOOP")
-            print(updated_results)
-
+        
         for row in updated_results:
-            print("ROW IN 2ND FOR LOOP")
             block_index, block_description,block_assign, task_index, task_text = row
-            print(row)
             if block_index not in blocks:
                 blocks[block_index] = {"description": block_description, "assignable":block_assign, "tasks": []}
-                print("block in 2nd for in if condition")
-                print(blocks)
             blocks[block_index]["tasks"].append({"index": task_index, "text": task_text})
-            print("blocks in 2Nd for loop")
+        
         blocks_list = [{"index": index, "description": blocks[index]["description"], "assignable":blocks[index]["assignable"], "tasks": blocks[index]["tasks"]} for index in sorted(blocks)]
-        print("BLOCKS LIST")
-        print(blocks_list)
+        
         final_result = {
-            'Procedure': [
+            'procedure': [
                 {
                     'blockIndex': block['index'],
                     'enableAssistance':block['assignable'],
                     'blockText': block['description'],
-                    'blockTasks': [
+                    'tasks': [
                         {
                             'taskIndex': task['index'],
                             'taskText': task['text']
@@ -170,6 +155,5 @@ class DAManager(BaseRecommendation):
                 } for block in blocks_list
             ]
         }
-        print("JSON PROCEDURE")
-        print(final_result)
+
         return final_result
