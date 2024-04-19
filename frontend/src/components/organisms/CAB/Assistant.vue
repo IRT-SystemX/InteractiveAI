@@ -16,7 +16,7 @@
       <input class="cab-input" :placeholder="$t('assistant.placeholder')" />
       <Mic color="var(--color-grey-600)" :height="24" />
     </div>
-    <SVG src="logo" fill="var(--color-primary)" :width="32" class="ml-1"></SVG>
+    <SVG src="/img/logo.svg" fill="var(--color-primary)" :width="32" class="ml-1"></SVG>
   </footer>
 </template>
 <script setup lang="ts">

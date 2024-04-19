@@ -2,7 +2,7 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="logo" :fill="modeColor()" :width="60"></SVG>
+        <SVG src="/img/logo.svg" :fill="modeColor()" :width="60"></SVG>
         <h1>
           {{ $t('cab') }}
           <div class="logo-infos" :title="JSON.stringify(env)">

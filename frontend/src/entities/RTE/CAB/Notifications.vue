@@ -21,7 +21,7 @@
         :height="16" />
       <SVG
         v-else
-        src="icons/toolbox"
+        src="/img/icons/toolbox.svg"
         :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
         :width="16"
         class="ml-1"></SVG>

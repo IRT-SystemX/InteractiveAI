@@ -5,7 +5,11 @@
   </label>
   <div v-if="collaboration" class="cab-procredure-header">
     <User :size="24" style="justify-self: left" class="ml-2" />
-    <SVG src="logo" :width="24" style="justify-self: right; grid-column: 3" class="mr-2"></SVG>
+    <SVG
+      src="/img/logo.svg"
+      :width="24"
+      style="justify-self: right; grid-column: 3"
+      class="mr-2"></SVG>
   </div>
   <div class="flex flex-1 flex-col scrollable">
     <ProcedureBlock v-for="block of procedure" :key="block.blockIndex" :block :collaboration />

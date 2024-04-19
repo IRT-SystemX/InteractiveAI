@@ -85,6 +85,9 @@
           :window
           :index
           :children="c.children">
+          <template #notification="{ card }">
+            <slot name="notification" :card></slot>
+          </template>
           <slot :card="c"></slot>
           <template #title="{ card }">
             <slot name="title" :card></slot>

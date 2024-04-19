@@ -5,15 +5,17 @@
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }">
     <div class="flex">
-      <CornerDownRight v-if="isChild" />
-      <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
-        <template #title>
-          <slot name="title" :card>{{ card.titleTranslated }}</slot>
-        </template>
-        <template #severity>
-          <slot :card></slot>
-        </template>
-      </Notification>
+      <slot name="notification" :card>
+        <CornerDownRight v-if="isChild" />
+        <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
+          <template #title>
+            <slot name="title" :card>{{ card.titleTranslated }}</slot>
+          </template>
+          <template #severity>
+            <slot :card></slot>
+          </template>
+        </Notification>
+      </slot>
     </div>
     <div class="cab-timeline-line"></div>
     <div
