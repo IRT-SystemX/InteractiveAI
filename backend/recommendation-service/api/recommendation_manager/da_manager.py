@@ -15,11 +15,9 @@ class DAManager(BaseRecommendation):
     def __init__(self):
         self.root_path = current_app.config["ROOT_PATH"]
         self.owl_file_path = os.path.join(
-            self.root_path, "resources/da/ontology/AlarmsOntoDA.owl"
+            self.root_path, "resources/da/ontology/final_populate_v20.rdf"
         )
-        self.json_file_path = os.path.join(
-            self.root_path, 'resources/da/procedures/'
-        )
+
         self.recommender = DaCabRecommender()
 
         super().__init__()
@@ -50,31 +48,117 @@ class DAManager(BaseRecommendation):
 
 
     def get_procedure(self, event_type):
-        min_speed = 180
-        max_speed = 260  
-        event_type = "90 PRESS : CABIN ALT TOO HIGH"
+        onto_recommendation = None
+        event_data = request_data.get("event", {})
+        event_type = event_data.get("event_type")
+
+        if event_type:
+            logger.info("getting ontology recommendation")
+            onto_recommendation = self.get_procedure(
+                event_type)
+
+        return {"da_recommendation": onto_recommendation}
+
+    def get_procedure(self, event_type):
+        # Load ontology
+        DA_onto = get_ontology(self.owl_file_path).load()
+        minSpeed = 180
+        maxSpeed = 260
+        alarms_query = """
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX cab: <http://www.dassault-aviation.com/ontologies/2023/10/FalconProcedures#>
+            SELECT ?alarm
+            WHERE {
+                ?alarm rdf:type cab:Alarm .
+            }
+        """
+        # Execute the query
+        alarms = list(default_world.sparql(alarms_query))
+        updated_alarms = []
+        prefix = "final_populate_v20."
+        for alarm in alarms:
+            alarm_uri = str(alarm[0])
+            if alarm_uri.startswith(prefix):
+                alarm_n = alarm_uri[len(prefix):]
+            else:
+                alarm_n = alarm_uri
+            updated_alarms.append(alarm_n) 
+
         all_events = {
-            "90 PRESS : CABIN ALT TOO HIGH": "90_PRESS_CABIN_ALT_TOO_HI",
-            "ENG1: AUTO SHUTDOWN": "ENG1_AUTO_SHUTDOWN",
-        }
+            "90 PRESS: CABIN ALT TOO HIGH": updated_alarms[1],
+            "38 ELEC: GEN 1+2+3 FAULT": updated_alarms[0],
+                }
+        print("PRINTING EVENTS")
+        print(all_events)
+        print("PRINTING alarm Name ")
+        alarm_name = all_events[event_type]
+        print(alarm_name)
 
-        procedure_dict = {
-            "procedure": [],
-            "min_speed": min_speed,
-            "max_speed": max_speed,
-        }      
-
-        #get alarm's json 
-        # if '90' in event_type:
-        with open(self.json_file_path + 'proc_emerg_' + all_events[event_type] + '.json') as f:
-            json_data = json.load(f)
-            procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
-
-        # else:
-        #     with open(self.json_file_path + 'proc_abnrml_' + all_events[event_type] + '.json') as f:
-        #         json_data = json.load(f)
-        #         procedure_dict["procedure"] = self.recommender.extract_procedure(json_data)
-
-        return procedure_dict
+        alarm_uri = "http://www.dassault-aviation.com/ontologies/2023/10/FalconProcedures#"+alarm_name
+        procedure_query = f"""
+            PREFIX core: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX dcam: <http://purl.org/dc/dcam/>
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX term: <http://purl.org/dc/terms/>
+            PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+            PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX cab: <http://www.dassault-aviation.com/ontologies/2023/10/FalconProcedures#>
+            SELECT ?blockIndex ?blockDescription ?blockAssign ?taskIndex ?taskText
+            WHERE {{
+                ?alarm rdf:type cab:Alarm .
+                FILTER (?alarm = <{alarm_uri}>)
+                ?alarm cab:HasProcedure ?procedure .
+                ?procedure cab:HasProcedureElement ?procedureBlock .
+                ?procedureBlock cab:HasDescription ?blockDescription .
+                ?procedureBlock cab:HasBlockIndex ?blockIndex .
+                ?procedureBlock cab:HasBlockElement ?blockElement .
+                ?procedureBlock cab:IsAssignableBlock ?blockAssign .
+                ?blockElement cab:TaskIndex ?taskIndex .
+                ?blockElement cab:TaskText ?taskText .
+            }} ORDER BY ?blockIndex
+        """
+        print("PRINTING PROCEDURE")
         
- 
+        query_output = list(default_world.sparql(procedure_query))
+        print(query_output)
+        results = list(default_world.sparql(procedure_query))
+        updated_results = []
+        for result in results:
+            block_index, block_description, block_assign, task_index, task_text = result
+            block_assign = block_assign.name if hasattr(block_assign, 'name') else block_assign
+            if block_assign in ['ASSIGNABLE_CREW', 'ASSIGNABLE_LOCKED']:
+                block_assign = False
+            elif block_assign == 'ASSIGNABLE_FREE':
+                block_assign = True
+            updated_results.append([block_index, block_description, block_assign, task_index, task_text ])
+            blocks = {}
+        for row in updated_results:
+            block_index, block_description,block_assign, task_index, task_text = row
+            if block_index not in blocks:
+                blocks[block_index] = {"description": block_description, "assignable":block_assign, "tasks": []}
+            blocks[block_index]["tasks"].append({"index": task_index, "text": task_text})
+        blocks_list = [{"index": index, "description": blocks[index]["description"], "assignable":blocks[index]["assignable"], "tasks": blocks[index]["tasks"]} for index in sorted(blocks)]
+
+        final_result = {
+            'Procedure': [
+                {
+                    'blockIndex': block['index'],
+                    'enableAssistance':block['assignable'],
+                    'blockText': block['description'],
+                    'blockTasks': [
+                        {
+                            'taskIndex': task['index'],
+                            'taskText': task['text']
+                        } for task in block['tasks']
+                    ]
+                } for block in blocks_list
+            ]
+        }
+        print("JSON PROCEDURE")
+        print(final_result)
+        return final_result

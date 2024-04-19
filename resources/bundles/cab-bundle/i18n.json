@@ -1,0 +1,8 @@
+{
+	"cabProcess": {
+		"title": "{{title}}",
+		"summary": "{{summary}}",
+		"metadata": "{{metadata}}",
+		"criticality": "{{criticality}}"
+	}
+}

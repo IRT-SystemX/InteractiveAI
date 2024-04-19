@@ -47,5 +47,7 @@ else
     export current_date_in_milliseconds_from_epoch_plus_24hours=$(($current_date_millis + 24*60*60*1000))
     export current_date_in_milliseconds_from_epoch_plus_48hours=$(($current_date_millis + 48*60*60*1000))
     echo "send card $1 (url: $url)"
-    curl -X POST $url:2102/cards -H "Authorization: Bearer $token" -H "Content-type:application/json" --data "$(envsubst <$1)"
+    # curl -s -X POST $url:2102/cards -H "Authorization: Bearer $token" -H "Content-type:application/json" --data "$(envsubst <$1)" -v
+    curl -s -X POST $url:2102/cards -H "Content-type:application/json" --data "$(envsubst <$1)" -v
+
 fi

@@ -1,7 +1,8 @@
 import uuid
+from datetime import datetime
 
 from settings import logger
-from datetime import datetime
+
 from ..clients.cards_publication import CardPubClient
 from ..clients.historic import HistoricClient
 from ..models import EventModel, db
@@ -10,17 +11,52 @@ from ..models import EventModel, db
 class BaseEventManager:
     def __init__(self) -> None:
         self.severity_map = {
-            "ND": "ND",
             "HIGH": "ALARM",
             "MEDIUM": "ACTION",
             "LOW": "COMPLIANT",
             "ROUTINE": "INFORMATION",
         }
 
-    def get_event_id(self):
+    def uniqueness_condition(self, event, unique_by_fields):
+        """
+        Check if the given event satisfies uniqueness conditions.
+
+        :param event: Event data to check
+        :type event: dict
+        :param unique_by_fields: Dictionary specifying uniqueness conditions
+        :type unique_by_fields: dict
+        :return: True if conditions are satisfied, False otherwise
+        :rtype: bool
+        """
+        for key, value in unique_by_fields.items():
+            if event.get(key) != value:
+                return False
+        return True
+
+    def get_event_id(self, unique_by_fields=None):
+        """_summary_
+
+        :param unique_by_fields: _description_, defaults to None
+        :type unique_by_fields: _type_, optional
+        :return: _description_
+        :rtype: _type_
+        """
+        if unique_by_fields:
+            events_list = EventModel.query.filter_by(
+                use_case=self.use_case
+            ).all()
+
+            for event in events_list:
+                if self.uniqueness_condition(event.data, unique_by_fields):
+                    event_id = event.id_event
+                    logger.debug(
+                        f"Found similar event: {event_id} based on: {unique_by_fields}"
+                    )
+                    return str(event_id), False
+
         event_id = uuid.uuid4()
-        logger.debug(f"Genrating event_id: {event_id}")
-        return str(event_id)
+        logger.debug(f"Generating event_id: {event_id}")
+        return str(event_id), True
 
     def save_event_db(self, data):
         logger.info(data)
@@ -40,7 +76,10 @@ class BaseEventManager:
 
     def create_card(self, start_date, end_date, data):
         card_pub_client = CardPubClient()
-        severity = self.severity_map[data.get("criticality")]
+        severity = self.severity_map.get(
+            data.get("criticality"), "INFORMATION"
+        )
+        criticality = data.get("criticality")
 
         timestamp_start_date = int(round(start_date.timestamp() * 1000))
         data["start_date"] = timestamp_start_date
@@ -68,20 +107,28 @@ class BaseEventManager:
                 "key": self.use_case_process + ".title",
                 "parameters": {"title": data["title"]},
             },
-            "data": {"metadata": data["data"]},
+            "data": {
+                "metadata": data["data"],
+                "criticality": criticality,
+                "parent_event_id": data.get("parent_event_id"),
+            },
         }
 
         return card_pub_client.create_card(card_payload)
 
     def create_event(self, data):
-        event_id = self.get_event_id()
+        event_id, _ = self.get_event_id()
         data["id_event"] = str(event_id)
+
+        # Set parent_event_id if provided
+        data["parent_event_id"] = data.get("parent_event_id")
+
         start_date = data.get("start_date", datetime.now())
         end_date = data.get("end_date")
         # Create a new card (notification)
         of_response = self.create_card(start_date, end_date, data)
         data["of_uid"] = of_response.get("uid")
-        # Trace in histric service
+        # Trace in historic service
         self.trace_event(start_date, end_date, data)
 
         # Save event to database
@@ -92,6 +139,23 @@ class BaseEventManager:
         created_events_list = []
         for event_data in events_list:
             if event_data["use_case"] == self.use_case:
+                # Set parent_event_id if provided
+                event_data["parent_event_id"] = event_data.get(
+                    "parent_event_id"
+                )
                 created_event = self.create_event(event_data)
                 created_events_list.append(created_event)
         return created_events_list
+
+    def delete_event(self, event_id):
+        event = EventModel.query.get(event_id)
+        if event:
+            self.delete_card(f"cabProcess.{event_id}")
+            db.session.delete(event)
+            db.session.commit()
+            return '', 204  # No content, indicating successful deletion
+        return {"error": "Event not found"}, 404
+
+    def delete_card(self, card_id):
+        card_pub_client = CardPubClient()
+        card_pub_client.delete_card(card_id)

@@ -1,0 +1,13 @@
+{
+  "cab.assistant": "Recommandations",
+  "cab.notifications.main": "Alertes",
+  "cab.notifications.sub": "Tâches",
+  "event.button.primary": "Consulter les recommendations",
+  "event.button.secondary": "Utiliser l'outil d'étude",
+  "event.text": "{event} détectée. Souhaitez-vous de l'aide pour traiter l'événement ?",
+  "recommendations.button.secondary": "Utiliser l'outil d'étude",
+  "recommendations.button1": "Coût",
+  "recommendations.button2": "LTTD > 2h",
+  "recommendations.description": "Description parade",
+  "recommendations.modal": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?"
+}

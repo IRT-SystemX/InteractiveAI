@@ -1,9 +1,5 @@
-from api.context_manager.da_context_manager import DAContextManager
-from api.context_manager.orange_context_manager import OrangeContextManager
-from api.context_manager.rte_context_manager import RTEContextManager
-from api.context_manager.sncf_context_manager import SNCFContextManager
 from api.models import db
-from api.utils import UseCaseFactory
+from api.utils import UseCaseFactory, load_usecases_db
 from api.views import api_bp
 from apiflask import APIFlask
 from settings import logger
@@ -21,16 +17,19 @@ def create_app(config_mode):
     # Create the application context
     app_ctx = app.app_context()
     app_ctx.push()
-    # add use_case_factory
-    use_case_factory = UseCaseFactory()
-    use_case_factory.register_use_case("DA", DAContextManager())
-    use_case_factory.register_use_case("RTE", RTEContextManager())
-    use_case_factory.register_use_case("ORANGE", OrangeContextManager())
-    use_case_factory.register_use_case("SNCF", SNCFContextManager())
-    app.use_case_factory = use_case_factory
+
     # intiate database
     db.init_app(app)
     db.create_all()
+
+    # add use_case_factory
+    use_case_factory = UseCaseFactory()
+    
+    # Load use cases from the database
+    load_usecases_db(use_case_factory)
+
+    app.use_case_factory = use_case_factory
+
     return app
 
 

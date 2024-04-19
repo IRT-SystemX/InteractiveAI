@@ -9,11 +9,66 @@
 			"name": "event",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE3MDA3NzExODUsImlhdCI6MTcwMDE2NjM4NSwianRpIjoiN2QzMzA4OWQtMmZhMC00YjIwLTg2MTAtOWUzZTAwN2M2YWQ4IiwiaXNzIjoiaHR0cDovLzE3Mi4xNy4wLjE6MzIwMC8qL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoicHVibGlzaGVyX3Rlc3QiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiODRiNjFhYjItOGM0MC00YTYzLTk2MTItMzhhOTVlYjE4MTRlIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiODRiNjFhYjItOGM0MC00YTYzLTk2MTItMzhhOTVlYjE4MTRlIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJncm91cHMiOiJEaXNwYXRjaGVyO1JlYWRPbmx5O1N1cGVydmlzb3IiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwdWJsaXNoZXJfdGVzdCIsImdpdmVuX25hbWUiOiIiLCJlbnRpdGllc0lkIjoiU05DRjtPUkFOR0U7REE7UlRFIiwiZmFtaWx5X25hbWUiOiIifQ.VTd8bb3NubwMWQuONSwfXbfyX-qV5gR020gYBiw1msEm69zLSvqb0VrzNFJetCUNCF9nh9tj-0xe9Xwh1_R8ct6QP4V5qFkdEXWjfQ9xSURVqL0IUg0jGlag1KgjzfePbIpy_KeGW2p4Ncc5C3RrU4nfnc1J1ag4kIJzJKVEbTSjXg7SByKm_AbSEAKZ1uquPR8EMZQsNS3uWs6I8XlgJ2Qpop0NzGa6JukPq1-snQmK3AMyDuBkGOE-RwkGYs8NkebC0Q-b-GJrCcsUEucBm4hOBwi8DbluS_bQmeAY0fK1KzzrXa5GbrxKTIqZGGuqK1yQY3YiJerFajR7nnDw0A",
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE3MDkyMzY2OTAsImlhdCI6MTcwODYzMTg5MCwianRpIjoiZTZiMDQ0YWEtMjIwMC00NGI3LWJiYjMtNjRhNjQwNmM0NTFhIiwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTozMjAwLyovcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJwdWJsaXNoZXJfdGVzdCIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJkZDdhZDRhNi0yYzhlLTRjNTUtYWY0YS00Njc3MGRkZDcwN2UiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJkZDdhZDRhNi0yYzhlLTRjNTUtYWY0YS00Njc3MGRkZDcwN2UiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IkRpc3BhdGNoZXI7UmVhZE9ubHk7U3VwZXJ2aXNvciIsInByZWZlcnJlZF91c2VybmFtZSI6InB1Ymxpc2hlcl90ZXN0IiwiZ2l2ZW5fbmFtZSI6IiIsImVudGl0aWVzSWQiOiJTTkNGO09SQU5HRTtEQTtSVEUiLCJmYW1pbHlfbmFtZSI6IiJ9.fnP_gWG9prxFEeSO6Q-0IcwXcUPlOEryfrmBOzBDKorWLOpEA4tYrTHcAryVAYnIxQGGkfjUsLhWaFNeZ_P3UGKZCHz8qE8-8nj7WytTHm6i5rpUptkWc7xiimeESa2a6JjZ6wFVfNVqL7-GcnAH_Uj1nf-SgZxHNgNYcQwlBup60CGwR8Zs4EmEiEpkXl9k5kqk2VbIsvveelO0kG3oSGSmokfMxdkQNqb55ge993cr2i-XNadQS3LI58Xu86mE0onvdP58ryWl-dxQd8OOyyeGaPGFxQgqQ-hb1pKTNCg_cUoCh1xQZ5iXIgCc3cuHUNdBTutvQ5ftQbf5Nt-shA",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "publisher_test",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
 							"type": "string"
 						}
 					]
@@ -22,7 +77,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"KPI 2\",\r\n    \"description\": \"description\",\r\n    \"use_case\": \"ORANGE\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"id_app\":\"App_01\",\r\n        \"bad_kpi\": \"delay_avg\"\r\n        \r\n    },\r\n    \"end_date\": \"2023-11-16T22:29:58.429732\"\r\n}",
+					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88210\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\",\r\n        \"agent_id\": \"TGV 88210\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -555,17 +610,191 @@
 			]
 		},
 		{
+			"name": "events list",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "orange_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"criticality\": \"MEDIUM\",\n        \"title\": \"KPI 1\",\n        \"description\": \"description\",\n        \"use_case\": \"ORANGE\",\n        \"data\": {\n            \"event_type\": \"KPI\",\n            \"id_app\": \"App_02\",\n            \"bad_kpi\": \"delay_avg\"\n        }\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events-list",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"events-list"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "events list",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"criticality\": \"MEDIUM\",\n        \"title\": \"KPI 2\",\n        \"description\": \"description\",\n        \"use_case\": \"ORANGE\",\n        \"data\": {\n            \"event_type\": \"KPI\",\n            \"id_app\": \"App_01\",\n            \"bad_kpi\": \"delay_avg\"\n        }\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/events-list",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"events-list"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
 			"name": "event",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1FkMjFNNzlVRUZjQl9BeFhDcWhUZDlrZDBKZGZpbmxyQnJNbFJqTEVzIn0.eyJleHAiOjE2OTg3ODA0NTAsImlhdCI6MTY5ODc4MDE1MCwianRpIjoiMzhmODZiMjItNGQ3NS00NTgzLTliNDctZTBkODY2MzI0MTlhIiwiaXNzIjoiaHR0cHM6Ly9mcm9udGVuZC5jYWItZGV2LmlydHN5c3RlbXgub3JnLyovcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJzbmNmX3VzZXIiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiNWY4MGI3ZjktNGQ5OS00NTQ5LWE5YWYtN2Y4M2Q5ODg0MjM2IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiNWY4MGI3ZjktNGQ5OS00NTQ5LWE5YWYtN2Y4M2Q5ODg0MjM2IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzbmNmX3VzZXIiLCJlbnRpdGllc0lkIjoiU05DRiJ9.G6KgyMfKXAiu8v61i31zNhevKpw2zz6ZugV4DguYy97VbfzZNjopvbtLnInLYCtq-E2z-iSHVVn0b1VYKUrEDpkDO6dnPlGqqkXml6BPrGrVS8nhVjm7lVBjaRxG28u7iDZ6v28HRA8d7XdV41Rgbpdp2JAtnKQlrIK3IKNtvr_ufkhzRgg3bwQ9SvrXV8uYbx_8eJ-ChO0jqRCxrEimRh2AhBCtOFQCGCTC-ZenQ1vG2T_H_p7N8tarSsGGAC22P8Z-KwhyKzWG5Sjet-ps567XYdwxcxUE3yyeEoRBUnoXHnoFK6JrLhURk-ORkdYlH7EqIBxmJt8ZhMEukKWP6A",
+							"key": "username",
+							"value": "sncf_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
 							"type": "string"
 						}
 					]
@@ -592,6 +821,508 @@
 						"api",
 						"v1",
 						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usecase",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/usecases",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"usecases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usecase",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ORANGE\",\n    \"context_manager_class\": \"OrangeContextManager\",\n    \"metadata_schema_class\": \"MetadataSchemaOrange\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cabcontext/api/v1/usecases",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cabcontext",
+						"api",
+						"v1",
+						"usecases"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "usecase",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ORANGE\",\n    \"event_manager_class\": \"OrangeEventManager\",\n    \"metadata_schema_class\": \"MetadataSchemaOrange\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/usecases",
+							"protocol": "http",
+							"host": [
+								"{{ENV_ENDPOINT_UI}}"
+							],
+							"path": [
+								"cab_event",
+								"api",
+								"v1",
+								"usecases"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.23.2"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 09 Feb 2024 14:07:24 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "115"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"event_manager_class\": \"OrangeEventManager\",\n    \"id\": 1,\n    \"metadata_schema_class\": \"MetadataSchemaOrange\",\n    \"name\": \"ORANGE\"\n}"
+				}
+			]
+		},
+		{
+			"name": "usecase",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/usecase/7",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"usecase",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "sncf_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/event/7648dc4b-c63c-4fae-8ee9-76521eb682f5",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"event",
+						"7648dc4b-c63c-4fae-8ee9-76521eb682f5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "sncf_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_event/api/v1/event/9ea16045-c18d-43af-8b38-44fce35ae920",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_event",
+						"api",
+						"v1",
+						"event",
+						"9ea16045-c18d-43af-8b38-44fce35ae920"
 					]
 				}
 			},

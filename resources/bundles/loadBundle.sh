@@ -28,7 +28,7 @@ else
 	mv $1.tar.gz ../
 	cd ..
 	source ../getToken.sh "admin" $url
-	curl -s -X POST "$url:2100/businessconfig/processes" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -H "Authorization:Bearer $token" -F "file=@$1.tar.gz;type=application/gzip"
+	curl -s -X POST $url:2100/businessconfig/processes -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -H "Authorization:Bearer $token" -F "file=@$1.tar.gz;type=application/gzip"
 	echo ""
 	rm $1.tar.gz
 	)

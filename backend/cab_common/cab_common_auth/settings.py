@@ -2,7 +2,7 @@ import os
 
 import logging.config
 
-HOST_IP = os.getenv("HOST_IP")
+HOST_IP = os.getenv("HOST_IP", "localhost")
 
 URL_INTROSPECT = os.getenv(
     "URL_INTROSPECT", f"http://{HOST_IP}:3200/auth/check_token"

@@ -31,64 +31,79 @@
 
 Cockpit and Bidirectional Assistant (CAB) platform provides support in augmented decision-making for complex steering systems.
 
-The platform make use of the project OperatorFabric for notification management and authentication.
+The platform make use of the project OperatorFabric for notification management.
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
-Before starting cab-platform you need a running version of [OperatorFabric](https://github.com/opfab/operatorfabric-core)
 
 ### Prerequisites
 
 * Docker
-* OperatorFabric
 
 ### Setting Up the Environment
 
-1. Clone the repo of OperatorFabric
-```sh
-git clone https://github.com/opfab/operatorfabric-core
-```
-
-2. Clone the repo of cab assistant
+1. Clone the repo of cab assistant
 ```sh
 git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
 ```
 
-3. Set new configuration to OperatorFabric
-```sh
-cd cab-assistant-platform
-./config_of.sh
-```
-4. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
+2. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
 
+3. Download correlation-service ai_models and copy them into `backend/correlation-service/api/ai_models`
 
-**Note** config_of.sh will copy the folder of-config in cab-assistant-platform to operatorfabric-core/config/
 
 ## Usage
 
-- Development Mode:
-  - Run the Recommendation Service independently for local development.
-  - Run all services together on the dev server for comprehensive testing.
+CAB offers versatile deployment options, leveraging either Docker or Kubernetes. The primary method entails initiating CAB via Docker to launch all services concurrently. However, recognizing potential resource strain in this mode, we've introduced alternative configurations. These configurations enable selective startup of essential services with minimal dependencies, catering to streamlined versions of certain APIs.
+Below are the steps to start all services. For other methods, please consult the developer guide.
 
 ### Running All Services (Dev Mode)
 
-1. Run OperatorFabric
+1. Set-up environement variables
+
+`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_RTE_SIMU` are the simulators endpoints 
 ```sh
-cd ../operatorfabric-core/config/cab-docker
-./docker-compose.bash
+export VITE_DA_SIMU=http://192.168.209.166:4003
+export VITE_SNCF_SIMU=http://192.168.209.166:5000
+export VITE_RTE_SIMU=http://192.168.209.166:5100
 ```
 
 2. Run Cab-assistant
 ```sh
-cd ../../../cab-assistant-platform/config/dev/cab
-./docker-compose.bash
+cd config/dev/cab-standalone
+./docker-compose.sh
 ```
 
-3. Load resources into OperatorFabric
+3. Setting up Keycloak `Frontend URL`  
+    * **Access Keycloak Interface**: 
+      - Ensure that your Keycloak instance is running and accessible.
+      - Open a web browser and navigate to the Keycloak admin console, typically available at `http://localhost:89/auth/admin`.  
+    * **Login to Keycloak Admin Console**: 
+      - Log in to the Keycloak admin console using your administrator credentials (`admin:admin` by default)
+    * **Navigate to Client Settings**:
+      - On the Keycloak admin console, locate and click on the "Clients" section.
+      - Select the client representing your CAB Assistant Platform application.  
+    * **Configure FrontendUrl**:
+      - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
+      - Add the URL of your CAB Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
+      - Ensure that the frontend URL you specify matches the actual URL where your frontend application is accessible.
+    * **Save Changes**:
+      - After adding the frontend URL, save the changes to update the client settings.
+
+4. Load resources
 ```sh
 cd resources
 ./loadTestConf.sh
 ```
+
+5. If you encounter CORS errors (which can happen if you start CAB in a non-HTTPS environment), you can start your browser with security mode disabled.
+
+```sh
+your-chromium-browser --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium-browser with your browser
+```
+
+> **_NOTE:_** If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
 ### Default ports
 
@@ -97,12 +112,12 @@ This project is based on a microservice architecture. Every service run on a spe
 * Context Service: 5100
 * Event Service: 5000
 * Historic Service: 5200
+* Keycloak: 89
 
 ### Authentication data
 
-The system use the authentication data of OperatorFabric.
-OperatorFabric use keycloak to manage users  authentication data. You can check it on port 89.
-You can find authentication data in OperatorFabric repository under config/docker/users-docker.yml and config/keycloak
+For a development environment, the system uses predefined initial data for Keycloak setup.
+You can find authentication data under config/dev/cab-keycloak
 
 Some examples of credentials:
 

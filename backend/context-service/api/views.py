@@ -1,13 +1,18 @@
-from datetime import datetime
+import importlib
 
 from apiflask import APIBlueprint
 from apiflask.views import MethodView
-from cab_common_auth.decorators import get_use_cases, protected
+from cab_common_auth.decorators import (
+    get_use_cases,
+    protected,
+    protected_admin,
+)
 from flask import request
 from settings import logger
 
-from .schemas import ContextIn, ContextOut
-
+from .models import UseCaseModel, db
+from .schemas import ContextIn, ContextOut, UseCaseIn, UseCaseOut
+from sqlalchemy.exc import IntegrityError
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
 
 
@@ -85,8 +90,83 @@ class Contexts(MethodView):
         return context_manager.set_context(data)
 
 
+class UseCases(MethodView):
+    @api_bp.output(UseCaseOut(many=True))
+    @protected_admin
+    def get(self):
+        """Get all events"""
+        return UseCaseModel.query.all()
+
+    @api_bp.input(UseCaseIn)
+    @api_bp.output(UseCaseOut, status_code=201)
+    @protected_admin
+    def post(self, data):
+        """Add an event"""
+        from flask import current_app
+
+        use_case_factory = current_app.use_case_factory
+
+        use_case_db = UseCaseModel(**data)
+
+        # Dynamically import the event manager class
+        context_manager_module = importlib.import_module(
+            f"resources.{use_case_db.name}.context_manager"
+        )
+        context_manager_class = getattr(
+            context_manager_module, f"{use_case_db.context_manager_class}"
+        )
+        context_manager_instance = context_manager_class()
+
+        # register use case to use_case_factory
+        use_case_factory.register_use_case(
+            use_case_db.name, context_manager_instance
+        )
+
+        # Dynamically import the metadata schema class
+        metadata_schema_module = importlib.import_module(
+            f"resources.{use_case_db.name}.schemas"
+        )
+        getattr(metadata_schema_module, f"{use_case_db.metadata_schema_class}")
+
+        # save use case to db
+        # db.session.add(use_case_db)
+        # db.session.commit()
+        try:
+            # Attempt to add the use case to the database
+            db.session.add(use_case_db)
+            db.session.commit()
+        except IntegrityError as e:
+            # If a unique constraint violation occurs, update the existing record
+            db.session.rollback()
+            existing_use_case = UseCaseModel.query.filter_by(name=use_case_db.name).first()
+            existing_use_case.__dict__.update(use_case_db.__dict__)
+
+            db.session.commit()
+
+        return use_case_db
+
+
+class UseCase(MethodView):
+    @api_bp.output(UseCaseOut, status_code=204)
+    @protected
+    def delete(self, use_case_id):
+        """Delete an event by ID"""
+        use_case = UseCaseModel.query.get(use_case_id)
+
+        if use_case:
+            db.session.delete(use_case)
+            db.session.commit()
+            return None, 204  # No content, indicating successful deletion
+        else:
+            return {"error": "Use case not found"}, 404
+
+
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
 api_bp.add_url_rule(
     "/context/<string:date>", view_func=Context.as_view("context")
 )
 api_bp.add_url_rule("/contexts", view_func=Contexts.as_view("contexts"))
+api_bp.add_url_rule("/usecases", view_func=UseCases.as_view("usecases"))
+api_bp.add_url_rule(
+    "/usecase/<int:use_case_id>", view_func=UseCase.as_view("usecase")
+)

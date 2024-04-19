@@ -22,7 +22,7 @@ then
     echo "Usage : sendMessageToSubscriptions message opfab_url"
 else
 	echo "Will send $1 on $url"
-	source ./getToken.sh "admin" $url
+	source ./getToken.sh "admin" $url:3200/auth/token
 	curl -s -v -X POST "$url:2104/messageToSubscriptions" -H "Authorization:Bearer $token" --data $1
 	echo ""
 fi

@@ -1,0 +1,10 @@
+{
+  "id" : "cabProcess",
+  "process" : "cabProcess",
+  "stateRights" : [
+    {
+      "state" : "messageState",
+      "right" : "ReceiveAndWrite"
+    }
+  ]
+}

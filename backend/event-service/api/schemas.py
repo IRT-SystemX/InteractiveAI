@@ -1,57 +1,18 @@
+import importlib
+
+from api.models import UseCaseModel
 from apiflask import Schema
-from apiflask.fields import (
-    DateTime,
-    Dict,
-    Float,
-    Integer,
-    String,
-    Boolean,
-    List,
-)
+from apiflask.fields import Boolean, DateTime, Dict, Integer, String
 from apiflask.validators import Length, OneOf
 from marshmallow import ValidationError, validates_schema
 
 
-class Metadata(Schema):
+class MetadataSchema(Schema):
     pass
 
 
-class MetadataRTE(Metadata):
-    event_type = String(
-        required=True,
-        validate=OneOf(["KPI", "anticipation", "agent", "consignation"]),
-    )
-    zone = String(validate=OneOf(["Est", "Ouest", "Centre"]))
-    line = String()
-    flux = Float()
-
-
-class MetadataSNCF(Metadata):
-    agent_id = String()
-    event_type = String()
-    agent_position = List(Integer())
-    delay = Integer()
-    id_train = String()
-    malfunction_stop_position = List(Integer())
-    num_rame = String()
-    tmp_rame = String()
-
-
-class MetadataOrange(Metadata):
-    event_type = String()
-    id_app = String()
-    bad_kpi = String()
-
-
-class MetadataDA(Metadata):
-    event_type = String()
-    system = String()
-
-
 class EventIn(Schema):
-    use_case = String(
-        required=True, validate=OneOf(["RTE", "SNCF", "DA", "ORANGE"])
-    )
+    use_case = String(required=True, validate=Length(1, 255))
     title = String(required=True, validate=Length(1, 255))
     description = String(required=True, validate=Length(1, 255))
     start_date = DateTime(format="iso", allow_none=True)
@@ -62,24 +23,28 @@ class EventIn(Schema):
     )
     data = Dict()
     is_active = Boolean()
-
-    @property
-    def _metadata_loaders(self):
-        return {
-            "RTE": MetadataRTE,
-            "SNCF": MetadataSNCF,
-            "ORANGE": MetadataOrange,
-            "DA": MetadataDA,
-        }
+    parent_event_id = String()
 
     @validates_schema
     def validate_metadata(self, data, **kwargs):
         use_case = data.get("use_case")
+
+        usecase_db_data = UseCaseModel.query.filter(
+            UseCaseModel.name == use_case
+        ).first()
+        if usecase_db_data is None:
+            raise ValidationError("Invalid use case")
+
         metadata = data.get("data")
-        if use_case in self._metadata_loaders:
-            self._metadata_loaders[use_case]().load(metadata)
-            return
-        raise ValidationError("Invalid use case")
+
+        # Dynamically import the metadata schema class
+        metadata_schema_module = importlib.import_module(
+            f"resources.{usecase_db_data.name}.schemas"
+        )
+        metadata_schema_class = getattr(
+            metadata_schema_module, f"{usecase_db_data.metadata_schema_class}"
+        )
+        metadata_schema_class().load(metadata)
 
 
 class EventOut(Schema):
@@ -94,3 +59,17 @@ class EventOut(Schema):
     criticality = String()
     data = Dict()
     is_active = Boolean()
+    parent_event_id = String()
+
+
+class UseCaseIn(Schema):
+    name = String(required=True, validate=Length(1, 255))
+    event_manager_class = String(validate=Length(1, 255))
+    metadata_schema_class = String(validate=Length(1, 255))
+
+
+class UseCaseOut(Schema):
+    id = Integer()
+    name = String(required=True, validate=Length(1, 255))
+    event_manager_class = String(validate=Length(1, 255))
+    metadata_schema_class = String(validate=Length(1, 255))

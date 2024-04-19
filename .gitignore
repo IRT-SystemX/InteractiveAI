@@ -192,8 +192,11 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
-frontend/main/.angular/*
-frontend/main/node_modules
 node_modules
 
 go.sh
+
+# Frontend
+!frontend/.vscode
+!frontend/env/
+!frontend/env/.env

@@ -1,20 +1,22 @@
 import grid2op
+from grid2op.Chronics import FromHandlers
+from grid2op.Chronics.handlers import PerfectForecastHandler, CSVHandler
 from grid2op.Agent import BaseAgent
 try:
     from lightsim2grid import LightSimBackend
     bkClass = LightSimBackend
 except ImportError:
-    # TODO: logger here
+    from grid2op.Backend import PandaPowerBackend
     bkClass = PandaPowerBackend
 
 import toml
-import sys
 import os
 import json
-from settings import logger
 import numpy as np
 from flask import current_app
 from enum import Enum
+import importlib
+
 
 class AgentType(Enum):
     onto = 1
@@ -22,70 +24,66 @@ class AgentType(Enum):
 
 class AgentManager:
     def __init__(self):
-        try:
-            # Load RTE simulator configuration
-            self.root_path = current_app.config['ROOT_PATH']
-            abs_path = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
+        # Load RTE simulator configuration
+        self.root_path = current_app.config['ROOT_PATH']
+        abs_path = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/")
 
-            config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
+        config_assistant = toml.load(abs_path + "CONFIG_RTE.toml")
 
-            # grid2op Environment and observation definition and loading
-            env_name = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
-            self.env = grid2op.make(env_name, backend=bkClass())
-            self.env.seed(config_assistant['env_seed'])
-            # Search scenario with provided name
-            for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
-                sp_end = os.path.basename(sp)
-                if sp_end == config_assistant['scenario_name']:
-                    id_scenario = id
-            #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
-            self.env.set_id(id_scenario)  # Scenario choice
-            self.obs = self.env.reset()
+        # grid2op Environment and observation definition and loading
+        env_name = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/env_icaps_input_data_test")
+        #self.env = grid2op.make(env_name, backend=bkClass())
+        forecasts_horizons = [5, 10, 15, 20, 25, 30]
+        self.env = grid2op.make(env_name, backend=bkClass(), data_feeding_kwargs={"gridvalueClass": FromHandlers,
+                                    "gen_p_handler": CSVHandler("prod_p"),
+                                    "load_p_handler": CSVHandler("load_p"),
+                                    "gen_v_handler": CSVHandler("prod_v"),
+                                    "load_q_handler": CSVHandler("load_q"),
+                                    "h_forecast": forecasts_horizons,
+                                    "gen_p_for_handler": PerfectForecastHandler("prod_p_forecasted"),
+                                    "load_p_for_handler": PerfectForecastHandler("load_p_forecasted"),
+                                    "load_q_for_handler": PerfectForecastHandler("load_q_forecasted"),
+                                    }
+                )
+        self.env.seed(config_assistant['env_seed'])
+        # Search scenario with provided name
+        for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
+            sp_end = os.path.basename(sp)
+            if sp_end == config_assistant['scenario_name']:
+                id_scenario = id
+        #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
+        self.env.set_id(id_scenario)  # Scenario choice
+        self.obs = self.env.reset()
 
-            #self.obs = self.env.observation_space(self.env)
-            if self.obs.current_step is None:
-                self.previous_step = "1"
-            else:
-                self.previous_step = self.obs.current_step
+        #self.obs = self.env.observation_space(self.env)
+        if self.obs.current_step is None:
+            self.previous_step = "1"
+        else:
+            self.previous_step = self.obs.current_step
 
-            # assistant definition and loading
-            assistant_path = os.path.join(
-                self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
-            assistant_seed = config_assistant['assistant_seed']
+        # assistant definition and loading
+        assistant_path = os.path.join(
+            self.root_path, "resources/rte/rtegrid2op_poc_simulator/XD_silly_repo")
+        assistant_seed = config_assistant['assistant_seed']
 
-            # lazy loading
-            self.assistant = None
-            if assistant_path is not None:
-                abs_assistant_path = os.path.abspath(assistant_path)
-                if not os.path.exists(assistant_path):
-                    msg_ = f"Nothing found at \"{assistant_path}\""
-                    raise RuntimeError(msg_)
-                if not os.path.isdir(assistant_path):
-                    msg_ = f"\"{assistant_path}\" should be a folder"
-                    raise RuntimeError(msg_)
-                if not os.path.exists(os.path.join(assistant_path, "submission")):
-                    msg_ = f"\"{assistant_path}\" should contain a folder named \"submission\""
-                    raise RuntimeError(msg_)
-                sys.path.append(abs_assistant_path)
-                try:
-                    from submission import make_agent
-                    self.assistant = make_agent(
-                        self.env.copy(), os.path.join(abs_assistant_path, "submission"))
-                    if not isinstance(self.assistant, BaseAgent):
-                        msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
-                        raise RuntimeError(msg_)
-                except Exception as exc_:
-                    raise exc_
-                self.assistant.seed(int(assistant_seed))
-                self.nb_timestep = int(0)
+        # lazy loading
+        abs_assistant_path = os.path.abspath(assistant_path)
 
-            # Action "do nothing"
-            self.action_do_nothing = self.env.action_space({})
-        except Exception as e:
-            logger.error(e)
-            # exit()
+        submission = importlib.import_module(f"resources.rte.rtegrid2op_poc_simulator.XD_silly_repo.submission")
+        self.assistant = submission.make_agent(
+            self.env.copy(), os.path.join(abs_assistant_path, "submission"))
+        if not isinstance(self.assistant, BaseAgent):
+            msg_ = "your assistant you be a grid2op.Agent.BaseAgent"
+            raise RuntimeError(msg_)
+
+        self.assistant.seed(int(assistant_seed))
+        self.nb_timestep = int(0)
+
+        # Action "do nothing"
+        self.action_do_nothing = self.env.action_space({})
+
 
     def get_nbOfTimestepSinceLastObs(self, obs_dict):
         self.nb_timestep = int(obs_dict.get("current_step")[
@@ -94,13 +92,16 @@ class AgentManager:
 
     def recommendate(self, obs_dict, n_actions=3):
         self.get_nbOfTimestepSinceLastObs(obs_dict)
-        if self.nb_timestep > 0:
+        if self.nb_timestep > 1: #no sense to fast-forward only for next time step ?
             self.env.fast_forward_chronics(self.nb_timestep)
             self.previous_step = obs_dict.get("current_step")[0]
+        elif self.nb_timestep ==1:
+            self.env.step(self.action_do_nothing)
+            self.previous_step = obs_dict.get("current_step")[0]
         self.obs = self.env.get_obs()
-        self.obs.from_json(obs_dict)
-        self.recommendations = self.assistant.make_recommandations(
-            self.obs, n_actions)
+        self.obs.from_json(obs_dict)#il faut aussi modifier les _env_internal_params
+        self.obs._env_internal_params["_line_status_env"]=self.obs.line_status.astype(int)
+        self.recommendations = self.assistant.make_recommandations(self.obs, n_actions)
         return self.recommendations
 
     def getParadeInfo(self, act):
