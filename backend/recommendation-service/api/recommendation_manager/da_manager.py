@@ -90,9 +90,11 @@ class DAManager(BaseRecommendation):
             "90 PRESS: CABIN ALT TOO HIGH": updated_alarms[1],
             "38 ELEC: GEN 1+2+3 FAULT": updated_alarms[0],
                 }
+        print("PRINTING EVENTS")
         print(all_events)
+        print("PRINTING alarm Name ")
         alarm_name = all_events[event_type]
-        
+        print(alarm_name)
 
         alarm_uri = "http://www.dassault-aviation.com/ontologies/2023/10/FalconProcedures#"+alarm_name
         procedure_query = f"""
@@ -120,8 +122,10 @@ class DAManager(BaseRecommendation):
                 ?blockElement cab:TaskText ?taskText .
             }} ORDER BY ?blockIndex
         """
-
+        print("PRINTING PROCEDURE")
+        
         query_output = list(default_world.sparql(procedure_query))
+        print(query_output)
         updated_output = []
         for result in query_output:
             block_index, block_description, block_assign, task_index, task_text = result
@@ -154,4 +158,6 @@ class DAManager(BaseRecommendation):
                 } for block in blocks_list
             ]
         }
+        print("JSON PROCEDURE")
+        print(json_procedure)
         return json_procedure
