@@ -124,11 +124,12 @@ class DAManager(BaseRecommendation):
         """
         print("PRINTING PROCEDURE")
         
-        query_output = list(default_world.sparql(procedure_query))
-        print(query_output)
         results = list(default_world.sparql(procedure_query))
+        print(results)
         updated_results = []
         for result in results:
+            print("RESULT IN FOR LOOP")
+            print(result)
             block_index, block_description, block_assign, task_index, task_text = result
             block_assign = block_assign.name if hasattr(block_assign, 'name') else block_assign
             if block_assign in ['ASSIGNABLE_CREW', 'ASSIGNABLE_LOCKED']:
@@ -137,13 +138,23 @@ class DAManager(BaseRecommendation):
                 block_assign = True
             updated_results.append([block_index, block_description, block_assign, task_index, task_text ])
             blocks = {}
+
+            print("UPDATED RESULTS in FOR LOOP")
+            print(updated_results)
+
         for row in updated_results:
+            print("ROW IN 2ND FOR LOOP")
             block_index, block_description,block_assign, task_index, task_text = row
+            print(row)
             if block_index not in blocks:
                 blocks[block_index] = {"description": block_description, "assignable":block_assign, "tasks": []}
+                print("block in 2nd for in if condition")
+                print(blocks)
             blocks[block_index]["tasks"].append({"index": task_index, "text": task_text})
+            print("blocks in 2Nd for loop")
         blocks_list = [{"index": index, "description": blocks[index]["description"], "assignable":blocks[index]["assignable"], "tasks": blocks[index]["tasks"]} for index in sorted(blocks)]
-
+        print("BLOCKS LIST")
+        print(blocks_list)
         final_result = {
             'Procedure': [
                 {
