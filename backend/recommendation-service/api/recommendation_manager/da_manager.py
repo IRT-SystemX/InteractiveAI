@@ -87,9 +87,10 @@ class DAManager(BaseRecommendation):
             updated_alarms.append(alarm_n) 
 
         all_events = {
-            "90 PRESS : CABIN ALT TOO HIGH": updated_alarms[1],
-            "38 ELEC : GEN 1+2+3 FAULT": updated_alarms[0],
+            "90 PRESS: CABIN ALT TOO HIGH": updated_alarms[1],
+            "38 ELEC: GEN 1+2+3 FAULT": updated_alarms[0],
                 }
+        print(all_events)
         alarm_name = all_events[event_type]
         
 
