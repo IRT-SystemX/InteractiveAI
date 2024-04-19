@@ -99,6 +99,7 @@ def test_add_da_event(
         "data": {
             "system": "AIR CONDITIONING AND PRESSURIZATION",
             "event_type": "90 PRESS: CABIN ALT TOO HI",
+            "id_plane" : "1"
         },
         "use_case": "DA",
     }
