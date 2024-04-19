@@ -126,24 +126,25 @@ class DAManager(BaseRecommendation):
         
         query_output = list(default_world.sparql(procedure_query))
         print(query_output)
-        updated_output = []
-        for result in query_output:
+        results = list(default_world.sparql(procedure_query))
+        updated_results = []
+        for result in results:
             block_index, block_description, block_assign, task_index, task_text = result
             block_assign = block_assign.name if hasattr(block_assign, 'name') else block_assign
             if block_assign in ['ASSIGNABLE_CREW', 'ASSIGNABLE_LOCKED']:
                 block_assign = False
             elif block_assign == 'ASSIGNABLE_FREE':
                 block_assign = True
-            updated_output.append([block_index, block_description, block_assign, task_index, task_text ])
+            updated_results.append([block_index, block_description, block_assign, task_index, task_text ])
             blocks = {}
-        for row in updated_output:
+        for row in updated_results:
             block_index, block_description,block_assign, task_index, task_text = row
             if block_index not in blocks:
                 blocks[block_index] = {"description": block_description, "assignable":block_assign, "tasks": []}
             blocks[block_index]["tasks"].append({"index": task_index, "text": task_text})
         blocks_list = [{"index": index, "description": blocks[index]["description"], "assignable":blocks[index]["assignable"], "tasks": blocks[index]["tasks"]} for index in sorted(blocks)]
 
-        json_procedure = {
+        final_result = {
             'Procedure': [
                 {
                     'blockIndex': block['index'],
@@ -159,5 +160,5 @@ class DAManager(BaseRecommendation):
             ]
         }
         print("JSON PROCEDURE")
-        print(json_procedure)
-        return json_procedure
+        print(final_result)
+        return final_result
