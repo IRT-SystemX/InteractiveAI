@@ -84,6 +84,7 @@
           :card="c"
           :window
           :index
+          :event-fn="eventFn"
           :children="c.children">
           <template #notification="{ card }">
             <slot name="notification" :card></slot>
@@ -117,10 +118,12 @@ const props = withDefaults(
     end: number
     cards: Card<T>[]
     groupFn?: (card: Card<T>) => string
+    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
     entity: T
   }>(),
   {
-    groupFn: () => '_DEFAULT'
+    groupFn: () => '_DEFAULT',
+    eventFn: () => []
   }
 )
 

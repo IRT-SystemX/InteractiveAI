@@ -18,15 +18,18 @@
       </slot>
     </div>
     <div class="cab-timeline-line"></div>
+    <template v-if="!children?.length"></template>
     <div
-      v-if="!children?.length"
+      v-for="event of [card, ...eventFn(card)]"
+      :key="event.id"
       :style="{
         'grid-column': `${clamp(
-          differenceInMinutes(new Date(card.startDate), window.start) + 2,
+          differenceInMinutes(new Date(event.startDate), window.start) + 2,
           window.length + 1,
           2
         )} / ${clamp(
-          differenceInMinutes(card.endDate ? new Date(card.endDate) : new Date(), window.start) + 2,
+          differenceInMinutes(event.endDate ? new Date(event.endDate) : new Date(), window.start) +
+            2,
           window.length + 1,
           2
         )}`
@@ -37,11 +40,19 @@
       </div>
       <div class="cab-timeline-event-line" :class="criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
-        <div v-if="card.startDate && isAfter(new Date(card.startDate), window.start)" class="start">
-          {{ format(new Date(card.startDate), 'p') }}
+        <div
+          v-if="event.startDate && isAfter(new Date(event.startDate), window.start)"
+          class="start">
+          {{ format(new Date(event.startDate), 'p') }}
         </div>
-        <div v-if="card.endDate && isBefore(new Date(card.endDate), window.end)" class="end">
-          {{ format(new Date(card.endDate), 'p') }}
+        <div
+          v-if="
+            event.endDate &&
+            event.startDate !== event.endDate &&
+            isBefore(new Date(event.endDate), window.end)
+          "
+          class="end">
+          {{ format(new Date(event.endDate), 'p') }}
         </div>
       </div>
     </div>
@@ -67,13 +78,17 @@ import { clamp, criticalityToColor } from '@/utils/utils'
 
 import Notification from '../molecules/Notification.vue'
 
-defineProps<{
-  card: Card<T>
-  children?: Card<T>[]
-  window: { start: Date; end: Date; length: number }
-  index: number
-  isChild: boolean
-}>()
+withDefaults(
+  defineProps<{
+    card: Card<T>
+    children?: Card<T>[]
+    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
+    window: { start: Date; end: Date; length: number }
+    index: number
+    isChild: boolean
+  }>(),
+  { children: undefined, eventFn: () => [] }
+)
 </script>
 <style lang="scss">
 .cab-timeline-row {
