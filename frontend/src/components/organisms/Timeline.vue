@@ -252,6 +252,18 @@ repeatEvery(() => {
       width: 0;
       bottom: 18px;
       position: relative;
+      &.error {
+        color: var(--color-error);
+      }
+      &.warning {
+        color: var(--color-warning);
+      }
+      &.success {
+        color: var(--color-success);
+      }
+      &.primary {
+        color: var(--color-primary);
+      }
     }
 
     &-time {

@@ -55,6 +55,13 @@
         <slot v-else :card></slot>
       </div>
       <div
+        v-if="!('name' in event)"
+        class="cab-timeline-event-icon"
+        style="float: right; font-size: 0.75em; font-weight: bold"
+        :class="criticalityToColor(event.data.criticality)">
+        HRE
+      </div>
+      <div
         class="cab-timeline-event-line"
         :class="'name' in event ? '' : criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
