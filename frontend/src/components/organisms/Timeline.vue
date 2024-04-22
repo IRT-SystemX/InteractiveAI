@@ -84,7 +84,11 @@
           :card="c"
           :window
           :index
+          :event-fn="eventFn"
           :children="c.children">
+          <template #notification="{ card }">
+            <slot name="notification" :card></slot>
+          </template>
           <slot :card="c"></slot>
           <template #title="{ card }">
             <slot name="title" :card></slot>
@@ -114,10 +118,12 @@ const props = withDefaults(
     end: number
     cards: Card<T>[]
     groupFn?: (card: Card<T>) => string
+    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
     entity: T
   }>(),
   {
-    groupFn: () => '_DEFAULT'
+    groupFn: () => '_DEFAULT',
+    eventFn: () => []
   }
 )
 
@@ -246,6 +252,18 @@ repeatEvery(() => {
       width: 0;
       bottom: 18px;
       position: relative;
+      &.error {
+        color: var(--color-error);
+      }
+      &.warning {
+        color: var(--color-warning);
+      }
+      &.success {
+        color: var(--color-success);
+      }
+      &.primary {
+        color: var(--color-primary);
+      }
     }
 
     &-time {

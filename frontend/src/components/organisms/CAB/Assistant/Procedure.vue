@@ -1,11 +1,15 @@
 <template>
   <label>
-    {{ $t('cab.assistant.procedure.collaborate') }}
-    <Switch v-model="collaboration" type="checkbox" />
+    <b>{{ $t('cab.assistant.procedure.collaborate') }}</b>
+    <Switch v-model="collaboration" type="checkbox" class="ml-1" />
   </label>
   <div v-if="collaboration" class="cab-procredure-header">
-    <User :size="24" />
-    <SVG src="logo" :width="24" :style="{ gridColumn: 3 }"></SVG>
+    <User :size="24" style="justify-self: left" class="ml-2" />
+    <SVG
+      src="/img/logo.svg"
+      :width="24"
+      style="justify-self: right; grid-column: 3"
+      class="mr-2"></SVG>
   </div>
   <div class="flex flex-1 flex-col scrollable">
     <ProcedureBlock v-for="block of procedure" :key="block.blockIndex" :block :collaboration />
@@ -36,7 +40,11 @@ eventBus.on('assistant:procedure:checked', (task) => {
 <style lang="scss">
 .cab-procredure-header {
   display: grid;
+  height: calc(var(--unit) * 5);
   grid-template-columns: calc(50% - var(--unit)) calc(var(--unit) * 2) calc(50% - var(--unit));
   justify-items: center;
+  margin-bottom: calc(var(--unit) * -7);
+  align-content: center;
+  z-index: 101;
 }
 </style>

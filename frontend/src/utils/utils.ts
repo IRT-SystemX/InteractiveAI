@@ -7,6 +7,7 @@ import type { UUID } from '@/types/formats'
  * @returns Asset url
  */
 export function asset(path: string) {
+  console.log(path)
   return new URL(`../${path}`, import.meta.url).href
 }
 

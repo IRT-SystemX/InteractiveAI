@@ -93,7 +93,7 @@
               </slot>
               <slot name="icon" :card>
                 <SVG
-                  src="icons/warning_hex"
+                  src="/img/icons/warning_hex.svg"
                   :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
                   :width="16"
                   class="ml-1"></SVG>
