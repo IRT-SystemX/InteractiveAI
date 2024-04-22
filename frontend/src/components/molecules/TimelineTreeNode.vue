@@ -20,7 +20,7 @@
     <div class="cab-timeline-line"></div>
     <template v-if="!children?.length"></template>
     <div
-      v-for="event of [card, ...eventFn(card)]"
+      v-for="(event, eventIndex) of [card, ...eventFn(card)]"
       :key="event.id"
       :style="{
         'grid-column': `${clamp(
@@ -36,18 +36,46 @@
       }"
       class="cab-timeline-event">
       <div class="cab-timeline-event-icon">
-        <slot :card></slot>
+        <template v-if="'name' in event">
+          <div
+            style="
+              width: max-content;
+              position: absolute;
+              transform: translate(-20%);
+              font-size: 0.75em;
+              display: flex;
+              align-items: center;
+            ">
+            {{ format(new Date(event.startDate), 'p') }}
+            <MapPin v-if="eventIndex !== [card, ...eventFn(card)].length - 1" :size="16"></MapPin>
+            <Flag v-else :size="16"></Flag>
+            {{ format(new Date(event.endDate), 'p') }}
+          </div>
+        </template>
+        <slot v-else :card></slot>
       </div>
-      <div class="cab-timeline-event-line" :class="criticalityToColor(card.data.criticality)"></div>
+      <div
+        class="cab-timeline-event-line"
+        :class="'name' in event ? '' : criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
         <div
-          v-if="event.startDate && isAfter(new Date(event.startDate), window.start)"
+          v-if="
+            event.startDate &&
+            !('name' in event) &&
+            isAfter(new Date(event.startDate), window.start)
+          "
           class="start">
           {{ format(new Date(event.startDate), 'p') }}
         </div>
         <div
+          v-if="'name' in event"
+          style="position: absolute; width: max-content; left: 50%; transform: translate(-50%)">
+          {{ event.name }}
+        </div>
+        <div
           v-if="
             event.endDate &&
+            !('name' in event) &&
             event.startDate !== event.endDate &&
             isBefore(new Date(event.endDate), window.end)
           "
@@ -69,7 +97,7 @@
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { differenceInMinutes, isAfter, isBefore } from 'date-fns'
-import { CornerDownRight } from 'lucide-vue-next'
+import { CornerDownRight, Flag, MapPin } from 'lucide-vue-next'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
