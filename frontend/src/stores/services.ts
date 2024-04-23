@@ -5,19 +5,19 @@ import * as servicesApi from '@/api/services'
 import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import type { Card } from '@/types/cards'
-import type { Context, Entity } from '@/types/entities'
-import type { Recommendation } from '@/types/services'
+import type { Entity } from '@/types/entities'
+import type { FullContext, Recommendation } from '@/types/services'
 import { uuid } from '@/utils/utils'
 
 const { t } = i18n.global
 
 export const useServicesStore = defineStore('services', () => {
-  const _context = ref<Context>()
+  const _context = ref<FullContext>()
   const _recommendations = ref<Recommendation[]>([])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function context<T extends Entity>(entity: T) {
-    return _context.value as Context<T>
+    return _context.value as FullContext<T>
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,7 +27,7 @@ export const useServicesStore = defineStore('services', () => {
 
   async function getContext<E extends Entity>(
     entity: E,
-    callback: (context: Context<E>, data: any) => void,
+    callback: (context: FullContext<E>, data: any) => void,
     delay = 5000
   ) {
     const modalID = uuid()
@@ -41,10 +41,10 @@ export const useServicesStore = defineStore('services', () => {
     const handler = async () => {
       try {
         const { data } = await servicesApi.getContext<E>()
-        _context.value = data.find((el) => el.use_case === entity)?.data
+        _context.value = data.find((el): el is FullContext<E> => el.use_case === entity)
         if (_context.value)
           callback(
-            _context.value,
+            context(entity),
             data.find((el) => el.use_case === entity)
           )
       } catch (err) {
@@ -63,9 +63,9 @@ export const useServicesStore = defineStore('services', () => {
 
   async function getRecommendation<E extends Entity>(
     event: Card<E>['data']['metadata'],
-    context = _context.value as Context<E>
+    context = _context.value as FullContext<E>
   ) {
-    const { data } = await servicesApi.getRecommendation<E>({ event, context })
+    const { data } = await servicesApi.getRecommendation<E>({ event, context: context.data })
     _recommendations.value = data
   }
 

@@ -2,7 +2,7 @@ import http from '@/plugins/http'
 import type { Card } from '@/types/cards'
 import type { Action, Context, Entity } from '@/types/entities'
 import type { Procedure } from '@/types/procedure'
-import type { ContextResponse, Recommendation, Trace } from '@/types/services'
+import type { FullContext, Recommendation, Trace } from '@/types/services'
 
 export function getRecommendation<E extends Entity = Entity>(payload: {
   event: Card<E>['data']['metadata']
@@ -12,7 +12,7 @@ export function getRecommendation<E extends Entity = Entity>(payload: {
 }
 
 export function getContext<E extends Entity = Entity>() {
-  return http.get<ContextResponse<E>>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
+  return http.get<FullContext<E>[]>(`/cabcontext/api/v1/contexts?time=${Date.now()}`)
 }
 
 export function sendTrace(payload: Trace) {
