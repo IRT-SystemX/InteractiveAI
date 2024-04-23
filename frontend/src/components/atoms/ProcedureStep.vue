@@ -48,7 +48,6 @@ watch(
 </script>
 <style lang="scss">
 .procedure-step {
-  word-break: break-word;
   scroll-snap-align: start;
   scroll-margin: calc(var(--unit) * 5);
   display: grid;
