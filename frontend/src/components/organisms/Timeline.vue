@@ -159,7 +159,7 @@ const now = computed(() => props.now || localNow.value)
 .cab-timeline {
   display: grid;
   row-gap: var(--spacing-1);
-  overflow-y: auto;
+  overflow: hidden auto;
   scrollbar-gutter: stable;
   scroll-snap-type: y mandatory;
   height: 100%;
