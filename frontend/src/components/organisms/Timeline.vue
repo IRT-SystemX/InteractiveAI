@@ -146,12 +146,14 @@ const cards = computed(() =>
   groupBy(cardsStore.parseTree(cardsStore.cards(props.entity, false)), props.groupFn)
 )
 
-const now = ref(props.now || new Date())
-/*
-if (props.now)
+const localNow = ref(new Date())
+
+if (!props.now)
   repeatEvery(() => {
-    now.value = new Date()
-  }, 60 * 1000)*/
+    localNow.value = new Date()
+  }, 60 * 1000)
+
+const now = computed(() => props.now || localNow.value)
 </script>
 <style lang="scss">
 .cab-timeline {
