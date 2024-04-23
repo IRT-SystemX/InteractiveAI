@@ -49,7 +49,9 @@
             {{ format(new Date(event.startDate), 'p') }}
             <MapPin v-if="eventIndex !== [card, ...eventFn(card)].length - 1" :size="16"></MapPin>
             <Flag v-else :size="16"></Flag>
-            {{ format(new Date(event.endDate), 'p') }}
+            <template v-if="event.startDate !== event.endDate">
+              {{ format(new Date(event.endDate), 'p') }}
+            </template>
           </div>
         </template>
         <slot v-else :card></slot>
@@ -113,11 +115,15 @@ import { clamp, criticalityToColor } from '@/utils/utils'
 
 import Notification from '../molecules/Notification.vue'
 
+export type eventFnType<T extends Entity = Entity> = (
+  card: Card<T>
+) => { id: string; startDate: number; endDate: number; name: string }[]
+
 withDefaults(
   defineProps<{
     card: Card<T>
     children?: Card<T>[]
-    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
+    eventFn?: eventFnType<T>
     window: { start: Date; end: Date; length: number }
     index: number
     isChild: boolean
