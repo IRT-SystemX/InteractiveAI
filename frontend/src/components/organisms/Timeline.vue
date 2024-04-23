@@ -105,7 +105,7 @@ import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
 import Notification from '@/components/molecules/Notification.vue'
-import TimelineTreeNode from '@/components/molecules/TimelineTreeNode.vue'
+import TimelineTreeNode, { type eventFnType } from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import { useCardsStore } from '@/stores/cards'
 import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
@@ -118,7 +118,7 @@ const props = withDefaults(
     end: number
     cards: Card<T>[]
     groupFn?: (card: Card<T>) => string
-    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
+    eventFn?: eventFnType<T>
     entity: T
   }>(),
   {
