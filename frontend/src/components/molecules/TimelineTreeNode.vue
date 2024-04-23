@@ -4,7 +4,7 @@
     :style="{
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }">
-    <div class="flex">
+    <div class="flex" style="scroll-snap-align: end">
       <slot name="notification" :card>
         <CornerDownRight v-if="isChild" />
         <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
@@ -20,7 +20,12 @@
     <div class="cab-timeline-line"></div>
     <template v-if="!children?.length"></template>
     <div
-      v-for="(event, eventIndex) of [card, ...eventFn(card)]"
+      v-for="(event, eventIndex) of [card, ...eventFn(card)].filter(
+        (ev) =>
+          (isAfter(new Date(ev.startDate), window.start) &&
+            isBefore(new Date(ev.endDate ? ev.endDate : new Date()), window.end)) ||
+          'data' in ev
+      )"
       :key="event.id"
       :style="{
         'grid-column': `${clamp(
@@ -38,6 +43,7 @@
       <div class="cab-timeline-event-icon">
         <template v-if="'name' in event">
           <div
+            class="text-stroke"
             style="
               width: max-content;
               position: absolute;
@@ -78,6 +84,7 @@
         </div>
         <div
           v-if="'name' in event"
+          class="text-stroke"
           style="position: absolute; width: max-content; left: 50%; transform: translate(-50%)">
           {{ event.name }}
         </div>
