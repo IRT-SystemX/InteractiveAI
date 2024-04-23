@@ -31,7 +31,7 @@ const card = ref<Card<'RTE'> | undefined>(undefined)
 onBeforeMount(async () => {
   contextPID.value = await servicesStore.getContext('RTE', (context, data) => {
     if (!previousContext.value) previousContext.value = data.id_context
-    if (previousContext.value !== data.id_context) topology.value = context.topology
+    if (previousContext.value !== data.id_context) topology.value = context.data.topology
   })
 })
 

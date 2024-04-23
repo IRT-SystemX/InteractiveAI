@@ -97,6 +97,7 @@
   <TimelineTreeNode
     v-for="(child, i) of children"
     :key="child.id"
+    :now
     :window
     :card="child"
     :index="index + i + 1"
@@ -121,6 +122,7 @@ export type eventFnType<T extends Entity = Entity> = (
 
 withDefaults(
   defineProps<{
+    now: Date
     card: Card<T>
     children?: Card<T>[]
     eventFn?: eventFnType<T>

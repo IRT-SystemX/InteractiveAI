@@ -9,12 +9,12 @@ export type Recommendation<T extends Entity = Entity> = {
   actions: Action<T>[]
 }
 
-export type ContextResponse<T extends Entity = Entity> = {
+export type FullContext<T extends Entity = Entity> = {
   data: Context<T>
   date: DateMillisecondsFormat
   id_context: UUID
   use_case: T
-}[]
+}
 
 export type TraceType = 'EVENT' | 'ASKFORHELP' | 'SOLUTION' | 'AWARD'
 

@@ -84,6 +84,7 @@
           :card="c"
           :window
           :index
+          :now
           :event-fn="eventFn"
           :children="c.children">
           <template #notification="{ card }">
@@ -114,6 +115,7 @@ import { repeatEvery } from '@/utils/utils'
 
 const props = withDefaults(
   defineProps<{
+    now?: Date
     start: number
     end: number
     cards: Card<T>[]
@@ -122,6 +124,7 @@ const props = withDefaults(
     entity: T
   }>(),
   {
+    now: undefined,
     groupFn: () => '_DEFAULT',
     eventFn: () => []
   }
@@ -129,7 +132,6 @@ const props = withDefaults(
 
 const cardsStore = useCardsStore()
 
-const now = ref(new Date())
 const window = computed(() => ({
   start: addMinutes(now.value, props.start),
   end: addMinutes(now.value, props.end),
@@ -144,9 +146,12 @@ const cards = computed(() =>
   groupBy(cardsStore.parseTree(cardsStore.cards(props.entity, false)), props.groupFn)
 )
 
-repeatEvery(() => {
-  now.value = new Date()
-}, 60 * 1000)
+const now = ref(props.now || new Date())
+/*
+if (props.now)
+  repeatEvery(() => {
+    now.value = new Date()
+  }, 60 * 1000)*/
 </script>
 <style lang="scss">
 .cab-timeline {
