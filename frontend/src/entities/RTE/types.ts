@@ -64,9 +64,16 @@ export type RTE = {
   }
   Metadata: {
     event_type: 'KPI' | 'anticipation' | 'agent' | 'consignation'
-    zone: 'Est' | 'Ouest' | 'Centre'
+    zone?: 'Est' | 'Ouest' | 'Centre'
     line: string
     flux: number | `${number}`
+    kpis: {
+      max_overload: string
+      renewable_energy_share: number
+      total_consumption: number
+      distance_from_reference_topology: number
+      redispatching_volume: number[]
+    }
   }
   Action: {
     _change_bus_vect: boolean[]
