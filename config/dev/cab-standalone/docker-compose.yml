@@ -9,13 +9,13 @@ services:
     environment:
       - CORRELATION_SERVICE=http://cab_correlation:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_context:5432/cab-context
-      # - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
 
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
@@ -38,13 +38,13 @@ services:
       - GATEWAY_SERVICE=http://frontend:80
       - HISTORIC_SERVICE=http://cabhistoric:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_event:5432/cab-event
-      # - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/code
       - FLASK_ENV=development
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
     command: sh -c "./entrypoint.sh"
     ports:
       - 5000:5000
@@ -67,6 +67,7 @@ services:
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
@@ -122,6 +123,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+      TZ: UTC   # Set timezone to UTC
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:
@@ -169,7 +171,6 @@ services:
       - GATEWAY_SERVICE=http://frontend:80
       - HISTORIC_SERVICE=http://cabhistoric:5000
       - DATABASE_URL=postgresql://postgres:postgres@db_postgres_correlation:5432/cab-correlation
-      # - HOST_IP=$HOST_IP
       - PYTHONPATH=/code
       - FLASK_APP=app:create_app('dev', scheduler=True)
       # - FLASK_ENV=development
@@ -181,6 +182,7 @@ services:
       - CAB_PASSWORD=test
       - AUTH_DISABLED=True
       - DEFAULT_USE_CASE=ORANGE
+      - TZ=UTC   # Set timezone to UTC
 
     command: sh -c "./entrypoint.sh"
     ports:
@@ -214,13 +216,13 @@ services:
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://frontend:80
-      # - HOST_IP=$HOST_IP
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/my_app
       - FLASK_ENV=development
       - URL_INTROSPECT=http://frontend:80/auth/check_token
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000
@@ -278,6 +280,7 @@ services:
     #     - "4103:5005"
     environment:
       - SPRING_PROFILES_ACTIVE
+      - TZ=UTC   # Set timezone to UTC
     volumes:
       - '../certificates:/certificates_to_add'
       - './users-docker.yml:/config/application.yml'
@@ -295,6 +298,7 @@ services:
     #     - "4100:5005"
     environment:
       - SPRING_PROFILES_ACTIVE
+      - TZ=UTC   # Set timezone to UTC
     volumes:
       - '../certificates:/certificates_to_add'
       - './businessconfig-storage:/businessconfig-storage'
@@ -314,6 +318,7 @@ services:
     #     - "4102:5005"
     environment:
       - SPRING_PROFILES_ACTIVE
+      - TZ=UTC   # Set timezone to UTC
     volumes:
       - '../certificates:/certificates_to_add'
       - './common-docker.yml:/config/common-docker.yml'
@@ -332,6 +337,7 @@ services:
     #     - "4104:5005"
     environment:
       - SPRING_PROFILES_ACTIVE
+      - TZ=UTC   # Set timezone to UTC
     volumes:
       - '../certificates:/certificates_to_add'
       - './common-docker.yml:/config/common-docker.yml'
