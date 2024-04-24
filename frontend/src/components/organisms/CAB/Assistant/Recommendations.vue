@@ -80,7 +80,6 @@ const confirm = ref(false)
 const details = ref(false)
 
 onBeforeMount(() => {
-  console.log('test')
   buttons.value = props.buttons
 })
 

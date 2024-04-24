@@ -84,6 +84,7 @@
           :card="c"
           :window
           :index
+          :now
           :event-fn="eventFn"
           :children="c.children">
           <template #notification="{ card }">
@@ -105,7 +106,7 @@ import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
 import Notification from '@/components/molecules/Notification.vue'
-import TimelineTreeNode from '@/components/molecules/TimelineTreeNode.vue'
+import TimelineTreeNode, { type eventFnType } from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import { useCardsStore } from '@/stores/cards'
 import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
@@ -114,14 +115,16 @@ import { repeatEvery } from '@/utils/utils'
 
 const props = withDefaults(
   defineProps<{
+    now?: Date
     start: number
     end: number
     cards: Card<T>[]
     groupFn?: (card: Card<T>) => string
-    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
+    eventFn?: eventFnType<T>
     entity: T
   }>(),
   {
+    now: undefined,
     groupFn: () => '_DEFAULT',
     eventFn: () => []
   }
@@ -129,7 +132,6 @@ const props = withDefaults(
 
 const cardsStore = useCardsStore()
 
-const now = ref(new Date())
 const window = computed(() => ({
   start: addMinutes(now.value, props.start),
   end: addMinutes(now.value, props.end),
@@ -144,15 +146,20 @@ const cards = computed(() =>
   groupBy(cardsStore.parseTree(cardsStore.cards(props.entity, false)), props.groupFn)
 )
 
-repeatEvery(() => {
-  now.value = new Date()
-}, 60 * 1000)
+const localNow = ref(new Date())
+
+if (!props.now)
+  repeatEvery(() => {
+    localNow.value = new Date()
+  }, 60 * 1000)
+
+const now = computed(() => props.now || localNow.value)
 </script>
 <style lang="scss">
 .cab-timeline {
   display: grid;
   row-gap: var(--spacing-1);
-  overflow-y: auto;
+  overflow: hidden auto;
   scrollbar-gutter: stable;
   scroll-snap-type: y mandatory;
   height: 100%;

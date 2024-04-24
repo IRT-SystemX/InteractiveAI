@@ -4,7 +4,7 @@
     :style="{
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }">
-    <div class="flex">
+    <div class="flex" style="scroll-snap-align: end">
       <slot name="notification" :card>
         <CornerDownRight v-if="isChild" />
         <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
@@ -20,7 +20,12 @@
     <div class="cab-timeline-line"></div>
     <template v-if="!children?.length"></template>
     <div
-      v-for="(event, eventIndex) of [card, ...eventFn(card)]"
+      v-for="(event, eventIndex) of [card, ...eventFn(card)].filter(
+        (ev) =>
+          (isAfter(new Date(ev.startDate), window.start) &&
+            isBefore(new Date(ev.endDate ? ev.endDate : new Date()), window.end)) ||
+          'data' in ev
+      )"
       :key="event.id"
       :style="{
         'grid-column': `${clamp(
@@ -38,6 +43,7 @@
       <div class="cab-timeline-event-icon">
         <template v-if="'name' in event">
           <div
+            class="text-stroke"
             style="
               width: max-content;
               position: absolute;
@@ -49,7 +55,9 @@
             {{ format(new Date(event.startDate), 'p') }}
             <MapPin v-if="eventIndex !== [card, ...eventFn(card)].length - 1" :size="16"></MapPin>
             <Flag v-else :size="16"></Flag>
-            {{ format(new Date(event.endDate), 'p') }}
+            <template v-if="event.startDate !== event.endDate">
+              {{ format(new Date(event.endDate), 'p') }}
+            </template>
           </div>
         </template>
         <slot v-else :card></slot>
@@ -76,6 +84,7 @@
         </div>
         <div
           v-if="'name' in event"
+          class="text-stroke"
           style="position: absolute; width: max-content; left: 50%; transform: translate(-50%)">
           {{ event.name }}
         </div>
@@ -95,6 +104,7 @@
   <TimelineTreeNode
     v-for="(child, i) of children"
     :key="child.id"
+    :now
     :window
     :card="child"
     :index="index + i + 1"
@@ -113,11 +123,16 @@ import { clamp, criticalityToColor } from '@/utils/utils'
 
 import Notification from '../molecules/Notification.vue'
 
+export type eventFnType<T extends Entity = Entity> = (
+  card: Card<T>
+) => { id: string; startDate: number; endDate: number; name: string }[]
+
 withDefaults(
   defineProps<{
+    now: Date
     card: Card<T>
     children?: Card<T>[]
-    eventFn?: (card: Card<T>) => { id: string; startDate: number; endDate: number; name: string }[]
+    eventFn?: eventFnType<T>
     window: { start: Date; end: Date; length: number }
     index: number
     isChild: boolean
