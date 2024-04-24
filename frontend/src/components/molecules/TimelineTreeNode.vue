@@ -20,7 +20,7 @@
     <div class="cab-timeline-line"></div>
     <template v-if="!children?.length"></template>
     <div
-      v-for="(event, eventIndex) of [card, ...eventFn(card)].filter(
+      v-for="(event, eventIndex) of [card, ...events].filter(
         (ev) =>
           (isAfter(new Date(ev.startDate), window.start) &&
             isBefore(new Date(ev.endDate ? ev.endDate : new Date()), window.end)) ||
@@ -53,7 +53,7 @@
               align-items: center;
             ">
             {{ format(new Date(event.startDate), 'p') }}
-            <MapPin v-if="eventIndex !== [card, ...eventFn(card)].length - 1" :size="16"></MapPin>
+            <MapPin v-if="eventIndex !== [card, ...events].length - 1" :size="16"></MapPin>
             <Flag v-else :size="16"></Flag>
             <template v-if="event.startDate !== event.endDate">
               {{ format(new Date(event.endDate), 'p') }}
@@ -115,6 +115,7 @@
 <script setup lang="ts" generic="T extends Entity">
 import { differenceInMinutes, isAfter, isBefore } from 'date-fns'
 import { CornerDownRight, Flag, MapPin } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
@@ -127,7 +128,7 @@ export type eventFnType<T extends Entity = Entity> = (
   card: Card<T>
 ) => { id: string; startDate: number; endDate: number; name: string }[]
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     now: Date
     card: Card<T>
@@ -137,7 +138,14 @@ withDefaults(
     index: number
     isChild: boolean
   }>(),
-  { children: undefined, eventFn: () => [] }
+  {
+    children: undefined,
+    eventFn: undefined
+  }
+)
+
+const events = computed(() =>
+  typeof props.eventFn === 'function' ? props.eventFn(props.card) : []
 )
 </script>
 <style lang="scss">
