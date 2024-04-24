@@ -46,8 +46,8 @@ def test_add_rte_event(
                 "renewable_energy_share": 0.5082022502483139, 
                 "total_consumption": 1177.619999885559, 
                 "distance_from_reference_topology": 0.0,
-                "curtailment_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
-                "redispatching_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                "curtailment_volume": 0.0, 
+                "redispatching_volume": 0.0
             },
         }, 
         "use_case": "RTE", 
@@ -75,8 +75,8 @@ def test_update_rte_event_if_exist(
                 "renewable_energy_share": 0.5082022502483139, 
                 "total_consumption": 1177.619999885559, 
                 "distance_from_reference_topology": 0.0,
-                "curtailment_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
-                "redispatching_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                "curtailment_volume": 0.0, 
+                "redispatching_volume": 0.0
             },
         }, 
         "use_case": "RTE", 
