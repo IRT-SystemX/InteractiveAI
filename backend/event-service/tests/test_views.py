@@ -34,16 +34,23 @@ def test_add_rte_event(
     client, create_usecases, rte_auth_mocker, mock_of_create_cards_request
 ):
     event_data = {
-        "criticality": "ROUTINE",
-        "title": "event with line 1_2_3",
-        "description": "this is a description",
+        "criticality": "MEDIUM", 
+        "title": "Risque sur al\u00e9a N-1 sur la ligne 44_45_126", 
+        "description": "Lignes impact\u00e9es 44_48_133, charge max 149.5%", 
         "data": {
-            "event_type": "KPI",
-            "zone": "Ouest",
-            "line": "1_2_3",
-            "flux": 456.36,
-        },
-        "use_case": "RTE",
+            "event_type": "anticipation", 
+            "line": "44_45_126", 
+            "flux": 149.5, 
+            "kpis": {
+                "max_overload": "", 
+                "renewable_energy_share": 0.5082022502483139, 
+                "total_consumption": 1177.619999885559, 
+                "distance_from_reference_topology": 0.0,
+                "curtailment_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+                "redispatching_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            },
+        }, 
+        "use_case": "RTE", 
         "is_active": False,
     }
     headers = {"Authorization": f"Bearer {RTE_BEARER_TOKEN}"}
@@ -56,16 +63,23 @@ def test_update_rte_event_if_exist(
 ):
 
     event_data = {
-        "criticality": "ROUTINE",
-        "title": "event with line 1_2_3",
-        "description": "this is a description",
+        "criticality": "MEDIUM", 
+        "title": "Risque sur al\u00e9a N-1 sur la ligne 44_45_126", 
+        "description": "Lignes impact\u00e9es 44_48_133, charge max 149.5%", 
         "data": {
-            "event_type": "KPI",
-            "zone": "Ouest",
-            "line": "1_2_3",
-            "flux": 456.36,
-        },
-        "use_case": "RTE",
+            "event_type": "anticipation", 
+            "line": "44_45_126", 
+            "flux": 149.5, 
+            "kpis": {
+                "max_overload": "", 
+                "renewable_energy_share": 0.5082022502483139, 
+                "total_consumption": 1177.619999885559, 
+                "distance_from_reference_topology": 0.0,
+                "curtailment_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+                "redispatching_volume": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            },
+        }, 
+        "use_case": "RTE", 
         "is_active": False,
     }
     headers = {"Authorization": f"Bearer {SNCF_BEARER_TOKEN}"}

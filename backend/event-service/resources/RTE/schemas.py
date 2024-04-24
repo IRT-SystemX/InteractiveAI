@@ -14,3 +14,4 @@ class MetadataSchemaRTE(MetadataSchema):
     zone = String(validate=OneOf(["Est", "Ouest", "Centre"]))
     line = String(required=True)
     flux = Float()
+    kpis = dict(required=True)
