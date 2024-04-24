@@ -34,7 +34,7 @@ def test_add_rte_event(
     client, create_usecases, rte_auth_mocker, mock_of_create_cards_request
 ):
     event_data = {
-        "criticality": "MEDIUM", 
+        "criticality": "ROUTINE", 
         "title": "Risque sur al\u00e9a N-1 sur la ligne 44_45_126", 
         "description": "Lignes impact\u00e9es 44_48_133, charge max 149.5%", 
         "data": {
@@ -63,7 +63,7 @@ def test_update_rte_event_if_exist(
 ):
 
     event_data = {
-        "criticality": "MEDIUM", 
+        "criticality": "ROUTINE", 
         "title": "Risque sur al\u00e9a N-1 sur la ligne 44_45_126", 
         "description": "Lignes impact\u00e9es 44_48_133, charge max 149.5%", 
         "data": {
