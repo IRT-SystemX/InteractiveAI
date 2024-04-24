@@ -18,7 +18,7 @@ class RTEEventManager(BaseEventManager):
         # Create a new card (notification)
         of_response = self.create_card(start_date, end_date, data)
         data["of_uid"] = of_response.get("uid")
-        # Trace in histric service
+        # Trace in historic service
         self.trace_event(start_date, end_date, data)
 
         # Save event to database
