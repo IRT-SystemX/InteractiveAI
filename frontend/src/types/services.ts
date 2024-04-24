@@ -7,6 +7,7 @@ export type Recommendation<T extends Entity = Entity> = {
   description: string
   title: string
   actions: Action<T>[]
+  kpis?: { [key: string]: any }
 }
 
 export type FullContext<T extends Entity = Entity> = {

@@ -55,6 +55,7 @@
       {{ $t('recommendations.description.more', { sign: details ? '-' : '+' }) }}
     </Button>
   </div>
+  <slot name="footer"></slot>
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { CircleX, ThumbsDown } from 'lucide-vue-next'
