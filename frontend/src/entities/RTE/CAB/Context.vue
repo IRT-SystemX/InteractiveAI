@@ -8,7 +8,12 @@
         class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
     </template>
-    <Notification :card></Notification>
+    <Notification :card :top="1" :right="1"></Notification>
+    <Notification :card :top="1" :left="1">
+      <template #title>KPIs</template>
+      <b></b>
+      <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">{{ key }} {{ value }}</div>
+    </Notification>
   </Context>
 </template>
 <script setup lang="ts">

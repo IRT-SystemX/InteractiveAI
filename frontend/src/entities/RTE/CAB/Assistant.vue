@@ -22,6 +22,35 @@
         <template #button>
           <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
+        <template #footer>
+          <table>
+            <thead>
+              <tr>
+                <th>KPI</th>
+                <th
+                  v-for="recommendation of servicesStore.recommendations('RTE')"
+                  :key="recommendation.title">
+                  {{ recommendation.title }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="kpi of servicesStore.recommendations('RTE').reduce((acc, cur) => {
+                  if (cur.kpis) acc.concat(Object.keys(cur.kpis))
+                  return acc
+                }, [] as string[])"
+                :key="kpi">
+                <td>{{ kpi }}</td>
+                <td
+                  v-for="recommendation of servicesStore.recommendations('RTE')"
+                  :key="recommendation.title">
+                  {{ recommendation.kpis?.[kpi] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </template>
       </Recommendations>
     </Default>
   </section>
