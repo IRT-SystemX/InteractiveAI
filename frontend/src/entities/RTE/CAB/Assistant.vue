@@ -35,17 +35,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="kpi of servicesStore.recommendations('RTE').reduce((acc, cur) => {
-                  if (cur.kpis) acc.concat(Object.keys(cur.kpis))
-                  return acc
-                }, [] as string[])"
-                :key="kpi">
-                <td>{{ kpi }}</td>
+              <tr v-for="(_, key) of servicesStore.recommendations('RTE')[0].kpis" :key="key">
+                <td>{{ key }}</td>
                 <td
                   v-for="recommendation of servicesStore.recommendations('RTE')"
                   :key="recommendation.title">
-                  {{ recommendation.kpis?.[kpi] }}
+                  {{ recommendation.kpis?.[key] }}
                 </td>
               </tr>
             </tbody>
