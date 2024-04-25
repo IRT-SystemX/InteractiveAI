@@ -16,9 +16,8 @@ class RTEManager(AgentManager, BaseRecommendation):
         super().__init__()
 
     def get_recommendation(self, request_data):
-
-        self.recommendate(request_data.get("context", {}))
-        logger.info("getting parades")
+        self.recommendate(request_data.get("context", {}).get("observation"))
+        logger.info("Getting parades")
         parades = self.getlistOfParadeInfo()
 
         onto_recommendation = []
@@ -27,65 +26,130 @@ class RTEManager(AgentManager, BaseRecommendation):
         event_line = event_data.get("line")
         event_flow = event_data.get("flux")
         if event_id and event_line and event_flow:
-            logger.info("getting ontology recommendation")
+            logger.info("Getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(
                 event_id, event_line, event_flow)
+            logger.info(onto_recommendation)
+            print(onto_recommendation)
         # both parades & onto_recommendation should be lists on the same format
         return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_id, event_line, event_flow):
         # Loading ontology
         RTE_onto = get_ontology(self.owl_file_path).load()
+        # Get all powerlines 
+        powerlines_query = """
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+            PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
+            
+            SELECT DISTINCT ?line
+            WHERE {{
+                ?line rdf:type cab:Powerline .
+            }}
+        """
 
-        # Creation of the RDF instances
-        issue_test = RTE_onto.Issue(event_id)
-        powerline_test = RTE_onto.Powerline(event_line)
-        rho_test = RTE_onto.Rho("rho_test")
+        powerlines_list = list(RTE_onto.world.sparql(powerlines_query))
 
-        # Linking between the RDF instances
-        issue_test.has_measurement.append(rho_test)
-        rho_test.has_value = event_flow
-        rho_test.is_about.append(powerline_test)
+        our_powerline = "powerline_"+event_line
 
-        # Updating the knowledge graph with RDF instances
-        RTE_onto.save(file=self.owl_file_path, format="rdfxml")
+        selected_powerline = None
 
-        # Launching the reasoner to inference data
-        RTE_onto_inferences = get_ontology(self.owl_file_path).load()
-        with RTE_onto_inferences:
-            sync_reasoner(infer_property_values=True)
 
-        for i in RTE_onto_inferences.Powerline_overload_issue.instances():
-            print(i)
+        for powerline in powerlines_list:
 
-        print(RTE_onto_inferences.issue_test)
+            if our_powerline in str(powerline[0]) :
+                selected_powerline = str(powerline[0])
+                break  
 
-        if isinstance(issue_test, RTE_onto_inferences.Powerline_overload_issue):
-            results = list(default_world.sparql("""
-                    SELECT DISTINCT ?similarIssue ?line ?rhovalue ?pastAction
-                    { 
-                        ?similarIssue a Onto2grid_v1.2:Powerline_overload_issue .
-                        ?similarIssue Onto2grid_v1.2:is_associated_with ?pastAction .
-                        ?rho a Onto2grid_v1.2:Rho .
-                        ?rho Onto2grid_v1.2:has_value ?rhovalue .
-                        ?rho  Onto2grid_v1.2:is_about ?line
-                        ?similarIssue Onto2grid_v1.2:has_measurement ?rho .
+
+        parts_prefix = selected_powerline.split('.')
+        prefix_onto = parts_prefix[0] + '.' 
+        selected_powerline = selected_powerline.replace(prefix_onto,"")
+
+        selected_powerline_iri = "http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#" + selected_powerline
+
+
+
+        ## Get all similar situations 
+        similar_situations_query = """
+            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+            PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
+        
+        SELECT DISTINCT ?similarIssue ?line ?pastActionText ?category ?efficacity 
+                    {{ 
+                        ?similarIssue a cab:Powerline_overload_issue .
+                        ?similarIssue cab:is_associated_with ?pastAction .
+                        ?pastAction cab:has_initial_value ?pastActionText .
+                        ?pastAction rdf:type ?category .
+                        ?initial a cab:Initial_situation . 
+                        ?initial cab:has_part ?pastAction .
+                        ?line a cab:Powerline . 
+                        ?initial cab:is_about ?line . 
+                        ?rho a  cab:Rho .
+                        ?similarIssue cab:has_measurement ?rho .
+                        ?rho cab:has_final_value ?efficacity
+                        FILTER (?category != <http://www.w3.org/2002/07/owl#NamedIndividual>)
+                        FILTER (?line = <{line}>)
+                    }}
+                """.format(line=selected_powerline_iri)
+
+        similar_situations = list(RTE_onto.world.sparql(similar_situations_query))
+        output_list = []
+        if similar_situations:
+            # compute number of situations and rho max
+            distinct_recommendations = set()
+            rho_max = min(sublist[-1] for sublist in similar_situations)
+            
+            for situation in similar_situations:
+                recommendation = str(situation[2])
+                category = str(situation[3])
+                category = category.replace(prefix_onto,"")
+                efficacity = situation[4]
+                if recommendation not in distinct_recommendations:
+                    distinct_recommendations.add(recommendation)
+
+                    nb_past_Actions_query = f"""
+                        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                        PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+                        PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                        PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>  
+
+                    SELECT (COUNT(?pastActionText) AS ?count)
+                    WHERE {{
+                        ?similarIssue a cab:Powerline_overload_issue .
+                        ?similarIssue cab:is_associated_with ?pastAction .
+                        ?pastAction cab:has_initial_value ?pastActionText .
+                        ?initial a cab:Initial_situation . 
+                        ?initial cab:has_part ?pastAction .
+                        ?line a cab:Powerline . 
+                        ?initial cab:is_about ?line . 
+                        FILTER (?line = <{selected_powerline_iri}> && CONTAINS(?pastActionText, '{recommendation}'))
+                    }}
+                    """
+                    nb_similar_situations = list(RTE_onto.world.sparql(nb_past_Actions_query))[0][0]
+                    output_json = {
+                        "title":recommendation,
+                        "description":f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
+                        "use_case":"RTE",
+                        "agent_type":AgentType.onto.name,
+                        "actions":[{}],
+                        "kpis":{
+                        "type_of_the_reco":category,
+                        "efficiency_of_the_reco":rho_max
+                        }
                     }
-                    """))
-            print("Here is a list of similar situations:", results)
-
-        # Updating the knowledge graph by including an RDF triple <issue_test, associated_with, Change_bus_vect_test>
-        set_bus_test = RTE_onto_inferences.Change_bus_vect("set_bus_test")
-        issue_test.is_associated_with.append(set_bus_test)
-
-        action = str(RTE_onto_inferences.get_parents_of(set_bus_test)[0])
-
-        if action == 'Onto2grid_v1.2.Change_bus_vect':
-            title = "Changer le bus"
-        elif action == "Onto2grid_v1.2.Disconnect_line":
-            title = "Deconnecter la ligne"
-        else:
-            title = "Parade non identifiée"
-
-        recommendation = {"title":title, "description":"", "use_case":"RTE", "agent_type":AgentType.onto.name, "actions":[{}], "kpis": "TO DO"}
-        return [recommendation]
+            
+        return [output_json]
