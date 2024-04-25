@@ -1,7 +1,7 @@
 from .base_recommendation import BaseRecommendation
 from flask import current_app
 import os
-from resources.sncf.sncf_cab_recommender import Recommender
+from resources.sncf.ia_flatland.src.flatland_ai.recommender import Recommender
 from owlready2 import default_world, get_ontology
 from marshmallow.exceptions import ValidationError
 
