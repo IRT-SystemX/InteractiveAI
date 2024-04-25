@@ -52,9 +52,9 @@ class AgentManager:
         for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
             sp_end = os.path.basename(sp)
             if sp_end == config_assistant['scenario_name']:
-                id_scenario = id
+                self.id_scenario = id
         #id_scenario = search_chronic_num_from_name(config_assistant['scenario_name'], self.env)
-        self.env.set_id(id_scenario)  # Scenario choice
+        self.env.set_id(self.id_scenario)  # Scenario choice
         self.obs = self.env.reset()
 
         #self.obs = self.env.observation_space(self.env)
@@ -85,6 +85,13 @@ class AgentManager:
         self.action_do_nothing = self.env.action_space({})
 
 
+    def reset_obs_if_needed(self, obs_dict):
+        if self.nb_timestep < 0 :
+            self.env.set_id(self.id_scenario)
+            self.obs = self.env.reset()
+            self.previous_step = "1"
+            self.get_nbOfTimestepSinceLastObs(obs_dict)
+
     def get_nbOfTimestepSinceLastObs(self, obs_dict):
         self.nb_timestep = int(obs_dict.get("current_step")[
                                0]) - int(self.previous_step)
@@ -92,6 +99,7 @@ class AgentManager:
 
     def recommendate(self, obs_dict, n_actions=3):
         self.get_nbOfTimestepSinceLastObs(obs_dict)
+        self.reset_obs_if_needed(obs_dict)
         if self.nb_timestep > 1: #no sense to fast-forward only for next time step ?
             self.env.fast_forward_chronics(self.nb_timestep)
             self.previous_step = obs_dict.get("current_step")[0]
@@ -105,12 +113,14 @@ class AgentManager:
         return self.recommendations
 
     def getParadeInfo(self, act):
+        kpis = {}
         title = []
         description = []
         impact = act.impact_on_objects()
 
         # redispatch
         if act._modif_redispatch:
+            kpis["type_of_the_reco"] = "Redispatch"  #pour renvoyer le kpi type_of_the_reco
             title.append(
                 "Parade injection: redispatch de source de production"
             )
@@ -127,6 +137,7 @@ class AgentManager:
 
         # storage
         if act._modif_storage:
+            kpis["type_of_the_reco"] = "Stockage"  #pour renvoyer le kpi type_of_the_reco
             title.append("Parade stockage")
             cpt = 0
             for stor_idx in range(act.n_storage):
@@ -147,6 +158,7 @@ class AgentManager:
 
         # curtailment
         if act._modif_curtailment:
+            kpis["type_of_the_reco"] = "Injection"  #pour renvoyer le kpi type_of_the_reco
             title.append("Parade injection")
             cpt = 0
             for gen_idx in range(act.n_gen):
@@ -163,6 +175,7 @@ class AgentManager:
         # force line status
         force_line_impact = impact["force_line"]
         if force_line_impact["changed"]:
+            kpis["type_of_the_reco"] = "Topologique"  #pour renvoyer le kpi type_of_the_reco
             title.append(
                 'Parade topologique: connection/deconnection de ligne')
             reconnections = force_line_impact["reconnections"]
@@ -182,6 +195,7 @@ class AgentManager:
         # swtich line status
         swith_line_impact = impact["switch_line"]
         if swith_line_impact["changed"]:
+            kpis["type_of_the_reco"] = "Topologique"  #pour renvoyer le kpi type_of_the_reco
             title.append('Parade topologique: changer l\'état d\'une ligne')
             description.append(
                 "Changer le statut de {} lignes ({})".format(
@@ -192,6 +206,7 @@ class AgentManager:
         # topology
         bus_switch_impact = impact["topology"]["bus_switch"]
         if len(bus_switch_impact) > 0:
+            kpis["type_of_the_reco"] = "Topologique"  #pour renvoyer le kpi type_of_the_reco
             title.append(
                 'Parade topologique: prise de schéma au poste ' + str(switch["substation"]))
             description.append("Changement de bus:")
@@ -205,6 +220,7 @@ class AgentManager:
         assigned_bus_impact = impact["topology"]["assigned_bus"]
         disconnect_bus_impact = impact["topology"]["disconnect_bus"]
         if len(assigned_bus_impact) > 0 or len(disconnect_bus_impact) > 0:
+            kpis["type_of_the_reco"] = "Topologique"  #pour renvoyer le kpi type_of_the_reco
             title.append('Parade topologique: prise de schéma au poste ' +
                          str(assigned_bus_impact[0]["substation"]))
             if assigned_bus_impact:
@@ -238,12 +254,18 @@ class AgentManager:
 
         # Any of the above cases, then the recommendation is most likely "Do nothing"
         if not title and act == self.action_do_nothing :
+            kpis["type_of_the_reco"] = "Ne rien faire" #pour renvoyer le kpi type_of_the_reco
             title.append('Poursuivre')
             description.append("Poursuite du scénario sans intervention extérieur")
 
         title = "".join(title)
         description = "".join(description)
-        return {"title":title, "description":description, "use_case":"RTE", "agent_type":AgentType.IA.name, "actions":[act.to_json()]}
+
+        if title:
+            obs_simulate, reward_simulate, done_simulate, info_simulate = self.obs.simulate(act, time_step = 1)
+            kpis["efficiency_of_the_reco"] = float(np.float32(obs_simulate.rho.max())) #pour renvoyer le kpi efficiency_of_the_reco
+
+        return {"title":title, "description":description, "use_case":"RTE", "agent_type":AgentType.IA.name, "actions":[act.to_json()], "kpis":kpis}
 
     def getlistOfParadeInfo(self):
         list_of_act_dict = []
@@ -255,36 +277,50 @@ class AgentManager:
 
 
 if __name__ == '__main__':
-    # Parameters for this example
+    ## Parameters for this example
     iteration_in_cab = range(10)
     event_received = False
     context_received = False
 
-    # Init (must be used in CAB)
+    ## Init (must be used in CAB)
     agentM = AgentManager()
+    #print(agentM.env.chronics_handler.get_name())
 
-    # Input from RTE simulator (for this example)
-    obs_backup = agentM.obs
-    with open('obs88.json') as mon_fichier:
-        obs_dict = json.load(mon_fichier)
-    # print(obs_dict)
+    ## Input from RTE simulator (for this example)
+    #obs_backup = agentM.obs
+    with open('obs153.json') as mon_fichier1:
+        obs_dict1 = json.load(mon_fichier1)
+    # print(obs_dict1)
 
+    ## To test reset function
+    with open('obs88.json') as mon_fichier2:
+        obs_dict2 = json.load(mon_fichier2)
+    # print(obs_dict2)
+
+    obs_dict = None
     for ii in iteration_in_cab:
         print('Simulation iteration : ', ii)
-        if ii == 3:
+        if ii == 3 or ii == 6:
             event_received = True
             context_received = True
+            if ii == 3:
+                obs_dict = obs_dict1
+            elif ii == 6:
+                obs_dict = obs_dict2
         else:
             event_received = False
             context_received = False
+            obs_dict = None
 
         if event_received and context_received:
             # Main calls to use in CAB in this same order any time both an event and a context is received
-            nb_of_timestep = agentM.get_nbOfTimestepSinceLastObs(obs_dict)
             recommendation = agentM.recommendate(obs_dict)
             parades = agentM.getlistOfParadeInfo()
 
             # Test for this example (Should be remove)
-            print("nb_of_timestep = ", nb_of_timestep)
+            print("nb_of_timestep = ", agentM.nb_timestep)
             print("recommendation = ", recommendation)
+            parades_json = json.dumps(parades)
+            '''with open("parades_json", "w") as f:
+                f.write(parades_json)'''
             print("parades = ", parades)

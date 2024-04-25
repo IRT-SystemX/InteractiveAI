@@ -87,5 +87,5 @@ class RTEManager(AgentManager, BaseRecommendation):
         else:
             title = "Parade non identifiée"
 
-        recommendation = {"title":title, "description":"", "use_case":"RTE", "agent_type":AgentType.onto.name, "actions":[{}]}
+        recommendation = {"title":title, "description":"", "use_case":"RTE", "agent_type":AgentType.onto.name, "actions":[{}], "kpis": "TO DO"}
         return [recommendation]
