@@ -72,7 +72,8 @@ export type RTE = {
       renewable_energy_share: number
       total_consumption: number
       distance_from_reference_topology: number
-      redispatching_volume: number[]
+      curtailment_volume: number
+      redispatching_volume: number
     }
   }
   Action: {
