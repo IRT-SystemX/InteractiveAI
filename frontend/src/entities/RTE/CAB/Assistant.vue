@@ -22,29 +22,37 @@
         <template #button>
           <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
-        <template #footer>
-          <table>
-            <thead>
-              <tr>
-                <th>KPI</th>
-                <th
-                  v-for="(recommendation, index) of servicesStore.recommendations('RTE')"
-                  :key="recommendation.title">
-                  P{{ index }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(_, key) of servicesStore.recommendations('RTE')[0]?.kpis" :key="key">
-                <td>{{ $t(`rte.kpis.${key}`) }}</td>
-                <td
-                  v-for="recommendation of servicesStore.recommendations('RTE')"
-                  :key="recommendation.title">
-                  {{ recommendation.kpis?.[key]?.toFixed(4) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <template #footer="{ selected }">
+          <div class="scrollable-y">
+            <table v-if="recommendations.length">
+              <thead>
+                <tr>
+                  <th>KPI</th>
+                  <th
+                    v-for="(recommendation, index) of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    P{{ index }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(_, key) of recommendations[0].kpis" :key="key">
+                  <td>{{ $t(`rte.kpis.${key}`) }}</td>
+                  <td
+                    v-for="recommendation of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    {{
+                      isFinite(recommendation.kpis?.[key])
+                        ? recommendation.kpis?.[key].toFixed(4)
+                        : recommendation.kpis?.[key]
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </template>
       </Recommendations>
     </Default>
@@ -106,3 +114,22 @@ function primaryAction() {
   eventBus.emit('assistant:tab', 2)
 }
 </script>
+<style scoped lang="scss">
+table {
+  overflow: auto;
+  width: 100%;
+  border-collapse: collapse;
+  tr > * {
+    border-right: 2px solid var(--color-background);
+    text-align: center;
+  }
+  thead tr,
+  tbody tr:nth-child(even) {
+    background-color: var(--color-grey-200);
+  }
+
+  .active {
+    background-color: var(--color-grey-300);
+  }
+}
+</style>

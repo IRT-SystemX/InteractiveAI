@@ -3,7 +3,7 @@ import type { Action, Context, Entity } from './entities'
 import type { DateMillisecondsFormat, UUID } from './formats'
 export type Recommendation<T extends Entity = Entity> = {
   agent_type: 'IA'
-  use_case: Entity
+  use_case: T
   description: string
   title: string
   actions: Action<T>[]

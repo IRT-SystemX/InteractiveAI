@@ -9,5 +9,13 @@
   "recommendations.button1": "Cost",
   "recommendations.button2": "LTTD > 2h",
   "recommendations.description": "Parry description",
-  "recommendations.modal": "You are about to apply the {recommendation} parry. Would you like to continue ?"
+  "recommendations.modal": "You are about to apply the {recommendation} parry. Would you like to continue ?",
+  "rte.kpis.curtailment_volume": "Curtailment volume",
+  "rte.kpis.distance_from_reference_topology": "Distance to reference topology",
+  "rte.kpis.efficiency": "Maximum charge",
+  "rte.kpis.max_overload": "Maximum line load",
+  "rte.kpis.redispatching_volume": "Redispatch volume",
+  "rte.kpis.renewable_energy_share": "Proportion of renewable",
+  "rte.kpis.total_consumption": "Total consumption",
+  "rte.kpis.type": "Type of parade"
 }
