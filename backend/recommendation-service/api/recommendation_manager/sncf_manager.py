@@ -21,6 +21,7 @@ class SNCFManager(BaseRecommendation):
         context_data = request_data.get("context", {})
         event_data = request_data.get("event", {})
 
+        """
         ai_transport_plan, ai_title, ai_description = (
             self.recommender.recommend(context_data, event_data, model="ai")
         )
@@ -31,6 +32,7 @@ class SNCFManager(BaseRecommendation):
             "agent_type": "IA",
             "actions": [ai_transport_plan],
         }
+        """
 
         heuristic_transport_plan, heuristic_title, heuristic_description = (
             self.recommender.recommend(context_data, event_data, model="heuristic")
@@ -56,7 +58,7 @@ class SNCFManager(BaseRecommendation):
         }
         """
 
-        recommendation = [ai_recommendation, heuristic_recommendation]
+        recommendation = [heuristic_recommendation]
 
         return recommendation
 
