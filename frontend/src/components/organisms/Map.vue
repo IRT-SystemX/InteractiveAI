@@ -71,7 +71,7 @@ onMounted(() => {
           fillOpacity: 1,
           ...(waypoint.options as CircleMarkerOptions)
         })
-          .bindTooltip(waypoint.id, { direction: 'top' })
+          .bindTooltip(waypoint.id, { direction: 'top', permanent: waypoint.permanent })
           .addTo(map!)
         waypointsL.value.push({ id: waypoint.id, L: marker })
       }
