@@ -31,8 +31,10 @@
     :class="{ selected: recommendation?.title === selected?.title }"
     orientation="right"
     @click="
-      selected = recommendation
-      $emit('hover', recommendation)
+      () => {
+        selected = recommendation
+        $emit('hover', recommendation)
+      }
     ">
     <slot :recommendation>
       <h1>{{ recommendation.title }}</h1>

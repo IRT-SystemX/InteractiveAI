@@ -169,12 +169,7 @@ const props = withDefaults(
 const cards = computed(() => cardsStore.cards(props.entity, hasBeenAcknowledged.value))
 
 function filtered(fn: (typeof props.sections)[number]['filter']) {
-  const test = groupBy(
-    cardsStore.parseTree(cardsStore.cards(props.entity, hasBeenAcknowledged.value).filter(fn)),
-    props.groupFn
-  )
-  console.log(test)
-  return test
+  return groupBy(cardsStore.parseTree(cards.value.filter(fn)), props.groupFn)
 }
 
 const hasBeenAcknowledged = ref(false)
