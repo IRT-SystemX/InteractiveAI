@@ -33,7 +33,7 @@
           window.length + 1,
           2
         )} / ${clamp(
-          differenceInMinutes(event.endDate ? new Date(event.endDate) : new Date(), window.start) +
+          differenceInMinutes(event.endDate ? new Date(event.endDate) : window.end, window.start) +
             2,
           window.length + 1,
           2
@@ -63,7 +63,7 @@
         <slot v-else :card></slot>
       </div>
       <div
-        v-if="!('name' in event)"
+        v-if="!('name' in event) && events.length"
         class="cab-timeline-event-icon"
         style="float: right; font-size: 0.75em; font-weight: bold"
         :class="criticalityToColor(event.data.criticality)">
