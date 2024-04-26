@@ -9,5 +9,13 @@
   "recommendations.button1": "Coût",
   "recommendations.button2": "LTTD > 2h",
   "recommendations.description": "Description parade",
-  "recommendations.modal": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?"
+  "recommendations.modal": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?",
+  "rte.kpis.efficiency_of_the_reco": "Charge maximale",
+  "rte.kpis.max_overload": "Charge maximale des lignes",
+  "rte.kpis.renewable_energy_share": "Proportion de renouvelable",
+  "rte.kpis.total_consumption": "Consommation totale",
+  "rte.kpis.distance_from_reference_topology": "Distance à la topologie de référence",
+  "rte.kpis.curtailment_volume": "Volume de curtailment",
+  "rte.kpis.redispatching_volume": "Volume de redispatching",
+  "rte.kpis.type_of_the_reco": "Type de la parade"
 }

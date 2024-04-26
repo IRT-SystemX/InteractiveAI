@@ -4,7 +4,7 @@
       <i18n-t scope="global" keypath="recommendations.modal">
         <template #recommendation>
           <strong style="color: var(--color-primary)">
-            {{ selected.title }}
+            {{ selected?.title }}
           </strong>
         </template>
       </i18n-t>
@@ -55,7 +55,7 @@
       {{ $t('recommendations.description.more', { sign: details ? '-' : '+' }) }}
     </Button>
   </div>
-  <slot name="footer"></slot>
+  <slot name="footer" :recommendations :selected></slot>
 </template>
 <script setup lang="ts" generic="T extends Entity">
 import { CircleX, ThumbsDown } from 'lucide-vue-next'
@@ -72,10 +72,11 @@ const props = withDefaults(
   { collapsed: false }
 )
 const emit = defineEmits<{
+  'update:recommendations': [recommendation: Recommendation<T>[]]
   selected: [recommendation: Recommendation<T>]
 }>()
 
-const selected = ref<any>()
+const selected = ref<Recommendation<T>>()
 const buttons = ref<typeof props.buttons>()
 const confirm = ref(false)
 const details = ref(false)
@@ -85,7 +86,7 @@ onBeforeMount(() => {
 })
 
 function close(_: any, res: 'ok' | 'ko') {
-  if (res === 'ok') emit('selected', selected.value)
+  if (res === 'ok') emit('selected', selected.value!)
   confirm.value = false
 }
 
@@ -94,6 +95,10 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
 }
 
 function downvote(recommendation: Recommendation<T>) {
+  emit(
+    'update:recommendations',
+    props.recommendations.filter((rec) => rec.title !== recommendation.title)
+  )
   console.log(recommendation) // TODO
 }
 </script>

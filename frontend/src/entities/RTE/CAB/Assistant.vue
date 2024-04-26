@@ -9,8 +9,8 @@
       </Event>
       <Recommendations
         v-if="tab === 2"
+        v-model:recommendations="recommendations"
         :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
-        :recommendations="servicesStore.recommendations('RTE')"
         @selected="onSelection">
         <template #default="{ recommendation }">
           <div class="flex">
@@ -22,34 +22,37 @@
         <template #button>
           <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
-        <template #footer>
-          <table>
-            <thead>
-              <tr>
-                <th>KPI</th>
-                <th
-                  v-for="recommendation of servicesStore.recommendations('RTE')"
-                  :key="recommendation.title">
-                  {{ recommendation.title }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="kpi of servicesStore.recommendations('RTE').reduce((acc, cur) => {
-                  if (cur.kpis) acc.concat(Object.keys(cur.kpis))
-                  return acc
-                }, [] as string[])"
-                :key="kpi">
-                <td>{{ kpi }}</td>
-                <td
-                  v-for="recommendation of servicesStore.recommendations('RTE')"
-                  :key="recommendation.title">
-                  {{ recommendation.kpis?.[kpi] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <template #footer="{ selected }">
+          <div class="scrollable-y">
+            <table v-if="recommendations.length">
+              <thead>
+                <tr>
+                  <th>KPI</th>
+                  <th
+                    v-for="(recommendation, index) of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    P{{ index }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(_, key) of recommendations[0].kpis" :key="key">
+                  <td>{{ $t(`rte.kpis.${key}`) }}</td>
+                  <td
+                    v-for="recommendation of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    {{
+                      isFinite(recommendation.kpis?.[key])
+                        ? recommendation.kpis?.[key].toFixed(4)
+                        : recommendation.kpis?.[key]
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </template>
       </Recommendations>
     </Default>
@@ -69,23 +72,26 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Recommendation } from '@/types/services'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
 
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
+const recommendations = ref<Recommendation<'RTE'>[]>([])
 
 eventBus.on('assistant:selected:RTE', (selected) => {
   card.value = selected
   tab.value = 1
 })
 
-eventBus.on('assistant:tab', (index) => {
+eventBus.on('assistant:tab', async (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation(card.value?.data.metadata!)
+      await servicesStore.getRecommendation(card.value?.data.metadata!)
+      recommendations.value = servicesStore.recommendations('RTE')
   }
 })
 
@@ -108,3 +114,22 @@ function primaryAction() {
   eventBus.emit('assistant:tab', 2)
 }
 </script>
+<style scoped lang="scss">
+table {
+  overflow: auto;
+  width: 100%;
+  border-collapse: collapse;
+  tr > * {
+    border-right: 2px solid var(--color-background);
+    text-align: center;
+  }
+  thead tr,
+  tbody tr:nth-child(even) {
+    background-color: var(--color-grey-200);
+  }
+
+  .active {
+    background-color: var(--color-grey-300);
+  }
+}
+</style>

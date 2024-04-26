@@ -12,7 +12,10 @@
     <Notification :card :top="1" :left="1">
       <template #title>KPIs</template>
       <b></b>
-      <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">{{ key }} {{ value }}</div>
+      <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">
+        <b>{{ $t(`rte.kpis.${key}`) }}</b>
+        {{ isFinite(+value) ? (value as number).toFixed(4) : value }}
+      </div>
     </Notification>
   </Context>
 </template>
