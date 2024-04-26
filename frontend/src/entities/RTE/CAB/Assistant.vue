@@ -9,8 +9,8 @@
       </Event>
       <Recommendations
         v-if="tab === 2"
+        v-model:recommendations="recommendations"
         :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
-        :recommendations="servicesStore.recommendations('RTE')"
         @selected="onSelection">
         <template #default="{ recommendation }">
           <div class="flex">
@@ -28,19 +28,19 @@
               <tr>
                 <th>KPI</th>
                 <th
-                  v-for="recommendation of servicesStore.recommendations('RTE')"
+                  v-for="(recommendation, index) of servicesStore.recommendations('RTE')"
                   :key="recommendation.title">
-                  {{ recommendation.title }}
+                  P{{ index }}
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(_, key) of servicesStore.recommendations('RTE')[0].kpis" :key="key">
-                <td>{{ key }}</td>
+              <tr v-for="(_, key) of servicesStore.recommendations('RTE')[0]?.kpis" :key="key">
+                <td>{{ $t(`rte.kpis.${key}`) }}</td>
                 <td
                   v-for="recommendation of servicesStore.recommendations('RTE')"
                   :key="recommendation.title">
-                  {{ recommendation.kpis?.[key] }}
+                  {{ recommendation.kpis?.[key]?.toFixed(4) }}
                 </td>
               </tr>
             </tbody>
@@ -64,23 +64,26 @@ import eventBus from '@/plugins/eventBus'
 import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
+import type { Recommendation } from '@/types/services'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
 
 const card = ref<Card<'RTE'>>()
 const tab = ref(0)
+const recommendations = ref<Recommendation<'RTE'>[]>([])
 
 eventBus.on('assistant:selected:RTE', (selected) => {
   card.value = selected
   tab.value = 1
 })
 
-eventBus.on('assistant:tab', (index) => {
+eventBus.on('assistant:tab', async (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      servicesStore.getRecommendation(card.value?.data.metadata!)
+      await servicesStore.getRecommendation(card.value?.data.metadata!)
+      recommendations.value = servicesStore.recommendations('RTE')
   }
 })
 
