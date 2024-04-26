@@ -31,12 +31,12 @@
           </button>
         </Tooltip>
       </header>
-      <div v-if="Object.keys(cards).length" class="card-container">
+      <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
         <template
-          v-for="key of Object.keys(cards).sort((a, b) => {
+          v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
             return (
               CriticalityArray.indexOf(
-                cards[b].reduce(
+                filtered(section.filter)[b].reduce(
                   (prev: Criticality, curr) =>
                     CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                       ? curr.data.criticality
@@ -45,7 +45,7 @@
                 )
               ) -
               CriticalityArray.indexOf(
-                cards[a].reduce(
+                filtered(section.filter)[a].reduce(
                   (prev: Criticality, curr) =>
                     CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                       ? curr.data.criticality
@@ -59,7 +59,7 @@
           <Notification
             v-if="key !== '_DEFAULT'"
             :criticality="
-              cards[key].reduce(
+              filtered(section.filter)[key].reduce(
                 (prev: Criticality, curr) =>
                   CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                     ? curr.data.criticality
@@ -72,15 +72,19 @@
               <header
                 class="flex flex-1"
                 :style="{
-                  color: cards[key].every((c) => c.read) ? 'var(--color-grey-600)' : undefined
+                  color: filtered(section.filter)[key].every((c) => c.read)
+                    ? 'var(--color-grey-600)'
+                    : undefined
                 }">
                 <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
-                <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
+                <aside>
+                  {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
+                </aside>
               </header>
             </div>
           </Notification>
           <NotificationTreeNode
-            v-for="c of cards[key]"
+            v-for="c of filtered(section.filter)[key]"
             :key="c.id"
             :card="c"
             :is-child="key !== '_DEFAULT'">
@@ -162,12 +166,16 @@ const props = withDefaults(
   }
 )
 
-const cards = computed(() =>
-  groupBy(
-    cardsStore.parseTree(cardsStore.cards(props.entity, hasBeenAcknowledged.value)),
+const cards = computed(() => cardsStore.cards(props.entity, hasBeenAcknowledged.value))
+
+function filtered(fn: (typeof props.sections)[number]['filter']) {
+  const test = groupBy(
+    cardsStore.parseTree(cardsStore.cards(props.entity, hasBeenAcknowledged.value).filter(fn)),
     props.groupFn
   )
-)
+  console.log(test)
+  return test
+}
 
 const hasBeenAcknowledged = ref(false)
 const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
