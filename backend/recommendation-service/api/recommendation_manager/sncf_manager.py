@@ -50,7 +50,7 @@ class SNCFManager(BaseRecommendation):
             self.recommender.recommend(context_data, event_data, model="fake")
         )
         fake_recommendation = {
-            "title": fake_title,
+            "title": "banalisation : " + fake_title,
             "description": fake_description,
             "use_case": "SNCF",
             "agent_type": "Fake",
