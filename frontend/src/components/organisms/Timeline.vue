@@ -143,7 +143,16 @@ const style = computed(() => ({
 }))
 
 const cards = computed(() =>
-  groupBy(cardsStore.parseTree(cardsStore.cards(props.entity, false)), props.groupFn)
+  groupBy(
+    cardsStore.parseTree(
+      [...cardsStore.cards(props.entity)].sort(
+        (a, b) =>
+          CriticalityArray.indexOf(b.data.criticality) -
+          CriticalityArray.indexOf(a.data.criticality)
+      )
+    ),
+    props.groupFn
+  )
 )
 
 const localNow = ref(new Date())

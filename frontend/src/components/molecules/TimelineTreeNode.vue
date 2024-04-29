@@ -5,8 +5,8 @@
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }">
     <div class="flex" style="scroll-snap-align: end">
+      <CornerDownRight v-if="isChild" />
       <slot name="notification" :card>
-        <CornerDownRight v-if="isChild" />
         <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
           <template #title>
             <slot name="title" :card>{{ card.titleTranslated }}</slot>
@@ -104,12 +104,14 @@
   <TimelineTreeNode
     v-for="(child, i) of children"
     :key="child.id"
+    :event-fn="eventFn"
     :now
     :window
     :card="child"
     :index="index + i + 1"
     :is-child="true">
-    <slot :card></slot>
+    <template #notification><slot name="notification" :card="child"></slot></template>
+    <slot :card="child"></slot>
   </TimelineTreeNode>
 </template>
 <script setup lang="ts" generic="T extends Entity">
