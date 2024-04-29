@@ -12,7 +12,7 @@ class RTEManager(AgentManager, BaseRecommendation):
     def __init__(self):
         self.root_path = current_app.config['ROOT_PATH']
         self.owl_file_path = os.path.join(
-            self.root_path, "resources/rte/ontology/Onto2grid_v1.2.owl")
+            self.root_path, "resources/rte/ontology/Grid2onto_v2_3.owl")
         super().__init__()
 
     def get_recommendation(self, request_data):
@@ -25,16 +25,15 @@ class RTEManager(AgentManager, BaseRecommendation):
         event_id = event_data.get("event_id")
         event_line = event_data.get("line")
         event_flow = event_data.get("flux")
-        if event_id and event_line and event_flow:
+        if event_line:
             logger.info("Getting ontology recommendation")
-            onto_recommendation = self.get_onto_recommendation(
-                event_id, event_line, event_flow)
+            onto_recommendation = self.get_onto_recommendation(event_line)
             logger.info(onto_recommendation)
             print(onto_recommendation)
         # both parades & onto_recommendation should be lists on the same format
         return parades + onto_recommendation
 
-    def get_onto_recommendation(self, event_id, event_line, event_flow):
+    def get_onto_recommendation(self, event_line):
         # Loading ontology
         RTE_onto = get_ontology(self.owl_file_path).load()
         # Get all powerlines 
