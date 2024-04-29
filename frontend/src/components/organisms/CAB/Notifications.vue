@@ -178,7 +178,7 @@ function filtered(fn: (typeof props.sections)[number]['filter']) {
 }
 
 const hasBeenAcknowledged = ref(false)
-const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
+const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string }[]>([])
 
 const active = ref<Card['id'][]>([])
 
@@ -196,8 +196,8 @@ eventBus.on('notifications:close', (card) => {
 })
 
 function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
+  modal.callback(res)
   modals.value.splice(modals.value.indexOf(modal), 1)
-  if (modal.callback) modal.callback(res)
 }
 
 function confirmDeletion(card: Card) {
