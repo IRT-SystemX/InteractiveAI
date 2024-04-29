@@ -166,7 +166,12 @@ const props = withDefaults(
   }
 )
 
-const cards = computed(() => cardsStore.cards(props.entity, hasBeenAcknowledged.value))
+const cards = computed(() =>
+  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(
+    (a, b) =>
+      CriticalityArray.indexOf(b.data.criticality) - CriticalityArray.indexOf(a.data.criticality)
+  )
+)
 
 function filtered(fn: (typeof props.sections)[number]['filter']) {
   return groupBy(cardsStore.parseTree(cards.value.filter(fn)), props.groupFn)
