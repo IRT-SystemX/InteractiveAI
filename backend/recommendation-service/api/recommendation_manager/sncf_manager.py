@@ -23,7 +23,7 @@ class SNCFManager(BaseRecommendation):
 
         
         ai_transport_plan, ai_title, ai_description = (
-            self.recommender.recommend(context_data, event_data, model="ai")
+            self.recommender.recommend(context_data, event_data, model="idle")
         )
         ai_recommendation = {
             "title": ai_title,
@@ -45,7 +45,7 @@ class SNCFManager(BaseRecommendation):
             "actions": [heuristic_transport_plan],
         }
 
-        """
+        
         fake_transport_plan, fake_title, fake_description = (
             self.recommender.recommend(context_data, event_data, model="fake")
         )
@@ -56,9 +56,9 @@ class SNCFManager(BaseRecommendation):
             "agent_type": "Fake",
             "actions": [fake_transport_plan],
         }
-        """
+        
 
-        recommendation = [ai_recommendation, heuristic_recommendation]
+        recommendation = [fake_recommendation, ai_recommendation, heuristic_recommendation]
 
         return recommendation
 
