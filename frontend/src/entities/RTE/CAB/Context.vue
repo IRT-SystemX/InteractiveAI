@@ -14,7 +14,7 @@
       <b></b>
       <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">
         <b>{{ $t(`rte.kpis.${key}`) }}</b>
-        {{ isFinite(+value) ? (value as number).toFixed(4) : value }}
+        {{ isFinite(+value) ? (+value).toFixed(4) : value }}
       </div>
     </Notification>
   </Context>
