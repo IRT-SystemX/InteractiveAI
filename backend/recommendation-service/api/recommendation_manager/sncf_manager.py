@@ -1,7 +1,7 @@
 from .base_recommendation import BaseRecommendation
 from flask import current_app
 import os
-from resources.sncf.sncf_cab_recommender import SncfCabRecommender
+from resources.sncf.ia_flatland.src.flatland_ai.recommender import Recommender
 from owlready2 import default_world, get_ontology
 from marshmallow.exceptions import ValidationError
 
@@ -15,14 +15,15 @@ class SNCFManager(BaseRecommendation):
         self.owl_file_path = os.path.join(
             self.root_path, "resources/sncf/ontology/final_populate_v1.owl"
         )
-        self.recommender = SncfCabRecommender()
+        self.recommender = Recommender("resources/sncf/ia_flatland/models/graph_module.pkl","")
 
     def get_recommendation(self, request_data):
         context_data = request_data.get("context", {})
         event_data = request_data.get("event", {})
 
+        
         ai_transport_plan, ai_title, ai_description = (
-            self.recommender.recommend(context_data, event_data)
+            self.recommender.recommend(context_data, event_data, model="idle")
         )
         ai_recommendation = {
             "title": ai_title,
@@ -31,19 +32,33 @@ class SNCFManager(BaseRecommendation):
             "agent_type": "IA",
             "actions": [ai_transport_plan],
         }
+        
 
-        fake_transport_plan, fake_title, fake_description = (
-            self.recommender.recommend(context_data, event_data, fake=True)
+        heuristic_transport_plan, heuristic_title, heuristic_description = (
+            self.recommender.recommend(context_data, event_data, model="heuristic")
         )
-        fake_recommendation = {
-            "title": fake_title,
-            "description": fake_description,
+        heuristic_recommendation = {
+            "title": heuristic_title,
+            "description": heuristic_description,
             "use_case": "SNCF",
-            "agent_type": "IA",
-            "actions": [fake_transport_plan],
+            "agent_type": "Heuristic",
+            "actions": [heuristic_transport_plan],
         }
 
-        recommendation = [fake_recommendation, ai_recommendation]
+        
+        fake_transport_plan, fake_title, fake_description = (
+            self.recommender.recommend(context_data, event_data, model="fake")
+        )
+        fake_recommendation = {
+            "title": "banalisation : " + fake_title,
+            "description": fake_description,
+            "use_case": "SNCF",
+            "agent_type": "Fake",
+            "actions": [fake_transport_plan],
+        }
+        
+
+        recommendation = [fake_recommendation, ai_recommendation, heuristic_recommendation]
 
         return recommendation
 
