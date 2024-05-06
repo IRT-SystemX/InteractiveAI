@@ -50,7 +50,6 @@ export const useCardsStore = defineStore('cards', () => {
       }))
 
   async function subscribe(entity: Entity, hydrated = true) {
-    _cards.value = []
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       const id = uuid()
@@ -64,6 +63,7 @@ export const useCardsStore = defineStore('cards', () => {
         (data) => data.id === id && data.res === 'ok' && _subscribe(entity, hydrated)
       )
     } else {
+      _cards.value = []
       _subscribe(entity, hydrated)
     }
   }
@@ -127,20 +127,17 @@ export const useCardsStore = defineStore('cards', () => {
       },
       handler
     )
-    cardsApi
-      .subscribe(
-        {
-          clientId: id,
-          notification: 'true'
-        },
-        handler
-      )
-      .finally(() => (_cards.value = []))
+    cardsApi.subscribe(
+      {
+        clientId: id,
+        notification: 'true'
+      },
+      handler
+    )
   }
 
   function unsubscribe() {
     cardsApi.unsubscribe()
-    _cards.value = []
   }
 
   async function hydrate(id: string) {
