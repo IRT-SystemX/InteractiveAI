@@ -9,6 +9,8 @@ import type { Entity } from '@/types/entities'
 import type { FullContext, Recommendation } from '@/types/services'
 import { uuid } from '@/utils/utils'
 
+import { useCardsStore } from './cards'
+
 const { t } = i18n.global
 
 export const useServicesStore = defineStore('services', () => {
@@ -62,10 +64,22 @@ export const useServicesStore = defineStore('services', () => {
   }
 
   async function getRecommendation<E extends Entity>(
-    event: Card<E>['data']['metadata'],
+    event: Card<E>['data'],
     context = _context.value as FullContext<E>
   ) {
-    const { data } = await servicesApi.getRecommendation<E>({ event, context: context.data })
+    let curr = event
+    const cardsStore = useCardsStore()
+    while (curr?.parent_event_id) {
+      const parent = cardsStore._cards.find(
+        (card) => card.processInstanceId === curr?.parent_event_id
+      )
+      if (!parent) break
+      curr = parent.data
+    }
+    const { data } = await servicesApi.getRecommendation<E>({
+      event: curr.metadata,
+      context: context.data
+    })
     _recommendations.value = data
   }
 
