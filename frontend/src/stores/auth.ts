@@ -35,6 +35,7 @@ export const useAuthStore = defineStore(
     function logout() {
       token.value = undefined
       user.value = undefined
+      localStorage.removeItem('context')
     }
 
     return { token, user, entities, login, logout, checkToken }

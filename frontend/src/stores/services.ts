@@ -29,9 +29,10 @@ export const useServicesStore = defineStore('services', () => {
 
   async function getContext<E extends Entity>(
     entity: E,
-    callback: (context: FullContext<E>, data: any) => void,
+    callback: (context: FullContext<E>) => void = () => {},
     delay = 5000
   ) {
+    // Catch context error and reset interval
     const modalID = uuid()
     let contextPID = 0
     eventBus.on('modal:close', (data) => {
@@ -40,15 +41,21 @@ export const useServicesStore = defineStore('services', () => {
         contextPID = window.setInterval(handler, delay)
       }
     })
+
+    // Handler
     const handler = async () => {
       try {
         const { data } = await servicesApi.getContext<E>()
-        _context.value = data.find((el): el is FullContext<E> => el.use_case === entity)
-        if (_context.value)
-          callback(
-            context(entity),
-            data.find((el) => el.use_case === entity)
-          )
+        const res = data.find((el): el is FullContext<E> => el.use_case === entity)
+        // If context is not available, return
+        if (!res) return
+        // If there is no previous context, set it
+        if (!localStorage.getItem('context')) localStorage.setItem('context', res.id_context)
+        // If previous and current context are different, we can store it and callback
+        if (localStorage.getItem('context') !== res.id_context) {
+          _context.value = res
+          callback(res)
+        }
       } catch (err) {
         clearInterval(contextPID)
         eventBus.emit('modal:open', {
@@ -58,7 +65,9 @@ export const useServicesStore = defineStore('services', () => {
         })
       }
     }
+    // Start context handler immediatly
     handler()
+    // Start interval handler
     contextPID = window.setInterval(handler, delay)
     return contextPID
   }
