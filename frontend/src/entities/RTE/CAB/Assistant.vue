@@ -90,7 +90,7 @@ eventBus.on('assistant:tab', async (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      await servicesStore.getRecommendation(card.value?.data.metadata!)
+      await servicesStore.getRecommendation(card.value!.data!)
       recommendations.value = servicesStore.recommendations('RTE')
   }
 })
