@@ -150,5 +150,11 @@ export const useCardsStore = defineStore('cards', () => {
     }
   }
 
-  return { _cards, parseTree, cards, subscribe, hydrate, unsubscribe }
+  function acknowledge<E extends Entity = Entity>(card: Card<E>) {
+    for (const children of cards(card.entityRecipients[0]))
+      if (children.data.parent_event_id === card.processInstanceId) acknowledge(children)
+    cardsApi.acknowledge(card)
+  }
+
+  return { _cards, parseTree, cards, subscribe, hydrate, unsubscribe, acknowledge }
 })

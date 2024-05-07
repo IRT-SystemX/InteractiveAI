@@ -137,7 +137,6 @@ import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
@@ -189,7 +188,7 @@ eventBus.on('notifications:close', (card) => {
     callback: (res) => {
       active.value = []
       if (res === 'ok') {
-        acknowledge(card)
+        cardsStore.acknowledge(card)
       }
     }
   })
@@ -208,11 +207,11 @@ function confirmDeletion(card: Card) {
       callback: (res) => {
         active.value = []
         if (res === 'ok') {
-          acknowledge(card)
+          cardsStore.acknowledge(card)
         }
       }
     })
-  } else acknowledge(card)
+  } else cardsStore.acknowledge(card)
 }
 </script>
 <style lang="scss">
