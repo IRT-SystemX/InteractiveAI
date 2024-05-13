@@ -31,7 +31,7 @@
     <div v-if="authStore.user" class="cab-nav">
       <User />
       {{ authStore.user.userData.login }}
-      <Button icon @click="logout"><LogIn /></Button>
+      <Button icon :aria-label="$t('button.login')" @click="logout"><LogIn /></Button>
     </div>
   </nav>
 </template>

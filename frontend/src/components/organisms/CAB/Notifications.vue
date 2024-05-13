@@ -116,7 +116,10 @@
                 :has-been-acknowledged="hasBeenAcknowledged">
                 <Tooltip v-if="!hasBeenAcknowledged">
                   <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                  <Button size="small" color="secondary">
+                  <Button
+                    size="small"
+                    color="secondary"
+                    :aria-label="$t('cab.notifications.archived')">
                     <Inbox :height="12" @click.stop="confirmDeletion(card)" />
                   </Button>
                 </Tooltip>
