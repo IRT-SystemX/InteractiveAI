@@ -10,7 +10,7 @@
             <i
               v-if="env.MODE !== 'production'"
               :style="{
-                'background-image': `linear-gradient(calc(var(--rotation) * 1deg), ${modeColor()} 50%, var(--color-grey-200))`
+                color: modeColor()
               }"
               class="mode">
               {{ env.MODE }}
@@ -130,13 +130,6 @@ nav {
         font-size: 0.8rem;
         font-weight: 900;
         justify-content: center;
-        .mode {
-          --rotation: 0;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: spin 10s infinite linear;
-        }
       }
     }
   }
