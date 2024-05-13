@@ -65,6 +65,22 @@ button {
   background: none;
 }
 
+h1,
+h2,
+h3 {
+  font-family: 'Lexend';
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+h2 {
+  font-size: 1rem;
+}
+h3 {
+  font-size: 0.875rem;
+}
+
 /* ===== Scrollbar CSS ===== */
 /* Modern browsers with `scrollbar-*` support */
 @supports (scrollbar-width: auto) {

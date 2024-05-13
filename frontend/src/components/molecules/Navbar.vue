@@ -2,15 +2,15 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="/img/logo.svg" :fill="modeColor()" :width="60"></SVG>
-        <h1>
+        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="mx-1"></SVG>
+        <h1 class="cab-logo-typo">
           {{ $t('cab') }}
           <div class="logo-infos" :title="JSON.stringify(env)">
-            v{{ pkg.version }}
+            {{ pkg.version }}
             <i
               v-if="env.MODE !== 'production'"
               :style="{
-                'background-image': `linear-gradient(calc(var(--rotation) * 1deg), ${modeColor()} 50%, #fff)`
+                'background-image': `linear-gradient(calc(var(--rotation) * 1deg), ${modeColor()} 50%, var(--color-grey-200))`
               }"
               class="mode">
               {{ env.MODE }}
@@ -88,13 +88,15 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 0 10px var(--color-grey-600);
+  box-shadow:
+    inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #000 20%),
+    inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #fff 20%);
   height: 100%;
   padding: var(--spacing-1);
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  overflow: auto hidden;
+  width: 100%;
+  border-radius: var(--radius-circular);
   z-index: 1000;
 
   .entity {
@@ -122,9 +124,12 @@ nav {
       display: flex;
 
       .logo-infos {
+        font-family: Inter, sans-serif;
         display: flex;
         flex-direction: column;
-        font-size: 1rem;
+        font-size: 0.8rem;
+        font-weight: 900;
+        justify-content: center;
         .mode {
           --rotation: 0;
           background-clip: text;

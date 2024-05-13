@@ -17,17 +17,31 @@ withDefaults(
 <style lang="scss">
 .cab-btn {
   cursor: pointer;
-  background: var(--color-primary);
+  --button-color: var(--color-primary);
+  background: var(--button-color);
   color: var(--color-text-inverted);
+  box-shadow:
+    calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #000 15%),
+    calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #fff 15%);
   padding: var(--spacing-1);
   border-radius: var(--radius-circular);
   border: none;
   width: fit-content;
 
+  &:active {
+    box-shadow:
+      inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--button-color), #000 15%),
+      inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--button-color), #fff 15%);
+  }
+
   &.small {
     height: calc(var(--unit) * 2);
     width: calc(var(--unit) * 3);
-    background: var(--color-grey-200);
+    --button-color: var(--color-grey-200);
     color: var(--color-text);
     overflow: hidden;
     display: flex;
@@ -37,20 +51,20 @@ withDefaults(
   }
 
   &.primary {
-    background: var(--color-primary);
+    --button-color: var(--color-primary);
   }
   &.secondary {
-    background: var(--color-grey-300);
+    --button-color: var(--color-grey-300);
     color: var(--color-text);
   }
   &.success {
-    background: var(--color-success);
+    --button-color: background: var(--color-success);
   }
   &.warning {
-    background: var(--color-warning);
+    --button-color: var(--color-warning);
   }
   &.error {
-    background: var(--color-error);
+    --button-color: var(--color-error);
   }
 
   &.icon {

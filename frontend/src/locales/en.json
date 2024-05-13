@@ -1,6 +1,6 @@
 {
   "assistant.cab.hello": "Hello!",
-  "assistant.cab.presentation": "I am CAB, your two-way assistant.",
+  "assistant.cab.presentation": "I am {cab}, your two-way assistant.",
   "assistant.placeholder": "How can I help you?",
   "button.apply": "Apply",
   "button.ko": "KO",
@@ -13,7 +13,7 @@
   "cab.assistant": "Assistant",
   "cab.assistant.correlations": "Correlations",
   "cab.assistant.procedure": "Procedure monitoring",
-  "cab.assistant.procedure.collaborate": "Collaborate with CAB",
+  "cab.assistant.procedure.collaborate": "Collaborate with {cab}",
   "cab.assistant.recommendations": "Recommendations",
   "cab.notifications.archived": "(archives)",
   "cab.notifications.delete": "Are you sure you want to remove the {event} notification?",

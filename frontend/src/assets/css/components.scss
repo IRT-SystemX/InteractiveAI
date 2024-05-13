@@ -20,23 +20,12 @@ a.router-link-exact-active {
   position: relative;
   border-radius: var(--radius-big);
   background: var(--color-background);
-  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #000 15%),
+    inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #fff 15%);
   padding: var(--spacing-1);
-
-  h1,
-  h2,
-  h3 {
-    font-size: 1.25rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
-  h2 {
-    font-size: 1rem;
-  }
-  h3 {
-    font-size: 0.875rem;
-  }
 }
 
 .cab-btn,
