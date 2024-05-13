@@ -19,7 +19,9 @@
         @contextmenu.prevent="reset('left')">
         <GripVertical width="16" />
       </div>
-      <Context class="cab-context" />
+      <main class="flex flex-col cab-context">
+        <Context />
+      </main>
       <div
         class="cab-handle right"
         draggable="true"

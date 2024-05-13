@@ -1,18 +1,16 @@
 <template>
-  <main class="flex flex-col">
-    <aside class="cab-context-tabs">
-      <Tab
-        v-for="(tab, index) of tabs"
-        :key="tab"
-        :active="modelValue === index"
-        @click="$emit('update:modelValue', index)">
-        {{ tab }}
-      </Tab>
-    </aside>
-    <section class="cab-panel flex flex-center p-0 flex-1">
-      <slot></slot>
-    </section>
-  </main>
+  <aside class="cab-context-tabs">
+    <Tab
+      v-for="(tab, index) of tabs"
+      :key="tab"
+      :active="modelValue === index"
+      @click="$emit('update:modelValue', index)">
+      {{ tab }}
+    </Tab>
+  </aside>
+  <section class="cab-panel flex flex-center p-0 flex-1">
+    <slot></slot>
+  </section>
 </template>
 <script setup lang="ts">
 import Tab from '@/components/atoms/Tab.vue'
