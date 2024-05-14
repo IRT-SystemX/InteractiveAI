@@ -60,7 +60,6 @@ withDefaults(defineProps<{ chatbot?: boolean }>(), { chatbot: true })
       right: var(--spacing-1);
       top: 50%;
       transform: translateY(-50%);
-      background: var(--color-grey-200);
     }
   }
 }
