@@ -180,18 +180,19 @@ function filtered(fn: (typeof props.sections)[number]['filter']) {
 }
 
 const hasBeenAcknowledged = ref(false)
-const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string }[]>([])
+const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
 
-const active = ref<Card['id'][]>([])
-
-eventBus.on('notifications:close', (card) => {
-  active.value.push(card.id)
+eventBus.on('notifications:close', () => {
+  if (modals.value.find((m) => m.id === 'ended')) return
   modals.value.push({
     message: t('cab.notifications.ended'),
+    id: 'ended',
     callback: (res) => {
-      active.value = []
       if (res === 'ok') {
-        cardsStore.acknowledge(card)
+        for (const card of cardsStore
+          .cards(props.entity)
+          .filter((c) => c.data.criticality === 'ND'))
+          cardsStore.acknowledge(card)
       }
     }
   })
@@ -204,11 +205,10 @@ function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
 
 function confirmDeletion(card: Card) {
   if (card.data.criticality !== 'ND') {
-    active.value.push(card.id)
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
+      id: 'confirm',
       callback: (res) => {
-        active.value = []
         if (res === 'ok') {
           cardsStore.acknowledge(card)
         }
