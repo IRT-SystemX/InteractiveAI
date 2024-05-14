@@ -28,6 +28,17 @@ a.router-link-exact-active {
   padding: var(--spacing-1);
 }
 
+.lucide {
+  filter: drop-shadow(
+      calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-grey-200), #000 15%)
+    )
+    drop-shadow(
+      calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-grey-200), #fff 15%)
+    );
+}
+
 .cab-btn,
 a {
   transition: var(--duration);
