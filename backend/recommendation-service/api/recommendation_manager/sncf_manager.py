@@ -15,7 +15,11 @@ class SNCFManager(BaseRecommendation):
         self.owl_file_path = os.path.join(
             self.root_path, "resources/sncf/ontology/final_populate_v1.owl"
         )
-        self.recommender = Recommender("resources/sncf/ia_flatland/models/graph_module.pkl","")
+        self.graph_module_path = os.path.join(
+            self.root_path, "resources/sncf/ia_flatland/models/graph_module.pkl"
+        )
+        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab.zip")
+        self.recommender = Recommender(self.graph_module_path,self.ai_model_path)
 
     def get_recommendation(self, request_data):
         context_data = request_data.get("context", {})
