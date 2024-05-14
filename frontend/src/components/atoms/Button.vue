@@ -42,6 +42,11 @@ withDefaults(
     height: calc(var(--unit) * 2);
     width: calc(var(--unit) * 3);
     --button-color: var(--color-grey-200);
+    box-shadow:
+      calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
+        color-mix(in srgb, var(--color-background), #000 15%),
+      calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
+        color-mix(in srgb, var(--color-background), #fff 15%);
     color: var(--color-text);
     overflow: hidden;
     display: flex;

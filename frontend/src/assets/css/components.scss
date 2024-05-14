@@ -10,10 +10,22 @@ a.router-link-exact-active {
 
 .cab-input {
   border-radius: var(--radius-medium);
-  border: 1px solid var(--color-primary);
-  background: var(--color-grey-200);
+  border: none;
+  box-shadow:
+    inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #000 15%),
+    inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-grey-200), #fff 15%);
+  background-color: var(--color-grey-200);
   padding: var(--spacing-1);
   color: var(--color-text);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 0s 9007199254740991s,
+    color 0s 9007199254740991s !important;
 }
 
 .cab-panel {
