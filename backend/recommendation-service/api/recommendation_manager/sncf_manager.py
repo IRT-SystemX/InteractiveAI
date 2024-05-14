@@ -18,7 +18,7 @@ class SNCFManager(BaseRecommendation):
         self.graph_module_path = os.path.join(
             self.root_path, "resources/sncf/ia_flatland/models/graph_module.pkl"
         )
-        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab.zip")
+        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab.pth")
         self.recommender = Recommender(self.graph_module_path,self.ai_model_path)
 
     def get_recommendation(self, request_data):
