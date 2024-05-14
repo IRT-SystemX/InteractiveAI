@@ -181,8 +181,13 @@
         }
     },
     "event": {
+        "event_type" : "PASSENGER",
         "agent_id": 0,
         "agent_position": [
+            119,
+            3
+        ],
+        "malfunction_stop_position": [
             119,
             3
         ],
