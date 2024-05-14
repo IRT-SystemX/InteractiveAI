@@ -65,90 +65,102 @@ class RTEManager(AgentManager, BaseRecommendation):
                 selected_powerline = str(powerline[0])
                 break  
 
+        if selected_powerline is not None:      
+            parts_prefix = selected_powerline.split('.')
+            prefix_onto = parts_prefix[0] + '.' 
+            selected_powerline = selected_powerline.replace(prefix_onto,"")
 
-        parts_prefix = selected_powerline.split('.')
-        prefix_onto = parts_prefix[0] + '.' 
-        selected_powerline = selected_powerline.replace(prefix_onto,"")
-
-        selected_powerline_iri = "http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#" + selected_powerline
+            selected_powerline_iri = "http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#" + selected_powerline
 
 
 
-        ## Get all similar situations 
-        similar_situations_query = """
-            PREFIX owl: <http://www.w3.org/2002/07/owl#>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
-            PREFIX xml: <http://www.w3.org/XML/1998/namespace>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
-        
-        SELECT DISTINCT ?similarIssue ?line ?pastActionText ?category ?efficacity 
-                    {{ 
-                        ?similarIssue a cab:Powerline_overload_issue .
-                        ?similarIssue cab:is_associated_with ?pastAction .
-                        ?pastAction cab:has_initial_value ?pastActionText .
-                        ?pastAction rdf:type ?category .
-                        ?initial a cab:Initial_situation . 
-                        ?initial cab:has_part ?pastAction .
-                        ?line a cab:Powerline . 
-                        ?initial cab:is_about ?line . 
-                        ?rho a  cab:Rho .
-                        ?similarIssue cab:has_measurement ?rho .
-                        ?rho cab:has_final_value ?efficacity
-                        FILTER (?category != <http://www.w3.org/2002/07/owl#NamedIndividual>)
-                        FILTER (?line = <{line}>)
-                    }}
-                """.format(line=selected_powerline_iri)
-
-        similar_situations = list(RTE_onto.world.sparql(similar_situations_query))
-        output_list = []
-        if similar_situations:
-            # compute number of situations and rho max
-            distinct_recommendations = set()
-            rho_max = min(sublist[-1] for sublist in similar_situations)
+            ## Get all similar situations 
+            similar_situations_query = """
+                PREFIX owl: <http://www.w3.org/2002/07/owl#>
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+                PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
             
-            for situation in similar_situations:
-                recommendation = str(situation[2])
-                category = str(situation[3])
-                category = category.replace(prefix_onto,"")
-                efficacity = situation[4]
-                if recommendation not in distinct_recommendations:
-                    distinct_recommendations.add(recommendation)
+            SELECT DISTINCT ?similarIssue ?line ?pastActionText ?category ?efficacity 
+                        {{ 
+                            ?similarIssue a cab:Powerline_overload_issue .
+                            ?similarIssue cab:is_associated_with ?pastAction .
+                            ?pastAction cab:has_initial_value ?pastActionText .
+                            ?pastAction rdf:type ?category .
+                            ?initial a cab:Initial_situation . 
+                            ?initial cab:has_part ?pastAction .
+                            ?line a cab:Powerline . 
+                            ?initial cab:is_about ?line . 
+                            ?rho a  cab:Rho .
+                            ?similarIssue cab:has_measurement ?rho .
+                            ?rho cab:has_final_value ?efficacity
+                            FILTER (?category != <http://www.w3.org/2002/07/owl#NamedIndividual>)
+                            FILTER (?line = <{line}>)
+                        }}
+                    """.format(line=selected_powerline_iri)
 
-                    nb_past_Actions_query = f"""
-                        PREFIX owl: <http://www.w3.org/2002/07/owl#>
-                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                        PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
-                        PREFIX xml: <http://www.w3.org/XML/1998/namespace>
-                        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-                        PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>  
+            similar_situations = list(RTE_onto.world.sparql(similar_situations_query))
+            if similar_situations:
+                # compute number of situations and rho max
+                distinct_recommendations = set()
+                rho_max = min(sublist[-1] for sublist in similar_situations)
+                
+                for situation in similar_situations:
+                    recommendation = str(situation[2])
+                    category = str(situation[3])
+                    category = category.replace(prefix_onto,"")
+                    efficacity = situation[4]
+                    if recommendation not in distinct_recommendations:
+                        distinct_recommendations.add(recommendation)
 
-                    SELECT (COUNT(?pastActionText) AS ?count)
-                    WHERE {{
-                        ?similarIssue a cab:Powerline_overload_issue .
-                        ?similarIssue cab:is_associated_with ?pastAction .
-                        ?pastAction cab:has_initial_value ?pastActionText .
-                        ?initial a cab:Initial_situation . 
-                        ?initial cab:has_part ?pastAction .
-                        ?line a cab:Powerline . 
-                        ?initial cab:is_about ?line . 
-                        FILTER (?line = <{selected_powerline_iri}> && CONTAINS(?pastActionText, '{recommendation}'))
-                    }}
-                    """
-                    nb_similar_situations = list(RTE_onto.world.sparql(nb_past_Actions_query))[0][0]
-                    output_json = {
-                        "title":recommendation,
-                        "description":f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
-                        "use_case":"RTE",
-                        "agent_type":AgentType.onto.name,
-                        "actions":[{}],
-                        "kpis":{
-                        "type_of_the_reco":category,
-                        "efficiency_of_the_reco":rho_max
+                        nb_past_Actions_query = f"""
+                            PREFIX owl: <http://www.w3.org/2002/07/owl#>
+                            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                            PREFIX x_1.1: <http://purl.org/dc/elements/1.1/>
+                            PREFIX xml: <http://www.w3.org/XML/1998/namespace>
+                            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                            PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>  
+
+                        SELECT (COUNT(?pastActionText) AS ?count)
+                        WHERE {{
+                            ?similarIssue a cab:Powerline_overload_issue .
+                            ?similarIssue cab:is_associated_with ?pastAction .
+                            ?pastAction cab:has_initial_value ?pastActionText .
+                            ?initial a cab:Initial_situation . 
+                            ?initial cab:has_part ?pastAction .
+                            ?line a cab:Powerline . 
+                            ?initial cab:is_about ?line . 
+                            FILTER (?line = <{selected_powerline_iri}> && CONTAINS(?pastActionText, '{recommendation}'))
+                        }}
+                        """
+                        nb_similar_situations = list(RTE_onto.world.sparql(nb_past_Actions_query))[0][0]
+                        output_json = {
+                            "title":recommendation,
+                            "description":f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
+                            "use_case":"RTE",
+                            "agent_type":AgentType.onto.name,
+                            "actions":[{}],
+                            "kpis":{
+                            "type_of_the_reco":category,
+                            "efficiency_of_the_reco":rho_max
+                            }
                         }
-                    }
+
+        else :
+            output_json = {
+                "title":recommendation,
+                "description":"",
+                "use_case":"RTE",
+                "agent_type":AgentType.onto.name,
+                "actions":[{}],
+                "kpis":{
+                "type_of_the_reco":"",
+                "efficiency_of_the_reco":""
+                }
+            }
             
         return [output_json]
