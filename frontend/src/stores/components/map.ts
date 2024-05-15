@@ -27,7 +27,7 @@ export const useMapStore = defineStore('map', () => {
 
   function removeCategoryWaypoint(category: string) {
     for (const waypoint of waypoints.value.filter((w) => w.category === category))
-      remove(waypoints.value, (el) => el.category === category)
+      remove(waypoints.value, (el) => el.id === waypoint.id)
   }
 
   function resetWaypoints() {
