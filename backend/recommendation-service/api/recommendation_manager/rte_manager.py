@@ -152,7 +152,7 @@ class RTEManager(AgentManager, BaseRecommendation):
 
         else :
             output_json = {
-                "title":recommendation,
+                "title":"",
                 "description":"",
                 "use_case":"RTE",
                 "agent_type":AgentType.onto.name,
