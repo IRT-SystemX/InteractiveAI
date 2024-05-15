@@ -1,5 +1,4 @@
 <template>
-  {{ tileLayers }}
   <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" @ready="setup">
     <l-tile-layer
       v-for="tileLayer of tileLayers"
