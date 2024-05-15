@@ -107,7 +107,7 @@ function onSelection(selected: any) {
 
 function primaryAction() {
   sendTrace({
-    data: card.value!.id,
+    data: { id: card.value!.id },
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })

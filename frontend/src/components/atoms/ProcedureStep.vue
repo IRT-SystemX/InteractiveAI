@@ -63,7 +63,7 @@ watch(
 
     .circle {
       background: var(--color-primary);
-      border: 2px solid var(--color-background);
+      border-color: var(--color-background);
     }
   }
 
@@ -75,7 +75,7 @@ watch(
 
     .circle {
       background: var(--color-background);
-      border: 2px solid var(--color-primary);
+      border-color: var(--color-primary);
     }
     .step {
       color: var(--color-primary);

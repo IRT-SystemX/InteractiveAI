@@ -28,7 +28,7 @@ export const useServicesStore = defineStore('services', () => {
   }
 
   async function getContext<E extends Entity>(
-    entity: E,
+    entity?: E,
     callback: (context: FullContext<E>) => void = () => {},
     delay = 5000
   ) {
@@ -46,6 +46,9 @@ export const useServicesStore = defineStore('services', () => {
     const handler = async () => {
       try {
         const { data } = await servicesApi.getContext<E>()
+        if (!entity) {
+          _context.value = data[0]
+        }
         const res = data.find((el): el is FullContext<E> => el.use_case === entity)
         // If context is not available, return
         if (!res) return

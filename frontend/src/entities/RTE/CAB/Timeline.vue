@@ -3,8 +3,7 @@
     <h1>{{ $t('cab.timeline') }}</h1>
     <Timeline
       v-slot="{ card }"
-      :now="servicesStore.context('SNCF')?.date && new Date(servicesStore.context('SNCF').date)"
-      :cards="cardsStore.cards('RTE')"
+      :now="servicesStore.context('RTE')?.date && new Date(servicesStore.context('RTE').date)"
       :start="-30"
       :end="210"
       entity="RTE">
@@ -26,10 +25,8 @@ import { Zap } from 'lucide-vue-next'
 
 import SVG from '@/components/atoms/SVG.vue'
 import Timeline from '@/components/organisms/Timeline.vue'
-import { useCardsStore } from '@/stores/cards'
 import { useServicesStore } from '@/stores/services'
 import { criticalityToColor } from '@/utils/utils'
 
-const cardsStore = useCardsStore()
 const servicesStore = useServicesStore()
 </script>

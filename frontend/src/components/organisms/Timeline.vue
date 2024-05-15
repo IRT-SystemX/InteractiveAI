@@ -118,7 +118,6 @@ const props = withDefaults(
     now?: Date
     start: number
     end: number
-    cards: Card<T>[]
     groupFn?: (card: Card<T>) => string
     eventFn?: eventFnType<T>
     entity: T

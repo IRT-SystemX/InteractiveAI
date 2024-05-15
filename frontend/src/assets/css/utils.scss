@@ -42,6 +42,12 @@ $types: (
     1px -1px 0 var(--color-background);
 }
 
+.cab-logo-typo {
+  font-family: 'Lexend';
+  text-transform: lowercase;
+  font-weight: 900;
+}
+
 .color-primary {
   color: var(--color-primary);
 }

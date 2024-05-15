@@ -25,6 +25,11 @@ export const useMapStore = defineStore('map', () => {
     remove(waypoints.value, (el) => el.id === waypoint.id)
   }
 
+  function removeCategoryWaypoint(category: string) {
+    for (const waypoint of waypoints.value.filter((w) => w.category === category))
+      remove(waypoints.value, (el) => el.id === waypoint.id)
+  }
+
   function resetWaypoints() {
     waypoints.value.splice(0, waypoints.value.length)
   }
@@ -58,6 +63,7 @@ export const useMapStore = defineStore('map', () => {
     reset,
     addWaypoint,
     removeWaypoint,
+    removeCategoryWaypoint,
     resetWaypoints,
     addPolyline,
     removePolyline,

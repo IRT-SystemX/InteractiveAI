@@ -19,7 +19,9 @@
         @contextmenu.prevent="reset('left')">
         <GripVertical width="16" />
       </div>
-      <Context class="cab-context" />
+      <main class="flex flex-col cab-context">
+        <Context />
+      </main>
       <div
         class="cab-handle right"
         draggable="true"
@@ -68,15 +70,37 @@ import { defineAsyncComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
 
+import Loading from '@/components/atoms/Loading.vue'
+import DefaultNotifications from '@/components/organisms/CAB/Notifications.vue'
 import { toggleMode } from '@/plugins/colorMode'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
 import { EntitiesArray, type Entity } from '@/types/entities'
 
-let Assistant = defineAsyncComponent(() => import(`./${route.params.entity}/Assistant.vue`))
-let Context = defineAsyncComponent(() => import(`./${route.params.entity}/Context.vue`))
-let Notifications = defineAsyncComponent(() => import(`./${route.params.entity}/Notifications.vue`))
-let Timeline = defineAsyncComponent(() => import(`./${route.params.entity}/Timeline.vue`))
+import DefaultAssistant from './CAB/DefaultAssistant.vue'
+import DefaultContext from './CAB/DefaultContext.vue'
+import DefaultTimeline from './CAB/DefaultTimeline.vue'
+
+let Assistant = defineAsyncComponent({
+  loader: () => import(`./${route.params.entity}/Assistant.vue`),
+  loadingComponent: Loading,
+  errorComponent: DefaultAssistant
+})
+let Context = defineAsyncComponent({
+  loader: () => import(`./${route.params.entity}/Context.vue`),
+  loadingComponent: Loading,
+  errorComponent: DefaultContext
+})
+let Notifications = defineAsyncComponent({
+  loader: () => import(`./${route.params.entity}/Notifications.vue`),
+  loadingComponent: Loading,
+  errorComponent: DefaultNotifications
+})
+let Timeline = defineAsyncComponent({
+  loader: () => import(`./${route.params.entity}/Timeline.vue`),
+  loadingComponent: Loading,
+  errorComponent: DefaultTimeline
+})
 
 const route = useRoute()
 const { locale } = useI18n()
@@ -179,6 +203,7 @@ onBeforeRouteLeave(() => {
 <style lang="scss">
 .cab-container {
   padding: var(--spacing-1);
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 60px);
@@ -198,10 +223,19 @@ onBeforeRouteLeave(() => {
     border-radius: var(--radius-medium);
     transition: var(--duration);
     &:hover {
-      background: var(--color-grey-300);
+      background: var(--color-grey-200);
+      box-shadow:
+        calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
+          color-mix(in srgb, var(--color-grey-200), #000 20%),
+        calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
+          color-mix(in srgb, var(--color-grey-200), #fff 20%);
     }
     &.active {
-      background: var(--color-grey-400);
+      box-shadow:
+        inset calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
+          color-mix(in srgb, var(--color-grey-200), #000 20%),
+        inset calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
+          color-mix(in srgb, var(--color-grey-200), #fff 20%);
     }
     &.left,
     &.right {

@@ -35,7 +35,7 @@ const expanded = ref(true)
 <style lang="scss">
 .cab-context-notification {
   opacity: 1;
-  border: 3px solid;
+  border: 4px solid;
   position: absolute;
   top: calc(v-bind(top) * var(--unit));
   right: calc(v-bind(right) * var(--unit));

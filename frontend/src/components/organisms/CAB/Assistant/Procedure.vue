@@ -1,6 +1,12 @@
 <template>
   <label>
-    <b>{{ $t('cab.assistant.procedure.collaborate') }}</b>
+    <b>
+      <i18n-t keypath="cab.assistant.procedure.collaborate">
+        <template #cab>
+          <b class="cab-logo-typo">{{ $t('cab') }}</b>
+        </template>
+      </i18n-t>
+    </b>
     <Switch v-model="collaboration" type="checkbox" class="ml-1" />
   </label>
   <div v-if="collaboration" class="cab-procredure-header">

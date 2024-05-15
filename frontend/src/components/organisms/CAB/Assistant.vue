@@ -7,7 +7,13 @@
       <div class="flex flex-1 flex-col color-primary flex-center">
         <Avatar v-if="chatbot" :size="200" />
         <h1 class="mb-1">{{ $t('assistant.cab.hello') }}</h1>
-        <p class="text-center">{{ $t('assistant.cab.presentation') }}</p>
+        <p class="text-center">
+          <i18n-t keypath="assistant.cab.presentation">
+            <template #cab>
+              <b class="cab-logo-typo">{{ $t('cab') }}</b>
+            </template>
+          </i18n-t>
+        </p>
       </div>
     </slot>
   </main>
@@ -54,7 +60,6 @@ withDefaults(defineProps<{ chatbot?: boolean }>(), { chatbot: true })
       right: var(--spacing-1);
       top: 50%;
       transform: translateY(-50%);
-      background: var(--color-grey-200);
     }
   }
 }

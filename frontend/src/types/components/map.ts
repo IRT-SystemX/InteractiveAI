@@ -4,6 +4,7 @@ export type Waypoint<T> = {
   lat: number
   lng: number
   id: string
+  category?: string
   permanent?: boolean
   options?: T
 }

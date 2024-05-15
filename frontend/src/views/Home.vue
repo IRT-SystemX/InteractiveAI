@@ -8,7 +8,7 @@
         <template #outer>
           <img :src="asset(`entities/${entity}/assets/logo.svg`)" />
         </template>
-        {{ $t(`entity.${entity}`) }}
+        <h1>{{ $t(`entity.${entity}`) }}</h1>
       </Card>
     </RouterLink>
   </div>
