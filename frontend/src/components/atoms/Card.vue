@@ -16,29 +16,29 @@ const props = withDefaults(
 </script>
 <style lang="scss">
 .cab-card {
-  --color-card: var(--color-primary);
-  background: var(--color-card);
+  --color-card-accent: var(--color-primary);
+  background: var(--color-card-accent);
   border-radius: var(--radius-medium);
   display: flex;
   cursor: pointer;
 
   &.primary {
-    --color-card: var(--color-primary);
+    --color-card-accent: var(--color-primary);
   }
   &.secondary {
-    --color-card: var(--color-secondary);
+    --color-card-accent: var(--color-secondary);
   }
   &.success {
-    --color-card: var(--color-success);
+    --color-card-accent: var(--color-success);
   }
   &.warning {
-    --color-card: var(--color-warning);
+    --color-card-accent: var(--color-warning);
   }
   &.error {
-    --color-card: var(--color-error);
+    --color-card-accent: var(--color-error);
   }
   &.customColor {
-    --color-card: v-bind(props.customColor);
+    --color-card-accent: v-bind(props.customColor);
   }
 
   &.left {
@@ -67,25 +67,26 @@ const props = withDefaults(
   }
 
   &-inner {
+    --color-card-inner: var(--color-grey-100);
     border-radius: var(--radius-medium);
-    border: calc(var(--unit) / 4) solid var(--color-card);
-    background-color: var(--color-grey-100);
+    border: calc(var(--unit) / 4) solid var(--color-card-accent);
+    background-color: var(--color-card-inner);
     height: auto;
     flex: 1;
     transition: var(--duration);
     box-shadow:
       inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-background), #000 15%),
+        color-mix(in srgb, var(--color-card-inner), #000 15%),
       inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-background), #fff 15%);
+        color-mix(in srgb, var(--color-card-inner), #fff 15%);
   }
   &:hover .cab-card-inner {
-    background: var(--color-grey-300);
+    --color-card-inner: var(--color-grey-300);
   }
   &:focus .cab-card-inner,
   &:focus-within .cab-card-inner,
   &:active .cab-card-inner {
-    background: var(--color-grey-400);
+    --color-card-inner: var(--color-grey-400);
   }
 }
 </style>
