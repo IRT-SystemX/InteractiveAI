@@ -22,7 +22,12 @@
       :fill-opacity="1"
       :radius="8"
       v-bind="waypoint.options">
-      <l-tooltip :options="{ permanent: waypoint.permanentTooltip, direction: 'top' }">
+      <l-tooltip
+        :options="{
+          permanent: waypoint.permanentTooltip,
+          direction: 'top',
+          offset: [0, waypoint.options?.radius ? -waypoint.options?.radius : -8]
+        }">
         {{ waypoint.id }}
       </l-tooltip>
     </l-circle-marker>
@@ -31,7 +36,8 @@
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
       :z-index-offset="10000">
-      <l-tooltip :options="{ permanent: waypoint.permanentTooltip, direction: 'top' }">
+      <l-tooltip
+        :options="{ permanent: waypoint.permanentTooltip, direction: 'top', offset: [0, -12] }">
         {{ waypoint.id }}
       </l-tooltip>
       <l-icon
