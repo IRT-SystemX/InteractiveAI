@@ -1,5 +1,5 @@
 <template>
-  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]">
+  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
     <l-tile-layer
       v-for="tileLayer of tileLayers"
       :key="tileLayer"
@@ -84,7 +84,7 @@ withDefaults(
 
 watch(mapStore.contextWaypoints, (value) => {
   if (lockView.value)
-    map.value.leafletObject.fitBounds(latLngBounds(value), {
+    map.value.leafletObject.setMaxBounds(latLngBounds(value), {
       maxZoom: zoom.value
     })
 })
