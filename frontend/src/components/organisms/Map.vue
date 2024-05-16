@@ -61,7 +61,6 @@ import {
   LTileLayer,
   LTooltip
 } from '@vue-leaflet/vue-leaflet'
-import L from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { ref } from 'vue'
 
