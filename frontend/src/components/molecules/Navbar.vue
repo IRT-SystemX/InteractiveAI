@@ -86,6 +86,7 @@ html.dark nav .entity {
 }
 nav {
   display: flex;
+  overflow: auto;
   align-items: center;
   justify-content: space-between;
   box-shadow:
