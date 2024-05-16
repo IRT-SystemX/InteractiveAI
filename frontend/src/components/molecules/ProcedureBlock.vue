@@ -41,20 +41,25 @@ const state = computed(() => {
   background: var(--color-background);
 
   &-title {
+    --block-color: var(--color-grey-300);
     transition: var(--duration);
-    background: var(--color-grey-300);
+    background: var(--block-color);
     border-radius: 8px;
     width: fit-content;
-    border: 2px solid var(--color-grey-300);
+    border: 2px solid var(--block-color);
     color: #fff;
     padding: 8px;
+    box-shadow:
+      inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--block-color), #000 15%),
+      inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--block-color), #fff 15%);
     &[state='done'] {
       border-color: var(--color-primary);
     }
 
     &[state='doing'] {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
+      --block-color: var(--color-primary);
     }
   }
 }

@@ -42,7 +42,7 @@
     </l-marker>
   </l-map>
   <label class="cab-map-lockview p-1 flex flex-wrap">
-    <input v-model="lockView" type="checkbox" style="display: none" />
+    <input v-model="lockView" type="checkbox" style="display: none" @change="toggleLockView" />
     <div class="ml-1">
       <LocateFixed v-if="lockView" />
       <LocateOff v-else />
@@ -82,11 +82,18 @@ withDefaults(
   { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
 )
 
-watch(mapStore.contextWaypoints, (value) => {
-  if (lockView.value)
-    map.value.leafletObject.setMaxBounds(latLngBounds(value), {
+function toggleLockView() {
+  if (!lockView.value) {
+    map.value.leafletObject.setMaxBounds()
+  } else {
+    map.value.leafletObject.setMaxBounds(latLngBounds(mapStore.contextWaypoints), {
       maxZoom: zoom.value
     })
+  }
+}
+
+watch(mapStore.contextWaypoints, () => {
+  toggleLockView()
 })
 
 onUnmounted(() => {

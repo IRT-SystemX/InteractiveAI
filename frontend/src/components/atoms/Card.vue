@@ -73,6 +73,11 @@ const props = withDefaults(
     height: auto;
     flex: 1;
     transition: var(--duration);
+    box-shadow:
+      inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-background), #000 15%),
+      inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-background), #fff 15%);
   }
   &:hover .cab-card-inner {
     background: var(--color-grey-300);
