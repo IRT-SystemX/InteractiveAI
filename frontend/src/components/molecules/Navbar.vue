@@ -2,7 +2,7 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="mx-1"></SVG>
+        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="ml-2 mr-1"></SVG>
         <h1 class="cab-logo-typo">
           {{ $t('cab') }}
           <div class="logo-infos" :title="JSON.stringify(env)">
@@ -95,7 +95,6 @@ nav {
     inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
       color-mix(in srgb, var(--color-background), #ccc 20%);
   height: 100%;
-  padding: var(--spacing-1);
   width: 100%;
   border-radius: var(--radius-circular);
   z-index: 1000;
