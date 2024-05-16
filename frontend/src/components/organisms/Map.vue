@@ -1,5 +1,5 @@
 <template>
-  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" @ready="setup">
+  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :use-global-leaflet="false" @ready="setup">
     <l-tile-layer
       v-for="tileLayer of tileLayers"
       :key="tileLayer"
@@ -61,6 +61,7 @@ import {
   LTileLayer,
   LTooltip
 } from '@vue-leaflet/vue-leaflet'
+import L from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { ref } from 'vue'
 
