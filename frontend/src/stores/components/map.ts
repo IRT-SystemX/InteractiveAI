@@ -10,6 +10,7 @@ export const useMapStore = defineStore('map', () => {
   const contextWaypoints = ref<Waypoint[]>([])
 
   function reset() {
+    console.log('reset')
     resetWaypoints()
     resetPolylines()
     resetContextWaypoints()

@@ -64,7 +64,7 @@ import {
 } from '@vue-leaflet/vue-leaflet'
 import { latLngBounds } from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { onUnmounted, ref, watch } from 'vue'
 
 import { useMapStore } from '@/stores/components/map'
 
@@ -87,6 +87,10 @@ watch(mapStore.contextWaypoints, (value) => {
     map.value.leafletObject.fitBounds(latLngBounds(value), {
       maxZoom: zoom.value
     })
+})
+
+onUnmounted(() => {
+  mapStore.reset()
 })
 </script>
 <style lang="scss">
