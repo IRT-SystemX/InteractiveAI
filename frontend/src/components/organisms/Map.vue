@@ -1,5 +1,5 @@
 <template>
-  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :use-global-leaflet="false" @ready="setup">
+  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]">
     <l-tile-layer
       v-for="tileLayer of tileLayers"
       :key="tileLayer"
@@ -9,7 +9,7 @@
     <l-polyline
       v-for="polyline of mapStore.polylines"
       :key="polyline.id"
-      color="var(--color-primary)"
+      :color="polyline.options?.color || 'var(--color-primary)'"
       :weight="8"
       :lat-lngs="polyline.waypoints"></l-polyline>
     <l-circle-marker
@@ -61,8 +61,9 @@ import {
   LTileLayer,
   LTooltip
 } from '@vue-leaflet/vue-leaflet'
+import { latLngBounds } from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import { useMapStore } from '@/stores/components/map'
 
@@ -80,9 +81,12 @@ withDefaults(
   { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
 )
 
-function setup() {
-  map.value.leafletObject.fitBounds(mapStore.waypoints)
-}
+watch(mapStore.contextWaypoints, (value) => {
+  if (lockView.value)
+    map.value.leafletObject.fitBounds(latLngBounds(value), {
+      maxZoom: zoom.value
+    })
+})
 </script>
 <style lang="scss">
 #map {
@@ -94,7 +98,7 @@ function setup() {
   transition: var(--duration);
   background: var(--color-success);
   border-radius: var(--radius-circular);
-  padding: calc(var(--unit) / 2);
+  padding: calc(var(--unit) / 2) !important;
   &.ACTION {
     background: var(--color-warning);
   }
