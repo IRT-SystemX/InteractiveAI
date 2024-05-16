@@ -1,15 +1,13 @@
-import type { CircleMarkerOptions } from 'leaflet'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import type { Severity } from '@/types/cards'
 import type { Polyline, Waypoint } from '@/types/components/map'
 import { addOrUpdate, remove } from '@/utils/utils'
 
 export const useMapStore = defineStore('map', () => {
-  const waypoints = ref<Waypoint<CircleMarkerOptions>[]>([])
+  const waypoints = ref<Waypoint[]>([])
   const polylines = ref<Polyline[]>([])
-  const contextWaypoints = ref<Waypoint<{ severity?: Severity }>[]>([])
+  const contextWaypoints = ref<Waypoint[]>([])
 
   function reset() {
     resetWaypoints()
@@ -17,11 +15,11 @@ export const useMapStore = defineStore('map', () => {
     resetContextWaypoints()
   }
 
-  function addWaypoint(waypoint: Waypoint<CircleMarkerOptions>) {
+  function addWaypoint(waypoint: Waypoint) {
     addOrUpdate(waypoints.value, waypoint, (el) => el.id === waypoint.id)
   }
 
-  function removeWaypoint(waypoint: Waypoint<CircleMarkerOptions>) {
+  function removeWaypoint(waypoint: Waypoint) {
     remove(waypoints.value, (el) => el.id === waypoint.id)
   }
 
@@ -44,11 +42,11 @@ export const useMapStore = defineStore('map', () => {
   function resetPolylines() {
     polylines.value.splice(0, polylines.value.length)
   }
-  function addContextWaypoint(waypoint: Waypoint<{ severity?: Severity }>) {
+  function addContextWaypoint(waypoint: Waypoint) {
     addOrUpdate(contextWaypoints.value, waypoint, (el) => el.id === waypoint.id)
   }
 
-  function removeContextWaypoint(waypoint: Waypoint<{ severity?: Severity }>) {
+  function removeContextWaypoint(waypoint: Waypoint) {
     remove(contextWaypoints.value, (el) => el.id === waypoint.id)
   }
 

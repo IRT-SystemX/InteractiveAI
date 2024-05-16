@@ -1,16 +1,26 @@
-import type { CircleMarkerOptions, PolylineOptions } from 'leaflet'
+import type { Severity } from '../cards'
 
-export type Waypoint<T> = {
+export type Waypoint = {
   lat: number
   lng: number
   id: string
-  category?: string
-  permanent?: boolean
-  options?: T
+  category?: Uppercase<string>
+  permanentTooltip?: boolean
+  options?: {
+    stroke: boolean
+    radius: number
+    color: string
+    fillColor: string
+    weight: number
+    opacity: number
+  }
+  severity?: Severity
 }
 
 export type Polyline = {
   id: string
-  waypoints: Waypoint<CircleMarkerOptions>[]
-  options?: PolylineOptions
+  waypoints: Waypoint[]
+  options?: {
+    color?: string
+  }
 }

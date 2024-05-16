@@ -20,8 +20,9 @@
       fill-color="#fff"
       :weight="2"
       :fill-opacity="1"
-      :radius="8">
-      <l-tooltip :options="{ permanent: waypoint.permanent, direction: 'top' }">
+      :radius="8"
+      v-bind="waypoint.options">
+      <l-tooltip :options="{ permanent: waypoint.permanentTooltip, direction: 'top' }">
         {{ waypoint.id }}
       </l-tooltip>
     </l-circle-marker>
@@ -30,14 +31,14 @@
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
       :z-index-offset="10000">
-      <l-tooltip :options="{ permanent: waypoint.permanent, direction: 'top' }">
+      <l-tooltip :options="{ permanent: waypoint.permanentTooltip, direction: 'top' }">
         {{ waypoint.id }}
       </l-tooltip>
       <l-icon
         :icon-url="`/img/icons/map_markers/${$route.params.entity}.svg`"
         :icon-size="[32, 32]"
         class="context-marker"
-        :class-name="'context-marker ' + waypoint.options?.severity"></l-icon>
+        :class-name="'context-marker ' + waypoint.severity"></l-icon>
     </l-marker>
   </l-map>
   <label class="cab-map-lockview p-1 flex flex-wrap">
