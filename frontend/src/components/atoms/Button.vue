@@ -22,9 +22,9 @@ withDefaults(
   color: var(--color-text-inverted);
   box-shadow:
     calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-background), #000 15%),
+      color-mix(in srgb, var(--color-background), #000 20%),
     calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-background), #fff 15%);
+      color-mix(in srgb, var(--color-background), #ccc 20%);
   padding: var(--spacing-1);
   border-radius: var(--radius-circular);
   border: none;
@@ -33,9 +33,9 @@ withDefaults(
   &:active {
     box-shadow:
       inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-button-background), #000 15%),
+        color-mix(in srgb, var(--color-button-background), #000 20%),
       inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-button-background), #fff 15%);
+        color-mix(in srgb, var(--color-button-background), #ccc 20%);
   }
 
   &.small {
@@ -44,9 +44,9 @@ withDefaults(
     --color-button-background: var(--color-grey-200);
     box-shadow:
       calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
-        color-mix(in srgb, var(--color-background), #000 15%),
+        color-mix(in srgb, var(--color-background), #000 20%),
       calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
-        color-mix(in srgb, var(--color-background), #fff 15%);
+        color-mix(in srgb, var(--color-background), #ccc 20%);
     color: var(--color-text);
     overflow: hidden;
     display: flex;

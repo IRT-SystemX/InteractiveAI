@@ -13,9 +13,9 @@ a.router-link-exact-active {
   border: none;
   box-shadow:
     inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-grey-200), #000 15%),
+      color-mix(in srgb, var(--color-grey-200), #000 20%),
     inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-grey-200), #fff 15%);
+      color-mix(in srgb, var(--color-grey-200), #ccc 20%);
   background-color: var(--color-grey-200);
   padding: var(--spacing-1);
   color: var(--color-text);
@@ -34,20 +34,20 @@ input:-webkit-autofill:focus {
   background: var(--color-background);
   box-shadow:
     inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-grey-200), #000 15%),
+      color-mix(in srgb, var(--color-background), #000 20%),
     inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-grey-200), #fff 15%);
+      color-mix(in srgb, var(--color-background), #ccc 20%);
   padding: var(--spacing-1);
 }
 
 .lucide {
   filter: drop-shadow(
       calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-grey-200), #000 15%)
+        color-mix(in srgb, var(--color-background), #000 20%)
     )
     drop-shadow(
       calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-grey-200), #fff 15%)
+        color-mix(in srgb, var(--color-background), #ccc 20%)
     );
 }
 

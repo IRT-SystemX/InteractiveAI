@@ -51,9 +51,9 @@ const state = computed(() => {
     padding: 8px;
     box-shadow:
       inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-block), #000 15%),
+        color-mix(in srgb, var(--color-block), #000 20%),
       inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-block), #fff 15%);
+        color-mix(in srgb, var(--color-block), #ccc 20%);
     &[state='done'] {
       border-color: var(--color-primary);
     }

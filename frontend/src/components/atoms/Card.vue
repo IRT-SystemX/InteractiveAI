@@ -76,9 +76,9 @@ const props = withDefaults(
     transition: var(--duration);
     box-shadow:
       inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-card-inner), #000 15%),
+        color-mix(in srgb, var(--color-card-inner), #000 20%),
       inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-        color-mix(in srgb, var(--color-card-inner), #fff 15%);
+        color-mix(in srgb, var(--color-card-inner), #ccc 20%);
   }
   &:hover .cab-card-inner {
     --color-card-inner: var(--color-grey-300);

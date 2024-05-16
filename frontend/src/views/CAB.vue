@@ -228,14 +228,14 @@ onBeforeRouteLeave(() => {
         calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
           color-mix(in srgb, var(--color-grey-200), #000 20%),
         calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
-          color-mix(in srgb, var(--color-grey-200), #fff 20%);
+          color-mix(in srgb, var(--color-grey-200), #ccc 20%);
     }
     &.active {
       box-shadow:
         inset calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
-          color-mix(in srgb, var(--color-grey-200), #000 20%),
+          color-mix(in srgb, var(--color-background), #000 20%),
         inset calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
-          color-mix(in srgb, var(--color-grey-200), #fff 20%);
+          color-mix(in srgb, var(--color-background), #ccc 20%);
     }
     &.left,
     &.right {

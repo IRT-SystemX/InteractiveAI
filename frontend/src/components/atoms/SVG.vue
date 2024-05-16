@@ -25,11 +25,11 @@ const shadow = computed(() => Math.max(props.width ?? 0, props.height ?? 0) / 64
 .cab-svg {
   filter: drop-shadow(
       calc(var(--unit) * v-bind(shadow) * 0.5) calc(var(--unit) * v-bind(shadow) * 0.5)
-        calc(var(--unit) * v-bind(shadow)) color-mix(in srgb, var(--color-grey-200), #000 15%)
+        calc(var(--unit) * v-bind(shadow)) color-mix(in srgb, var(--color-background), #000 20%)
     )
     drop-shadow(
       calc(var(--unit) * v-bind(shadow) * -0.5) calc(var(--unit) * v-bind(shadow) * -0.5)
-        calc(var(--unit) * v-bind(shadow)) color-mix(in srgb, var(--color-grey-200), #fff 15%)
+        calc(var(--unit) * v-bind(shadow)) color-mix(in srgb, var(--color-background), #ccc 20%)
     );
 }
 </style>
