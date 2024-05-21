@@ -34,6 +34,19 @@ class RTEManager(AgentManager, BaseRecommendation):
         return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_line):
+        # Default output
+        output_json = {
+            "title":"Parade ontologique par defaut",
+            "description":"Aucune recommandation n'a pu être générée",
+            "use_case":"RTE",
+            "agent_type":AgentType.onto.name,
+            "actions":[{}],
+            "kpis":{
+            "type_of_the_reco":"Null",
+            "efficiency_of_the_reco":1.99999
+            }
+        }
+
         # Loading ontology
         RTE_onto = get_ontology(self.owl_file_path).load()
         # Get all powerlines 
@@ -149,18 +162,5 @@ class RTEManager(AgentManager, BaseRecommendation):
                             "efficiency_of_the_reco":rho_max
                             }
                         }
-
-        else :
-            output_json = {
-                "title":"",
-                "description":"",
-                "use_case":"RTE",
-                "agent_type":AgentType.onto.name,
-                "actions":[{}],
-                "kpis":{
-                "type_of_the_reco":"",
-                "efficiency_of_the_reco":""
-                }
-            }
             
         return [output_json]
