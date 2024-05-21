@@ -11,12 +11,6 @@
       </i18n-t>
     </slot>
   </SpeechBubble>
-  <!--<div class="flex flex-center-y">
-    <Button color="secondary" type="button" @click="secondaryAction">
-      {{ $t('event.button.secondary') }}
-    </Button>
-    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
-  </div>-->
   <div class="flex flex-center-y">
     <Button type="button" @click="primaryAction">
       <slot name="button-primary">
@@ -30,7 +24,7 @@
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>
   </div>
-  <div class="flex flex-center-y">
+  <div v-if="secondaryAction" class="flex flex-center-y">
     <Button type="button" color="secondary" @click="secondaryAction">
       <slot name="button-secondary">
         {{ $t('event.button.secondary') }}
@@ -64,7 +58,7 @@ withDefaults(
   }>(),
   {
     primaryAction: () => eventBus.emit('assistant:tab', 2),
-    secondaryAction: () => {},
+    secondaryAction: undefined,
     chatbot: true
   }
 )

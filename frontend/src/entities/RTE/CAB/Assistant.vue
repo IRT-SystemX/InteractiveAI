@@ -4,7 +4,11 @@
       <template #title>
         <template v-if="tab === 2">{{ $t('cab.assistant.recommendations') }}</template>
       </template>
-      <Event v-if="tab === 1 && card" :card :primary-action="primaryAction">
+      <Event
+        v-if="tab === 1 && card"
+        :card
+        :primary-action="primaryAction"
+        :secondary-action="() => {}">
         {{ card.titleTranslated }}
       </Event>
       <Recommendations
