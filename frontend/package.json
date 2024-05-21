@@ -1,6 +1,6 @@
 {
   "name": "cab-front",
-  "version": "4.0.0-alpha14",
+  "version": "4.0.6",
   "private": true,
   "license": "MPL-2.0",
   "type": "module",
@@ -27,11 +27,11 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.0.6",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/core": "^10.7.0",
     "axios": "^1.6.2",
     "d3": "^7.8.5",
     "date-fns": "^3.3.1",
-    "leaflet": "^1.9.4",
     "lucide-vue-next": "0.x",
     "mitt": "^3.0.1",
     "modern-normalize": "^2.0.0",

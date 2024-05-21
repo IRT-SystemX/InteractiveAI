@@ -14,6 +14,7 @@ class RecommendationOut(Schema):
     description = String()
     agent_type = String()
     actions = List(Dict())
+    kpis = Dict(allow_none=True)
 
 
 class ProcedureOut(Schema):

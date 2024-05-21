@@ -1,7 +1,54 @@
 <template>
-  <div id="map"></div>
+  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
+    <l-tile-layer
+      v-for="tileLayer of tileLayers"
+      :key="tileLayer"
+      :url="tileLayer"
+      layer-type="base"
+      name="OpenStreetMap"></l-tile-layer>
+    <l-polyline
+      v-for="polyline of mapStore.polylines"
+      :key="polyline.id"
+      :color="polyline.options?.color || 'var(--color-primary)'"
+      :weight="8"
+      :lat-lngs="polyline.waypoints"></l-polyline>
+    <l-circle-marker
+      v-for="waypoint of mapStore.waypoints"
+      :key="waypoint.id"
+      :lat-lng="[waypoint.lat, waypoint.lng]"
+      color="var(--color-primary)"
+      fill-color="#fff"
+      :weight="2"
+      :fill-opacity="1"
+      :radius="8"
+      v-bind="waypoint.options">
+      <l-tooltip
+        :options="{
+          permanent: waypoint.permanentTooltip,
+          direction: 'top',
+          offset: [0, waypoint.options?.radius ? -waypoint.options?.radius : -8]
+        }">
+        {{ waypoint.id }}
+      </l-tooltip>
+    </l-circle-marker>
+    <l-marker
+      v-for="waypoint of mapStore.contextWaypoints"
+      :key="waypoint.id"
+      :lat-lng="[waypoint.lat, waypoint.lng]"
+      :z-index-offset="10000">
+      <l-tooltip
+        :options="{ permanent: waypoint.permanentTooltip, direction: 'top', offset: [0, -12] }">
+        {{ waypoint.id }}
+      </l-tooltip>
+      <l-icon
+        :icon-url="`/img/icons/map_markers/${$route.params.entity}.svg`"
+        :icon-size="[32, 32]"
+        class="context-marker"
+        :class-name="'context-marker ' + waypoint.severity"></l-icon>
+    </l-marker>
+  </l-map>
   <label class="cab-map-lockview p-1 flex flex-wrap">
-    <input v-model="lockView" type="checkbox" style="display: none" />
+    <input v-model="lockView" type="checkbox" style="display: none" @change="toggleLockView" />
     <div class="ml-1">
       <LocateFixed v-if="lockView" />
       <LocateOff v-else />
@@ -12,136 +59,50 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
 
-import L, { type CircleMarkerOptions, type PolylineOptions } from 'leaflet'
+import {
+  LCircleMarker,
+  LIcon,
+  LMap,
+  LMarker,
+  LPolyline,
+  LTileLayer,
+  LTooltip
+} from '@vue-leaflet/vue-leaflet'
+import { latLngBounds } from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { onUnmounted, ref, watch } from 'vue'
 
 import { useMapStore } from '@/stores/components/map'
 
-const props = withDefaults(
-  defineProps<{
-    tileLayers?: string[]
-    smoothMovements?: boolean
-  }>(),
-  { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'], smoothMovements: true }
-)
 const mapStore = useMapStore()
-const route = useRoute()
-
-let map: L.Map | undefined = undefined
 
 const lockView = ref(true)
-const waypointsL = ref<{ id: string; L: L.CircleMarker }[]>([])
-const contextWaypointsL = ref<{ id: string; L: L.Marker }[]>([])
-const polylinesL = ref<{ id: string; L: L.Polyline }[]>([])
+const zoom = ref(6)
 
-watch(lockView, (value) => {
-  if (value) {
-    if (mapStore.contextWaypoints.length === 1)
-      map!.setView(mapStore.contextWaypoints[0], map?.getZoom())
-    if (mapStore.contextWaypoints.length > 1)
-      map!.fitBounds(L.latLngBounds(mapStore.contextWaypoints), { maxZoom: map?.getZoom() })
+const map = ref()
+
+withDefaults(
+  defineProps<{
+    tileLayers?: string[]
+  }>(),
+  { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
+)
+
+function toggleLockView() {
+  if (!lockView.value) {
+    map.value.leafletObject.setMaxBounds()
+  } else {
+    map.value.leafletObject.setMaxBounds(latLngBounds(mapStore.contextWaypoints), {
+      maxZoom: zoom.value
+    })
   }
+}
+
+watch(mapStore.contextWaypoints, () => {
+  toggleLockView()
 })
 
-onMounted(() => {
-  map = L.map('map', {
-    center: L.latLng(47, 2),
-    zoom: 6
-  })
-
-  L.control.scale().addTo(map)
-
-  map.createPane('polylines')
-  map.createPane('waypoints')
-
-  for (const tileLayer of props.tileLayers) L.tileLayer(tileLayer).addTo(map)
-
-  watch(
-    mapStore.waypoints,
-    (waypoints) => {
-      for (const deleted of waypointsL.value) deleted.L.remove()
-
-      for (const waypoint of waypoints) {
-        const marker = L.circleMarker(waypoint, {
-          pane: 'waypoints',
-          color: '#fff',
-          stroke: false,
-          fillOpacity: 1,
-          ...(waypoint.options as CircleMarkerOptions)
-        })
-          .bindTooltip(waypoint.id, { direction: 'top' })
-          .addTo(map!)
-        waypointsL.value.push({ id: waypoint.id, L: marker })
-      }
-    },
-    { immediate: true }
-  )
-  watch(
-    mapStore.contextWaypoints,
-    (value, old) => {
-      if (!old) return
-
-      if (lockView.value) {
-        if (value.length === 1) map!.setView(value[0], map?.getZoom())
-        if (value.length > 1) map!.fitBounds(L.latLngBounds(value), { maxZoom: map?.getZoom() })
-      }
-
-      for (const waypoint of value) {
-        const existing = contextWaypointsL.value.find((el) => el.id === waypoint.id)
-        if (existing) {
-          existing.L.setLatLng(waypoint)
-          existing.L.setIcon(
-            L.icon({
-              iconUrl: `/img/icons/map_markers/${route.params.entity}.svg`,
-              iconSize: [32, 32],
-              className: 'context-marker ' + waypoint.options?.severity
-            })
-          )
-          continue
-        }
-
-        const marker = L.marker(waypoint, {
-          pane: 'waypoints',
-          icon: L.icon({
-            iconUrl: `/img/icons/map_markers/${route.params.entity}.svg`,
-            iconSize: [32, 32],
-            className: 'context-marker ' + waypoint.options?.severity
-          })
-        })
-          .bindTooltip(waypoint.id, { direction: 'top', offset: [0, -16] })
-          .addTo(map!)
-        contextWaypointsL.value.push({ id: waypoint.id, L: marker })
-      }
-      for (const deleted of old.filter(
-        (oldElement) => !value.some((newElement) => newElement.id === oldElement!.id)
-      ))
-        contextWaypointsL.value.find((el) => el.id === deleted!.id)?.L.remove()
-    },
-    { immediate: true }
-  )
-  watch(
-    mapStore.polylines,
-    (polylines) => {
-      for (const deleted of polylinesL.value) deleted.L.remove()
-
-      for (const polyline of polylines) {
-        const marker = L.polyline(polyline.waypoints, {
-          pane: 'polylines',
-          weight: 10,
-          color: 'var(--color-primary)',
-          ...(polyline.options as PolylineOptions)
-        }).addTo(map!)
-        polylinesL.value.push({ id: polyline.id, L: marker })
-      }
-    },
-    { immediate: true }
-  )
-})
-
-onBeforeUnmount(() => {
-  map?.remove()
+onUnmounted(() => {
   mapStore.reset()
 })
 </script>
@@ -155,7 +116,7 @@ onBeforeUnmount(() => {
   transition: var(--duration);
   background: var(--color-success);
   border-radius: var(--radius-circular);
-  padding: calc(var(--unit) / 2);
+  padding: calc(var(--unit) / 2) !important;
   &.ACTION {
     background: var(--color-warning);
   }

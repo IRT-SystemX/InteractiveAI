@@ -31,12 +31,12 @@
           </button>
         </Tooltip>
       </header>
-      <div v-if="Object.keys(cards).length" class="card-container">
+      <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
         <template
-          v-for="key of Object.keys(cards).sort((a, b) => {
+          v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
             return (
               CriticalityArray.indexOf(
-                cards[b].reduce(
+                filtered(section.filter)[b].reduce(
                   (prev: Criticality, curr) =>
                     CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                       ? curr.data.criticality
@@ -45,7 +45,7 @@
                 )
               ) -
               CriticalityArray.indexOf(
-                cards[a].reduce(
+                filtered(section.filter)[a].reduce(
                   (prev: Criticality, curr) =>
                     CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                       ? curr.data.criticality
@@ -59,7 +59,7 @@
           <Notification
             v-if="key !== '_DEFAULT'"
             :criticality="
-              cards[key].reduce(
+              filtered(section.filter)[key].reduce(
                 (prev: Criticality, curr) =>
                   CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
                     ? curr.data.criticality
@@ -72,15 +72,19 @@
               <header
                 class="flex flex-1"
                 :style="{
-                  color: cards[key].every((c) => c.read) ? 'var(--color-grey-600)' : undefined
+                  color: filtered(section.filter)[key].every((c) => c.read)
+                    ? 'var(--color-grey-600)'
+                    : undefined
                 }">
                 <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
-                <aside>{{ $t('cab.notifications.group', cards[key].length) }}</aside>
+                <aside>
+                  {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
+                </aside>
               </header>
             </div>
           </Notification>
           <NotificationTreeNode
-            v-for="c of cards[key]"
+            v-for="c of filtered(section.filter)[key]"
             :key="c.id"
             :card="c"
             :is-child="key !== '_DEFAULT'">
@@ -93,7 +97,7 @@
               </slot>
               <slot name="icon" :card>
                 <SVG
-                  src="icons/warning_hex"
+                  src="/img/icons/warning_hex.svg"
                   :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
                   :width="16"
                   class="ml-1"></SVG>
@@ -112,7 +116,10 @@
                 :has-been-acknowledged="hasBeenAcknowledged">
                 <Tooltip v-if="!hasBeenAcknowledged">
                   <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                  <Button size="small" color="secondary">
+                  <Button
+                    size="small"
+                    color="secondary"
+                    :aria-label="$t('cab.notifications.archived')">
                     <Inbox :height="12" @click.stop="confirmDeletion(card)" />
                   </Button>
                 </Tooltip>
@@ -133,7 +140,6 @@ import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { acknowledge } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import SVG from '@/components/atoms/SVG.vue'
@@ -163,48 +169,52 @@ const props = withDefaults(
 )
 
 const cards = computed(() =>
-  groupBy(
-    cardsStore.parseTree(cardsStore.cards(props.entity, hasBeenAcknowledged.value)),
-    props.groupFn
+  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(
+    (a, b) =>
+      CriticalityArray.indexOf(b.data.criticality) - CriticalityArray.indexOf(a.data.criticality)
   )
 )
 
+function filtered(fn: (typeof props.sections)[number]['filter']) {
+  return groupBy(cardsStore.parseTree(cards.value.filter(fn)), props.groupFn)
+}
+
 const hasBeenAcknowledged = ref(false)
-const modals = ref<{ callback?: (res: 'ok' | 'ko') => void; message: string }[]>([])
+const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
 
-const active = ref<Card['id'][]>([])
-
-eventBus.on('notifications:close', (card) => {
-  active.value.push(card.id)
+eventBus.on('notifications:close', () => {
+  if (modals.value.find((m) => m.id === 'ended')) return
   modals.value.push({
     message: t('cab.notifications.ended'),
+    id: 'ended',
     callback: (res) => {
-      active.value = []
       if (res === 'ok') {
-        acknowledge(card)
+        for (const card of cardsStore
+          .cards(props.entity)
+          .filter((c) => c.data.criticality === 'ND'))
+          cardsStore.acknowledge(card)
       }
     }
   })
 })
 
 function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
+  modal.callback(res)
   modals.value.splice(modals.value.indexOf(modal), 1)
-  if (modal.callback) modal.callback(res)
 }
 
 function confirmDeletion(card: Card) {
   if (card.data.criticality !== 'ND') {
-    active.value.push(card.id)
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
+      id: 'confirm',
       callback: (res) => {
-        active.value = []
         if (res === 'ok') {
-          acknowledge(card)
+          cardsStore.acknowledge(card)
         }
       }
     })
-  } else acknowledge(card)
+  } else cardsStore.acknowledge(card)
 }
 </script>
 <style lang="scss">

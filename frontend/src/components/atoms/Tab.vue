@@ -13,9 +13,19 @@ defineProps<{
 }
 .cab-tab {
   cursor: pointer;
-  background: var(--color-grey-200);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-grey-200), #ccc 20%),
+    color-mix(in srgb, var(--color-grey-200), #ccc 20%)
+  );
+  font-family: 'Lexend';
+  font-weight: 700;
   border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
+      color-mix(in srgb, var(--color-grey-200), #000 20%),
+    calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
+      color-mix(in srgb, var(--color-grey-200), #ccc 20%);
   border-radius: var(--radius-small) var(--radius-small) 0 0;
   margin: 0 var(--spacing-1);
   padding: var(--spacing-1) var(--spacing-2);
@@ -23,7 +33,11 @@ defineProps<{
   &.active {
     position: relative;
     color: var(--color-primary);
-    font-weight: bold;
+    box-shadow:
+      inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-background), #000 20%),
+      inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-background), #ccc 20%);
     background: var(--color-background);
     border-color: var(--color-grey-300);
   }

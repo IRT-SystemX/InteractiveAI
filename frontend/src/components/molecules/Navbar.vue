@@ -2,15 +2,15 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="logo" :fill="modeColor()" :width="60"></SVG>
-        <h1>
+        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="mx-1"></SVG>
+        <h1 class="cab-logo-typo">
           {{ $t('cab') }}
           <div class="logo-infos" :title="JSON.stringify(env)">
-            v{{ pkg.version }}
+            {{ pkg.version }}
             <i
               v-if="env.MODE !== 'production'"
               :style="{
-                'background-image': `linear-gradient(calc(var(--rotation) * 1deg), ${modeColor()} 50%, #fff)`
+                color: modeColor()
               }"
               class="mode">
               {{ env.MODE }}
@@ -31,7 +31,7 @@
     <div v-if="authStore.user" class="cab-nav">
       <User />
       {{ authStore.user.userData.login }}
-      <Button icon @click="logout"><LogIn /></Button>
+      <Button icon :aria-label="$t('button.login')" @click="logout"><LogIn /></Button>
     </div>
   </nav>
 </template>
@@ -88,13 +88,15 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 0 10px var(--color-grey-600);
+  box-shadow:
+    inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #000 20%),
+    inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #ccc 20%);
   height: 100%;
   padding: var(--spacing-1);
-  position: sticky;
-  top: 0;
-  width: 100vw;
-  overflow: auto hidden;
+  width: 100%;
+  border-radius: var(--radius-circular);
   z-index: 1000;
 
   .entity {
@@ -122,16 +124,12 @@ nav {
       display: flex;
 
       .logo-infos {
+        font-family: Inter, sans-serif;
         display: flex;
         flex-direction: column;
-        font-size: 1rem;
-        .mode {
-          --rotation: 0;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: spin 10s infinite linear;
-        }
+        font-size: 0.8rem;
+        font-weight: 900;
+        justify-content: center;
       }
     }
   }

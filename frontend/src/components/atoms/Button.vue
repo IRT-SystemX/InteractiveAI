@@ -17,17 +17,36 @@ withDefaults(
 <style lang="scss">
 .cab-btn {
   cursor: pointer;
-  background: var(--color-primary);
+  --color-button-background: var(--color-primary);
+  background: var(--color-button-background);
   color: var(--color-text-inverted);
+  box-shadow:
+    calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #000 20%),
+    calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+      color-mix(in srgb, var(--color-background), #ccc 20%);
   padding: var(--spacing-1);
   border-radius: var(--radius-circular);
   border: none;
   width: fit-content;
 
+  &:active {
+    box-shadow:
+      inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-button-background), #000 20%),
+      inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+        color-mix(in srgb, var(--color-button-background), #ccc 20%);
+  }
+
   &.small {
     height: calc(var(--unit) * 2);
     width: calc(var(--unit) * 3);
-    background: var(--color-grey-200);
+    --color-button-background: var(--color-grey-200);
+    box-shadow:
+      calc(var(--unit) * 0.25) calc(var(--unit) * 0.25) calc(var(--unit) * 0.5)
+        color-mix(in srgb, var(--color-background), #000 20%),
+      calc(var(--unit) * -0.25) calc(var(--unit) * -0.25) calc(var(--unit) * 0.5)
+        color-mix(in srgb, var(--color-background), #ccc 20%);
     color: var(--color-text);
     overflow: hidden;
     display: flex;
@@ -37,20 +56,20 @@ withDefaults(
   }
 
   &.primary {
-    background: var(--color-primary);
+    --color-button-background: var(--color-primary);
   }
   &.secondary {
-    background: var(--color-grey-300);
+    --color-button-background: var(--color-grey-300);
     color: var(--color-text);
   }
   &.success {
-    background: var(--color-success);
+    --color-button-background: background: var(--color-success);
   }
   &.warning {
-    background: var(--color-warning);
+    --color-button-background: var(--color-warning);
   }
   &.error {
-    background: var(--color-error);
+    --color-button-background: var(--color-error);
   }
 
   &.icon {

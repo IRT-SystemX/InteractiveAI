@@ -8,7 +8,7 @@
     @close="modalClose">
     {{ modal.data }}
   </Modal>
-  <header>
+  <header class="p-1">
     <Navbar />
   </header>
   <main><RouterView /></main>

@@ -28,17 +28,19 @@ import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
-defineProps<{ card?: Card }>()
+defineProps<{ card?: Card; top?: number; right?: number; bottom?: number; left?: number }>()
 
 const expanded = ref(true)
 </script>
 <style lang="scss">
 .cab-context-notification {
   opacity: 1;
-  border: 3px solid;
+  border: 4px solid;
   position: absolute;
-  top: var(--unit);
-  right: var(--unit);
+  top: calc(v-bind(top) * var(--unit));
+  right: calc(v-bind(right) * var(--unit));
+  left: calc(v-bind(left) * var(--unit));
+  bottom: calc(v-bind(bottom) * var(--unit));
   background: var(--color-background);
   border-radius: var(--radius-medium);
   padding: var(--spacing-2);

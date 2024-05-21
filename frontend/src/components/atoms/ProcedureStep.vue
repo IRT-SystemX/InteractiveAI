@@ -48,8 +48,8 @@ watch(
 </script>
 <style lang="scss">
 .procedure-step {
-  word-break: break-word;
   scroll-snap-align: start;
+  scroll-margin: calc(var(--unit) * 5);
   display: grid;
   grid-template-columns: calc(50% - var(--unit)) calc(var(--unit) * 2) calc(50% - var(--unit));
   cursor: not-allowed;
@@ -63,7 +63,7 @@ watch(
 
     .circle {
       background: var(--color-primary);
-      border: 2px solid var(--color-background);
+      border-color: var(--color-background);
     }
   }
 
@@ -75,7 +75,7 @@ watch(
 
     .circle {
       background: var(--color-background);
-      border: 2px solid var(--color-primary);
+      border-color: var(--color-primary);
     }
     .step {
       color: var(--color-primary);
@@ -108,7 +108,7 @@ watch(
     background: var(--color-background);
     border: 2px solid var(--color-grey-600);
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 99;
   }
 }
 </style>

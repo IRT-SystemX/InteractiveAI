@@ -6,7 +6,8 @@
       :class="{ visible: !loading }"
       :height="size"
       :width="size"
-      alt="Robot, model by sketchfab.com/MoraAzul"></canvas>
+      alt="CAB robot avatar"
+      title="Model by sketchfab.com/MoraAzul"></canvas>
   </div>
 </template>
 <script setup lang="ts">

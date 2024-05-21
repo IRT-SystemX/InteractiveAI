@@ -1,6 +1,7 @@
 from apiflask.fields import (
     Float,
-    String
+    String,
+    Dict
 )
 from apiflask.validators import OneOf
 from api.schemas import MetadataSchema
@@ -14,3 +15,4 @@ class MetadataSchemaRTE(MetadataSchema):
     zone = String(validate=OneOf(["Est", "Ouest", "Centre"]))
     line = String(required=True)
     flux = Float()
+    kpis = Dict(required=True)
