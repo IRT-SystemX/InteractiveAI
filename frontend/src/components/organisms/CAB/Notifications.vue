@@ -158,11 +158,13 @@ const cardsStore = useCardsStore()
 
 const props = withDefaults(
   defineProps<{
+    autoclose?: boolean
     sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
     groupFn?: (card: Card<T>) => string
     entity: T
   }>(),
   {
+    autoclose: true,
     sections: () => [{ name: 'main', weight: 1, filter: () => true }],
     groupFn: () => '_DEFAULT'
   }
@@ -183,7 +185,7 @@ const hasBeenAcknowledged = ref(false)
 const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
 
 eventBus.on('notifications:close', () => {
-  if (modals.value.find((m) => m.id === 'ended')) return
+  if (modals.value.find((m) => m.id === 'ended') || !props.autoclose) return
   modals.value.push({
     message: t('cab.notifications.ended'),
     id: 'ended',
