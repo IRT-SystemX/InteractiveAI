@@ -164,6 +164,8 @@ const events = computed(() =>
   grid-column: cards-start / event-end;
   border-radius: var(--radius-medium);
   cursor: pointer;
+  transition: var(--duration);
+
   > * {
     grid-row: 1;
   }
