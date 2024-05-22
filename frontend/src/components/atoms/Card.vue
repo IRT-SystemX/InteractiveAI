@@ -82,12 +82,12 @@ const props = withDefaults(
   }
   &:hover .cab-card-inner,
   &.active .cab-card-inner {
-    --color-card-inner: var(--color-grey-300);
+    --color-card-inner: var(--color-grey-200);
   }
   &:focus .cab-card-inner,
   &:focus-within .cab-card-inner,
   &:active .cab-card-inner {
-    --color-card-inner: var(--color-grey-400);
+    --color-card-inner: var(--color-grey-300);
   }
 }
 </style>

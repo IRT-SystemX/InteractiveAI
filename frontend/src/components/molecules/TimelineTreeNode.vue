@@ -168,8 +168,14 @@ const events = computed(() =>
     grid-row: 1;
   }
 
+  &:hover,
   &.active {
     background: var(--color-grey-200);
+  }
+  &:focus,
+  &:focus-within,
+  &:active {
+    background: var(--color-grey-300);
   }
 }
 .lucide {
