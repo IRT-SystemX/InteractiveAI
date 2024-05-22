@@ -8,11 +8,11 @@
         class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
     </template>
-    <Notification :card :top="1" :right="1"></Notification>
-    <Notification :card :top="1" :left="1">
+    <Notification :card="appStore.card('RTE')" :top="1" :right="1"></Notification>
+    <Notification :card="appStore.card('RTE')" :top="1" :left="1">
       <template #title>KPIs</template>
       <b></b>
-      <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">
+      <div v-for="(value, key) of appStore.card('RTE')!.data.metadata.kpis" :key="key">
         <b>{{ $t(`rte.kpis.${key}`) }}</b>
         {{ isFinite(+value) ? (+value).toFixed(4) : value }}
       </div>
@@ -24,22 +24,17 @@ import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
 import Notification from '@/components/organisms/CAB/Context/Notification.vue'
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import { useServicesStore } from '@/stores/services'
-import type { Card } from '@/types/cards'
 
 const servicesStore = useServicesStore()
+const appStore = useAppStore()
 
 const tab = ref(0)
 const contextPID = ref(0)
-const card = ref<Card<'RTE'> | undefined>(undefined)
 
 onBeforeMount(async () => {
   contextPID.value = await servicesStore.getContext('RTE')
-})
-
-eventBus.on('assistant:selected:RTE', (selected) => {
-  card.value = selected
 })
 
 onUnmounted(() => {

@@ -27,13 +27,13 @@ export const useAppStore = defineStore('app', () => {
     left: 0
   })
   const globalModals = ref<Required<Modal>[]>([])
-  const _selectedCard = ref<Card>()
+  const selectedCard = ref<Card>()
   const contextTab = ref(0)
   const assistantTab = ref(0)
 
-  function selectedCard<T extends Entity>(entity: T): Card<T> | undefined {
-    return _selectedCard.value?.entityRecipients.includes(entity)
-      ? (_selectedCard.value as Card<T>)
+  function card<T extends Entity>(entity: T): Card<T> | undefined {
+    return selectedCard.value?.entityRecipients.includes(entity)
+      ? (selectedCard.value as Card<T>)
       : undefined
   }
 
@@ -48,5 +48,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { assistantTab, contextTab, gutters, selectedCard, addModal }
+  return { selectedCard, assistantTab, contextTab, gutters, card, addModal }
 })

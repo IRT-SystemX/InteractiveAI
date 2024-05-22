@@ -54,22 +54,24 @@
 import { ChevronDown, CornerDownRight } from 'lucide-vue-next'
 import { ref } from 'vue'
 
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import type { CardTree } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 
 import Notification from '../molecules/Notification.vue'
 
-const props = defineProps<{
+defineProps<{
   card: CardTree<E>
   isChild: boolean
 }>()
+
+const appStore = useAppStore()
+
 const showChildren = ref(true)
 
 function selected(card: CardTree<E>) {
   card.read = true
-  // @ts-ignore
-  eventBus.emit(`assistant:selected:${props.card.entityRecipients[0]}`, card)
+  appStore.selectedCard = card
 }
 </script>
 <style lang="scss">

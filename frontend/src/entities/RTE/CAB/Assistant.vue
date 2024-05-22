@@ -5,11 +5,11 @@
         <template v-if="tab === 2">{{ $t('cab.assistant.recommendations') }}</template>
       </template>
       <Event
-        v-if="tab === 1 && card"
-        :card
+        v-if="tab === 1 && appStore.card('RTE')"
+        :card="appStore.card('RTE')!"
         :primary-action="primaryAction"
         :secondary-action="() => {}">
-        {{ card.titleTranslated }}
+        {{ appStore.card('RTE')!.titleTranslated }}
       </Event>
       <Recommendations
         v-if="tab === 2"
@@ -63,7 +63,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { sendTrace } from '@/api/services'
@@ -73,28 +73,31 @@ import Event from '@/components/organisms/CAB/Assistant/Event.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
 import { applyRecommendation } from '@/entities/RTE/api'
 import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import { useServicesStore } from '@/stores/services'
-import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
 
 const route = useRoute()
 const servicesStore = useServicesStore()
+const appStore = useAppStore()
 
-const card = ref<Card<'RTE'>>()
 const tab = ref(0)
 const recommendations = ref<Recommendation<'RTE'>[]>([])
 
-eventBus.on('assistant:selected:RTE', (selected) => {
-  card.value = selected
-  tab.value = 1
-})
+watch(
+  () => appStore.selectedCard,
+  () => {
+    tab.value = 1
+  }
+)
 
 eventBus.on('assistant:tab', async (index) => {
   tab.value = index
   switch (index) {
     case 2:
-      await servicesStore.getRecommendation(card.value!.data!)
+      if (!appStore.card('DA')) break
+      await servicesStore.getRecommendation(appStore.card('RTE')!.data!)
       recommendations.value = servicesStore.recommendations('RTE')
   }
 })
@@ -111,7 +114,7 @@ function onSelection(selected: any) {
 
 function primaryAction() {
   sendTrace({
-    data: { id: card.value!.id },
+    data: { id: appStore.card('RTE')!.id },
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })
