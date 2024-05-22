@@ -3,7 +3,7 @@
     ref="step"
     class="procedure-step"
     :state="task.state"
-    @click="task.state === 'doing' && eventBus.emit('assistant:procedure:checked', task)">
+    @click="task.state === 'doing' && checkTask(task)">
     <div class="timeline">
       <div class="line top"></div>
       <div class="circle"></div>
@@ -30,13 +30,15 @@
 </template>
 <script setup lang="ts" generic="E extends Entity">
 import { ref, watch } from 'vue'
+import { inject } from 'vue'
 
-import eventBus from '@/plugins/eventBus'
 import { useAppStore } from '@/stores/app'
 import type { Entity } from '@/types/entities'
 import type { Step } from '@/types/procedure'
 
 import Button from './Button.vue'
+
+const checkTask = inject<(task: Step) => void>('checkTask')!
 
 const props = defineProps<{
   task: Step<E>

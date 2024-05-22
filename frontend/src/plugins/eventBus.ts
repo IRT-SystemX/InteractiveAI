@@ -14,7 +14,6 @@ const eventBus = mitt<{
   'modal:close': { id: UUID; res: 'ok' | 'ko' }
   'graph:update': any
   'graph:showTooltip': any
-  'assistant:procedure:checked': any
   'notifications:ended': Card
 }>()
 
