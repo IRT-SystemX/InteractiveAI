@@ -9,6 +9,7 @@ import type { Entity } from '@/types/entities'
 import type { FullContext, Recommendation } from '@/types/services'
 import { uuid } from '@/utils/utils'
 
+import { useAppStore } from './app'
 import { useCardsStore } from './cards'
 
 const { t } = i18n.global
@@ -49,16 +50,24 @@ export const useServicesStore = defineStore('services', () => {
         if (!entity) {
           _context.value = data[0]
         }
+        const appStore = useAppStore()
         const res = data.find((el): el is FullContext<E> => el.use_case === entity)
         // If context is not available, return
-        if (!res) return
+        if (!res) {
+          appStore.status.context.state = 'OFFLINE'
+          return
+        }
         // If there is no previous context, set it
         if (!localStorage.getItem('context')) localStorage.setItem('context', res.id_context)
         // If previous and current context are different, we can store it and callback
         if (localStorage.getItem('context') !== res.id_context) {
           _context.value = res
+          appStore.status.context.state = 'ONLINE'
           callback(res)
+        } else {
+          appStore.status.context.state = 'FROZEN'
         }
+        appStore.status.context.last = Date.now()
       } catch (err) {
         clearInterval(contextPID)
         eventBus.emit('modal:open', {
@@ -77,7 +86,7 @@ export const useServicesStore = defineStore('services', () => {
 
   async function getRecommendation<E extends Entity>(
     event: Card<E>['data'],
-    context = _context.value as FullContext<E>
+    context = _context.value
   ) {
     let curr = event
     const cardsStore = useCardsStore()
@@ -88,6 +97,7 @@ export const useServicesStore = defineStore('services', () => {
       if (!parent) break
       curr = parent.data
     }
+    if (!context) return
     const { data } = await servicesApi.getRecommendation<E>({
       event: curr.metadata,
       context: context.data

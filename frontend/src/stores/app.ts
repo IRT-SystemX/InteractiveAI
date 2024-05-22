@@ -23,6 +23,15 @@ export const useAppStore = defineStore('app', () => {
   })
   const _modals = ref<Required<Modal>[]>([])
   const _card = ref<Card>()
+  const status = reactive<{
+    loading: { state: 'ERROR' | 'LOADING'; data: any }[]
+    context: { state: 'FROZEN' | 'ONLINE' | 'OFFLINE'; last: number }
+    notifications: { state: 'ONLINE' | 'OFFLINE'; last: number }
+  }>({
+    loading: [],
+    notifications: { state: 'OFFLINE', last: 0 },
+    context: { state: 'OFFLINE', last: 0 }
+  })
   const tab = reactive({
     context: 0,
     assistant: 0
@@ -43,5 +52,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { _card, tab, gutters, card, addModal }
+  return { _card, status, tab, gutters, card, addModal }
 })

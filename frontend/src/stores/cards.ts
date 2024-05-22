@@ -9,6 +9,8 @@ import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
+import { useAppStore } from './app'
+
 const { t } = i18n.global
 
 export const useCardsStore = defineStore('cards', () => {
@@ -51,6 +53,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   async function subscribe(entity: Entity, hydrated = true) {
     const { data } = await cardsApi.isSubscriptionActive()
+    const appStore = useAppStore()
     if (data) {
       const id = uuid()
       eventBus.emit('modal:open', {
@@ -58,11 +61,18 @@ export const useCardsStore = defineStore('cards', () => {
         data: t('modal.info.SUBSCRIPTION_ACTIVE'),
         type: 'choice'
       })
-      eventBus.on(
-        'modal:close',
-        (data) => data.id === id && data.res === 'ok' && _subscribe(entity, hydrated)
-      )
+      eventBus.on('modal:close', (data) => {
+        if (data.id === id) {
+          if (data.res === 'ok') {
+            appStore.status.notifications.state = 'ONLINE'
+            _subscribe(entity, hydrated)
+          } else {
+            appStore.status.notifications.state = 'OFFLINE'
+          }
+        }
+      })
     } else {
+      appStore.status.notifications.state = 'ONLINE'
       _cards.value = []
       _subscribe(entity, hydrated)
     }

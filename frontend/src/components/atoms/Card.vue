@@ -80,7 +80,8 @@ const props = withDefaults(
       inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
         color-mix(in srgb, var(--color-card-inner), #ccc 20%);
   }
-  &:hover .cab-card-inner {
+  &:hover .cab-card-inner,
+  &.active .cab-card-inner {
     --color-card-inner: var(--color-grey-300);
   }
   &:focus .cab-card-inner,

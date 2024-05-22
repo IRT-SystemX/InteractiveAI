@@ -4,8 +4,6 @@ import type { Card } from '@/types/cards'
 import type { UUID } from '@/types/formats'
 
 const eventBus = mitt<{
-  'progress:start': void
-  'progress:stop': void
   'modal:open': {
     id?: UUID
     data: string

@@ -5,6 +5,7 @@
       <Notification
         :criticality="card.data.criticality"
         class="flex-1"
+        :class="{ active: appStore._card?.id === card.id }"
         @click.stop="selected(card)">
         <template #outer>
           <aside><slot name="outer" :card></slot></aside>

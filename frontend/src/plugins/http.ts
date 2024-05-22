@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 import router from '@/router'
+import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 
 import eventBus from './eventBus'
@@ -15,21 +16,27 @@ const http = axios.create({
 
 http.interceptors.request.use(
   function (config) {
-    eventBus.emit('progress:start')
+    useAppStore().status.loading.push({ state: 'LOADING', data: config })
     // Add access token to all requests
     const authStore = useAuthStore()
     config.headers.Authorization = `Bearer ${authStore.token?.access_token}`
     return config
   },
   function (error) {
-    eventBus.emit('progress:stop')
+    useAppStore().status.loading[useAppStore().status.loading.findIndex((el) => el.data.url)] = {
+      state: 'ERROR',
+      data: error
+    }
     return Promise.reject(error)
   }
 )
 
 http.interceptors.response.use(
   function (response) {
-    eventBus.emit('progress:stop')
+    useAppStore().status.loading.splice(
+      useAppStore().status.loading.findIndex((el) => el.data.url),
+      1
+    )
     return response
   },
   async function (error: AxiosError<any, any>) {
@@ -52,7 +59,10 @@ http.interceptors.response.use(
       authStore.logout()
       router.push({ name: 'login' })
     }
-    eventBus.emit('progress:stop')
+    useAppStore().status.loading[useAppStore().status.loading.findIndex((el) => el.data.url)] = {
+      state: 'ERROR',
+      data: error
+    }
     if (error.code && !['ERR_CANCELED'].includes(error.code))
       eventBus.emit('modal:open', {
         data:

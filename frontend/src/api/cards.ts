@@ -1,6 +1,7 @@
 import eventBus from '@/plugins/eventBus'
 import http from '@/plugins/http'
 import i18n from '@/plugins/i18n'
+import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
 
@@ -44,14 +45,19 @@ export async function subscribe(
     for (const payload of raw.split('\n'))
       if (payload.slice(0, 5) === 'data:') {
         const data = payload.slice(5)
+        const appStore = useAppStore()
         switch (data) {
           case 'INIT':
           case 'RELOAD':
-          case 'HEARTBEAT':
           case 'BUSINESS_CONFIG_CHANGE':
           case 'USER_CONFIG_CHANGE':
             break
+          case 'HEARTBEAT':
+            appStore.status.notifications.state = 'ONLINE'
+            appStore.status.notifications.last = Date.now()
+            break
           case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
+            appStore.status.notifications.state = 'OFFLINE'
             controller.abort()
             eventBus.emit('modal:open', {
               data: t(`modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION`),
