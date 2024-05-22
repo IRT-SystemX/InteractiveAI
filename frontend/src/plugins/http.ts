@@ -16,14 +16,14 @@ const http = axios.create({
 
 http.interceptors.request.use(
   function (config) {
-    useAppStore().status.loading.push({ state: 'LOADING', data: config })
+    useAppStore().status.requests.push({ state: 'LOADING', data: config })
     // Add access token to all requests
     const authStore = useAuthStore()
     config.headers.Authorization = `Bearer ${authStore.token?.access_token}`
     return config
   },
   function (error) {
-    useAppStore().status.loading[useAppStore().status.loading.findIndex((el) => el.data.url)] = {
+    useAppStore().status.requests[useAppStore().status.requests.findIndex((el) => el.data.url)] = {
       state: 'ERROR',
       data: error
     }
@@ -33,8 +33,8 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   function (response) {
-    useAppStore().status.loading.splice(
-      useAppStore().status.loading.findIndex((el) => el.data.url),
+    useAppStore().status.requests.splice(
+      useAppStore().status.requests.findIndex((el) => el.data.url),
       1
     )
     return response
@@ -59,7 +59,7 @@ http.interceptors.response.use(
       authStore.logout()
       router.push({ name: 'login' })
     }
-    useAppStore().status.loading[useAppStore().status.loading.findIndex((el) => el.data.url)] = {
+    useAppStore().status.requests[useAppStore().status.requests.findIndex((el) => el.data.url)] = {
       state: 'ERROR',
       data: error
     }

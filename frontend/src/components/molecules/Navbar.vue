@@ -27,34 +27,41 @@
           <img :src="asset(`entities/${entity}/assets/logo.svg`)" width="32" height="32" />
         </RouterLink>
       </template>
-      <div
-        :key="
-          appStore.status.loading.reduce(
-            (acc, el) => (acc = acc !== 'ERROR' ? el.state : acc),
-            'IDLE'
-          )
-        "
-        class="flex flex-center-y cab-status"
-        :class="[
-          appStore.status.loading.reduce(
-            (acc, el) => (acc = acc !== 'ERROR' ? el.state : acc),
-            'IDLE'
-          )
-        ]">
-        <ArrowUpDown :size="16"></ArrowUpDown>
-      </div>
-      <div
-        :key="appStore.status.notifications.last"
-        class="flex flex-center-y cab-status"
-        :class="[appStore.status.notifications.state]">
-        <Bell :size="16"></Bell>
-      </div>
-      <div
-        :key="appStore.status.context.last"
-        class="flex flex-center-y cab-status"
-        :class="[appStore.status.context.state]">
-        <AppWindow :size="16"></AppWindow>
-      </div>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.requests') }} {{ $t(`cab.status.${appStore.requestsStatus}`) }}
+        </template>
+        <div
+          :key="appStore.requestsStatus"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.requestsStatus]">
+          <ArrowUpDown :size="16"></ArrowUpDown>
+        </div>
+      </Tooltip>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.notifications') }}
+          {{ $t(`cab.status.${appStore.status.notifications.state}`) }}
+        </template>
+        <div
+          :key="appStore.status.notifications.last"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.status.notifications.state]"
+          @click="cardsStore.subscribe($route.params.entity as Entity)">
+          <Bell :size="16"></Bell>
+        </div>
+      </Tooltip>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.context') }} {{ $t(`cab.status.${appStore.status.context.state}`) }}
+        </template>
+        <div
+          :key="appStore.status.context.last"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.status.context.state]">
+          <AppWindow :size="16"></AppWindow>
+        </div>
+      </Tooltip>
     </div>
     <div v-if="authStore.user" class="cab-nav">
       <User />
@@ -69,16 +76,20 @@ import { useRouter } from 'vue-router'
 
 import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
+import { useCardsStore } from '@/stores/cards'
+import type { Entity } from '@/types/entities'
 import { asset } from '@/utils/utils'
 
 import pkg from '../../../package.json'
 import Button from '../atoms/Button.vue'
 import SVG from '../atoms/SVG.vue'
+import Tooltip from '../atoms/Tooltip.vue'
 
 const env = import.meta.env
 
 const router = useRouter()
 const authStore = useAuthStore()
+const cardsStore = useCardsStore()
 const appStore = useAppStore()
 
 function logout() {
