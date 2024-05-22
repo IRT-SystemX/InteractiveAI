@@ -1,10 +1,7 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <div
-        v-if="appStore.panels.left"
-        ref="leftPanel"
-        style="width: 320px; max-width: 40vw; transition: 0.05s">
+      <div v-if="appStore.panels.left" ref="leftPanel" style="width: 320px; max-width: 40vw">
         <Notifications class="cab-notifications" />
       </div>
       <div v-else class="cab-notifications cab-panel cab-section-placeholder">
@@ -37,10 +34,7 @@
         @contextmenu.prevent="reset('right')">
         <GripVertical width="16" />
       </div>
-      <div
-        v-if="appStore.panels.right"
-        ref="rightPanel"
-        style="width: 320px; max-width: 40vw; transition: 0.05s">
+      <div v-if="appStore.panels.right" ref="rightPanel" style="width: 320px; max-width: 40vw">
         <Assistant class="cab-assistant" />
       </div>
       <div v-else class="cab-assistant cab-panel cab-section-placeholder">
@@ -59,10 +53,7 @@
       @contextmenu.prevent="reset('bottom')">
       <GripHorizontal height="16" />
     </div>
-    <div
-      v-if="appStore.panels.bottom"
-      ref="bottomPanel"
-      style="height: 240px; max-height: 60vh; transition: 0.05s">
+    <div v-if="appStore.panels.bottom" ref="bottomPanel" style="height: 240px; max-height: 60vh">
       <Timeline class="cab-timelines" />
     </div>
     <div v-else class="cab-timelines cab-panel cab-section-placeholder">
@@ -136,21 +127,21 @@ function resize(ev: DragEvent, panel: 'left' | 'right' | 'bottom') {
     switch (panel) {
       case 'left':
         window.requestAnimationFrame(() => {
-          leftPanel.value!.style.width = ev.clientX - 8 + 'px'
           appStore.panels.left = ev.clientX > 120
+          leftPanel.value!.style.width = ev.clientX - 8 + 'px'
         })
         break
       case 'right':
         window.requestAnimationFrame(() => {
-          rightPanel.value!.style.width = width - ev.clientX - 16 + 'px'
           appStore.panels.right = width - ev.clientX - 16 > 120
+          rightPanel.value!.style.width = width - ev.clientX - 16 + 'px'
         })
         break
 
       case 'bottom':
         window.requestAnimationFrame(() => {
-          bottomPanel.value!.style.height = height - ev.clientY - 16 + 'px'
           appStore.panels.bottom = height - ev.clientY - 16 > 96
+          bottomPanel.value!.style.height = height - ev.clientY - 16 + 'px'
         })
         break
     }
@@ -160,16 +151,16 @@ function resize(ev: DragEvent, panel: 'left' | 'right' | 'bottom') {
 function reset(panel: 'left' | 'right' | 'bottom') {
   switch (panel) {
     case 'left':
-      leftPanel.value!.style.width = 320 + 'px'
       appStore.panels.left = true
+      leftPanel.value!.style.width = 320 + 'px'
       break
     case 'right':
-      rightPanel.value!.style.width = 320 + 'px'
       appStore.panels.right = true
+      rightPanel.value!.style.width = 320 + 'px'
       break
     case 'bottom':
-      bottomPanel.value!.style.height = 240 + 'px'
       appStore.panels.bottom = true
+      bottomPanel.value!.style.height = 240 + 'px'
       break
   }
 }
