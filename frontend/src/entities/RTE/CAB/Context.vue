@@ -37,6 +37,7 @@ onBeforeMount(async () => {
 
 onUnmounted(() => {
   clearInterval(contextPID.value)
+  appStore.status.context.state = 'NONE'
 })
 </script>
 <style lang="scss">

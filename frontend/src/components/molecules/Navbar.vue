@@ -38,30 +38,32 @@
           <ArrowUpDown :size="16"></ArrowUpDown>
         </div>
       </Tooltip>
-      <Tooltip placement="bottom">
-        <template #tooltip>
-          {{ $t('cab.status.notifications') }}
-          {{ $t(`cab.status.${appStore.status.notifications.state}`) }}
-        </template>
-        <div
-          :key="appStore.status.notifications.last"
-          class="flex flex-center-y cab-status"
-          :class="[appStore.status.notifications.state]"
-          @click="cardsStore.subscribe($route.params.entity as Entity)">
-          <Bell :size="16"></Bell>
-        </div>
-      </Tooltip>
-      <Tooltip placement="bottom">
-        <template #tooltip>
-          {{ $t('cab.status.context') }} {{ $t(`cab.status.${appStore.status.context.state}`) }}
-        </template>
-        <div
-          :key="appStore.status.context.last"
-          class="flex flex-center-y cab-status"
-          :class="[appStore.status.context.state]">
-          <AppWindow :size="16"></AppWindow>
-        </div>
-      </Tooltip>
+      <TransitionGroup name="fade">
+        <Tooltip v-if="authStore.user" placement="bottom">
+          <template #tooltip>
+            {{ $t('cab.status.notifications') }}
+            {{ $t(`cab.status.${appStore.status.notifications.state}`) }}
+          </template>
+          <div
+            :key="appStore.status.notifications.last"
+            class="flex flex-center-y cab-status"
+            :class="[appStore.status.notifications.state]"
+            @click="cardsStore.subscribe($route.params.entity as Entity)">
+            <Bell :size="16"></Bell>
+          </div>
+        </Tooltip>
+        <Tooltip v-if="appStore.status.context.state !== 'NONE'" placement="bottom">
+          <template #tooltip>
+            {{ $t('cab.status.context') }} {{ $t(`cab.status.${appStore.status.context.state}`) }}
+          </template>
+          <div
+            :key="appStore.status.context.last"
+            class="flex flex-center-y cab-status"
+            :class="[appStore.status.context.state]">
+            <AppWindow :size="16"></AppWindow>
+          </div>
+        </Tooltip>
+      </TransitionGroup>
     </div>
     <div v-if="authStore.user" class="cab-nav">
       <User />

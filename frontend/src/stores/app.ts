@@ -23,12 +23,12 @@ export const useAppStore = defineStore('app', () => {
   const _card = ref<Card>()
   const status = reactive<{
     requests: { state: 'ERROR' | 'LOADING'; data: any }[]
-    context: { state: 'FROZEN' | 'ONLINE' | 'OFFLINE'; last: number }
     notifications: { state: 'ONLINE' | 'OFFLINE'; last: number }
+    context: { state: 'FROZEN' | 'ONLINE' | 'OFFLINE' | 'NONE'; last: number }
   }>({
     requests: [],
     notifications: { state: 'OFFLINE', last: 0 },
-    context: { state: 'OFFLINE', last: 0 }
+    context: { state: 'NONE', last: 0 }
   })
   const tab = reactive({
     context: 0,
