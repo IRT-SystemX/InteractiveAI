@@ -76,10 +76,12 @@ import { latLngBounds } from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { onUnmounted, ref, watch } from 'vue'
 
+import { useAppStore } from '@/stores/app'
 import { useMapStore } from '@/stores/components/map'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
 const mapStore = useMapStore()
+const appStore = useAppStore()
 
 const lockView = ref(true)
 const zoom = ref(6)
@@ -105,6 +107,10 @@ function toggleLockView() {
 
 watch(mapStore.contextWaypoints, () => {
   toggleLockView()
+})
+
+watch(appStore.panels, () => {
+  map.value.leafletObject.invalidateSize()
 })
 
 onUnmounted(() => {
