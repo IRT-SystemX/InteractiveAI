@@ -98,7 +98,7 @@ export const useCardsStore = defineStore('cards', () => {
               _cards.value[existingCard].data.criticality !== 'ND' &&
               hydratedCard?.data.criticality === 'ND'
             )
-              eventBus.emit('notifications:close', _cards.value[existingCard])
+              eventBus.emit('notifications:ended', _cards.value[existingCard])
             _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
               ...hydratedCard

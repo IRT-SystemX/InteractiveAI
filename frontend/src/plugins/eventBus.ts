@@ -15,7 +15,7 @@ const eventBus = mitt<{
   'graph:update': any
   'graph:showTooltip': any
   'assistant:procedure:checked': any
-  'notifications:close': Card
+  'notifications:ended': Card
 }>()
 
 export default eventBus

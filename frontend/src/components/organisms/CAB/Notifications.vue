@@ -184,7 +184,7 @@ function filtered(fn: (typeof props.sections)[number]['filter']) {
 const hasBeenAcknowledged = ref(false)
 const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
 
-eventBus.on('notifications:close', () => {
+eventBus.on('notifications:ended', () => {
   if (modals.value.find((m) => m.id === 'ended') || !props.autoclose) return
   modals.value.push({
     message: t('cab.notifications.ended'),
