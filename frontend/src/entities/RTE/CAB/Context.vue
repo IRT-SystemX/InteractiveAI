@@ -3,7 +3,6 @@
     <template v-if="appStore.tab.context === 0">
       <img
         v-if="servicesStore.context('RTE')?.data.topology"
-        style="user-drag: none"
         :src="`data:image/png;base64, ${servicesStore.context('RTE').data.topology}`"
         class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
