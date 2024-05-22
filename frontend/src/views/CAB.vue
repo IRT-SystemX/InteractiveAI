@@ -75,7 +75,7 @@ import DefaultNotifications from '@/components/organisms/CAB/Notifications.vue'
 import { toggleMode } from '@/plugins/colorMode'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import { EntitiesArray, type Entity } from '@/types/entities'
+import { type Entity } from '@/types/entities'
 
 import DefaultAssistant from './CAB/DefaultAssistant.vue'
 import DefaultContext from './CAB/DefaultContext.vue'
@@ -183,9 +183,6 @@ function setup(entity: Entity) {
 }
 
 function remove() {
-  eventBus.off('assistant:tab')
-  for (const entity of EntitiesArray) eventBus.off(`assistant:selected:${entity}`)
-  eventBus.off('tabs:selected')
   eventBus.off('graph:showTooltip')
   cardsStore.unsubscribe()
 }

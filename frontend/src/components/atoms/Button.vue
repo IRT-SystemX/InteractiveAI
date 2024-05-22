@@ -75,6 +75,17 @@ withDefaults(
   &.icon {
     aspect-ratio: 1;
     display: flex;
+
+    .lucide {
+      filter: drop-shadow(
+          calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-button-background), #000 20%)
+        )
+        drop-shadow(
+          calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-button-background), #ccc 20%)
+        );
+    }
   }
 }
 </style>

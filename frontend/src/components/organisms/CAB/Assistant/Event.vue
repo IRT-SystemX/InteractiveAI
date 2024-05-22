@@ -11,12 +11,6 @@
       </i18n-t>
     </slot>
   </SpeechBubble>
-  <!--<div class="flex flex-center-y">
-    <Button color="secondary" type="button" @click="secondaryAction">
-      {{ $t('event.button.secondary') }}
-    </Button>
-    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
-  </div>-->
   <div class="flex flex-center-y">
     <Button type="button" @click="primaryAction">
       <slot name="button-primary">
@@ -30,7 +24,7 @@
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>
   </div>
-  <div class="flex flex-center-y">
+  <div v-if="secondaryAction" class="flex flex-center-y">
     <Button type="button" color="secondary" @click="secondaryAction">
       <slot name="button-secondary">
         {{ $t('event.button.secondary') }}
@@ -51,7 +45,7 @@ import Avatar from '@/components/atoms/Avatar.vue'
 import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
@@ -63,8 +57,10 @@ withDefaults(
     secondaryAction?: (card?: Card) => void
   }>(),
   {
-    primaryAction: () => eventBus.emit('assistant:tab', 2),
-    secondaryAction: () => {},
+    primaryAction: () => {
+      useAppStore().tab.assistant = 2
+    },
+    secondaryAction: undefined,
     chatbot: true
   }
 )

@@ -46,6 +46,7 @@
         class="context-marker"
         :class-name="'context-marker ' + waypoint.severity"></l-icon>
     </l-marker>
+    <l-control-scale />
   </l-map>
   <label class="cab-map-lockview p-1 flex flex-wrap">
     <input v-model="lockView" type="checkbox" style="display: none" @change="toggleLockView" />
@@ -61,6 +62,7 @@ import 'leaflet/dist/leaflet.css'
 
 import {
   LCircleMarker,
+  LControlScale,
   LIcon,
   LMap,
   LMarker,

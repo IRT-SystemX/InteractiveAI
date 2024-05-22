@@ -19,6 +19,7 @@ a.router-link-exact-active {
   background-color: var(--color-grey-200);
   padding: var(--spacing-1);
   color: var(--color-text);
+  font-feature-settings: 'liga', 'calt', 'ss02';
 }
 
 input:-webkit-autofill,

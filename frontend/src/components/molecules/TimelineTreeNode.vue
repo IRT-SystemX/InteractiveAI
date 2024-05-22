@@ -1,13 +1,18 @@
 <template>
   <div
     class="cab-timeline-row"
+    :class="{ active: appStore._card?.id === card.id }"
     :style="{
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
-    }">
+    }"
+    @click="appStore._card = card">
     <div class="flex" style="scroll-snap-align: end">
       <CornerDownRight v-if="isChild" />
       <slot name="notification" :card>
-        <Notification :criticality="card.data.criticality" class="cab-timeline-card flex-1">
+        <Notification
+          :criticality="card.data.criticality"
+          class="cab-timeline-card flex-1"
+          :class="{ active: appStore._card?.id === card.id }">
           <template #title>
             <slot name="title" :card>{{ card.titleTranslated }}</slot>
           </template>
@@ -120,6 +125,7 @@ import { CornerDownRight, Flag, MapPin } from 'lucide-vue-next'
 import { computed } from 'vue'
 
 import { format } from '@/plugins/date'
+import { useAppStore } from '@/stores/app'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { clamp, criticalityToColor } from '@/utils/utils'
@@ -129,6 +135,8 @@ import Notification from '../molecules/Notification.vue'
 export type eventFnType<T extends Entity = Entity> = (
   card: Card<T>
 ) => { id: string; startDate: number; endDate: number; name: string }[]
+
+const appStore = useAppStore()
 
 const props = withDefaults(
   defineProps<{
@@ -154,8 +162,14 @@ const events = computed(() =>
 .cab-timeline-row {
   display: grid;
   grid-column: cards-start / event-end;
+  border-radius: var(--radius-medium);
+  cursor: pointer;
   > * {
     grid-row: 1;
+  }
+
+  &.active {
+    background: var(--color-grey-200);
   }
 }
 .lucide {

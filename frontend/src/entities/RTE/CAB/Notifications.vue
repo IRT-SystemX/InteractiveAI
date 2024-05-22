@@ -18,6 +18,7 @@
       <Zap
         v-if="card.severity === 'ALARM'"
         :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
+        :color="`var(--color-${criticalityToColor(card.data.criticality)})`"
         :height="16" />
       <SVG
         v-else

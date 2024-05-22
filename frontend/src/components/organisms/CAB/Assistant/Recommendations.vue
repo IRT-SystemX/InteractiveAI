@@ -105,7 +105,6 @@ function downvote(recommendation: Recommendation<T>) {
     'update:recommendations',
     props.recommendations.filter((rec) => rec.title !== recommendation.title)
   )
-  console.log(recommendation) // TODO
 }
 </script>
 <style lang="scss">

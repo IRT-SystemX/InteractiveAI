@@ -1,5 +1,4 @@
 <template>
-  <ProgressBar />
   <Modal
     v-for="modal of modals"
     :id="modal.id"
@@ -18,7 +17,6 @@ import { ref } from 'vue'
 import { RouterView } from 'vue-router'
 
 import Modal from './components/atoms/Modal.vue'
-import ProgressBar from './components/atoms/ProgressBar.vue'
 import Navbar from './components/molecules/Navbar.vue'
 import { mode } from './plugins/colorMode'
 import eventBus from './plugins/eventBus'

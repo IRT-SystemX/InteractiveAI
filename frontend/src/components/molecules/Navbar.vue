@@ -2,7 +2,7 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="mx-1"></SVG>
+        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="ml-2 mr-1"></SVG>
         <h1 class="cab-logo-typo">
           {{ $t('cab') }}
           <div class="logo-infos" :title="JSON.stringify(env)">
@@ -27,6 +27,41 @@
           <img :src="asset(`entities/${entity}/assets/logo.svg`)" width="32" height="32" />
         </RouterLink>
       </template>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.requests') }} {{ $t(`cab.status.${appStore.requestsStatus}`) }}
+        </template>
+        <div
+          :key="appStore.requestsStatus"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.requestsStatus]">
+          <ArrowUpDown :size="16"></ArrowUpDown>
+        </div>
+      </Tooltip>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.notifications') }}
+          {{ $t(`cab.status.${appStore.status.notifications.state}`) }}
+        </template>
+        <div
+          :key="appStore.status.notifications.last"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.status.notifications.state]"
+          @click="cardsStore.subscribe($route.params.entity as Entity)">
+          <Bell :size="16"></Bell>
+        </div>
+      </Tooltip>
+      <Tooltip placement="bottom">
+        <template #tooltip>
+          {{ $t('cab.status.context') }} {{ $t(`cab.status.${appStore.status.context.state}`) }}
+        </template>
+        <div
+          :key="appStore.status.context.last"
+          class="flex flex-center-y cab-status"
+          :class="[appStore.status.context.state]">
+          <AppWindow :size="16"></AppWindow>
+        </div>
+      </Tooltip>
     </div>
     <div v-if="authStore.user" class="cab-nav">
       <User />
@@ -36,20 +71,26 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { LogIn, User } from 'lucide-vue-next'
+import { AppWindow, ArrowUpDown, Bell, LogIn, User } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 
+import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
+import { useCardsStore } from '@/stores/cards'
+import type { Entity } from '@/types/entities'
 import { asset } from '@/utils/utils'
 
 import pkg from '../../../package.json'
 import Button from '../atoms/Button.vue'
 import SVG from '../atoms/SVG.vue'
+import Tooltip from '../atoms/Tooltip.vue'
 
 const env = import.meta.env
 
-const authStore = useAuthStore()
 const router = useRouter()
+const authStore = useAuthStore()
+const cardsStore = useCardsStore()
+const appStore = useAppStore()
 
 function logout() {
   authStore.logout()
@@ -86,6 +127,7 @@ html.dark nav .entity {
 }
 nav {
   display: flex;
+  overflow: auto;
   align-items: center;
   justify-content: space-between;
   box-shadow:
@@ -94,7 +136,6 @@ nav {
     inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
       color-mix(in srgb, var(--color-background), #ccc 20%);
   height: 100%;
-  padding: var(--spacing-1);
   width: 100%;
   border-radius: var(--radius-circular);
   z-index: 1000;
@@ -139,6 +180,59 @@ nav {
     display: flex;
     align-items: center;
     gap: var(--spacing-3);
+  }
+  .cab-status {
+    --color-cab-status: var(--color-text);
+    background-color: var(--color-cab-status);
+    margin: auto;
+    padding: var(--spacing-1);
+    color: var(--color-text-inverted);
+    border-radius: var(--radius-circular);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity var(--duration);
+    .lucide {
+      filter: drop-shadow(
+          calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-cab-status), #000 20%)
+        )
+        drop-shadow(
+          calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-cab-status), #ccc 20%)
+        );
+    }
+    &:hover {
+      opacity: 1;
+    }
+
+    &.OFFLINE,
+    &.ERROR {
+      --color-cab-status: var(--color-error);
+    }
+    &.FROZEN {
+      --color-cab-status: var(--color-warning);
+      animation: ripple 1s alternate infinite;
+    }
+    &.ONLINE,
+    &.IDLE,
+    &.LOADING {
+      --color-cab-status: var(--color-primary);
+      animation: ripple 1s;
+    }
+    &.LOADING {
+      animation: ripple 1s alternate infinite;
+    }
+  }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0rem var(--color-cab-status);
+  }
+  100% {
+    box-shadow: 0 0 0 1rem transparent;
   }
 }
 
