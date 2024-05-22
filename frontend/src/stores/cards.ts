@@ -55,15 +55,11 @@ export const useCardsStore = defineStore('cards', () => {
     const { data } = await cardsApi.isSubscriptionActive()
     const appStore = useAppStore()
     if (data) {
-      const id = uuid()
-      eventBus.emit('modal:open', {
-        id,
+      appStore.addModal({
         data: t('modal.info.SUBSCRIPTION_ACTIVE'),
-        type: 'choice'
-      })
-      eventBus.on('modal:close', (data) => {
-        if (data.id === id) {
-          if (data.res === 'ok') {
+        type: 'choice',
+        callback: (success) => {
+          if (success) {
             appStore.status.notifications.state = 'ONLINE'
             _subscribe(entity, hydrated)
           } else {

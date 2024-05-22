@@ -4,7 +4,6 @@ import router from '@/router'
 import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 
-import eventBus from './eventBus'
 import i18n from './i18n'
 
 const { t } = i18n.global
@@ -23,7 +22,8 @@ http.interceptors.request.use(
     return config
   },
   function (error) {
-    useAppStore().status.requests[useAppStore().status.requests.findIndex((el) => el.data.url)] = {
+    const appStore = useAppStore()
+    appStore.status.requests[appStore.status.requests.findIndex((el) => el.data.url)] = {
       state: 'ERROR',
       data: error
     }
@@ -33,21 +33,27 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   function (response) {
-    useAppStore().status.requests.splice(
-      useAppStore().status.requests.findIndex((el) => el.data.url),
+    const appStore = useAppStore()
+    appStore.status.requests.splice(
+      appStore.status.requests.findIndex((el) => el.data.url),
       1
     )
     return response
   },
   async function (error: AxiosError<any, any>) {
     const authStore = useAuthStore()
+    const appStore = useAppStore()
     // If request failed, check if token is expired
     if (error.config?.url !== '/auth/check_token' && authStore.token?.access_token) {
       const res = await authStore.checkToken()
       if (!res) {
-        eventBus.emit('modal:open', {
+        appStore._modals = []
+        appStore.addModal({
           data: t('modal.error.DISCONNECTED'),
-          type: 'info'
+          type: 'info',
+          callback: () => {
+            appStore.status.requests = []
+          }
         })
         authStore.logout()
         router.push({ name: 'login' })
@@ -59,12 +65,12 @@ http.interceptors.response.use(
       authStore.logout()
       router.push({ name: 'login' })
     }
-    useAppStore().status.requests[useAppStore().status.requests.findIndex((el) => el.data.url)] = {
+    appStore.status.requests[appStore.status.requests.findIndex((el) => el.data.url)] = {
       state: 'ERROR',
       data: error
     }
     if (error.code && !['ERR_CANCELED'].includes(error.code))
-      eventBus.emit('modal:open', {
+      appStore.addModal({
         data:
           t('modal.error.default', {
             url: error.config?.url,
@@ -78,7 +84,13 @@ http.interceptors.response.use(
           error.message ??
           t(`modal.error.${error.code}`) ??
           error,
-        type: 'info'
+        type: 'info',
+        callback: () => {
+          appStore.status.requests.splice(
+            appStore.status.requests.findIndex((el) => el.data.url),
+            1
+          )
+        }
       })
     return Promise.reject(error)
   }

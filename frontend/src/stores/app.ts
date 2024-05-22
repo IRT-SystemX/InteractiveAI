@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 
-import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { UUID } from '@/types/formats'
@@ -11,7 +10,7 @@ type Modal = {
   id?: UUID
   data: string
   type: 'choice' | 'info'
-  callback?: (res: 'ok' | 'ko', id: UUID) => void
+  callback?: (success: boolean) => void
 }
 
 export const useAppStore = defineStore('app', () => {
@@ -45,16 +44,20 @@ export const useAppStore = defineStore('app', () => {
     return _card.value?.entityRecipients.includes(entity) ? (_card.value as Card<T>) : undefined
   }
 
-  function addModal(modal: Modal) {
+  function addModal(modal: Omit<Modal, 'id'>) {
+    const id = uuid()
     _modals.value.push({
-      id: uuid(),
+      id,
       ...modal,
-      callback: (res: 'ok' | 'ko', id: UUID) => {
-        modal.callback?.(res, id)
-        eventBus.emit('modal:close', { id, res })
+      callback: (success) => {
+        modal.callback?.(success)
+        _modals.value.splice(
+          _modals.value.findIndex((el) => el.id === id),
+          1
+        )
       }
     })
   }
 
-  return { _card, status, requestsStatus, tab, gutters, card, addModal }
+  return { _modals, _card, status, requestsStatus, tab, gutters, card, addModal }
 })

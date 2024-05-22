@@ -91,8 +91,8 @@ onBeforeMount(() => {
   buttons.value = props.buttons
 })
 
-function close(_: any, res: 'ok' | 'ko') {
-  if (res === 'ok') emit('selected', selected.value!)
+function close(success: boolean) {
+  if (success) emit('selected', selected.value!)
   confirm.value = false
 }
 

@@ -1,4 +1,3 @@
-import eventBus from '@/plugins/eventBus'
 import http from '@/plugins/http'
 import i18n from '@/plugins/i18n'
 import { useAppStore } from '@/stores/app'
@@ -59,7 +58,7 @@ export async function subscribe(
           case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
             appStore.status.notifications.state = 'OFFLINE'
             controller.abort()
-            eventBus.emit('modal:open', {
+            appStore.addModal({
               data: t(`modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION`),
               type: 'info'
             })

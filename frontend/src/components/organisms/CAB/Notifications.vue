@@ -4,7 +4,7 @@
       v-for="modal of modals"
       :key="modal.message"
       type="choice"
-      @close="(...$event) => closeModal(...$event, modal)">
+      @close="closeModal($event, modal)">
       {{ modal.message }}
     </Modal>
     <section
@@ -182,15 +182,15 @@ function filtered(fn: (typeof props.sections)[number]['filter']) {
 }
 
 const hasBeenAcknowledged = ref(false)
-const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
+const modals = ref<{ callback: (success: boolean) => void; message: string; id: string }[]>([])
 
 eventBus.on('notifications:ended', () => {
   if (modals.value.find((m) => m.id === 'ended') || !props.autoclose) return
   modals.value.push({
     message: t('cab.notifications.ended'),
     id: 'ended',
-    callback: (res) => {
-      if (res === 'ok') {
+    callback: (success) => {
+      if (success) {
         for (const card of cardsStore
           .cards(props.entity)
           .filter((c) => c.data.criticality === 'ND'))
@@ -200,8 +200,8 @@ eventBus.on('notifications:ended', () => {
   })
 })
 
-function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
-  modal.callback(res)
+function closeModal(success: boolean, modal: (typeof modals.value)[0]) {
+  modal.callback(success)
   modals.value.splice(modals.value.indexOf(modal), 1)
 }
 
@@ -210,8 +210,8 @@ function confirmDeletion(card: Card) {
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
       id: 'confirm',
-      callback: (res) => {
-        if (res === 'ok') {
+      callback: (success) => {
+        if (success) {
           cardsStore.acknowledge(card)
         }
       }

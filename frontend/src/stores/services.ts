@@ -2,12 +2,10 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import * as servicesApi from '@/api/services'
-import eventBus from '@/plugins/eventBus'
 import i18n from '@/plugins/i18n'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { FullContext, Recommendation } from '@/types/services'
-import { uuid } from '@/utils/utils'
 
 import { useAppStore } from './app'
 import { useCardsStore } from './cards'
@@ -34,15 +32,7 @@ export const useServicesStore = defineStore('services', () => {
     delay = 5000
   ) {
     // Catch context error and reset interval
-    const modalID = uuid()
     let contextPID = 0
-    eventBus.on('modal:close', (data) => {
-      if (data.id === modalID && data.res === 'ok') {
-        handler()
-        contextPID = window.setInterval(handler, delay)
-      }
-    })
-
     // Handler
     const handler = async () => {
       try {
@@ -70,10 +60,15 @@ export const useServicesStore = defineStore('services', () => {
         appStore.status.context.last = Date.now()
       } catch (err) {
         clearInterval(contextPID)
-        eventBus.emit('modal:open', {
+        useAppStore().addModal({
           data: t('modal.error.CONTEXT_FAILED'),
           type: 'choice',
-          id: modalID
+          callback: (success) => {
+            if (success) {
+              handler()
+              contextPID = window.setInterval(handler, delay)
+            }
+          }
         })
       }
     }
