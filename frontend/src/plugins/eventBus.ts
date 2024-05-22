@@ -12,7 +12,6 @@ const eventBus = mitt<{
     type: 'choice' | 'info'
   }
   'modal:close': { id: UUID; res: 'ok' | 'ko' }
-  'tabs:selected': number
   'graph:update': any
   'graph:showTooltip': any
   'assistant:procedure:checked': any

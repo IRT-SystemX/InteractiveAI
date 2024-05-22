@@ -21,7 +21,7 @@
       @click="
         () => {
           appStore.tab.assistant = 2
-          eventBus.emit('tabs:selected', 0)
+          appStore.tab.context = 0
         }
       ">
       {{ $t('assistant.plan') }}

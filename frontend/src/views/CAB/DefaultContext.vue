@@ -1,5 +1,5 @@
 <template>
-  <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
+  <Context v-model="appStore.tab.context" :tabs="[$t('cab.tab.context')]">
     {{ servicesStore.context('RTE') }}
   </Context>
 </template>
@@ -7,11 +7,12 @@
 import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
+import { useAppStore } from '@/stores/app'
 import { useServicesStore } from '@/stores/services'
 
 const servicesStore = useServicesStore()
+const appStore = useAppStore()
 
-const tab = ref(0)
 const contextPID = ref(0)
 
 onBeforeMount(async () => {

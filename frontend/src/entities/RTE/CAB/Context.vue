@@ -1,6 +1,6 @@
 <template>
-  <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
-    <template v-if="tab === 0">
+  <Context v-model="appStore.tab.context" :tabs="[$t('cab.tab.context')]">
+    <template v-if="appStore.tab.context === 0">
       <img
         v-if="servicesStore.context('RTE')?.data.topology"
         style="user-drag: none"
@@ -30,7 +30,6 @@ import { useServicesStore } from '@/stores/services'
 const servicesStore = useServicesStore()
 const appStore = useAppStore()
 
-const tab = ref(0)
 const contextPID = ref(0)
 
 onBeforeMount(async () => {
