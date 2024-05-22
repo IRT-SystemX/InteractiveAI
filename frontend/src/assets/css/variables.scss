@@ -8,7 +8,7 @@
   --radius-circular: 2147483647px;
   --radius-big: calc(var(--unit) * 1.5);
   --radius-medium: var(--unit);
-  --radius-small: calc(var(--unit) * 0.5);
+  --radius-small: calc(var(--unit) * 1);
 
   // Spacing
   @for $i from 1 through 20 {
