@@ -35,38 +35,14 @@
         <template
           v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
             return (
-              CriticalityArray.indexOf(
-                filtered(section.filter)[b].reduce(
-                  (prev: Criticality, curr) =>
-                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                      ? curr.data.criticality
-                      : prev,
-                  'ND'
-                )
-              ) -
-              CriticalityArray.indexOf(
-                filtered(section.filter)[a].reduce(
-                  (prev: Criticality, curr) =>
-                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                      ? curr.data.criticality
-                      : prev,
-                  'ND'
-                )
-              )
+              CriticalityArray.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
+              CriticalityArray.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
             )
           })"
           :key>
           <Notification
             v-if="key !== '_DEFAULT'"
-            :criticality="
-              filtered(section.filter)[key].reduce(
-                (prev: Criticality, curr) =>
-                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                    ? curr.data.criticality
-                    : prev,
-                'ND'
-              )
-            ">
+            :criticality="maxCriticality('ND', filtered(section.filter)[key])">
             <div class="flex flex-center-y flex-gap">
               <ChevronDown />
               <header
@@ -149,9 +125,9 @@ import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vu
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
+import { type Card, CriticalityArray } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import { criticalityToColor } from '@/utils/utils'
+import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
 const { t } = useI18n()
 const cardsStore = useCardsStore()

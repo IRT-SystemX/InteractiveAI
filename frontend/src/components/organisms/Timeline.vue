@@ -37,38 +37,12 @@
       <template
         v-for="key of Object.keys(cards).sort((a, b) => {
           return (
-            CriticalityArray.indexOf(
-              cards[b].reduce(
-                (prev: Criticality, curr) =>
-                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                    ? curr.data.criticality
-                    : prev,
-                'ND'
-              )
-            ) -
-            CriticalityArray.indexOf(
-              cards[a].reduce(
-                (prev: Criticality, curr) =>
-                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                    ? curr.data.criticality
-                    : prev,
-                'ND'
-              )
-            )
+            CriticalityArray.indexOf(maxCriticality('ND', cards[b])) -
+            CriticalityArray.indexOf(maxCriticality('ND', cards[a]))
           )
         })"
         :key>
-        <Notification
-          v-if="key !== '_DEFAULT'"
-          :criticality="
-            cards[key].reduce(
-              (prev: Criticality, curr) =>
-                CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                  ? curr.data.criticality
-                  : prev,
-              'ND'
-            )
-          ">
+        <Notification v-if="key !== '_DEFAULT'" :criticality="maxCriticality('ND', cards[key])">
           <div class="flex flex-center-y flex-gap">
             <ChevronDown />
             <header class="flex flex-1">
@@ -109,9 +83,9 @@ import Notification from '@/components/molecules/Notification.vue'
 import TimelineTreeNode, { type eventFnType } from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import { useCardsStore } from '@/stores/cards'
-import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
+import { type Card, CriticalityArray } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import { repeatEvery } from '@/utils/utils'
+import { maxCriticality, repeatEvery } from '@/utils/utils'
 
 const props = withDefaults(
   defineProps<{

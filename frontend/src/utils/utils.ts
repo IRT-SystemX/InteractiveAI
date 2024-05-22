@@ -1,4 +1,5 @@
-import type { Criticality } from '@/types/cards'
+import { useCardsStore } from '@/stores/cards'
+import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
 import type { UUID } from '@/types/formats'
 
 /**
@@ -122,4 +123,24 @@ export function uuid() {
     : ('10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
         (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16)
       ) as UUID)
+}
+
+/**
+ * Returns the maximum criticality of the given cards, excluding those that have not been acknowledged if specified.
+ *
+ * @param {Criticality} [minimum='ND'] - The minimum criticality to consider. Defaults to 'ND'.
+ * @param {Card[]} cards - The array of cards to find the maximum criticality from. Defaults to non-acknowledged cards.
+ * @return {Criticality} The maximum criticality of the given cards.
+ */
+export function maxCriticality(
+  minimum: Criticality = 'ND',
+  cards: Card[] = useCardsStore()._cards.filter((card) => !card.hasBeenAcknowledged)
+) {
+  return cards.reduce(
+    (prev: Criticality, curr) =>
+      CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+        ? curr.data.criticality
+        : prev,
+    minimum
+  )
 }

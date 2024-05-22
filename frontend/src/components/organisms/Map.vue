@@ -9,14 +9,16 @@
     <l-polyline
       v-for="polyline of mapStore.polylines"
       :key="polyline.id"
-      :color="polyline.options?.color || 'var(--color-primary)'"
+      :color="
+        polyline.options?.color || `var(--color-${criticalityToColor(maxCriticality('ROUTINE'))})`
+      "
       :weight="8"
       :lat-lngs="polyline.waypoints"></l-polyline>
     <l-circle-marker
       v-for="waypoint of mapStore.waypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
-      color="var(--color-primary)"
+      :color="`var(--color-${criticalityToColor(maxCriticality('ROUTINE'))})`"
       fill-color="#fff"
       :weight="2"
       :fill-opacity="1"
@@ -75,6 +77,7 @@ import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { onUnmounted, ref, watch } from 'vue'
 
 import { useMapStore } from '@/stores/components/map'
+import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
 const mapStore = useMapStore()
 
