@@ -14,11 +14,10 @@ type Modal = {
 }
 
 export const useAppStore = defineStore('app', () => {
-  const gutters = reactive({
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
+  const panels = reactive({
+    right: true,
+    bottom: true,
+    left: true
   })
   const _modals = ref<Required<Modal>[]>([])
   const _card = ref<Card>()
@@ -59,5 +58,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { _modals, _card, status, requestsStatus, tab, gutters, card, addModal }
+  return { _modals, _card, status, requestsStatus, tab, panels, card, addModal }
 })

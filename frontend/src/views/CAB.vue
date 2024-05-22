@@ -1,10 +1,13 @@
 <template>
   <div class="cab-container">
     <div class="cab-container-upper">
-      <div v-show="left" ref="leftPanel" style="width: 320px; max-width: 40vw; transition: 0.05s">
+      <div
+        v-if="appStore.panels.left"
+        ref="leftPanel"
+        style="width: 320px; max-width: 40vw; transition: 0.05s">
         <Notifications class="cab-notifications" />
       </div>
-      <div v-show="!left" class="cab-notifications cab-panel cab-section-placeholder">
+      <div v-else class="cab-notifications cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.notifications') }}</h1>
       </div>
       <div
@@ -14,7 +17,7 @@
         @drag="resize($event, 'left')"
         @dragstart="dragStart($event, 'left')"
         @dragend="dragEnd"
-        @click="left = !left"
+        @click="appStore.panels.left = !appStore.panels.left"
         @mousedown.middle="reset('left')"
         @contextmenu.prevent="reset('left')">
         <GripVertical width="16" />
@@ -29,15 +32,18 @@
         @drag="resize($event, 'right')"
         @dragstart="dragStart($event, 'right')"
         @dragend="dragEnd"
-        @click="right = !right"
+        @click="appStore.panels.right = !appStore.panels.right"
         @mousedown.middle="reset('right')"
         @contextmenu.prevent="reset('right')">
         <GripVertical width="16" />
       </div>
-      <div v-show="right" ref="rightPanel" style="width: 320px; max-width: 40vw; transition: 0.05s">
+      <div
+        v-if="appStore.panels.right"
+        ref="rightPanel"
+        style="width: 320px; max-width: 40vw; transition: 0.05s">
         <Assistant class="cab-assistant" />
       </div>
-      <div v-show="!right" class="cab-assistant cab-panel cab-section-placeholder">
+      <div v-else class="cab-assistant cab-panel cab-section-placeholder">
         <h1>{{ $t('cab.assistant') }}</h1>
       </div>
     </div>
@@ -48,18 +54,18 @@
       @drag="resize($event, 'bottom')"
       @dragstart="dragStart($event, 'bottom')"
       @dragend="dragEnd"
-      @click="bottom = !bottom"
+      @click="appStore.panels.bottom = !appStore.panels.bottom"
       @mousedown.middle="reset('bottom')"
       @contextmenu.prevent="reset('bottom')">
       <GripHorizontal height="16" />
     </div>
     <div
-      v-show="bottom"
+      v-if="appStore.panels.bottom"
       ref="bottomPanel"
       style="height: 240px; max-height: 60vh; transition: 0.05s">
       <Timeline class="cab-timelines" />
     </div>
-    <div v-show="!bottom" class="cab-timelines cab-panel cab-section-placeholder">
+    <div v-else class="cab-timelines cab-panel cab-section-placeholder">
       <h1>{{ $t('cab.timeline') }}</h1>
     </div>
   </div>
@@ -74,6 +80,7 @@ import Loading from '@/components/atoms/Loading.vue'
 import DefaultNotifications from '@/components/organisms/CAB/Notifications.vue'
 import { toggleMode } from '@/plugins/colorMode'
 import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import { useCardsStore } from '@/stores/cards'
 import { type Entity } from '@/types/entities'
 
@@ -105,13 +112,11 @@ let Timeline = defineAsyncComponent({
 const route = useRoute()
 const { locale } = useI18n()
 const cardsStore = useCardsStore()
+const appStore = useAppStore()
 
 const leftPanel = ref<HTMLDivElement>()
-const left = ref(true)
 const rightPanel = ref<HTMLDivElement>()
-const right = ref(true)
 const bottomPanel = ref<HTMLDivElement>()
-const bottom = ref(true)
 const active = ref('')
 
 function dragStart(ev: DragEvent, value: 'left' | 'right' | 'bottom') {
@@ -132,20 +137,20 @@ function resize(ev: DragEvent, panel: 'left' | 'right' | 'bottom') {
       case 'left':
         window.requestAnimationFrame(() => {
           leftPanel.value!.style.width = ev.clientX - 8 + 'px'
-          left.value = ev.clientX > 120
+          appStore.panels.left = ev.clientX > 120
         })
         break
       case 'right':
         window.requestAnimationFrame(() => {
           rightPanel.value!.style.width = width - ev.clientX - 16 + 'px'
-          right.value = width - ev.clientX - 16 > 120
+          appStore.panels.right = width - ev.clientX - 16 > 120
         })
         break
 
       case 'bottom':
         window.requestAnimationFrame(() => {
           bottomPanel.value!.style.height = height - ev.clientY - 16 + 'px'
-          bottom.value = height - ev.clientY - 16 > 96
+          appStore.panels.bottom = height - ev.clientY - 16 > 96
         })
         break
     }
@@ -156,15 +161,15 @@ function reset(panel: 'left' | 'right' | 'bottom') {
   switch (panel) {
     case 'left':
       leftPanel.value!.style.width = 320 + 'px'
-      left.value = true
+      appStore.panels.left = true
       break
     case 'right':
       rightPanel.value!.style.width = 320 + 'px'
-      right.value = true
+      appStore.panels.right = true
       break
     case 'bottom':
       bottomPanel.value!.style.height = 240 + 'px'
-      bottom.value = true
+      appStore.panels.bottom = true
       break
   }
 }
