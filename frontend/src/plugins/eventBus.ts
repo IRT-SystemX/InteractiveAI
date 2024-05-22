@@ -15,7 +15,6 @@ const eventBus = mitt<{
   'tabs:selected': number
   'graph:update': any
   'graph:showTooltip': any
-  'assistant:tab': number
   'assistant:procedure:checked': any
   'notifications:close': Card
 }>()

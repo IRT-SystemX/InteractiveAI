@@ -183,7 +183,6 @@ function setup(entity: Entity) {
 }
 
 function remove() {
-  eventBus.off('assistant:tab')
   eventBus.off('tabs:selected')
   eventBus.off('graph:showTooltip')
   cardsStore.unsubscribe()

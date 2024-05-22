@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
 import type { Card } from '@/types/cards'
@@ -15,30 +15,25 @@ type Modal = {
 }
 
 export const useAppStore = defineStore('app', () => {
-  const gutters = ref<{
-    top: number
-    right: number
-    bottom: number
-    left: number
-  }>({
+  const gutters = reactive({
     top: 0,
     right: 0,
     bottom: 0,
     left: 0
   })
-  const globalModals = ref<Required<Modal>[]>([])
-  const selectedCard = ref<Card>()
-  const contextTab = ref(0)
-  const assistantTab = ref(0)
+  const _modals = ref<Required<Modal>[]>([])
+  const _card = ref<Card>()
+  const tab = reactive({
+    context: 0,
+    assistant: 0
+  })
 
   function card<T extends Entity>(entity: T): Card<T> | undefined {
-    return selectedCard.value?.entityRecipients.includes(entity)
-      ? (selectedCard.value as Card<T>)
-      : undefined
+    return _card.value?.entityRecipients.includes(entity) ? (_card.value as Card<T>) : undefined
   }
 
   function addModal(modal: Modal) {
-    globalModals.value.push({
+    _modals.value.push({
       id: uuid(),
       ...modal,
       callback: (res: 'ok' | 'ko', id: UUID) => {
@@ -48,5 +43,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { selectedCard, assistantTab, contextTab, gutters, card, addModal }
+  return { _card, tab, gutters, card, addModal }
 })

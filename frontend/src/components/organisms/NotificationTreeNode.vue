@@ -71,7 +71,7 @@ const showChildren = ref(true)
 
 function selected(card: CardTree<E>) {
   card.read = true
-  appStore.selectedCard = card
+  appStore._card = card
 }
 </script>
 <style lang="scss">

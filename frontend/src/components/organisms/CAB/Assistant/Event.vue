@@ -45,7 +45,7 @@ import Avatar from '@/components/atoms/Avatar.vue'
 import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
@@ -57,7 +57,9 @@ withDefaults(
     secondaryAction?: (card?: Card) => void
   }>(),
   {
-    primaryAction: () => eventBus.emit('assistant:tab', 2),
+    primaryAction: () => {
+      useAppStore().tab.assistant = 2
+    },
     secondaryAction: undefined,
     chatbot: true
   }

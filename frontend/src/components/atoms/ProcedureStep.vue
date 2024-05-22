@@ -18,7 +18,12 @@
   <slot name="footer">
     <Button
       v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
-      @click="eventBus.emit('assistant:tab', 2), eventBus.emit('tabs:selected', 0)">
+      @click="
+        () => {
+          appStore.tab.assistant = 2
+          eventBus.emit('tabs:selected', 0)
+        }
+      ">
       {{ $t('assistant.plan') }}
     </Button>
   </slot>
@@ -27,6 +32,7 @@
 import { ref, watch } from 'vue'
 
 import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import type { Entity } from '@/types/entities'
 import type { Step } from '@/types/procedure'
 
@@ -36,6 +42,8 @@ const props = defineProps<{
   task: Step<E>
   cab?: boolean
 }>()
+
+const appStore = useAppStore()
 
 const step = ref<HTMLDivElement>()
 
