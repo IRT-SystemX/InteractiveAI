@@ -22,7 +22,7 @@
   "cab.notifications.main": "Notifications",
   "cab.status.ERROR": "en erreur",
   "cab.status.FROZEN": "gelé",
-  "cab.status.IDLE": "en attente",
+  "cab.status.IDLE": "inactif",
   "cab.status.LOADING": "en chargement",
   "cab.status.OFFLINE": "hors ligne",
   "cab.status.ONLINE": "en ligne",
