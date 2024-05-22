@@ -19,7 +19,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { arrow, autoUpdate, flip, type Placement, shift, useFloating } from '@floating-ui/vue'
+import {
+  arrow,
+  autoUpdate,
+  flip,
+  offset,
+  type Placement,
+  shift,
+  useFloating
+} from '@floating-ui/vue'
 import { ref } from 'vue'
 
 const props = withDefaults(
@@ -38,7 +46,7 @@ const floatingArrow = ref<HTMLDivElement | null>(null)
 
 const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
   placement: props.placement,
-  middleware: [flip(), shift(), arrow({ element: floatingArrow, padding: 8 })],
+  middleware: [flip(), shift(), arrow({ element: floatingArrow }), offset(8)],
   whileElementsMounted: autoUpdate
 })
 </script>
