@@ -11,7 +11,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import * as THREE from 'three'
+import {
+  AmbientLight,
+  Clock,
+  Color,
+  DirectionalLight,
+  LoadingManager,
+  Mesh,
+  Object3D,
+  type Object3DEventMap,
+  PerspectiveCamera,
+  Plane,
+  Raycaster,
+  Scene,
+  Vector2,
+  Vector3,
+  WebGLRenderer
+} from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
@@ -25,21 +41,21 @@ const props = withDefaults(defineProps<{ size: number; status?: 'default' | 'err
 
 const EASE_AMOUNT = 8
 const loading = ref(true)
-const rendererInstance = ref<THREE.WebGLRenderer>()
-const robot = ref<THREE.Object3D<THREE.Object3DEventMap>>()
+const rendererInstance = ref<WebGLRenderer>()
+const robot = ref<Object3D<Object3DEventMap>>()
 
 function changeTexture(status: (typeof props)['status']) {
   robot.value?.traverse((node) => {
-    if (node instanceof THREE.Mesh) {
+    if (node instanceof Mesh) {
       // if (node.name === 'Head')
       //   node.material.map = new THREE.TextureLoader().load(`/model/${status}.png`)
       if (node.name === 'Button') {
         switch (status) {
           case 'default':
-            node.material.emissive = new THREE.Color('#00a3ff')
+            node.material.emissive = new Color('#00a3ff')
             break
           case 'error':
-            node.material.emissive = new THREE.Color('#f00')
+            node.material.emissive = new Color('#f00')
         }
       }
     }
@@ -47,14 +63,14 @@ function changeTexture(status: (typeof props)['status']) {
 }
 
 onMounted(() => {
-  const scene = new THREE.Scene()
-  const manager = new THREE.LoadingManager()
+  const scene = new Scene()
+  const manager = new LoadingManager()
   manager.onLoad = () => {
     loading.value = false
   }
-  const camera = new THREE.PerspectiveCamera(60, 1, 1, 1000)
+  const camera = new PerspectiveCamera(60, 1, 1, 1000)
   camera.position.set(0, 0, 5)
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new WebGLRenderer({
     antialias: true,
     alpha: true,
     canvas: canvasHTML.value!
@@ -63,12 +79,12 @@ onMounted(() => {
   renderer.setClearColor(0x000000, 0)
   const canvas = renderer.domElement
 
-  const light = new THREE.DirectionalLight(0xffffff, 0.5)
+  const light = new DirectionalLight(0xffffff, 0.5)
   light.position.setScalar(10)
   scene.add(light)
-  scene.add(new THREE.AmbientLight(0xffffff, 1))
+  scene.add(new AmbientLight(0xffffff, 1))
 
-  let base = new THREE.Object3D()
+  let base = new Object3D()
   scene.add(base)
 
   const loader = new GLTFLoader(manager).setPath('/model/')
@@ -79,12 +95,12 @@ onMounted(() => {
     changeTexture(props.status)
   })
 
-  const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -2)
-  const raycaster = new THREE.Raycaster()
-  const mouse = new THREE.Vector2()
+  const plane = new Plane(new Vector3(0, 0, 1), -2)
+  const raycaster = new Raycaster()
+  const mouse = new Vector2()
 
-  const clock = new THREE.Clock()
-  const pointOfIntersection = new THREE.Vector3()
+  const clock = new Clock()
+  const pointOfIntersection = new Vector3()
   document.addEventListener('mousemove', onMouseMove, false)
 
   function onMouseMove(event: MouseEvent) {
@@ -97,7 +113,7 @@ onMounted(() => {
         window.innerHeight
       ) * 2
   }
-  const look = new THREE.Vector2(0, 0)
+  const look = new Vector2(0, 0)
   function update() {
     look.x += (mouse.x - look.x) / EASE_AMOUNT
     look.y += (mouse.y - look.y) / EASE_AMOUNT
@@ -129,7 +145,7 @@ onMounted(() => {
     renderer.render(scene, camera)
   })
 
-  function resize(renderer: THREE.WebGLRenderer) {
+  function resize(renderer: WebGLRenderer) {
     const canvas = renderer.domElement
     const width = canvas.clientWidth
     const height = canvas.clientHeight

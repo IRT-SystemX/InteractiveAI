@@ -24,7 +24,14 @@ export default defineConfig({
   },
   envDir: 'env',
   build: {
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three']
+        }
+      }
+    }
   },
   server: {
     watch: {
