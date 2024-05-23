@@ -60,6 +60,20 @@ img {
   -ms-user-select: none;
 }
 
+progress {
+  outline: 2px solid var(--color-grey-600);
+  border: 2px solid transparent;
+  border-radius: var(--radius-circular);
+  &::-webkit-progress-bar {
+    background-color: transparent;
+  }
+  &::-webkit-progress-value {
+    padding: 2px;
+    border-radius: 10px;
+    background-color: var(--color-primary);
+  }
+}
+
 h1,
 h2,
 h3 {

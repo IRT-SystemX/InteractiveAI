@@ -76,8 +76,10 @@ $types: (
   flex-wrap: wrap;
 }
 
-.flex-1 {
-  flex: 1;
+@for $i from 0 through 20 {
+  .flex-#{$i} {
+    flex: $i;
+  }
 }
 
 .flex-center-x {

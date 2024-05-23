@@ -18,7 +18,7 @@ export const useServicesStore = defineStore('services', () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function context<T extends Entity>(entity: T) {
-    return _context.value as FullContext<T>
+    return _context.value as FullContext<T> | undefined
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
