@@ -20,7 +20,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "lint:svg": "svgo -rf src public/img",
+    "lint:svg": "svgo -rf public/img & svgo -rf src",
     "format": "prettier --write src/",
     "commit": "commit",
     "prepare": "cd .. && husky frontend/.husky"
