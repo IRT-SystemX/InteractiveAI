@@ -96,7 +96,7 @@ watch(
   async (index) => {
     switch (index) {
       case 2:
-        if (!appStore.card('DA')) break
+        if (!appStore.card('RTE')) break
         await servicesStore.getRecommendation(appStore.card('RTE')!.data!)
         recommendations.value = servicesStore.recommendations('RTE')
     }
