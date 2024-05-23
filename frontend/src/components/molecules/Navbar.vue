@@ -27,6 +27,8 @@
           <img :src="asset(`entities/${entity}/assets/logo.svg`)" width="32" height="32" />
         </RouterLink>
       </template>
+    </div>
+    <div v-if="authStore.user" class="cab-nav">
       <Tooltip placement="bottom">
         <template #tooltip>
           {{ $t('cab.status.requests') }} {{ $t(`cab.status.${appStore.requestsStatus}`) }}
@@ -64,8 +66,6 @@
           </div>
         </Tooltip>
       </TransitionGroup>
-    </div>
-    <div v-if="authStore.user" class="cab-nav">
       <User />
       {{ authStore.user.userData.login }}
       <Button icon :aria-label="$t('button.login')" @click="logout"><LogIn /></Button>
