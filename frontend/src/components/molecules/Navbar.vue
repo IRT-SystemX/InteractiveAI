@@ -215,7 +215,7 @@ nav {
     }
     &.FROZEN {
       --color-cab-status: var(--color-warning);
-      animation: ripple 1s alternate infinite;
+      box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--color-cab-status), transparent 50%);
     }
     &.ONLINE,
     &.IDLE,

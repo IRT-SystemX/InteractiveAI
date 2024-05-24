@@ -50,7 +50,10 @@ export const useServicesStore = defineStore('services', () => {
         // If there is no previous context, set it
         if (!localStorage.getItem('context')) localStorage.setItem('context', res.id_context)
         // If previous and current context are different, we can store it and callback
-        if (localStorage.getItem('context') !== res.id_context) {
+        if (
+          localStorage.getItem('context') !== res.id_context &&
+          res.id_context !== _context.value?.id_context
+        ) {
           _context.value = res
           appStore.status.context.state = 'ONLINE'
           callback(res)

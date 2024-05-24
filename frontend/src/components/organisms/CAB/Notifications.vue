@@ -19,17 +19,27 @@
           {{ $t(`cab.notifications.${section.name}`) }}
           {{ hasBeenAcknowledged ? $t('cab.notifications.archived') : '' }}
         </h1>
-        <Tooltip>
-          <template #tooltip>
-            {{ $t(`cab.notifications.${section.name}`) }}
-            {{ $t('cab.notifications.archived') }}
-          </template>
-          <button>
-            <Inbox
-              :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
-              @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
-          </button>
-        </Tooltip>
+        <div class="flex">
+          <Tooltip>
+            <template #tooltip>
+              {{ $t(`cab.notifications.button.delete_all`) }}
+            </template>
+            <button>
+              <Eraser @click="deleteAll" />
+            </button>
+          </Tooltip>
+          <Tooltip>
+            <template #tooltip>
+              {{ $t(`cab.notifications.${section.name}`) }}
+              {{ $t('cab.notifications.archived') }}
+            </template>
+            <button>
+              <Inbox
+                :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
+                @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
+            </button>
+          </Tooltip>
+        </div>
       </header>
       <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
         <template
@@ -111,7 +121,7 @@
   </section>
 </template>
 <script setup lang="ts" generic="T extends Entity">
-import { ChevronDown, Inbox } from 'lucide-vue-next'
+import { ChevronDown, Eraser, Inbox } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -193,6 +203,18 @@ function confirmDeletion(card: Card) {
       }
     })
   } else cardsStore.acknowledge(card)
+}
+
+function deleteAll() {
+  modals.value.push({
+    message: t('cab.notifications.delete_all'),
+    id: 'confirm',
+    callback: (success) => {
+      if (success) {
+        for (const card of cardsStore.cards(props.entity)) cardsStore.acknowledge(card)
+      }
+    }
+  })
 }
 </script>
 <style lang="scss">

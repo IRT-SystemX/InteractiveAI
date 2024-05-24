@@ -5,7 +5,7 @@
         <Notifications class="cab-notifications" />
       </div>
       <div v-else class="cab-notifications cab-panel cab-section-placeholder">
-        <h1>{{ $t('cab.notifications') }}</h1>
+        <h1>{{ $t('cab.notifications.main') }}</h1>
       </div>
       <div
         class="cab-handle left"
