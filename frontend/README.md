@@ -1,11 +1,4 @@
-<img align="left" width="128" height="128" src="./public/android-chrome-512x512.png" alt="CAB logo" style="filter: drop-shadow(
-      4px 4px 8px
-        color-mix(in srgb, var(--white), #000 20%)
-    )
-    drop-shadow(
-      -4px  -4px 8px
-        color-mix(in srgb, var(--white), #ccc 20%)
-    );">
+<img align="left" width="128" height="128" src="./public/android-chrome-512x512.png" alt="CAB logo" />
 
 # CAB Front
 
