@@ -123,7 +123,7 @@
     </section>
   </section>
 </template>
-<script setup lang="ts" generic="T extends Entity">
+<script setup lang="ts" generic="E extends Entity">
 import { ChevronDown, Eraser, Inbox } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
@@ -146,8 +146,8 @@ const props = withDefaults(
   defineProps<{
     autoclose?: boolean
     sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
-    groupFn?: (card: Card<T>) => string
-    entity: T
+    groupFn?: (card: Card<E>) => string
+    entity: E
   }>(),
   {
     autoclose: true,

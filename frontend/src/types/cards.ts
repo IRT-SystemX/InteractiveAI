@@ -17,7 +17,7 @@ export enum CardOperationType {
   ACK = 'ACK'
 }
 
-export type Card<T extends Entity = Entity> = {
+export type Card<E extends Entity = Entity> = {
   severity: Severity
   summary: {
     parameters: { summary: string }
@@ -28,7 +28,7 @@ export type Card<T extends Entity = Entity> = {
   hasBeenAcknowledged?: boolean
   hasBeenRead?: boolean
   processInstanceId: UUID
-  process: `${Lowercase<T>}Process`
+  process: `${Lowercase<E>}Process`
   publisherType: PublisherType
   endDate: number
   publishDate: number
@@ -37,19 +37,19 @@ export type Card<T extends Entity = Entity> = {
   titleTranslated: string
   uid: string
   publisher: string
-  entityRecipients: [T]
+  entityRecipients: [E]
   id: `${Card['process']}.${Card['processInstanceId']}`
   state: string
   startDate: number
   data: {
     criticality: Criticality
-    metadata: Metadata<T>
+    metadata: Metadata<E>
     parent_event_id: Card['processInstanceId']
   }
 }
 
-export interface CardTree<T extends Entity = Entity> extends Card<T> {
-  children: CardTree<T>[]
+export interface CardTree<E extends Entity = Entity> extends Card<E> {
+  children: CardTree<E>[]
   read?: boolean
 }
 
@@ -66,16 +66,16 @@ export type CardDelete = {
   cardId: string
 }
 
-export type CardAdd<T extends Entity = Entity> = {
+export type CardAdd<E extends Entity = Entity> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.ADD
-  card: Card<T>
+  card: Card<E>
 }
 
-export type CardUpdate<T extends Entity = Entity> = {
+export type CardUpdate<E extends Entity = Entity> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.UPDATE
-  card: Card<T>
+  card: Card<E>
 }
 
-export type CardEvent<T extends Entity = Entity> = CardAdd<T> | CardUpdate<T> | CardAck | CardDelete
+export type CardEvent<E extends Entity = Entity> = CardAdd<E> | CardUpdate<E> | CardAck | CardDelete

@@ -39,8 +39,8 @@ export const useAppStore = defineStore('app', () => {
     status.requests.reduce((acc, el) => (acc = acc !== 'ERROR' ? el.state : acc), 'IDLE')
   )
 
-  function card<T extends Entity>(entity: T): Card<T> | undefined {
-    return _card.value?.entityRecipients.includes(entity) ? (_card.value as Card<T>) : undefined
+  function card<E extends Entity>(entity: E): Card<E> | undefined {
+    return _card.value?.entityRecipients.includes(entity) ? (_card.value as Card<E>) : undefined
   }
 
   function addModal(modal: Omit<Modal, 'id'>) {

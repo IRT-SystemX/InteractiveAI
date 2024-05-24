@@ -16,9 +16,9 @@ const { t } = i18n.global
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
-    return _cards.value.filter<Card<T>>(
-      (card): card is Card<T> =>
+  function cards<E extends Entity>(entity: E, hasBeenAcknowledged: boolean | 'all' = false) {
+    return _cards.value.filter<Card<E>>(
+      (card): card is Card<E> =>
         card.entityRecipients.includes(entity) &&
         (hasBeenAcknowledged === 'all'
           ? true

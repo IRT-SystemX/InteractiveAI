@@ -73,7 +73,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts" generic="T extends Entity">
+<script setup lang="ts" generic="E extends Entity">
 import { addMinutes } from 'date-fns'
 import { ChevronDown } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
@@ -92,9 +92,9 @@ const props = withDefaults(
     now?: Date
     start: number
     end: number
-    groupFn?: (card: Card<T>) => string
-    eventFn?: eventFnType<T>
-    entity: T
+    groupFn?: (card: Card<E>) => string
+    eventFn?: eventFnType<E>
+    entity: E
   }>(),
   {
     now: undefined,

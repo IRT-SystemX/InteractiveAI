@@ -62,7 +62,7 @@
   </div>
   <slot name="footer" :recommendations :selected></slot>
 </template>
-<script setup lang="ts" generic="T extends Entity">
+<script setup lang="ts" generic="E extends Entity">
 import { CircleX, ThumbsDown } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
 
@@ -73,16 +73,16 @@ import type { Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
 
 const props = withDefaults(
-  defineProps<{ buttons: string[]; recommendations: Recommendation<T>[]; collapsed?: boolean }>(),
+  defineProps<{ buttons: string[]; recommendations: Recommendation<E>[]; collapsed?: boolean }>(),
   { collapsed: false }
 )
 const emit = defineEmits<{
-  'update:recommendations': [recommendation: Recommendation<T>[]]
-  hover: [recommendation: Recommendation<T>]
-  selected: [recommendation: Recommendation<T>]
+  'update:recommendations': [recommendation: Recommendation<E>[]]
+  hover: [recommendation: Recommendation<E>]
+  selected: [recommendation: Recommendation<E>]
 }>()
 
-const selected = ref<Recommendation<T>>()
+const selected = ref<Recommendation<E>>()
 const buttons = ref<typeof props.buttons>()
 const confirm = ref(false)
 const details = ref(false)
@@ -100,7 +100,7 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
   buttons.value?.splice(buttons.value.indexOf(kpi), 1)
 }
 
-function downvote(recommendation: Recommendation<T>) {
+function downvote(recommendation: Recommendation<E>) {
   emit(
     'update:recommendations',
     props.recommendations.filter((rec) => rec.title !== recommendation.title)

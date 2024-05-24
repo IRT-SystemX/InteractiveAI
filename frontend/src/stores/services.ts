@@ -17,13 +17,13 @@ export const useServicesStore = defineStore('services', () => {
   const _recommendations = ref<Recommendation[]>([])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function context<T extends Entity>(entity: T) {
-    return _context.value as FullContext<T> | undefined
+  function context<E extends Entity>(entity: E) {
+    return _context.value as FullContext<E> | undefined
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function recommendations<T extends Entity>(entity: T) {
-    return _recommendations.value as Recommendation<T>[]
+  function recommendations<E extends Entity>(entity: E) {
+    return _recommendations.value as Recommendation<E>[]
   }
 
   async function getContext<E extends Entity>(

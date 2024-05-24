@@ -119,7 +119,7 @@
     <slot :card="child"></slot>
   </TimelineTreeNode>
 </template>
-<script setup lang="ts" generic="T extends Entity">
+<script setup lang="ts" generic="E extends Entity">
 import { differenceInMinutes, isAfter, isBefore } from 'date-fns'
 import { CornerDownRight, Flag, MapPin } from 'lucide-vue-next'
 import { computed } from 'vue'
@@ -132,16 +132,16 @@ import { clamp, criticalityToColor } from '@/utils/utils'
 
 import Notification from '../molecules/Notification.vue'
 
-export type eventFnType<T extends Entity = Entity> = (
-  card: Card<T>
+export type eventFnType<E extends Entity = Entity> = (
+  card: Card<E>
 ) => { id: string; startDate: number; endDate: number; name: string }[]
 
 const props = withDefaults(
   defineProps<{
     now: Date
-    card: Card<T>
-    children?: Card<T>[]
-    eventFn?: eventFnType<T>
+    card: Card<E>
+    children?: Card<E>[]
+    eventFn?: eventFnType<E>
     window: { start: Date; end: Date; length: number }
     index: number
     isChild: boolean
