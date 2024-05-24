@@ -6,7 +6,10 @@
     :style="{
       'border-color': `var(--color-${criticalityToColor(card.data.criticality)})`
     }">
-    <Button icon style="float: right" @click="expanded = !expanded">
+    <Button
+      :icon="$t(`cab.context.notification.expanded.${expanded}`)"
+      style="float: right"
+      @click="expanded = !expanded">
       <Minimize2 v-if="expanded"></Minimize2>
       <Maximize2 v-else></Maximize2>
     </Button>

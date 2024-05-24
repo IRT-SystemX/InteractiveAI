@@ -1,17 +1,17 @@
 <template>
-  <button class="cab-btn" :class="[size, color, { icon }]" :type>
+  <button class="cab-btn" :class="[size, color, { icon }]" :type :aria-label="icon">
     <slot></slot>
   </button>
 </template>
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    icon?: boolean
+    icon?: string
     size?: 'big' | 'medium' | 'small'
     color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
     type?: 'button' | 'submit' | 'reset'
   }>(),
-  { size: 'medium', color: 'primary', type: 'button' }
+  { size: 'medium', color: 'primary', type: 'button', icon: undefined }
 )
 </script>
 <style lang="scss">

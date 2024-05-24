@@ -24,7 +24,7 @@
             <template #tooltip>
               {{ $t(`cab.notifications.button.delete_all`) }}
             </template>
-            <button>
+            <button :aria-label="$t(`cab.notifications.button.delete_all`)">
               <Eraser @click="deleteAll" />
             </button>
           </Tooltip>
@@ -33,7 +33,10 @@
               {{ $t(`cab.notifications.${section.name}`) }}
               {{ $t('cab.notifications.archived') }}
             </template>
-            <button>
+            <button
+              :aria-label="
+                $t(`cab.notifications.${section.name}`) + ' ' + $t('cab.notifications.archived')
+              ">
               <Inbox
                 :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
                 @click="hasBeenAcknowledged = !hasBeenAcknowledged" />

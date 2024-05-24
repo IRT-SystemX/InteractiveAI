@@ -68,7 +68,7 @@
       </TransitionGroup>
       <User />
       {{ authStore.user.userData.login }}
-      <Button icon :aria-label="$t('button.login')" @click="logout"><LogIn /></Button>
+      <Button :icon="$t('button.login')" @click="logout"><LogIn /></Button>
     </div>
   </nav>
 </template>
