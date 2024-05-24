@@ -86,7 +86,7 @@ export function remove(id: string) {
 }
 
 export function removeEvent(id: string) {
-  return http.delete<null>(`cab_event/api/v1/event/${id}`)
+  return http.delete<null>(`/cab_event/api/v1/event/${id}`)
 }
 
 export function acknowledge(card: Card) {
