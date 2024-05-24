@@ -37,8 +37,8 @@
       <template
         v-for="key of Object.keys(cards).sort((a, b) => {
           return (
-            CriticalityArray.indexOf(maxCriticality('ND', cards[b])) -
-            CriticalityArray.indexOf(maxCriticality('ND', cards[a]))
+            CRITICALITIES.indexOf(maxCriticality('ND', cards[b])) -
+            CRITICALITIES.indexOf(maxCriticality('ND', cards[a]))
           )
         })"
         :key>
@@ -83,7 +83,7 @@ import Notification from '@/components/molecules/Notification.vue'
 import TimelineTreeNode, { type eventFnType } from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import { useCardsStore } from '@/stores/cards'
-import { type Card, CriticalityArray } from '@/types/cards'
+import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { maxCriticality, repeatEvery } from '@/utils/utils'
 
@@ -120,8 +120,7 @@ const cards = computed(() =>
     cardsStore.parseTree(
       [...cardsStore.cards(props.entity)].sort(
         (a, b) =>
-          CriticalityArray.indexOf(b.data.criticality) -
-          CriticalityArray.indexOf(a.data.criticality)
+          CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
       )
     ),
     props.groupFn

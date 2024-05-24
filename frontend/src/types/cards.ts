@@ -1,10 +1,10 @@
 import type { Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export const SeverityArray = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
-export type Severity = (typeof SeverityArray)[number]
-export const CriticalityArray = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
-export type Criticality = (typeof CriticalityArray)[number]
+export const SEVERITIES = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
+export type Severity = (typeof SEVERITIES)[number]
+export const CRITICALITIES = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
+export type Criticality = (typeof CRITICALITIES)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
 

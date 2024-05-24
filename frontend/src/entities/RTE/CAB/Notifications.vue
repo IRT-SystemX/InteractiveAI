@@ -5,12 +5,12 @@
       {
         name: 'main',
         weight: 2,
-        filter: (card) => filter.includes(card.data.criticality)
+        filter: (card) => FILTER.includes(card.data.criticality)
       },
       {
         name: 'sub',
         weight: 1,
-        filter: (card) => !filter.includes(card.data.criticality)
+        filter: (card) => !FILTER.includes(card.data.criticality)
       }
     ]">
     <template #severity>Sûreté</template>
@@ -60,7 +60,7 @@ import Notifications from '@/components/organisms/CAB/Notifications.vue'
 import type { Card, Criticality } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
-const filter: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
+const FILTER: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
 
 function vote(card: Card, up: boolean) {
   if (!up) removeEvent(card.processInstanceId)

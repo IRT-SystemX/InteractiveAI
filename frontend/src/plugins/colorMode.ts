@@ -1,12 +1,12 @@
 import { type BasicColorSchema, useColorMode } from '@vueuse/core'
 import { nextTick } from 'vue'
 
-import { Entities, EntitiesArray, type Entity } from '@/types/entities'
+import { ENTITIES, ENTITIES_CONFIG, type Entity } from '@/types/entities'
 
 export const mode = useColorMode({
   emitAuto: true,
-  modes: EntitiesArray.reduce(
-    (a, v) => ({ ...a, [v]: `${Entities[v].darkMode ? 'dark' : 'light'} ${v}` }),
+  modes: ENTITIES.reduce(
+    (a, v) => ({ ...a, [v]: `${ENTITIES_CONFIG[v].darkMode ? 'dark' : 'light'} ${v}` }),
     {}
   ) as Record<BasicColorSchema | Entity, string>
 })

@@ -7,11 +7,9 @@
 import { onBeforeMount, onUnmounted, ref } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
-import { useAppStore } from '@/stores/app'
 import { useServicesStore } from '@/stores/services'
 
 const servicesStore = useServicesStore()
-const appStore = useAppStore()
 
 const contextPID = ref(0)
 

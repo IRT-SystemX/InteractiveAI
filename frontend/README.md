@@ -94,7 +94,7 @@ import type { ENTITY } from './ENTITY/types'
 // Add your entity and config here
 // hydrated: automatically fetch metadata for cards
 // darkMode: use dark mode
-export const Entities = {
+export const ENTITIES_CONFIG = {
   ENTITY: { hydrated: true, darkMode: true }
 }
 

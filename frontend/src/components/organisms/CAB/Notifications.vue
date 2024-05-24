@@ -45,8 +45,8 @@
         <template
           v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
             return (
-              CriticalityArray.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
-              CriticalityArray.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
+              CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
+              CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
             )
           })"
           :key>
@@ -135,7 +135,7 @@ import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vu
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import { type Card, CriticalityArray } from '@/types/cards'
+import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
@@ -158,8 +158,7 @@ const cardsStore = useCardsStore()
 
 const cards = computed(() =>
   [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(
-    (a, b) =>
-      CriticalityArray.indexOf(b.data.criticality) - CriticalityArray.indexOf(a.data.criticality)
+    (a, b) => CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
   )
 )
 

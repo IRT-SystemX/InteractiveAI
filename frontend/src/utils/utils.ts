@@ -1,5 +1,5 @@
 import { useCardsStore } from '@/stores/cards'
-import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
+import { type Card, CRITICALITIES, type Criticality } from '@/types/cards'
 import type { UUID } from '@/types/formats'
 
 /**
@@ -138,7 +138,7 @@ export function maxCriticality(
 ) {
   return cards.reduce(
     (prev: Criticality, curr) =>
-      CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
+      CRITICALITIES.indexOf(curr.data.criticality) > CRITICALITIES.indexOf(prev)
         ? curr.data.criticality
         : prev,
     minimum
