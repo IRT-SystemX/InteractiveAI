@@ -64,10 +64,10 @@ img {
 
 progress {
   outline: 2px solid var(--color-grey-600);
-  border: 2px solid transparent;
+  border: 2px solid #fff0;
   border-radius: var(--radius-circular);
   &::-webkit-progress-bar {
-    background-color: transparent;
+    background-color: #fff0;
   }
   &::-webkit-progress-value {
     padding: 2px;

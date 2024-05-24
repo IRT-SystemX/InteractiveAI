@@ -188,8 +188,8 @@ if (!props.now)
       width: 0;
       height: 0;
       border-top: 16px solid var(--color-grey-400);
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
+      border-left: 8px solid #fff0;
+      border-right: 8px solid #fff0;
     }
   }
 

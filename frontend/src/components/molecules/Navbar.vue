@@ -215,7 +215,7 @@ nav {
     }
     &.FROZEN {
       --color-cab-status: var(--color-warning);
-      box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--color-cab-status), transparent 50%);
+      box-shadow: 0 0 0 0.5rem color-mix(in srgb, var(--color-cab-status), #fff0 50%);
     }
     &.ONLINE,
     &.IDLE,
@@ -234,7 +234,7 @@ nav {
     box-shadow: 0 0 0 0rem var(--color-cab-status);
   }
   100% {
-    box-shadow: 0 0 0 1rem transparent;
+    box-shadow: 0 0 0 1rem #fff0;
   }
 }
 
