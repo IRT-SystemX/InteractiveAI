@@ -6,6 +6,7 @@ import fr from '@/locales/fr.json'
 import { ENTITIES } from '@/types/entities'
 
 export const SUPPORT_LOCALES = ['en', 'fr'] as const
+Object.freeze(SUPPORT_LOCALES)
 
 export default createI18n({
   locale: window.navigator.language.split('-')[0] || import.meta.env.VITE_DEFAULT_LOCALE || 'en',

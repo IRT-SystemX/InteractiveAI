@@ -2,8 +2,10 @@ import type { Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
 export const SEVERITIES = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
+Object.freeze(SEVERITIES)
 export type Severity = (typeof SEVERITIES)[number]
 export const CRITICALITIES = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
+Object.freeze(CRITICALITIES)
 export type Criticality = (typeof CRITICALITIES)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'

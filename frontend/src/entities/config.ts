@@ -19,6 +19,7 @@ export const ENTITIES_CONFIG = {
   RTE: { darkMode: false },
   SNCF: { darkMode: false }
 } as const
+Object.freeze(ENTITIES_CONFIG)
 
 // Bind your types here
 export type EntitiesTypes = {
