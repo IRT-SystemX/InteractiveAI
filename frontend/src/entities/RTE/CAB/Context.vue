@@ -1,5 +1,5 @@
 <template>
-  <Context v-model="appStore.tab.context" :tabs="[$t('cab.tab.context')]">
+  <Context :tabs="[$t('cab.tab.context')]">
     <template v-if="appStore.tab.context === 0">
       <img
         v-if="servicesStore.context('RTE')"
@@ -37,7 +37,6 @@ onBeforeMount(async () => {
 
 onUnmounted(() => {
   clearInterval(contextPID.value)
-  appStore.status.context.state = 'NONE'
 })
 </script>
 <style lang="scss">

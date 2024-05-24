@@ -18,6 +18,7 @@ export async function subscribe(
   handler: (card: CardEvent) => void
 ) {
   const authStore = useAuthStore()
+  const appStore = useAppStore()
   controller = new AbortController()
   const response = await fetch(
     import.meta.env.VITE_API +
@@ -44,7 +45,6 @@ export async function subscribe(
     for (const payload of raw.split('\n'))
       if (payload.slice(0, 5) === 'data:') {
         const data = payload.slice(5)
-        const appStore = useAppStore()
         switch (data) {
           case 'INIT':
           case 'RELOAD':

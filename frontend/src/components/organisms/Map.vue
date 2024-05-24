@@ -56,7 +56,7 @@
       <LocateFixed v-if="lockView" />
       <LocateOff v-else />
     </div>
-    {{ lockView ? $t('map.lockview') : $t('map.no-lockview') }}
+    {{ lockView ? $t('map.lockview') : $t('map.no_lockview') }}
   </label>
 </template>
 <script setup lang="ts">
@@ -80,20 +80,26 @@ import { useAppStore } from '@/stores/app'
 import { useMapStore } from '@/stores/components/map'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
-const mapStore = useMapStore()
-const appStore = useAppStore()
-
-const lockView = ref(true)
-const zoom = ref(6)
-
-const map = ref()
-
 withDefaults(
   defineProps<{
     tileLayers?: string[]
   }>(),
   { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
 )
+
+const mapStore = useMapStore()
+const appStore = useAppStore()
+
+const lockView = ref(true)
+const zoom = ref(6)
+const map = ref()
+
+watch(mapStore.contextWaypoints, () => {
+  toggleLockView()
+})
+watch(appStore.panels, () => {
+  map.value.leafletObject.invalidateSize()
+})
 
 function toggleLockView() {
   if (!lockView.value) {
@@ -104,14 +110,6 @@ function toggleLockView() {
     })
   }
 }
-
-watch(mapStore.contextWaypoints, () => {
-  toggleLockView()
-})
-
-watch(appStore.panels, () => {
-  map.value.leafletObject.invalidateSize()
-})
 
 onUnmounted(() => {
   mapStore.reset()

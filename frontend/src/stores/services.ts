@@ -86,8 +86,8 @@ export const useServicesStore = defineStore('services', () => {
     event: Card<E>['data'],
     context = _context.value
   ) {
-    let curr = event
     const cardsStore = useCardsStore()
+    let curr = event
     while (curr?.parent_event_id) {
       const parent = cardsStore._cards.find(
         (card) => card.processInstanceId === curr?.parent_event_id

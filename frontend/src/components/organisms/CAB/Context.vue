@@ -3,8 +3,8 @@
     <Tab
       v-for="(tab, index) of tabs"
       :key="tab"
-      :active="modelValue === index"
-      @click="$emit('update:modelValue', index)">
+      :active="appStore.tab.context === index"
+      @click="appStore.tab.context = index">
       {{ tab }}
     </Tab>
   </aside>
@@ -13,11 +13,18 @@
   </section>
 </template>
 <script setup lang="ts">
+import { onUnmounted } from 'vue'
+
 import Tab from '@/components/atoms/Tab.vue'
+import { useAppStore } from '@/stores/app'
 
-defineProps<{ tabs: string[]; modelValue: number }>()
+defineProps<{ tabs: string[] }>()
 
-defineEmits<{ 'update:modelValue': [value: number] }>()
+const appStore = useAppStore()
+
+onUnmounted(() => {
+  appStore.status.context.state = 'NONE'
+})
 </script>
 <style lang="scss">
 .cab-context {

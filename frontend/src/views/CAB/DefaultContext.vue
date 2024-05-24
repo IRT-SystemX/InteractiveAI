@@ -1,5 +1,5 @@
 <template>
-  <Context v-model="appStore.tab.context" :tabs="[$t('cab.tab.context')]">
+  <Context :tabs="[$t('cab.tab.context')]">
     {{ servicesStore.context('RTE') }}
   </Context>
 </template>
@@ -21,6 +21,5 @@ onBeforeMount(async () => {
 
 onUnmounted(() => {
   clearInterval(contextPID.value)
-  appStore.status.context.state = 'NONE'
 })
 </script>

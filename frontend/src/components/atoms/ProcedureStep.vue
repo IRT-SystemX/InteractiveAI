@@ -39,7 +39,6 @@ import type { Step } from '@/types/procedure'
 import Button from './Button.vue'
 
 const checkTask = inject<(task: Step) => void>('checkTask')!
-
 const props = defineProps<{
   task: Step<E>
   cab?: boolean

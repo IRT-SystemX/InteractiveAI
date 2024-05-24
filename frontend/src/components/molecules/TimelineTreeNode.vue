@@ -136,8 +136,6 @@ export type eventFnType<T extends Entity = Entity> = (
   card: Card<T>
 ) => { id: string; startDate: number; endDate: number; name: string }[]
 
-const appStore = useAppStore()
-
 const props = withDefaults(
   defineProps<{
     now: Date
@@ -153,6 +151,8 @@ const props = withDefaults(
     eventFn: undefined
   }
 )
+
+const appStore = useAppStore()
 
 const events = computed(() =>
   typeof props.eventFn === 'function' ? props.eventFn(props.card) : []

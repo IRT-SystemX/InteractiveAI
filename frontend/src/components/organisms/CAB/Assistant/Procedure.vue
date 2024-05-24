@@ -31,11 +31,11 @@ import ProcedureBlock from '@/components/molecules/ProcedureBlock.vue'
 import type { Entity } from '@/types/entities'
 import type { Procedure, Step } from '@/types/procedure'
 
-const tasks = computed(() => props.procedure.flatMap((block) => block.tasks))
-
 const props = defineProps<{ procedure: Procedure<E>['procedure'] }>()
 
 const collaboration = ref(false)
+
+const tasks = computed(() => props.procedure.flatMap((block) => block.tasks))
 
 provide('checkTask', (task: Step) => {
   task.state = 'done'

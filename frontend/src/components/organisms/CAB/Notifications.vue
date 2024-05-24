@@ -139,9 +139,6 @@ import { type Card, CriticalityArray } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
-const { t } = useI18n()
-const cardsStore = useCardsStore()
-
 const props = withDefaults(
   defineProps<{
     autoclose?: boolean
@@ -155,6 +152,9 @@ const props = withDefaults(
     groupFn: () => '_DEFAULT'
   }
 )
+
+const { t } = useI18n()
+const cardsStore = useCardsStore()
 
 const cards = computed(() =>
   [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(

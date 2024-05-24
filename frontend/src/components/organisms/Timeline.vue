@@ -110,11 +110,11 @@ const window = computed(() => ({
   end: addMinutes(now.value, props.end),
   length: props.end - props.start
 }))
+const now = computed(() => props.now || localNow.value)
 const style = computed(() => ({
   gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
   gridAutoRows: `40px`
 }))
-
 const cards = computed(() =>
   groupBy(
     cardsStore.parseTree(
@@ -134,8 +134,6 @@ if (!props.now)
   repeatEvery(() => {
     localNow.value = new Date()
   }, 60 * 1000)
-
-const now = computed(() => props.now || localNow.value)
 </script>
 <style lang="scss">
 .cab-timeline {

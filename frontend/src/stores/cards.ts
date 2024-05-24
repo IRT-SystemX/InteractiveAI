@@ -52,8 +52,8 @@ export const useCardsStore = defineStore('cards', () => {
       }))
 
   async function subscribe(entity: Entity, hydrated = true) {
-    const { data } = await cardsApi.isSubscriptionActive()
     const appStore = useAppStore()
+    const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
       appStore.addModal({
         data: t('modal.info.SUBSCRIPTION_ACTIVE'),
