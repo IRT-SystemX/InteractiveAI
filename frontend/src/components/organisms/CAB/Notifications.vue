@@ -8,7 +8,7 @@
       {{ modal.message }}
     </Modal>
     <section
-      v-for="section of sections"
+      v-for="(section, index) of sections"
       :key="section.name"
       class="cab-notifications flex flex-col"
       :style="{
@@ -19,7 +19,7 @@
           {{ $t(`cab.notifications.${section.name}`) }}
           {{ hasBeenAcknowledged ? $t('cab.notifications.archived') : '' }}
         </h1>
-        <div class="flex">
+        <div v-if="index === 0" class="flex">
           <Tooltip>
             <template #tooltip>
               {{ $t(`cab.notifications.button.delete_all`) }}
