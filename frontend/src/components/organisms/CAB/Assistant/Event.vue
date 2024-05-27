@@ -1,5 +1,9 @@
 <template>
-  <Avatar v-if="chatbot" :size="200" class="self-center" status="error" />
+  <Avatar
+    v-if="chatbot"
+    :size="200"
+    class="self-center"
+    :status="criticalityToColor(card.data.criticality)" />
   <SpeechBubble position="bottom" arrow="left">
     <slot name="event">
       <i18n-t scope="global" keypath="event.text">

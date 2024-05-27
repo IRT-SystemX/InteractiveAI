@@ -117,6 +117,11 @@ export function addOrUpdate<T>(
   return array
 }
 
+/**
+ * Generates a universally unique identifier (UUID).
+ *
+ * @return {UUID} The generated UUID.
+ */
 export function uuid() {
   return window.isSecureContext
     ? crypto.randomUUID()
@@ -144,3 +149,12 @@ export function maxCriticality(
     minimum
   )
 }
+
+/**
+ * Retrieves the value of a CSS variable from the document's body.
+ *
+ * @param {string} variable - The name of the CSS variable to retrieve.
+ * @return {string} The value of the CSS variable, or an empty string if it is not found.
+ */
+export const getCSSVariable = (variable: string) =>
+  getComputedStyle(document.body).getPropertyValue(`--${variable}`)
