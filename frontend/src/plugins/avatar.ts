@@ -22,30 +22,6 @@ import { getCSSVariable } from '@/utils/utils'
 
 const EASE_AMOUNT = 8
 
-export function changeTexture(status: string) {
-  robot.traverse((node) => {
-    if (node instanceof Mesh) {
-      //if (node.name === 'Head')
-      //  node.material.map = new TextureLoader().load(`/model/${status}.png`)
-      if (node.name === 'Button') {
-        switch (status) {
-          case 'default':
-            node.material.emissive = new Color('#00a3ff')
-            break
-          case 'error':
-          case 'success':
-          case 'warning':
-            gsap.to(node.material.emissive, {
-              duration: 1,
-              ease: 'elastic.out(1, 0.1)',
-              ...new Color(getCSSVariable(`color-${status}`))
-            })
-        }
-      }
-    }
-  })
-}
-
 const scene = new Scene()
 export const loading = ref(true)
 export const manager = new LoadingManager(() => (loading.value = false))
@@ -76,11 +52,8 @@ const pointOfIntersection = new Vector3()
 
 const look = new Vector2(0, 0)
 function update() {
-  look.x += (mouse.x - look.x) / EASE_AMOUNT
-  look.y += (mouse.y - look.y) / EASE_AMOUNT
-  raycaster.setFromCamera(look, camera)
-  raycaster.ray.intersectPlane(plane, pointOfIntersection)
-
+  look.x += (mouse.x * 2 - look.x) / EASE_AMOUNT
+  look.y += (mouse.y * 2 - look.y) / EASE_AMOUNT
   raycaster.setFromCamera(look, camera)
   raycaster.ray.intersectPlane(plane, pointOfIntersection)
   robot.lookAt(pointOfIntersection)
@@ -109,16 +82,13 @@ export function setup(canvas: HTMLCanvasElement) {
     'mousemove',
     (event: MouseEvent) => {
       mouse.x =
-        ((event.clientX - canvas.getBoundingClientRect().left - canvas.width / 2) /
-          window.innerWidth) *
-        2
-      mouse.y =
-        -(
-          (event.clientY - canvas.getBoundingClientRect().top - canvas.height / 2) /
-          window.innerHeight
-        ) * 2
+        (event.clientX - canvas.getBoundingClientRect().left - canvas.width / 2) / window.innerWidth
+      mouse.y = -(
+        (event.clientY - canvas.getBoundingClientRect().top - canvas.height / 2) /
+        window.innerHeight
+      )
     },
-    false
+    true
   )
 
   let visible = !!canvas.offsetParent
@@ -141,4 +111,28 @@ export function setup(canvas: HTMLCanvasElement) {
   })
 
   return renderer
+}
+
+export function changeTexture(status: string) {
+  robot.traverse((node) => {
+    if (node instanceof Mesh) {
+      //if (node.name === 'Head')
+      //  node.material.map = new TextureLoader().load(`/model/${status}.png`)
+      if (node.name === 'Button') {
+        switch (status) {
+          case 'default':
+            node.material.emissive = new Color('#00a3ff')
+            break
+          case 'error':
+          case 'success':
+          case 'warning':
+            gsap.to(node.material.emissive, {
+              duration: 1,
+              ease: 'elastic.out(1, 0.1)',
+              ...new Color(getCSSVariable(`color-${status}`))
+            })
+        }
+      }
+    }
+  })
 }

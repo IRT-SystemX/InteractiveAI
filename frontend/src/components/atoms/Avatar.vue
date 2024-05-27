@@ -48,15 +48,11 @@ onBeforeUnmount(() => {
     position: absolute;
   }
   canvas {
-    cursor: grab;
     position: absolute;
     opacity: 0;
     transition: 1s;
     &.visible {
       opacity: 1;
-    }
-    &:active {
-      cursor: grabbing;
     }
   }
 }
