@@ -97,7 +97,7 @@ watch(
     switch (index) {
       case 2:
         if (!appStore.card('RTE')) break
-        await servicesStore.getRecommendation(appStore.card('RTE')!.data!)
+        await servicesStore.getRecommendation(appStore.card('RTE')!)
         recommendations.value = servicesStore.recommendations('RTE')
     }
   }

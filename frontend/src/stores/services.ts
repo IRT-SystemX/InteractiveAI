@@ -6,9 +6,9 @@ import i18n from '@/plugins/i18n'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import type { FullContext, Recommendation } from '@/types/services'
+import { getRootCard } from '@/utils/utils'
 
 import { useAppStore } from './app'
-import { useCardsStore } from './cards'
 
 const { t } = i18n.global
 
@@ -82,22 +82,10 @@ export const useServicesStore = defineStore('services', () => {
     return contextPID
   }
 
-  async function getRecommendation<E extends Entity>(
-    event: Card<E>['data'],
-    context = _context.value
-  ) {
-    const cardsStore = useCardsStore()
-    let curr = event
-    while (curr?.parent_event_id) {
-      const parent = cardsStore._cards.find(
-        (card) => card.processInstanceId === curr?.parent_event_id
-      )
-      if (!parent) break
-      curr = parent.data
-    }
+  async function getRecommendation<E extends Entity>(event: Card<E>, context = _context.value) {
     if (!context) return
     const { data } = await servicesApi.getRecommendation<E>({
-      event: curr.metadata,
+      event: getRootCard(event).data.metadata,
       context: context.data
     })
     _recommendations.value = data

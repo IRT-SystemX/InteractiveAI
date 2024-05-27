@@ -158,3 +158,22 @@ export function maxCriticality(
  */
 export const getCSSVariable = (variable: string) =>
   getComputedStyle(document.body).getPropertyValue(`--${variable}`)
+
+/**
+ * Returns the root card of a given card by traversing up the parent_event_id chain.
+ *
+ * @param {Card} card - The card from which to start the traversal.
+ * @return {Card} The root card of the given card.
+ */
+export function getRootCard(card: Card) {
+  const cardsStore = useCardsStore()
+  let curr = card
+  while (card?.data.parent_event_id) {
+    const parent = cardsStore._cards.find(
+      (card) => card.processInstanceId === curr?.data.parent_event_id
+    )
+    if (!parent) break
+    curr = parent
+  }
+  return curr
+}
