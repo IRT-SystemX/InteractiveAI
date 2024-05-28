@@ -12,7 +12,14 @@ class RTEManager(AgentManager, BaseRecommendation):
     def __init__(self):
         self.root_path = current_app.config['ROOT_PATH']
         self.owl_file_path = os.path.join(
-            self.root_path, "resources/rte/ontology/Grid2onto_v2_3.owl")
+            self.root_path, "resources/rte/ontology/Grid2onto_v2_3.owl"
+        )
+        self.onto_iao_file = os.path.join(
+            self.root_path, "resources/rte/ontology/iao_module.owl"
+        )
+        self.onto_bfo_file = os.path.join(
+            self.root_path, "resources/rte/ontology/bfo_module.owl"
+        )
         super().__init__()
 
     def get_recommendation(self, request_data):
@@ -49,7 +56,13 @@ class RTEManager(AgentManager, BaseRecommendation):
 
         # Loading ontology
         RTE_onto = get_ontology(self.owl_file_path).load()
-        # Get all powerlines 
+        onto_iao = get_ontology(self.onto_iao_file).load()
+        onto_bfo = get_ontology(self.onto_bfo_file).load()
+        RTE_onto.imported_ontologies.append(onto_iao)
+        RTE_onto.imported_ontologies.append(onto_bfo)
+        RTE_onto.save(file=self.owl_file_path, format="rdfxml")
+
+        # Get all powerlines
         powerlines_query = """
             PREFIX owl: <http://www.w3.org/2002/07/owl#>
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -71,7 +84,6 @@ class RTEManager(AgentManager, BaseRecommendation):
 
         selected_powerline = None
 
-
         for powerline in powerlines_list:
 
             if our_powerline in str(powerline[0]) :
@@ -85,9 +97,7 @@ class RTEManager(AgentManager, BaseRecommendation):
 
             selected_powerline_iri = "http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#" + selected_powerline
 
-
-
-            ## Get all similar situations 
+            ## Get all similar situations
             similar_situations_query = """
                 PREFIX owl: <http://www.w3.org/2002/07/owl#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -120,7 +130,7 @@ class RTEManager(AgentManager, BaseRecommendation):
                 # compute number of situations and rho max
                 distinct_recommendations = set()
                 rho_max = min(sublist[-1] for sublist in similar_situations)
-                
+
                 for situation in similar_situations:
                     recommendation = str(situation[2])
                     category = str(situation[3])
@@ -162,5 +172,5 @@ class RTEManager(AgentManager, BaseRecommendation):
                             "efficiency_of_the_reco":rho_max
                             }
                         }
-            
+
         return [output_json]
