@@ -24,8 +24,8 @@ class SNCFManager(BaseRecommendation):
     def get_recommendation(self, request_data):
         context_data = request_data.get("context", {})
         event_data = request_data.get("event", {})
+        simulation_name = event_data.get("simulation_name")
 
-        
         ai_transport_plan, ai_title, ai_description = (
             self.recommender.recommend(context_data, event_data, model="idle")
         )
@@ -36,7 +36,6 @@ class SNCFManager(BaseRecommendation):
             "agent_type": "IA",
             "actions": [ai_transport_plan],
         }
-        
 
         heuristic_transport_plan, heuristic_title, heuristic_description = (
             self.recommender.recommend(context_data, event_data, model="heuristic")
@@ -49,7 +48,6 @@ class SNCFManager(BaseRecommendation):
             "actions": [heuristic_transport_plan],
         }
 
-        
         fake_transport_plan, fake_title, fake_description = (
             self.recommender.recommend(context_data, event_data, model="fake")
         )
@@ -60,9 +58,15 @@ class SNCFManager(BaseRecommendation):
             "agent_type": "Fake",
             "actions": [fake_transport_plan],
         }
-        
 
         recommendation = [fake_recommendation, ai_recommendation, heuristic_recommendation]
+
+        # Ensure simulation name consistency if present
+        if simulation_name:
+            for rec in recommendation:
+                if rec.get('actions'):
+                    for action in rec['actions']:
+                        action['simulation_name'] = simulation_name
 
         return recommendation
 
