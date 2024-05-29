@@ -1,13 +1,35 @@
 <template>
   <div class="cab-timeline" :style>
     <!--Header section-->
-    <div style="grid-row: 1; grid-column: 1"></div>
+    <div style="grid-row: 1; grid-column: 1" class="flex">
+      <Button
+        :title="`${_start}/${_end}`"
+        icon="Previous time frame"
+        @click="
+          () => {
+            _start -= window.length
+            _end -= window.length
+          }
+        ">
+        <ChevronLeft />
+      </Button>
+      <Button
+        icon="Next time frame"
+        @click="
+          () => {
+            _start += window.length
+            _end += window.length
+          }
+        ">
+        <ChevronRight />
+      </Button>
+    </div>
     <!--Bottom border-->
     <div class="cab-timeline-top cab-timeline-top-border"></div>
     <!--Current time and cursor-->
     <div
       class="cab-timeline-top cab-timeline-top-now"
-      :style="{ 'grid-column': `${Math.abs(start) + 2} / ${Math.abs(start) + 4} ` }">
+      :style="{ 'grid-column': `${Math.abs(_start) + 2} / ${Math.abs(_start) + 4} ` }">
       <div class="cab-timeline-time">
         {{ format(now, 'p') }}
       </div>
@@ -75,7 +97,7 @@
 </template>
 <script setup lang="ts" generic="E extends Entity">
 import { addMinutes } from 'date-fns'
-import { ChevronDown } from 'lucide-vue-next'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
@@ -87,6 +109,7 @@ import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { maxCriticality, repeatEvery } from '@/utils/utils'
 
+import Button from '../atoms/Button.vue'
 const props = withDefaults(
   defineProps<{
     now?: Date
@@ -106,8 +129,8 @@ const props = withDefaults(
 const cardsStore = useCardsStore()
 
 const window = computed(() => ({
-  start: addMinutes(now.value, props.start),
-  end: addMinutes(now.value, props.end),
+  start: addMinutes(now.value, _start.value),
+  end: addMinutes(now.value, _end.value),
   length: props.end - props.start
 }))
 const now = computed(() => props.now || localNow.value)
@@ -127,6 +150,8 @@ const cards = computed(() =>
   )
 )
 
+const _start = ref(props.start)
+const _end = ref(props.end)
 const localNow = ref(new Date())
 
 if (!props.now)
