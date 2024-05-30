@@ -81,8 +81,7 @@
           :window
           :index
           :now
-          :event-fn="eventFn"
-          :children="c.children">
+          :event-fn="eventFn">
           <template #notification="{ card }">
             <slot name="notification" :card></slot>
           </template>
@@ -140,11 +139,9 @@ const style = computed(() => ({
 }))
 const cards = computed(() =>
   groupBy(
-    cardsStore.parseTree(
-      [...cardsStore.cards(props.entity)].sort(
-        (a, b) =>
-          CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
-      )
+    [...cardsStore.cards(props.entity)].sort(
+      (a, b) =>
+        CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
     ),
     props.groupFn
   )

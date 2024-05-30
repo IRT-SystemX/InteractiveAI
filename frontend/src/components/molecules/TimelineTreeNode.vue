@@ -126,6 +126,7 @@ import { computed } from 'vue'
 
 import { format } from '@/plugins/date'
 import { useAppStore } from '@/stores/app'
+import { useCardsStore } from '@/stores/cards'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { clamp, criticalityToColor } from '@/utils/utils'
@@ -140,20 +141,24 @@ const props = withDefaults(
   defineProps<{
     now: Date
     card: Card<E>
-    children?: Card<E>[]
     eventFn?: eventFnType<E>
     window: { start: Date; end: Date; length: number }
     index: number
     isChild: boolean
   }>(),
   {
-    children: undefined,
     eventFn: undefined
   }
 )
 
+const cardsStore = useCardsStore()
 const appStore = useAppStore()
 
+const children = computed(() =>
+  cardsStore
+    .cards(props.card.entityRecipients[0])
+    .filter((card) => card.data.parent_event_id === props.card.processInstanceId)
+)
 const events = computed(() =>
   typeof props.eventFn === 'function' ? props.eventFn(props.card) : []
 )
