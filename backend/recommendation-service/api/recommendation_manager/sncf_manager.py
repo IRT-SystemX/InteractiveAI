@@ -18,9 +18,9 @@ class SNCFManager(BaseRecommendation):
             self.root_path, "resources/sncf/ontology/final_populate_v1.owl"
         )
         self.graph_module_path = os.path.join(
-            self.root_path, "resources/sncf/ia_flatland/models/graph_module.pkl"
+            self.root_path, "resources/sncf/ia_flatland/models/graph_module_real.pkl"
         )
-        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab.pth")
+        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab_real.pth")
         self.recommender = Recommender(self.graph_module_path,self.ai_model_path)
 
 
@@ -67,7 +67,7 @@ TGV 8420 : Passer par la ligne classique entre Angoulême et Poitiers.",
 
         all_recommendations.append(fake_recommendation_2)
 
-        recommendations = self.recommender.recommend(context_data, event_data, models=["ai","heuristic"])
+        recommendations = self.recommender.recommend(context_data, event_data, models=["AI","Heuristic"])
                 
         all_recommendations.extend(recommendations)
 
