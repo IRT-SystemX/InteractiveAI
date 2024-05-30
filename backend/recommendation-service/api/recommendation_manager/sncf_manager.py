@@ -81,6 +81,7 @@ TGV 8420 : Passer par la ligne classique entre Angoulême et Poitiers.",
         return all_recommendations
 
 
+
     def get_procedure(self, event_type):
         if event_type != "PASSENGER":
             raise ValidationError("Invalid event_type")
