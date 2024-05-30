@@ -160,9 +160,12 @@ const { t } = useI18n()
 const cardsStore = useCardsStore()
 
 const cards = computed(() =>
-  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(
-    (a, b) => CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
-  )
+  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)]
+    .filter((c) => !c.data.parent_event_id)
+    .sort(
+      (a, b) =>
+        CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
+    )
 )
 
 function filtered(fn: (typeof props.sections)[number]['filter']) {

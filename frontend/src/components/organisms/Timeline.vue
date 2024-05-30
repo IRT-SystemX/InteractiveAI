@@ -139,10 +139,12 @@ const style = computed(() => ({
 }))
 const cards = computed(() =>
   groupBy(
-    [...cardsStore.cards(props.entity)].sort(
-      (a, b) =>
-        CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
-    ),
+    [...cardsStore.cards(props.entity)]
+      .filter((c) => !c.data.parent_event_id)
+      .sort(
+        (a, b) =>
+          CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
+      ),
     props.groupFn
   )
 )
