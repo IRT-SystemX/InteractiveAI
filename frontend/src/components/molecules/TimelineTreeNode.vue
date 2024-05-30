@@ -5,14 +5,17 @@
     :style="{
       gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.length}, 1fr) [events-end]`
     }"
-    @click="appStore._card = card">
+    @click="selected(card)">
     <div class="flex" style="scroll-snap-align: end">
       <CornerDownRight v-if="isChild" />
       <slot name="notification" :card>
         <Notification
           :criticality="card.data.criticality"
           class="cab-timeline-card flex-1"
-          :class="{ active: appStore._card?.id === card.id }">
+          :class="{ active: appStore._card?.id === card.id }"
+          :style="{
+            color: card.read ? 'var(--color-grey-600)' : undefined
+          }">
           <template #title>
             <slot name="title" :card>{{ card.titleTranslated }}</slot>
           </template>
@@ -162,6 +165,11 @@ const children = computed(() =>
 const events = computed(() =>
   typeof props.eventFn === 'function' ? props.eventFn(props.card) : []
 )
+
+function selected(card: Card<E>) {
+  card.read = true
+  appStore._card = card
+}
 </script>
 <style lang="scss">
 .cab-timeline-row {
