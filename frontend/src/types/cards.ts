@@ -46,10 +46,6 @@ export type Card<E extends Entity = Entity> = {
     metadata: Metadata<E>
     parent_event_id: Card['processInstanceId']
   }
-}
-
-export interface CardTree<E extends Entity = Entity> extends Card<E> {
-  children: CardTree<E>[]
   read?: boolean
 }
 

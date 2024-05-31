@@ -11,7 +11,6 @@ import type { RTE } from './RTE/types'
 import type { SNCF } from './SNCF/types'
 
 // Add your entity and config here
-// hydrated: automatically fetch metadata for cards
 // darkMode: use dark mode
 export const ENTITIES_CONFIG = {
   DA: { darkMode: true },

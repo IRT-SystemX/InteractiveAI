@@ -1,13 +1,55 @@
 <template>
   <div class="cab-timeline" :style>
     <!--Header section-->
-    <div style="grid-row: 1; grid-column: 1"></div>
+    <div style="grid-row: 1; grid-column: 1; position: fixed" class="flex flex-gap">
+      <Button
+        icon="Previous time frame"
+        @click="
+          () => {
+            _start -= window.length
+            _end -= window.length
+          }
+        ">
+        <ChevronLeft />
+      </Button>
+      <Button
+        icon="Next time frame"
+        @click="
+          () => {
+            _start = props.start
+            _end = props.end
+          }
+        ">
+        <TimerReset />
+      </Button>
+      <Button
+        icon="Next time frame"
+        @click="
+          () => {
+            _start += window.length
+            _end += window.length
+          }
+        ">
+        <ChevronRight />
+      </Button>
+    </div>
     <!--Bottom border-->
     <div class="cab-timeline-top cab-timeline-top-border"></div>
+    <!--Hours-->
+    <div
+      v-for="marker of markers"
+      :key="marker.getTime()"
+      class="cab-timeline-top"
+      :style="{ 'grid-column': `${differenceInMinutes(marker, window.start) + 2}` }">
+      <div class="cab-timeline-time">
+        {{ format(marker, isSameDay(marker, now) ? 'p' : 'Pp	') }}
+      </div>
+    </div>
     <!--Current time and cursor-->
     <div
+      v-if="isWithinInterval(now, window)"
       class="cab-timeline-top cab-timeline-top-now"
-      :style="{ 'grid-column': `${Math.abs(start) + 2} / ${Math.abs(start) + 4} ` }">
+      :style="{ 'grid-column': `${differenceInMinutes(now, window.start) + 2}` }">
       <div class="cab-timeline-time">
         {{ format(now, 'p') }}
       </div>
@@ -59,8 +101,7 @@
           :window
           :index
           :now
-          :event-fn="eventFn"
-          :children="c.children">
+          :event-fn="eventFn">
           <template #notification="{ card }">
             <slot name="notification" :card></slot>
           </template>
@@ -74,8 +115,14 @@
   </div>
 </template>
 <script setup lang="ts" generic="E extends Entity">
-import { addMinutes } from 'date-fns'
-import { ChevronDown } from 'lucide-vue-next'
+import {
+  addMinutes,
+  differenceInMinutes,
+  eachHourOfInterval,
+  isSameDay,
+  isWithinInterval
+} from 'date-fns'
+import { ChevronDown, ChevronLeft, ChevronRight, TimerReset } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
@@ -87,6 +134,7 @@ import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { maxCriticality, repeatEvery } from '@/utils/utils'
 
+import Button from '../atoms/Button.vue'
 const props = withDefaults(
   defineProps<{
     now?: Date
@@ -106,27 +154,35 @@ const props = withDefaults(
 const cardsStore = useCardsStore()
 
 const window = computed(() => ({
-  start: addMinutes(now.value, props.start),
-  end: addMinutes(now.value, props.end),
+  start: addMinutes(now.value, _start.value),
+  end: addMinutes(now.value, _end.value),
   length: props.end - props.start
 }))
+const markers = computed(() =>
+  eachHourOfInterval({
+    start: window.value.start,
+    end: window.value.end
+  }).filter((marker) => differenceInMinutes(marker, window.value.start) >= 0)
+)
 const now = computed(() => props.now || localNow.value)
 const style = computed(() => ({
-  gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
+  gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, minmax(0, 1fr)) [events-end]`,
   gridAutoRows: `40px`
 }))
 const cards = computed(() =>
   groupBy(
-    cardsStore.parseTree(
-      [...cardsStore.cards(props.entity)].sort(
+    [...cardsStore.cards(props.entity)]
+      .filter((c) => !c.data.parent_event_id)
+      .sort(
         (a, b) =>
           CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
-      )
-    ),
+      ),
     props.groupFn
   )
 )
 
+const _start = ref(props.start)
+const _end = ref(props.end)
 const localNow = ref(new Date())
 
 if (!props.now)

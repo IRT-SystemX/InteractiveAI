@@ -27,30 +27,6 @@ export const useCardsStore = defineStore('cards', () => {
     )
   }
 
-  const traverse = (arr: any[], parentId: string): any[] =>
-    arr
-      .filter((node) => node.data.parent_event_id === parentId)
-      .reduce(
-        (result, current) => [
-          ...result,
-          {
-            ...current,
-            children: traverse(arr, current.processInstanceId),
-            read: false
-          }
-        ],
-        []
-      )
-
-  const parseTree = <E extends Entity>(arr: Card<E>[]) =>
-    arr
-      .filter((c) => !c.data.parent_event_id)
-      .map((node) => ({
-        ...node,
-        children: traverse(arr, node.processInstanceId),
-        read: false
-      }))
-
   async function subscribe(entity: Entity, hydrated = true) {
     const appStore = useAppStore()
     const { data } = await cardsApi.isSubscriptionActive()
@@ -162,5 +138,5 @@ export const useCardsStore = defineStore('cards', () => {
     cardsApi.acknowledge(card)
   }
 
-  return { _cards, parseTree, cards, subscribe, hydrate, unsubscribe, acknowledge }
+  return { _cards, cards, subscribe, hydrate, unsubscribe, acknowledge }
 })

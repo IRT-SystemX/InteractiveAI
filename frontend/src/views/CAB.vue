@@ -128,20 +128,20 @@ function resize(ev: DragEvent, panel: 'left' | 'right' | 'bottom') {
       case 'left':
         window.requestAnimationFrame(() => {
           appStore.panels.left = ev.clientX > 120
-          leftPanel.value!.style.width = ev.clientX - 8 + 'px'
+          if (leftPanel.value) leftPanel.value.style.width = ev.clientX - 8 + 'px'
         })
         break
       case 'right':
         window.requestAnimationFrame(() => {
           appStore.panels.right = width - ev.clientX - 16 > 120
-          rightPanel.value!.style.width = width - ev.clientX - 16 + 'px'
+          if (rightPanel.value) rightPanel.value.style.width = width - ev.clientX - 16 + 'px'
         })
         break
 
       case 'bottom':
         window.requestAnimationFrame(() => {
           appStore.panels.bottom = height - ev.clientY - 16 > 96
-          bottomPanel.value!.style.height = height - ev.clientY - 16 + 'px'
+          if (bottomPanel.value) bottomPanel.value.style.height = height - ev.clientY - 16 + 'px'
         })
         break
     }
