@@ -1,7 +1,7 @@
 <template>
   <div class="cab-timeline" :style>
     <!--Header section-->
-    <div style="grid-row: 1; grid-column: 1" class="flex flex-gap">
+    <div style="grid-row: 1; grid-column: 1; position: fixed" class="flex flex-gap">
       <Button
         icon="Previous time frame"
         @click="
