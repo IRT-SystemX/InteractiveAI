@@ -1,9 +1,8 @@
 <template>
   <div class="cab-timeline" :style>
     <!--Header section-->
-    <div style="grid-row: 1; grid-column: 1" class="flex">
+    <div style="grid-row: 1; grid-column: 1" class="flex flex-gap">
       <Button
-        :title="`${_start}/${_end}`"
         icon="Previous time frame"
         @click="
           () => {
@@ -12,6 +11,16 @@
           }
         ">
         <ChevronLeft />
+      </Button>
+      <Button
+        icon="Next time frame"
+        @click="
+          () => {
+            _start = props.start
+            _end = props.end
+          }
+        ">
+        <TimerReset />
       </Button>
       <Button
         icon="Next time frame"
@@ -26,10 +35,21 @@
     </div>
     <!--Bottom border-->
     <div class="cab-timeline-top cab-timeline-top-border"></div>
+    <!--Hours-->
+    <div
+      v-for="marker of markers"
+      :key="marker.getTime()"
+      class="cab-timeline-top"
+      :style="{ 'grid-column': `${differenceInMinutes(marker, window.start) + 2}` }">
+      <div class="cab-timeline-time">
+        {{ format(marker, isSameDay(marker, now) ? 'p' : 'Pp	') }}
+      </div>
+    </div>
     <!--Current time and cursor-->
     <div
+      v-if="isWithinInterval(now, window)"
       class="cab-timeline-top cab-timeline-top-now"
-      :style="{ 'grid-column': `${Math.abs(_start) + 2} / ${Math.abs(_start) + 4} ` }">
+      :style="{ 'grid-column': `${differenceInMinutes(now, window.start) + 2}` }">
       <div class="cab-timeline-time">
         {{ format(now, 'p') }}
       </div>
@@ -95,8 +115,14 @@
   </div>
 </template>
 <script setup lang="ts" generic="E extends Entity">
-import { addMinutes } from 'date-fns'
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import {
+  addMinutes,
+  differenceInMinutes,
+  eachHourOfInterval,
+  isSameDay,
+  isWithinInterval
+} from 'date-fns'
+import { ChevronDown, ChevronLeft, ChevronRight, TimerReset } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
@@ -132,9 +158,15 @@ const window = computed(() => ({
   end: addMinutes(now.value, _end.value),
   length: props.end - props.start
 }))
+const markers = computed(() =>
+  eachHourOfInterval({
+    start: window.value.start,
+    end: window.value.end
+  }).filter((marker) => differenceInMinutes(marker, window.value.start) >= 0)
+)
 const now = computed(() => props.now || localNow.value)
 const style = computed(() => ({
-  gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, 1fr) [events-end]`,
+  gridTemplateColumns: `[cards-start] 304px [events-start] repeat(${window.value.length}, minmax(0, 1fr)) [events-end]`,
   gridAutoRows: `40px`
 }))
 const cards = computed(() =>
