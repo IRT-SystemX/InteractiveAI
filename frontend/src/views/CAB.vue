@@ -185,11 +185,13 @@ function remove() {
 
 onBeforeRouteUpdate((to) => {
   remove()
+  appStore.$reset()
   setup(to.params.entity as Entity)
 })
 
 onBeforeRouteLeave(() => {
   remove()
+  appStore.$reset()
   toggleMode('auto')
 })
 </script>

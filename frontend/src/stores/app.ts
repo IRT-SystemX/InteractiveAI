@@ -35,6 +35,12 @@ export const useAppStore = defineStore('app', () => {
     assistant: 0
   })
 
+  function $reset() {
+    _card.value = undefined
+    tab.context = 0
+    tab.assistant = 0
+  }
+
   const requestsStatus = computed(() =>
     status.requests.reduce((acc, el) => (acc = acc !== 'ERROR' ? el.state : acc), 'IDLE')
   )
@@ -58,5 +64,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { _modals, _card, status, requestsStatus, tab, panels, card, addModal }
+  return { _modals, _card, status, requestsStatus, tab, panels, card, addModal, $reset }
 })
