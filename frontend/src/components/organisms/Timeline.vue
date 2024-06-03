@@ -289,10 +289,6 @@ if (!props.now)
     align-self: center;
 
     &-icon {
-      margin-left: calc(var(--spacing-1) * -1);
-      height: 0;
-      width: 0;
-      bottom: 18px;
       position: relative;
       &.error {
         color: var(--color-error);
@@ -310,17 +306,12 @@ if (!props.now)
 
     &-time {
       font-size: 0.75rem;
-      position: relative;
+      background: var(--color-background);
+      color: var(--color-grey-600);
+      border-radius: var(--radius-small);
+      padding: 0 calc(var(--unit) / 2);
+      width: max-content;
 
-      .start,
-      .end {
-        position: absolute;
-        background: var(--color-background);
-        color: var(--color-grey-600);
-        border-radius: var(--radius-small);
-        padding: 0 calc(var(--unit) / 2);
-        width: max-content;
-      }
       .start {
         left: calc(var(--spacing-4) * -1);
       }
@@ -331,6 +322,7 @@ if (!props.now)
     &-line {
       opacity: 0.6;
       height: 8px;
+      margin-top: 20px;
       border-radius: var(--radius-circular);
 
       &.error {

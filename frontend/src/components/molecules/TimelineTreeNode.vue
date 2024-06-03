@@ -28,7 +28,52 @@
     <div class="cab-timeline-line"></div>
     <template v-if="!children?.length"></template>
     <div
-      v-for="(event, eventIndex) of [card, ...events].filter(
+      :style="{
+        'grid-column': `${clamp(
+          differenceInMinutes(new Date(card.publishDate), window.start) + 2,
+          window.length + 1,
+          2
+        )}`
+      }"
+      class="cab-timeline-event">
+      <div class="cab-timeline-event-icon">
+        <slot :card></slot>
+      </div>
+      <div class="cab-timeline-event-time">
+        {{ format(new Date(card.publishDate), 'p') }}
+      </div>
+    </div>
+    <div
+      :style="{
+        'grid-column': `${clamp(
+          differenceInMinutes(new Date(card.startDate), window.start) + 2,
+          window.length + 1,
+          2
+        )} / ${clamp(
+          differenceInMinutes(card.endDate ? new Date(card.endDate) : window.end, window.start) + 2,
+          window.length + 1,
+          2
+        )}`
+      }"
+      class="cab-timeline-event">
+      <div class="cab-timeline-event-line" :class="criticalityToColor(card.data.criticality)"></div>
+      <div class="cab-timeline-event-time">
+        <div v-if="card.startDate && isAfter(new Date(card.startDate), window.start)" class="start">
+          {{ format(new Date(card.startDate), 'p') }}
+        </div>
+        <div
+          v-if="
+            card.endDate &&
+            card.startDate !== card.endDate &&
+            isBefore(new Date(card.endDate), window.end)
+          "
+          class="end">
+          {{ format(new Date(card.endDate), 'p') }}
+        </div>
+      </div>
+    </div>
+    <div
+      v-for="(event, eventIndex) of events.filter(
         (ev) =>
           (isAfter(new Date(ev.startDate), window.start) &&
             isBefore(new Date(ev.endDate ? ev.endDate : new Date()), window.end)) ||
@@ -71,40 +116,13 @@
         <slot v-else :card></slot>
       </div>
       <div
-        v-if="!('name' in event) && events.length"
-        class="cab-timeline-event-icon"
-        style="float: right; font-size: 0.75em; font-weight: bold"
-        :class="criticalityToColor(event.data.criticality)">
-        HRE
-      </div>
-      <div
         class="cab-timeline-event-line"
         :class="'name' in event ? '' : criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
         <div
-          v-if="
-            event.startDate &&
-            !('name' in event) &&
-            isAfter(new Date(event.startDate), window.start)
-          "
-          class="start">
-          {{ format(new Date(event.startDate), 'p') }}
-        </div>
-        <div
-          v-if="'name' in event"
           class="text-stroke"
           style="position: absolute; width: max-content; left: 50%; transform: translate(-50%)">
           {{ event.name }}
-        </div>
-        <div
-          v-if="
-            event.endDate &&
-            !('name' in event) &&
-            event.startDate !== event.endDate &&
-            isBefore(new Date(event.endDate), window.end)
-          "
-          class="end">
-          {{ format(new Date(event.endDate), 'p') }}
         </div>
       </div>
     </div>
@@ -181,6 +199,7 @@ function selected(card: Card<E>) {
 
   > * {
     grid-row: 1;
+    min-width: 0;
   }
 
   &:hover,
