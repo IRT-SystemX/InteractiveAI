@@ -6,7 +6,9 @@ from owlready2 import default_world, get_ontology
 from marshmallow.exceptions import ValidationError
 
 
+
 class SNCFManager(BaseRecommendation):
+
 
     def __init__(self) -> None:
         super().__init__()
@@ -16,50 +18,58 @@ class SNCFManager(BaseRecommendation):
             self.root_path, "resources/sncf/ontology/final_populate_v1.owl"
         )
         self.graph_module_path = os.path.join(
-            self.root_path, "resources/sncf/ia_flatland/models/graph_module.pkl"
+            self.root_path, "resources/sncf/ia_flatland/models/graph_module_real.pkl"
         )
-        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab.pth")
+        self.ai_model_path = os.path.join(self.root_path, "resources/sncf/ia_flatland/models/ppo_flatland_cab_real.pth")
         self.recommender = Recommender(self.graph_module_path,self.ai_model_path)
 
+
+
     def get_recommendation(self, request_data):
+
         context_data = request_data.get("context", {})
         event_data = request_data.get("event", {})
         simulation_name = event_data.get("simulation_name")
 
-        ai_transport_plan, ai_title, ai_description = (
-            self.recommender.recommend(context_data, event_data, model="idle")
-        )
-        ai_recommendation = {
-            "title": ai_title,
-            "description": ai_description,
-            "use_case": "SNCF",
-            "agent_type": "IA",
-            "actions": [ai_transport_plan],
-        }
+        all_recommendations = []
 
-        heuristic_transport_plan, heuristic_title, heuristic_description = (
-            self.recommender.recommend(context_data, event_data, model="heuristic")
-        )
-        heuristic_recommendation = {
-            "title": heuristic_title,
-            "description": heuristic_description,
-            "use_case": "SNCF",
-            "agent_type": "Heuristic",
-            "actions": [heuristic_transport_plan],
-        }
+        if event_data["event_type"] == "PASSENGER":
+            fake_recommendation_1 = {
+                "title": "Annuler l'arrêt à la gare de Poitiers",
+                "description": "Train 7652 : Annuler l'arrêt à la gare de Poitiers après la gare de Angoulême. Passer par la LGV.\n\n\
+Train 5440 : Annuler l'arrêt à la gare de Poitiers entre la gare de Angoulême et la gare de St-Pierre-des-Corps. Passer par la LGV.",
+                "use_case": "SNCF",
+                "agent_type": "Fake",
+                "actions": []
+            }
+            all_recommendations.append(fake_recommendation_1)
 
-        fake_transport_plan, fake_title, fake_description = (
-            self.recommender.recommend(context_data, event_data, model="fake")
-        )
-        fake_recommendation = {
-            "title": fake_title,
-            "description": fake_description,
+        elif event_data["event_type"] == "INFRASTRUCTURE":
+            fake_recommendation_1 = {
+                "title": "Banalisation",
+                "description": "TGV 8488 : Passer par la voie impair de la LGV SEA.\n\n\
+TGV 8418 : Passer par la voie impair de la LGV SEA.\n\n\
+TGV 7660 : Passer par la voie impair de la LGV SEA.\n\n\
+TGV 8420 : Passer par la ligne classique entre Angoulême et Poitiers.",
+                "use_case": "SNCF",
+                "agent_type": "Fake",
+                "actions": []
+            }
+            all_recommendations.append(fake_recommendation_1)
+
+        fake_recommendation_2 = {
+            "title": "Suppression",
+            "description": "Suppression des trains. Les clients sont invités à reporter leur voyage.",
             "use_case": "SNCF",
             "agent_type": "Fake",
-            "actions": [fake_transport_plan],
+            "actions": []
         }
 
-        recommendation = [fake_recommendation, ai_recommendation, heuristic_recommendation]
+        all_recommendations.append(fake_recommendation_2)
+
+        recommendations = self.recommender.recommend(context_data, event_data, models=["AI","Heuristic"])
+                
+        all_recommendations.extend(recommendations)
 
         # Ensure simulation name consistency if present
         if simulation_name:
@@ -68,7 +78,9 @@ class SNCFManager(BaseRecommendation):
                     for action in rec['actions']:
                         action['simulation_name'] = simulation_name
 
-        return recommendation
+        return all_recommendations
+
+
 
     def get_procedure(self, event_type):
         if event_type != "PASSENGER":
