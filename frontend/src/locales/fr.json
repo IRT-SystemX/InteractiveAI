@@ -22,7 +22,7 @@
   "cab.notifications.delete": "Voulez-vous vraiment supprimer la notification {event} ?",
   "cab.notifications.delete_all": "Voulez-vous supprimer l'intégralité des notifications ?",
   "cab.notifications.empty": "Aucun événement à afficher",
-  "cab.notifications.ended": "Événement terminé, souhaitez-vous fermer les cartes correspondantes ?",
+  "cab.notifications.ended": "Événement terminé, souhaitez-vous fermer les notifications correspondantes ?",
   "cab.notifications.main": "Notifications",
   "cab.status.ERROR": "en erreur",
   "cab.status.FROZEN": "gelé",

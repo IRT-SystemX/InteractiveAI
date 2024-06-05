@@ -22,7 +22,7 @@
   "cab.notifications.delete": "Are you sure you want to remove the {event} notification?",
   "cab.notifications.delete_all": "Do you want to delete all notifications?",
   "cab.notifications.empty": "No events to display",
-  "cab.notifications.ended": "Event ended, would you like to close the corresponding cards?",
+  "cab.notifications.ended": "Event ended, would you like to close the corresponding notifications?",
   "cab.notifications.main": "Notifications",
   "cab.status.ERROR": "in error",
   "cab.status.FROZEN": "frozen",
