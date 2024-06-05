@@ -50,7 +50,7 @@
       v-if="isWithinInterval(now, window)"
       class="cab-timeline-top cab-timeline-top-now"
       :style="{ 'grid-column': `${differenceInMinutes(now, window.start) + 2}` }">
-      <div class="cab-timeline-time">
+      <div class="cab-timeline-time text-stroke">
         {{ format(now, 'p') }}
       </div>
     </div>
@@ -206,6 +206,13 @@ if (!props.now)
     z-index: 100;
     &-now {
       z-index: 101;
+      .cab-timeline-time {
+        color: var(--color-primary);
+        font-weight: bold;
+        &::after {
+          border-top-color: var(--color-primary);
+        }
+      }
     }
     &-border {
       border-bottom: 2px solid var(--color-grey-400);
