@@ -20,7 +20,6 @@
         class="cab-recommendation-kpi-actions flex flex-gap"
         @click="closeKpi(button)">
         <ThumbsDown color="var(--color-grey-100)" :size="16" />
-        <CircleX color="var(--color-grey-100)" :size="16" />
       </Button>
     </div>
   </div>
@@ -63,7 +62,7 @@
   <slot name="footer" :recommendations :selected></slot>
 </template>
 <script setup lang="ts" generic="E extends Entity">
-import { CircleX, ThumbsDown } from 'lucide-vue-next'
+import { ThumbsDown } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
 
 import Button from '@/components/atoms/Button.vue'
