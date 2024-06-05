@@ -30,13 +30,13 @@
     <template #actions="{ card, deletion, hasBeenAcknowledged }">
       <Tooltip>
         <template #tooltip>{{ $t('card.actions.upvote.tooltip') }}</template>
-        <Button size="small" color="secondary" @click.stop="vote(card, true)">
+        <Button size="small" color="secondary" @click.stop="vote(card, true, $event)">
           <ChevronUp :height="16" />
         </Button>
       </Tooltip>
       <Tooltip>
         <template #tooltip>{{ $t('card.actions.downvote.tooltip') }}</template>
-        <Button size="small" color="secondary" @click.stop="vote(card, false)">
+        <Button size="small" color="secondary" @click.stop="vote(card, false, $event)">
           <ChevronDown :height="16" />
         </Button>
       </Tooltip>
@@ -51,6 +51,7 @@
 </template>
 <script setup lang="ts">
 import { ChevronDown, ChevronUp, Inbox, Zap } from 'lucide-vue-next'
+import { ref } from 'vue'
 
 import { removeEvent } from '@/api/cards'
 import Button from '@/components/atoms/Button.vue'
@@ -65,10 +66,18 @@ const FILTER: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
 
 const appStore = useAppStore()
 
-function vote(card: Card, up: boolean) {
+const voted = ref<boolean>()
+
+async function vote(card: Card<'RTE'>, up: boolean, event: any) {
   if (!up) {
     if (appStore._card?.id === card.id) appStore._card = undefined
     await removeEvent(card.processInstanceId)
   }
+  voted.value = up
+  event.target.classList.add('success')
+  setTimeout(() => {
+    voted.value = undefined
+    event.target.classList.remove('success')
+  }, 2000)
 }
 </script>
