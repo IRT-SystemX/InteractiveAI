@@ -57,12 +57,18 @@ import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
 import Notifications from '@/components/organisms/CAB/Notifications.vue'
+import { useAppStore } from '@/stores/app'
 import type { Card, Criticality } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
 const FILTER: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
 
+const appStore = useAppStore()
+
 function vote(card: Card, up: boolean) {
-  if (!up) removeEvent(card.processInstanceId)
+  if (!up) {
+    if (appStore._card?.id === card.id) appStore._card = undefined
+    await removeEvent(card.processInstanceId)
+  }
 }
 </script>
