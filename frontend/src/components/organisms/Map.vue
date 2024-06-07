@@ -1,20 +1,20 @@
 <template>
-  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
-    <l-tile-layer
+  <LMap ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
+    <LTileLayer
       v-for="tileLayer of tileLayers"
       :key="tileLayer"
       :url="tileLayer"
       layer-type="base"
-      name="OpenStreetMap"></l-tile-layer>
-    <l-polyline
+      name="OpenStreetMap" />
+    <LPolyline
       v-for="polyline of mapStore.polylines"
       :key="polyline.id"
       :color="
         polyline.options?.color || `var(--color-${criticalityToColor(maxCriticality('ROUTINE'))})`
       "
       :weight="8"
-      :lat-lngs="polyline.waypoints"></l-polyline>
-    <l-circle-marker
+      :lat-lngs="polyline.waypoints" />
+    <LCircleMarker
       v-for="waypoint of mapStore.waypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
@@ -24,32 +24,32 @@
       :fill-opacity="1"
       :radius="8"
       v-bind="waypoint.options">
-      <l-tooltip
+      <LTooltip
         :options="{
           permanent: waypoint.permanentTooltip,
           direction: 'top',
           offset: [0, waypoint.options?.radius ? -waypoint.options?.radius : -8]
         }">
         {{ waypoint.id }}
-      </l-tooltip>
-    </l-circle-marker>
-    <l-marker
+      </LTooltip>
+    </LCircleMarker>
+    <LMarker
       v-for="waypoint of mapStore.contextWaypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
       :z-index-offset="10000">
-      <l-tooltip
+      <LTooltip
         :options="{ permanent: waypoint.permanentTooltip, direction: 'top', offset: [0, -12] }">
         {{ waypoint.id }}
-      </l-tooltip>
-      <l-icon
+      </LTooltip>
+      <LIcon
         :icon-url="`/img/icons/map_markers/${$route.params.entity}.svg`"
         :icon-size="[32, 32]"
         class="context-marker"
-        :class-name="'context-marker ' + waypoint.severity"></l-icon>
-    </l-marker>
-    <l-control-scale />
-  </l-map>
+        :class-name="'context-marker ' + waypoint.severity" />
+    </LMarker>
+    <LControlScale />
+  </LMap>
   <label class="cab-map-lockview p-1 flex flex-wrap">
     <input v-model="lockView" type="checkbox" style="display: none" @change="toggleLockView" />
     <div class="ml-1">
