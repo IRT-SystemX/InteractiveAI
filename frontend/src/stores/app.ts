@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 
 import type { Card } from '@/types/cards'
-import type { Entity } from '@/types/entities'
+import { type AppData, ENTITIES, type Entity } from '@/types/entities'
 import type { UUID } from '@/types/formats'
 import { uuid } from '@/utils/utils'
 
@@ -14,6 +14,9 @@ type Modal = {
 }
 
 export const useAppStore = defineStore('app', () => {
+  const data = reactive<{ [E in Entity]?: AppData<E> }>(
+    Object.fromEntries(ENTITIES.map((entity) => [entity, {}]))
+  )
   const panels = reactive({
     right: true,
     bottom: true,
@@ -64,5 +67,5 @@ export const useAppStore = defineStore('app', () => {
     })
   }
 
-  return { _modals, _card, status, requestsStatus, tab, panels, card, addModal, $reset }
+  return { data, _modals, _card, status, requestsStatus, tab, panels, card, addModal, $reset }
 })
