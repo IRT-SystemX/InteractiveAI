@@ -52,9 +52,9 @@
   </div>
   <div v-if="selected" class="cab-recommendation-description">
     <h2>{{ $t('recommendations.description') }}</h2>
-    <div :class="{ collapsed: collapsed && !details }">
+    <p :class="{ collapsed: collapsed && !details }">
       {{ selected.description }}
-    </div>
+    </p>
     <Button v-if="collapsed" class="float-right" @click="details = !details">
       {{ $t('recommendations.description.more', { sign: details ? '-' : '+' }) }}
     </Button>
@@ -139,11 +139,17 @@ function downvote(recommendation: Recommendation<E>) {
       display: none;
     }
   }
-  &-description .collapsed {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  &-description {
+    p {
+      white-space: pre-wrap;
+
+      &.collapsed {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
   }
   &:hover .cab-card-outer,
   &.selected .cab-card-outer {
