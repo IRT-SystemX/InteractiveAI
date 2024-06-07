@@ -34,7 +34,7 @@ class SNCFManager(BaseRecommendation):
 
         if event_data["event_type"] == "PASSENGER":
             fake_targets_ids_1 = [3,36,36]
-            fake_transport_plan_1 = self.recommender.get_recommended_transport_plan(event_data, fake_targets_ids_1)
+            fake_transport_plan_1 = self.recommender.get_recommended_transport_plan(context_data, event_data, fake_targets_ids_1)
             fake_recommendation_1 = {
                 "title": "Annuler l'arrêt à la gare de Poitiers",
                 "description": "Train 7652 : Annuler l'arrêt à la gare de Poitiers après la gare de Angoulême. Passer par la LGV.\n\n\
@@ -47,7 +47,7 @@ Train 5440 : Annuler l'arrêt à la gare de Poitiers entre la gare de Angoulême
 
         elif event_data["event_type"] == "INFRASTRUCTURE":
             fake_targets_ids_1 = [33,33,33,30]
-            fake_transport_plan_1 = self.recommender.get_recommended_transport_plan(event_data, fake_targets_ids_1)
+            fake_transport_plan_1 = self.recommender.get_recommended_transport_plan(context_data, event_data, fake_targets_ids_1)
             fake_recommendation_1 = {
                 "title": "Banalisation",
                 "description": "TGV 8488 : Passer par la voie impair de la LGV SEA.\n\n\
@@ -61,7 +61,7 @@ TGV 8420 : Passer par la ligne classique entre Angoulême et Poitiers.",
             all_recommendations.append(fake_recommendation_1)
         
         fake_targets_ids_2 = self.recommender.run_idle(context_data,event_data)
-        fake_transport_plan_2 = self.recommender.get_recommended_transport_plan(event_data, fake_targets_ids_2)
+        fake_transport_plan_2 = self.recommender.get_recommended_transport_plan(context_data, event_data, fake_targets_ids_2)
         fake_recommendation_2 = {
             "title": "Suppression",
             "description": "Suppression des trains. Les clients sont invités à reporter leur voyage.",
