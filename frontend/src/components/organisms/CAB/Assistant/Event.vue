@@ -21,9 +21,12 @@
         {{ $t('event.button.primary') }}
       </slot>
     </Button>
-    <Tooltip placement="bottom-end" class="ml-1">
+    <Tooltip
+      v-if="$t('event.tooltip.primary') !== 'event.tooltip.primary' || $slots.tooltip"
+      placement="bottom-end"
+      class="ml-1">
       <template #tooltip>
-        {{ $t('event.tooltip.primary') }}
+        <slot name="tooltip">{{ $t('event.tooltip.primary') }}</slot>
       </template>
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>
