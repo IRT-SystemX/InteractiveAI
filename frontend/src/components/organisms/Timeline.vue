@@ -313,17 +313,16 @@ if (!props.now)
 
     &-time {
       font-size: 0.75rem;
-      background: var(--color-background);
       color: var(--color-grey-600);
       border-radius: var(--radius-small);
       padding: 0 calc(var(--unit) / 2);
-      width: max-content;
+      display: flex;
+      justify-content: space-between;
 
-      .start {
-        left: calc(var(--spacing-4) * -1);
-      }
+      .start,
       .end {
-        right: calc(var(--spacing-4) * -1);
+        background: var(--color-background);
+        border-radius: var(--radius-small);
       }
     }
     &-line {

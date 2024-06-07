@@ -99,7 +99,6 @@
             class="text-stroke"
             style="
               width: max-content;
-              position: absolute;
               transform: translate(-20%);
               font-size: 0.75em;
               display: flex;
@@ -119,9 +118,7 @@
         class="cab-timeline-event-line"
         :class="'name' in event ? '' : criticalityToColor(card.data.criticality)"></div>
       <div class="cab-timeline-event-time">
-        <div
-          class="text-stroke"
-          style="position: absolute; width: max-content; left: 50%; transform: translate(-50%)">
+        <div class="text-stroke" style="width: max-content; left: 50%; transform: translate(-50%)">
           {{ event.name }}
         </div>
       </div>
