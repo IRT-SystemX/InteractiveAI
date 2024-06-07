@@ -127,7 +127,6 @@ import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 
 import Notification from '@/components/molecules/Notification.vue'
-import TimelineTreeNode, { type eventFnType } from '@/components/molecules/TimelineTreeNode.vue'
 import { format } from '@/plugins/date'
 import { useCardsStore } from '@/stores/cards'
 import { type Card, CRITICALITIES } from '@/types/cards'
@@ -135,6 +134,8 @@ import type { Entity } from '@/types/entities'
 import { maxCriticality, repeatEvery } from '@/utils/utils'
 
 import Button from '../atoms/Button.vue'
+import TimelineTreeNode, { type eventFnType } from './Timeline/TreeNode.vue'
+
 const props = withDefaults(
   defineProps<{
     now?: Date
@@ -290,60 +291,6 @@ if (!props.now)
     grid-column: events-start / events-end;
     border-top: 2px dashed var(--color-grey-300);
     align-self: center;
-  }
-
-  &-event {
-    align-self: center;
-
-    &-icon {
-      position: relative;
-      &.error {
-        color: var(--color-error);
-      }
-      &.warning {
-        color: var(--color-warning);
-      }
-      &.success {
-        color: var(--color-success);
-      }
-      &.primary {
-        color: var(--color-primary);
-      }
-    }
-
-    &-time {
-      font-size: 0.75rem;
-      color: var(--color-grey-600);
-      border-radius: var(--radius-small);
-      padding: 0 calc(var(--unit) / 2);
-      display: flex;
-      justify-content: space-between;
-
-      .start,
-      .end {
-        background: var(--color-background);
-        border-radius: var(--radius-small);
-      }
-    }
-    &-line {
-      opacity: 0.6;
-      height: 8px;
-      margin-top: 20px;
-      border-radius: var(--radius-circular);
-
-      &.error {
-        background: var(--color-error);
-      }
-      &.warning {
-        background: var(--color-warning);
-      }
-      &.success {
-        background: var(--color-success);
-      }
-      &.primary {
-        background: var(--color-primary);
-      }
-    }
   }
 }
 </style>

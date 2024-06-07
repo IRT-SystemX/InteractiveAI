@@ -26,7 +26,6 @@
       </slot>
     </div>
     <div class="cab-timeline-line"></div>
-    <template v-if="!children?.length"></template>
     <div
       :style="{
         'grid-column': `${clamp(
@@ -36,10 +35,10 @@
         )}`
       }"
       class="cab-timeline-event">
-      <div class="cab-timeline-event-icon">
+      <div class="cab-timeline-event-top">
         <slot :card></slot>
       </div>
-      <div class="cab-timeline-event-time">
+      <div class="cab-timeline-event-bottom">
         {{ format(new Date(card.publishDate), 'p') }}
       </div>
     </div>
@@ -56,8 +55,11 @@
         )}`
       }"
       class="cab-timeline-event">
-      <div class="cab-timeline-event-line" :class="criticalityToColor(card.data.criticality)"></div>
-      <div class="cab-timeline-event-time">
+      <div class="cab-timeline-event-top"></div>
+      <div
+        class="cab-timeline-event-middle"
+        :class="criticalityToColor(card.data.criticality)"></div>
+      <div class="cab-timeline-event-bottom w-100">
         <div v-if="card.startDate && isAfter(new Date(card.startDate), window.start)" class="start">
           {{ format(new Date(card.startDate), 'p') }}
         </div>
@@ -93,38 +95,30 @@
         )}`
       }"
       class="cab-timeline-event">
-      <div class="cab-timeline-event-icon">
+      <div class="cab-timeline-event-top">
         <template v-if="'name' in event">
-          <div
-            class="text-stroke"
-            style="
-              width: max-content;
-              transform: translate(-20%);
-              font-size: 0.75em;
-              display: flex;
-              align-items: center;
-            ">
+          <span class="text-stroke">
             {{ format(new Date(event.startDate), 'p') }}
-            <MapPin v-if="eventIndex !== [card, ...events].length - 1" :size="16"></MapPin>
-            <Flag v-else :size="16"></Flag>
-            <template v-if="event.startDate !== event.endDate">
-              {{ format(new Date(event.endDate), 'p') }}
-            </template>
-          </div>
+          </span>
+          <MapPin v-if="eventIndex !== [card, ...events].length - 1" :size="16"></MapPin>
+          <Flag v-else :size="16"></Flag>
+          <span v-if="event.startDate !== event.endDate" class="text-stroke">
+            {{ format(new Date(event.endDate), 'p') }}
+          </span>
         </template>
         <slot v-else :card></slot>
       </div>
       <div
-        class="cab-timeline-event-line"
+        class="cab-timeline-event-middle"
         :class="'name' in event ? '' : criticalityToColor(card.data.criticality)"></div>
-      <div class="cab-timeline-event-time">
-        <div class="text-stroke" style="width: max-content; left: 50%; transform: translate(-50%)">
+      <div class="cab-timeline-event-bottom">
+        <div class="text-stroke">
           {{ event.name }}
         </div>
       </div>
     </div>
   </div>
-  <TimelineTreeNode
+  <TreeNode
     v-for="(child, i) of children"
     :key="child.id"
     :event-fn="eventFn"
@@ -135,21 +129,20 @@
     :is-child="true">
     <template #notification><slot name="notification" :card="child"></slot></template>
     <slot :card="child"></slot>
-  </TimelineTreeNode>
+  </TreeNode>
 </template>
 <script setup lang="ts" generic="E extends Entity">
 import { differenceInMinutes, isAfter, isBefore } from 'date-fns'
 import { CornerDownRight, Flag, MapPin } from 'lucide-vue-next'
 import { computed } from 'vue'
 
+import Notification from '@/components/molecules/Notification.vue'
 import { format } from '@/plugins/date'
 import { useAppStore } from '@/stores/app'
 import { useCardsStore } from '@/stores/cards'
 import type { Card } from '@/types/cards'
 import type { Entity } from '@/types/entities'
 import { clamp, criticalityToColor } from '@/utils/utils'
-
-import Notification from '../molecules/Notification.vue'
 
 export type eventFnType<E extends Entity = Entity> = (
   card: Card<E>
@@ -187,6 +180,67 @@ function selected(card: Card<E>) {
 }
 </script>
 <style lang="scss">
+.cab-timeline-event {
+  height: 100%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  &.error {
+    color: var(--color-error);
+  }
+  &.warning {
+    color: var(--color-warning);
+  }
+  &.success {
+    color: var(--color-success);
+  }
+  &.primary {
+    color: var(--color-primary);
+  }
+
+  .max {
+    width: max-content;
+  }
+
+  .start {
+    justify-self: start;
+  }
+  .end {
+    justify-self: end;
+  }
+
+  &-top,
+  &-bottom {
+    font-size: 0.75rem;
+    flex: 1;
+    width: max-content;
+    padding: calc(var(--unit) / 2) 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  &-top {
+    align-items: flex-end;
+  }
+
+  &-middle {
+    opacity: 0.6;
+    height: 8px;
+    border-radius: var(--radius-circular);
+
+    &.error {
+      background: var(--color-error);
+    }
+    &.warning {
+      background: var(--color-warning);
+    }
+    &.success {
+      background: var(--color-success);
+    }
+    &.primary {
+      background: var(--color-primary);
+    }
+  }
+}
 .cab-timeline-row {
   display: grid;
   grid-column: cards-start / event-end;
