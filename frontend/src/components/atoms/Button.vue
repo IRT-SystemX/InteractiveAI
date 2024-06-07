@@ -63,7 +63,7 @@ withDefaults(
     color: var(--color-text);
   }
   &.success {
-    --color-button-background: background: var(--color-success);
+    --color-button-background: var(--color-success);
   }
   &.warning {
     --color-button-background: var(--color-warning);
