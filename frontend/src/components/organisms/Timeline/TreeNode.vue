@@ -29,7 +29,7 @@
     <div
       :style="{
         'grid-column': `${clamp(
-          differenceInMinutes(new Date(card.publishDate), window.start) + 2,
+          differenceInMinutes(new Date(card.startDate), window.start) + 2,
           window.length + 1,
           2
         )}`
@@ -39,7 +39,7 @@
         <slot :card></slot>
       </div>
       <div class="cab-timeline-event-bottom">
-        {{ format(new Date(card.publishDate), 'p') }}
+        {{ format(new Date(card.startDate), 'p') }}
       </div>
     </div>
     <div
