@@ -16,7 +16,7 @@
     </slot>
   </SpeechBubble>
   <div class="flex flex-center-y">
-    <Button type="button" @click="primaryAction">
+    <Button v-if="primaryAction" type="button" @click="primaryAction">
       <slot name="button-primary">
         {{ $t('event.button.primary') }}
       </slot>
@@ -60,7 +60,7 @@ withDefaults(
   defineProps<{
     chatbot?: boolean
     card: Card
-    primaryAction?: (card?: Card) => void
+    primaryAction?: ((card?: Card) => void) | null
     secondaryAction?: (card?: Card) => void
   }>(),
   {
