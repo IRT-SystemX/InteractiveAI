@@ -84,9 +84,7 @@ export function hashColor(src: string | number, lightness = 66, saturation = 100
     hash = src.charCodeAt(i) + ((hash << 5) - hash)
     hash &= hash
   }
-  return `hsl(${
-    hash % 360
-  }, ${saturation}%, calc(var(--lightness) + var(--lightness-factor) * ${lightness}%))`
+  return `hsl(${hash % 360}, ${saturation}%, ${lightness}%)`
 }
 
 /**

@@ -2,17 +2,12 @@
   <nav>
     <div class="cab-nav">
       <RouterLink id="logo" :to="authStore.entities.length > 1 ? { name: 'home' } : ''">
-        <SVG src="/img/logo.svg" :fill="modeColor()" :height="32" class="ml-2 mr-1"></SVG>
+        <SVG src="/img/logo.svg" :fill="color" :height="32" class="ml-2 mr-1"></SVG>
         <h1 class="cab-logo-typo">
           {{ $t('cab') }}
           <div class="logo-infos">
             {{ pkg.version }}
-            <i
-              v-if="env.MODE !== 'production'"
-              :style="{
-                color: modeColor()
-              }"
-              class="mode">
+            <i v-if="!env.PROD" :style="{ color }" class="mode">
               {{ env.MODE }}
             </i>
           </div>
@@ -74,13 +69,14 @@
 </template>
 <script setup lang="ts">
 import { AppWindow, ArrowUpDown, Bell, LogIn, User } from 'lucide-vue-next'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 import { useCardsStore } from '@/stores/cards'
 import type { Entity } from '@/types/entities'
-import { asset } from '@/utils/utils'
+import { asset, hashColor } from '@/utils/utils'
 
 import pkg from '../../../package.json'
 import Button from '../atoms/Button.vue'
@@ -94,26 +90,11 @@ const authStore = useAuthStore()
 const cardsStore = useCardsStore()
 const appStore = useAppStore()
 
+const color = computed(() => (env.PROD ? 'var(--color-primary)' : hashColor(env.MODE)))
+
 function logout() {
   authStore.logout()
   router.push({ name: 'login' })
-}
-
-function modeColor() {
-  switch (env.MODE) {
-    case 'development':
-      return 'var(--color-success)'
-    case 'simu':
-      return 'var(--color-warning)'
-    case 'prod':
-      return 'var(--color-error)'
-    case 'demo':
-      return 'var(--color-primary)'
-    case 'production':
-      return 'var(--color-primary)'
-    default:
-      return 'var(--color-primary)'
-  }
 }
 </script>
 <style scoped>
