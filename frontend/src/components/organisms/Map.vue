@@ -23,7 +23,8 @@
       :weight="2"
       :fill-opacity="1"
       :radius="8"
-      v-bind="waypoint.options">
+      v-bind="waypoint.options"
+      @click="waypointClick">
       <LTooltip
         :options="{
           permanent: waypoint.permanentTooltip,
@@ -37,7 +38,8 @@
       v-for="waypoint of mapStore.contextWaypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
-      :z-index-offset="10000">
+      :z-index-offset="10000"
+      @click="contextClick">
       <LTooltip
         :options="{ permanent: waypoint.permanentTooltip, direction: 'top', offset: [0, -12] }">
         {{ waypoint.id }}
@@ -78,13 +80,20 @@ import { onUnmounted, ref, watch } from 'vue'
 
 import { useAppStore } from '@/stores/app'
 import { useMapStore } from '@/stores/components/map'
+import type { Waypoint } from '@/types/components/map'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
 withDefaults(
   defineProps<{
     tileLayers?: string[]
+    contextClick?: (waypoint: Waypoint) => void
+    waypointClick?: (waypoint: Waypoint) => void
   }>(),
-  { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
+  {
+    tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'],
+    contextClick: undefined,
+    waypointClick: undefined
+  }
 )
 
 const mapStore = useMapStore()
