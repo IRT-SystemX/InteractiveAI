@@ -1,4 +1,5 @@
 from .recommendation_manager.base_recommendation import BaseRecommendation
+from settings import logger
 
 
 class UseCaseFactory:
@@ -13,3 +14,7 @@ class UseCaseFactory:
         if use_case is None:
             raise ValueError(f"Unknown use case '{name}'")
         return use_case
+
+    def unregister_all_use_cases(self):
+        self._use_cases.clear()
+        logger.info("All use cases have been unregistered.")

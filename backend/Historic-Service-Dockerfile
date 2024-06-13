@@ -5,9 +5,18 @@ FROM python:3.11.6-slim
 RUN mkdir /my_app
 
 COPY ./historic-service/ /my_app/
+COPY ./cab_common/ /cab_common/
 
 WORKDIR /my_app
 
 RUN pip3 install -r requirements.txt
+
+
+WORKDIR /cab_common
+
+RUN pip3 install .
+
+WORKDIR /my_app
+
 
 CMD ["./entrypoint.sh"]
