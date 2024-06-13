@@ -7,7 +7,7 @@ from cab_common_auth.decorators import (get_use_cases, protected,
                                         protected_admin)
 from settings import logger
 from sqlalchemy.exc import IntegrityError, OperationalError
-from utils import load_usecases_db
+from .utils import load_usecases_db
 
 from .models import EventModel, UseCaseModel, db
 from .schemas import EventIn, EventOut, UseCaseIn, UseCaseOut
