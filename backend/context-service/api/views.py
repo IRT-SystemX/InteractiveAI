@@ -7,10 +7,10 @@ from cab_common_auth.decorators import (get_use_cases, protected,
 from flask import request
 from settings import logger
 from sqlalchemy.exc import IntegrityError, OperationalError
+from utils import load_usecases_db
 
 from .models import UseCaseModel, db
 from .schemas import ContextIn, ContextOut, UseCaseIn, UseCaseOut
-
 
 api_bp = APIBlueprint("context-api", __name__, url_prefix="/api/v1")
 
@@ -163,7 +163,11 @@ class UseCase(MethodView):
 class DeleteDataService(MethodView):
     @protected_admin
     def delete(self):
+        from flask import current_app
+        use_case_factory = current_app.use_case_factory
         try:
+            # unregister all use_cases
+            use_case_factory.unregister_all_use_cases()
             # Delete all records from all models
             for mapper in db.Model.registry.mappers:
                 model = mapper.class_
@@ -176,6 +180,7 @@ class DeleteDataService(MethodView):
             return {"error": str(e)}, 500
         except Exception as e:
             db.session.rollback()
+            load_usecases_db(use_case_factory)
             return {"error": str(e)}, 500
 
 
