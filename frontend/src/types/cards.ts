@@ -18,35 +18,36 @@ export enum CardOperationType {
 }
 
 export type Card<E extends Entity = Entity> = {
+  data: {
+    criticality: Criticality
+    metadata: Metadata<E>
+    parent_event_id: Card['processInstanceId'] | null
+  }
+  read?: boolean
+  id: `${Card['process']}.${Card['processInstanceId']}`
+  processInstanceId: UUID
+  uid: string
+  startDate: number
+  endDate?: number
+  publishDate: number
   severity: Severity
+  entityRecipients: [E]
+  keepChildCards: boolean
+  hasBeenAcknowledged?: boolean
+  hasBeenRead?: boolean
+  process: 'cabProcess'
+  publisherType: PublisherType
+  processVersion: '1'
   summary: {
     parameters: { summary: string }
     key: string
   }
   summaryTranslated: string
-  keepChildCards: boolean
-  hasBeenAcknowledged?: boolean
-  hasBeenRead?: boolean
-  processInstanceId: UUID
-  process: `${Lowercase<E>}Process`
-  publisherType: PublisherType
-  endDate: number
-  publishDate: number
-  processVersion: '1'
   title: { parameters: { title: string }; key: string }
   titleTranslated: string
-  uid: string
   publisher: string
-  entityRecipients: [E]
-  id: `${Card['process']}.${Card['processInstanceId']}`
+  processStateKey: `cabProcess.${string}`
   state: string
-  startDate: number
-  data: {
-    criticality: Criticality
-    metadata: Metadata<E>
-    parent_event_id: Card['processInstanceId']
-  }
-  read?: boolean
 }
 
 export type CardAck = {
