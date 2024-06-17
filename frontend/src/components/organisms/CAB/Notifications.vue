@@ -43,82 +43,84 @@
           </Tooltip>
         </div>
       </header>
-      <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
-        <template
-          v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
-            return (
-              CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
-              CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
-            )
-          })"
-          :key>
-          <Notification
-            v-if="key !== '_DEFAULT'"
-            :criticality="maxCriticality('ND', filtered(section.filter)[key])">
-            <div class="flex flex-center-y flex-gap">
-              <ChevronDown />
-              <header
-                class="flex flex-1"
-                :style="{
-                  color: filtered(section.filter)[key].every((c) => c.read)
-                    ? 'var(--color-grey-600)'
-                    : undefined
-                }">
-                <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
-                <aside>
-                  {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
-                </aside>
-              </header>
-            </div>
-          </Notification>
-          <NotificationTreeNode
-            v-for="c of filtered(section.filter)[key]"
-            :key="c.id"
-            :card="c"
-            :is-child="key !== '_DEFAULT'">
-            <template #title="{ card }">
-              <slot name="title" :card>{{ card.titleTranslated }}</slot>
-            </template>
-            <template #severity="{ card }">
-              <slot name="severity" :card>
-                {{ format(new Date(card.startDate), 'p') }}
-              </slot>
-              <slot name="icon" :card>
-                <SVG
-                  src="/img/icons/warning_hex.svg"
-                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
-                  :width="16"
-                  class="ml-1"></SVG>
-              </slot>
-            </template>
-            <template #default="{ card }">
-              <slot>
-                {{ card.summaryTranslated }}
-              </slot>
-            </template>
-            <template #actions="{ card }">
-              <slot
-                name="actions"
-                :card
-                :deletion="confirmDeletion"
-                :has-been-acknowledged="hasBeenAcknowledged">
-                <Tooltip v-if="!hasBeenAcknowledged">
-                  <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                  <Button
-                    size="small"
-                    color="secondary"
-                    :aria-label="$t('cab.notifications.archived')">
-                    <Inbox :height="12" @click.stop="confirmDeletion(card)" />
-                  </Button>
-                </Tooltip>
-              </slot>
-            </template>
-          </NotificationTreeNode>
-        </template>
-      </div>
-      <div v-else class="card-container-empty">
-        {{ $t('cab.notifications.empty') }}
-      </div>
+      <slot name="notifications" :section>
+        <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
+          <template
+            v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
+              return (
+                CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
+                CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
+              )
+            })"
+            :key>
+            <Notification
+              v-if="key !== '_DEFAULT'"
+              :criticality="maxCriticality('ND', filtered(section.filter)[key])">
+              <div class="flex flex-center-y flex-gap">
+                <ChevronDown />
+                <header
+                  class="flex flex-1"
+                  :style="{
+                    color: filtered(section.filter)[key].every((c) => c.read)
+                      ? 'var(--color-grey-600)'
+                      : undefined
+                  }">
+                  <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
+                  <aside>
+                    {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
+                  </aside>
+                </header>
+              </div>
+            </Notification>
+            <NotificationTreeNode
+              v-for="c of filtered(section.filter)[key]"
+              :key="c.id"
+              :card="c"
+              :is-child="key !== '_DEFAULT'">
+              <template #title="{ card }">
+                <slot name="title" :card>{{ card.titleTranslated }}</slot>
+              </template>
+              <template #severity="{ card }">
+                <slot name="severity" :card>
+                  {{ format(new Date(card.startDate), 'p') }}
+                </slot>
+                <slot name="icon" :card>
+                  <SVG
+                    src="/img/icons/warning_hex.svg"
+                    :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
+                    :width="16"
+                    class="ml-1"></SVG>
+                </slot>
+              </template>
+              <template #default="{ card }">
+                <slot>
+                  {{ card.summaryTranslated }}
+                </slot>
+              </template>
+              <template #actions="{ card }">
+                <slot
+                  name="actions"
+                  :card
+                  :deletion="confirmDeletion"
+                  :has-been-acknowledged="hasBeenAcknowledged">
+                  <Tooltip v-if="!hasBeenAcknowledged">
+                    <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      :aria-label="$t('cab.notifications.archived')">
+                      <Inbox :height="12" @click.stop="confirmDeletion(card)" />
+                    </Button>
+                  </Tooltip>
+                </slot>
+              </template>
+            </NotificationTreeNode>
+          </template>
+        </div>
+        <div v-else class="card-container-empty">
+          {{ $t('cab.notifications.empty') }}
+        </div>
+      </slot>
     </section>
   </section>
 </template>
