@@ -18,6 +18,9 @@
   <slot name="footer">
     <Button
       v-if="!'LAND ASAP'.localeCompare(task.taskText.toUpperCase()) && task.state === 'doing'"
+      size="big"
+      custom-color="#0f0"
+      style="align-self: center"
       @click="
         () => {
           appStore.tab.assistant = 2
