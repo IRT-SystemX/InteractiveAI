@@ -6,14 +6,14 @@ export type Waypoint = {
   id: string
   category?: Uppercase<string>
   permanentTooltip?: boolean
-  options?: {
+  options?: Partial<{
     stroke: boolean
     radius: number
     color: string
     fillColor: string
     weight: number
     opacity: number
-  }
+  }>
   severity?: Severity
 }
 
