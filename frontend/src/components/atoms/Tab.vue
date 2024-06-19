@@ -1,9 +1,10 @@
 <template>
-  <button class="cab-tab" :class="{ active }"><slot></slot></button>
+  <button class="cab-tab" :class="{ active }" :disabled><slot></slot></button>
 </template>
 <script setup lang="ts">
 defineProps<{
   active?: boolean
+  disabled?: boolean
 }>()
 </script>
 <style lang="scss">
@@ -12,12 +13,12 @@ defineProps<{
   border-bottom: 1px solid var(--color-grey-300);
 }
 .cab-tab {
+  &:disabled {
+    color: var(--color-grey-600);
+    background: color-mix(in srgb, var(--color-background), #ccc 100%);
+  }
   cursor: pointer;
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--color-background), #ccc 20%),
-    color-mix(in srgb, var(--color-background), #ccc 20%)
-  );
+  background: color-mix(in srgb, var(--color-background), #ccc 20%);
   font-family: 'Lexend';
   font-weight: 700;
   border: none;
