@@ -12,7 +12,7 @@ class MetadataSchemaRTE(MetadataSchema):
         required=True,
         validate=OneOf(["KPI", "anticipation", "agent", "consignation"]),
     )
-    creation_date = String(required=True)
+    creation_date = String()
     zone = String(validate=OneOf(["Est", "Ouest", "Centre"]))
     line = String(required=True)
     flux = Float()
