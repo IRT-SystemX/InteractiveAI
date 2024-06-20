@@ -44,7 +44,7 @@ class RTEManager(AgentManager, BaseRecommendation):
         # Default output
         output_json = {
             "title":"Parade ontologique par defaut",
-            "description":"Aucune recommandation n'a pu être générée",
+            "description":"Aucune recommandation n’a pu être générée car cette surcharge n’a jamais été observée dans le passé",
             "use_case":"RTE",
             "agent_type":AgentType.onto.name,
             "actions":[{}],
