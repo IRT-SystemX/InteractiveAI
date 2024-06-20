@@ -12,6 +12,8 @@ class RTEEventManager(BaseEventManager):
     def create_event(self, data):
         input_line = data["data"].get("line")
         event_id, _ = self.get_event_id(unique_by_fields={"line": input_line})
+        creation_date = data.get("creation_date", datetime.now())
+        event_context = data["data"].get("event_context")
         data["id_event"] = str(event_id)
         start_date = data.get("start_date", datetime.now())
         end_date = data.get("end_date")
