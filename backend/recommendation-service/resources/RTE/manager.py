@@ -1,8 +1,7 @@
 import os
 
 from api.manager.base_manager import BaseRecommendationManager
-from flask import current_app
-from owlready2 import default_world, get_ontology, sync_reasoner
+from owlready2 import get_ontology
 from settings import logger
 
 from .rtegrid2op_poc_simulator.assistantManager import AgentManager, AgentType
@@ -10,15 +9,15 @@ from .rtegrid2op_poc_simulator.assistantManager import AgentManager, AgentType
 
 class RTEManager(AgentManager, BaseRecommendationManager):
     def __init__(self):
-        self.root_path = current_app.config["ROOT_PATH"]
+        script_dir = os.path.dirname(os.path.abspath(__file__))
         self.owl_file_path = os.path.join(
-            self.root_path, "resources/rte/ontology/Grid2onto_v2_3.owl"
+            script_dir, "ontology/Grid2onto_v2_3.owl"
         )
         self.onto_iao_file = os.path.join(
-            self.root_path, "resources/rte/ontology/iao_module.owl"
+            script_dir, "ontology/iao_module.owl"
         )
         self.onto_bfo_file = os.path.join(
-            self.root_path, "resources/rte/ontology/bfo_module.owl"
+            script_dir, "ontology/bfo_module.owl"
         )
         super().__init__()
 
