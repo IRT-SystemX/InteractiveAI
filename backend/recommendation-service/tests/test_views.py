@@ -9,62 +9,58 @@ SNCF_BEARER_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTN
 ORANGE_BEARER_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJSbXFOVTNLN0x4ck5SRmtIVTJxcTZZcTEya1RDaXNtRkw5U2NwbkNPeDBjIn0.eyJleHAiOjE2ODQ3NjY4NTksImlhdCI6MTY4NDE2MjA1OSwianRpIjoiNDE4ZGVlMmItYWFjNi00NTJlLWE5MGYtMzIyNzhlMzRhMjJiIiwiaXNzIjoiaHR0cDovLzE5Mi4xNjguMjExLjk1OjMyMDAvcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJvcmFuZ2VfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI1Mjk3ODA1ZC1mYzczLTRkOTQtOTdmYy0wYzVhNTJjNDE0NDAiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiI1Mjk3ODA1ZC1mYzczLTRkOTQtOTdmYy0wYzVhNTJjNDE0NDAiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IlJURTtBRE1JTjtSZWFkT25seSIsInByZWZlcnJlZF91c2VybmFtZSI6Im9yYW5nZV91c2VyIiwiZW50aXRpZXNJZCI6Ik9SQU5HRSJ9.KriZd2FZT39Yi8LD2lnVGJad9nEZ00W7rQzcTaFBbGjh9AnfgC6bEwmH20u0d61ldHA0KcH9_NC8LolNhRDjGqA6QDy8l-nA67VUK-CT_9uj9bW9oo8LVHCKn-pcK2t6LlPFexQjSeb0-rK9_jA-O-7rAdXQVEhYc1shxJYTNhNqtwmEBE_QApmDTocoIBPA6jUzqGWh0wUMswmKVPAUU1yWDBUBVDsRCcKVRAO2p-P64CxyXC0R1RRSGZ1i4jexggjeIfyrARXkJrjcAMYAu4HBi8k91vDd6KBiJs45TVm9_5rrW25ZASWTPUO4fuuaz3k47DTUGQBNstO483ZrkA"
 
 
-def test_rte_get_recommendation(client, rte_auth_mocker):
+def test_rte_get_recommendation(client, create_usecases, rte_auth_mocker):
     recommendation_data = {}
     # Opening JSON file
-    with open('tests/tests_resources/rte_recommendation.json') as json_file:
+    with open("tests/tests_resources/rte_recommendation.json") as json_file:
         recommendation_data = json.load(json_file)
-    headers = {
-        'Authorization': f'Bearer {RTE_BEARER_TOKEN}'
-    }
+    headers = {"Authorization": f"Bearer {RTE_BEARER_TOKEN}"}
     response = client.post(
-        '/api/v1/recommendation', headers=headers, json=recommendation_data)
+        "/api/v1/recommendation", headers=headers, json=recommendation_data
+    )
 
     assert response.status_code == 200
 
 
-def test_sncf_get_recommendation(client, sncf_auth_mocker):
+def test_sncf_get_recommendation(client, create_usecases, sncf_auth_mocker):
     recommendation_data = {}
     # Opening JSON file
-    with open('tests/tests_resources/sncf_recommendation.json') as json_file:
+    with open("tests/tests_resources/sncf_recommendation.json") as json_file:
         recommendation_data = json.load(json_file)
-    headers = {
-        'Authorization': f'Bearer {SNCF_BEARER_TOKEN}'
-    }
+    headers = {"Authorization": f"Bearer {SNCF_BEARER_TOKEN}"}
     response = client.post(
-        '/api/v1/recommendation', headers=headers, json=recommendation_data)
+        "/api/v1/recommendation", headers=headers, json=recommendation_data
+    )
 
     assert response.status_code == 200
 
 
-def test_da_get_recommendation_1(client, da_auth_mocker):
+def test_da_get_recommendation_1(client, create_usecases, da_auth_mocker):
     recommendation_data = {}
     # Opening JSON file
-    with open('tests/tests_resources/da_recommendation_1.json') as json_file:
+    with open("tests/tests_resources/da_recommendation_1.json") as json_file:
         recommendation_data = json.load(json_file)
-    headers = {
-        'Authorization': f'Bearer {DA_BEARER_TOKEN}'
-    }
+    headers = {"Authorization": f"Bearer {DA_BEARER_TOKEN}"}
     response = client.post(
-        '/api/v1/recommendation', headers=headers, json=recommendation_data)
+        "/api/v1/recommendation", headers=headers, json=recommendation_data
+    )
 
     assert response.status_code == 200
 
 
-def test_da_get_recommendation_2(client, da_auth_mocker):
+def test_da_get_recommendation_2(client, create_usecases, da_auth_mocker):
     recommendation_data = {}
     # Opening JSON file
-    with open('tests/tests_resources/da_recommendation_2.json') as json_file:
+    with open("tests/tests_resources/da_recommendation_2.json") as json_file:
         recommendation_data = json.load(json_file)
-    headers = {
-        'Authorization': f'Bearer {DA_BEARER_TOKEN}'
-    }
+    headers = {"Authorization": f"Bearer {DA_BEARER_TOKEN}"}
     response = client.post(
-        '/api/v1/recommendation', headers=headers, json=recommendation_data)
+        "/api/v1/recommendation", headers=headers, json=recommendation_data
+    )
 
     assert response.status_code == 200
 
 
 def test_health_check(client):
-    response = client.get('/api/v1/health')
+    response = client.get("/api/v1/health")
     assert response.status_code == 200

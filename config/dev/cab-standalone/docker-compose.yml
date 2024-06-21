@@ -216,6 +216,7 @@ services:
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://frontend:80
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_recommendation:5432/cab-recommendation
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/my_app
       - FLASK_ENV=development
@@ -228,6 +229,8 @@ services:
       - 5400:5000
     volumes:
       - ./../../../backend/recommendation-service:/my_app
+    depends_on:
+      - db_postgres_recommendation
 
   mongodb:
     image: mongo:4.4.4-bionic
@@ -240,6 +243,20 @@ services:
     container_name: rabbit
     image: rabbitmq:3-management
     hostname: rabbit
+
+  db_postgres_recommendation:
+    container_name: db_postgres_recommendation
+    image: postgres:14.7
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cab-recommendation
+    ports:
+      - '5437:5432'
+    volumes:
+      - postgres_recommendation_data:/var/lib/postgresql/data/
+
 
   #  If you want to persist queue after rabbit docker container removal mount
   #  a volume to store persistance data
@@ -362,4 +379,5 @@ volumes:
   postgres_event_data:
   postgres_historic_data:
   postgres_correlation_data:
+  postgres_recommendation_data:
   pgadmin:
