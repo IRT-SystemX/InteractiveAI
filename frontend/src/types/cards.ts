@@ -19,6 +19,7 @@ export enum CardOperationType {
 
 export type Card<E extends Entity = Entity> = {
   data: {
+    creation_date?: number
     criticality: Criticality
     metadata: Metadata<E>
     parent_event_id: Card['processInstanceId'] | null
@@ -29,7 +30,6 @@ export type Card<E extends Entity = Entity> = {
   uid: string
   startDate: number
   endDate?: number
-  creationDate?: number
   publishDate: number
   severity: Severity
   entityRecipients: [E]
