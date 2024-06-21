@@ -26,10 +26,10 @@ class ProcedureOut(Schema):
 
 class UseCaseIn(Schema):
     name = String(required=True, validate=Length(1, 255))
-    event_manager_class = String(validate=Length(1, 255))
+    manager_class = String(validate=Length(1, 255))
 
 
 class UseCaseOut(Schema):
     id = Integer()
     name = String(required=True, validate=Length(1, 255))
-    event_manager_class = String(validate=Length(1, 255))
+    manager_class = String(validate=Length(1, 255))

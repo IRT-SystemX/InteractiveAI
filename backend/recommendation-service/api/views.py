@@ -134,12 +134,6 @@ class UseCases(MethodView):
         # register use case to use_case_factory
         use_case_factory.register_use_case(use_case_db.name, manager_instance)
 
-        # Dynamically import the metadata schema class
-        metadata_schema_module = importlib.import_module(
-            f"resources.{use_case_db.name}.schemas"
-        )
-        getattr(metadata_schema_module, f"{use_case_db.metadata_schema_class}")
-
         # save use case to db
         try:
             # Attempt to add the use case to the database
