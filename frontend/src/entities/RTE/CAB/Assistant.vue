@@ -14,7 +14,7 @@
         {{ appStore.card('RTE')!.titleTranslated }}
       </Event>
       <Recommendations
-        v-if="appStore.tab.assistant === 2"
+        v-if="appStore.tab.assistant === 2 && appStore.card('RTE')"
         v-model:recommendations="recommendations"
         :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         @selected="onSelection">

@@ -52,6 +52,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   async function _subscribe(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent) => {
+      const appStore = useAppStore()
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
         existingCard = _cards.value.findIndex((card) => cardEvent.cardId === card.id)
@@ -92,9 +93,11 @@ export const useCardsStore = defineStore('cards', () => {
             })
           break
         case CardOperationType.DELETE:
+          if (cardEvent.cardId === appStore._card?.id) appStore._card = undefined
           _cards.value.splice(existingCard, 1)
           break
         case CardOperationType.ACK:
+          if (cardEvent.cardId === appStore._card?.id) appStore._card = undefined
           _cards.value[existingCard].hasBeenAcknowledged = true
           break
       }
@@ -133,11 +136,6 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   function acknowledge<E extends Entity = Entity>(card: Card<E>) {
-    const appStore = useAppStore()
-    if (appStore._card?.id === card.id) {
-      appStore._card = undefined
-      appStore.tab.assistant = 0
-    }
     for (const children of cards(card.entityRecipients[0]))
       if (children.data.parent_event_id === card.processInstanceId) acknowledge(children)
     cardsApi.acknowledge(card)
