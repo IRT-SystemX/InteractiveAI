@@ -38,7 +38,8 @@ const appStore = useAppStore()
 const contextPID = ref(0)
 
 const context = computed(
-  () => appStore.card('RTE')?.data.metadata.context || servicesStore.context('RTE')?.data.topology
+  () =>
+    appStore.card('RTE')?.data.metadata.event_context || servicesStore.context('RTE')?.data.topology
 )
 
 onBeforeMount(async () => {
