@@ -67,6 +67,7 @@ export type RTE = {
     zone?: 'Est' | 'Ouest' | 'Centre'
     line: string
     flux: number | `${number}`
+    context?: string
     kpis: {
       max_overload: string
       renewable_energy_share: number
