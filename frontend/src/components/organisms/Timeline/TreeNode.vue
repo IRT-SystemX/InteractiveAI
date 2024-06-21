@@ -29,8 +29,14 @@
     <div
       :style="{
         'grid-column': `${clamp(
-          differenceInMinutes(new Date(card.data.creation_date || card.startDate), window.start) +
-            2,
+          differenceInMinutes(
+            new Date(
+              'creation_date' in card.data.metadata
+                ? card.data.metadata.creation_date
+                : card.startDate
+            ),
+            window.start
+          ) + 2,
           window.length + 1,
           2
         )}`
@@ -40,7 +46,16 @@
         <slot :card></slot>
       </div>
       <div class="cab-timeline-event-bottom">
-        {{ format(new Date(card.data.creation_date || card.startDate), 'p') }}
+        {{
+          format(
+            new Date(
+              'creation_date' in card.data.metadata
+                ? card.data.metadata.creation_date
+                : card.startDate
+            ),
+            'p'
+          )
+        }}
       </div>
     </div>
     <div
