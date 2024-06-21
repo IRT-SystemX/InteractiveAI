@@ -232,15 +232,15 @@ class PowerNetAgent(BaseAgent):
             self.alarm_count = 0
 
         # if this action will cause game over, the try disconnected action
-        sim_obs, sim_reward, sim_done, sim_inf = observation.simulate(action)
-        observation._obs_env._reset_to_orig_state()
+        sim_obs, sim_reward, sim_done, sim_inf = observation.simulate(action, time_step = 0)
+        #observation._obs_env._reset_to_orig_state()
 
         if sim_done:
             for dis_line in range(59):  # from the left to the right
                 try:
                     dis_action = self.action_space.disconnect_powerline(dis_line)
-                    dis_obs, dis_reward, dis_done, dis_inf = observation.simulate(dis_action)
-                    observation._obs_env._reset_to_orig_state()
+                    dis_obs, dis_reward, dis_done, dis_inf = observation.simulate(dis_action, time_step = 0)
+                    #observation._obs_env._reset_to_orig_state()
 
                     if not dis_done:
                         return dis_action
@@ -272,8 +272,8 @@ class PowerNetAgent(BaseAgent):
                 action = self.action_space({"set_line_status": [(line_id, +1)]})
 
                 try:
-                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action)
-                    observation._obs_env._reset_to_orig_state()
+                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action, time_step = 0)
+                    #observation._obs_env._reset_to_orig_state()
                     if np.max(observation.rho) < 1.0 and np.max(obs_simulate.rho) >= 1.0:
                         continue
 
@@ -308,8 +308,8 @@ class PowerNetAgent(BaseAgent):
                         })
 
                         try:
-                            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(act)
-                            observation._obs_env._reset_to_orig_state()
+                            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(act, time_step = 0)
+                            #observation._obs_env._reset_to_orig_state()
                             if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
                                 return None
                             if not done_simulate and obs_simulate is not None and not any(np.isnan(obs_simulate.rho)):
@@ -335,8 +335,8 @@ class PowerNetAgent(BaseAgent):
                     })
 
                     try:
-                        obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(reconfig_sub)
-                        observation._obs_env._reset_to_orig_state()
+                        obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(reconfig_sub, time_step = 0)
+                        #observation._obs_env._reset_to_orig_state()
                         if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
                             return None
                         if not done_simulate:
@@ -365,8 +365,8 @@ class PowerNetAgent(BaseAgent):
                 })
 
                 try:
-                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(act)
-                    observation._obs_env._reset_to_orig_state()
+                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(act, time_step = 0)
+                    #observation._obs_env._reset_to_orig_state()
                     if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
                         return None
                     if not done_simulate and obs_simulate is not None and not any(np.isnan(obs_simulate.rho)):
@@ -396,8 +396,8 @@ class PowerNetAgent(BaseAgent):
                 action = self.action_space({"redispatch": redispatchs})
 
                 try:
-                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action)
-                    observation._obs_env._reset_to_orig_state()
+                    obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action, time_step = 0)
+                    #observation._obs_env._reset_to_orig_state()
                     if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
                         return None
                     if not done_simulate and obs_simulate is not None and not any(np.isnan(obs_simulate.rho)):
@@ -458,8 +458,8 @@ class PowerNetAgent(BaseAgent):
     def build_unitary_actions_with_seq_simulation(self, observation):
         # get a baseline by do nothing
         try:
-            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(self.action_space({}))
-            observation._obs_env._reset_to_orig_state()
+            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(self.action_space({}), time_step = 0)
+            #observation._obs_env._reset_to_orig_state()
 
             least_overflow = 2.0
             if obs_simulate is not None and not any(np.isnan(obs_simulate.rho)):
@@ -530,8 +530,8 @@ class PowerNetAgent(BaseAgent):
                     if legal_action is None: continue
                     if legal_action in current_actions: continue
 
-                    obs_simulate, reward_simulate, done_simulate, info_simulate = simulatable_obs.simulate(legal_action)
-                    observation._obs_env._reset_to_orig_state()
+                    obs_simulate, reward_simulate, done_simulate, info_simulate = simulatable_obs.simulate(legal_action, time_step = 0)
+                    #observation._obs_env._reset_to_orig_state()
 
                     if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
                         continue
@@ -561,7 +561,7 @@ class PowerNetAgent(BaseAgent):
                 return self.action_space({}), least_overflow
 
             best_action = best_candidate[1][0]
-            simulated_obs, _, _, _ = observation.simulate(best_action)
+            simulated_obs, _, _, _ = observation.simulate(best_action, time_step = 0)
             rho = simulated_obs.rho.max()
 
             return best_action, rho
@@ -579,16 +579,18 @@ class PowerNetAgent(BaseAgent):
         :param n_actions: Number of actions to return
         :return: A list of Grid2Op.Action with their simulated max_rho
         """
+
         try:
-            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(self.action_space({}))
-            observation._obs_env._reset_to_orig_state()
+            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(self.action_space({}), time_step = 1)
+            #observation._obs_env._reset_to_orig_state()
 
             least_overflow = 2.0
             if obs_simulate is not None and not any(np.isnan(obs_simulate.rho)):
                 least_overflow = float(np.max(obs_simulate.rho))
 
-        except BaseException:
+        except BaseException as e:
             least_overflow = 2.0
+            
 
         finally:
             self.simulate_times += 1
@@ -659,8 +661,8 @@ class PowerNetAgent(BaseAgent):
                     if legal_action is None: continue
                     if legal_action in current_actions: continue
 
-                    obs_simulate, reward_simulate, done_simulate, info_simulate = simulatable_obs.simulate(legal_action)
-                    observation._obs_env._reset_to_orig_state()
+                    obs_simulate, reward_simulate, done_simulate, info_simulate = simulatable_obs.simulate(legal_action, time_step = 1)
+                    #observation._obs_env._reset_to_orig_state()
 
                     # Drop invalid actions
                     if info_simulate['is_illegal'] or info_simulate['is_ambiguous']:
@@ -737,7 +739,7 @@ class PowerNetAgent(BaseAgent):
 
         out = []
         for action in actions:
-            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action)
+            obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action, time_step = 0)
             rho = obs_simulate.rho.max()
             out.append((action, rho))
         return out
@@ -746,8 +748,8 @@ class PowerNetAgent(BaseAgent):
         """
         Add redispatching to a given action
         """
-        obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action)
-        observation._obs_env._reset_to_orig_state()
+        obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(action, time_step = 0)
+        #observation._obs_env._reset_to_orig_state()
 
         origin_rho = 10.0
         if not done_simulate:
@@ -764,8 +766,8 @@ class PowerNetAgent(BaseAgent):
 
                 combine_action = self.action_space.from_vect(action.to_vect() + redispatch_action.to_vect())
 
-                obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(combine_action)
-                observation._obs_env._reset_to_orig_state()
+                obs_simulate, reward_simulate, done_simulate, info_simulate = observation.simulate(combine_action, time_step = 0)
+                #observation._obs_env._reset_to_orig_state()
 
             except BaseException:
                 print('redispatch_action error')
