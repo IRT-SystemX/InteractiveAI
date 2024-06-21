@@ -13,7 +13,7 @@
         <ChevronLeft />
       </Button>
       <Button
-        icon="Next time frame"
+        icon="Current time frame"
         @click="
           () => {
             _start = props.start
