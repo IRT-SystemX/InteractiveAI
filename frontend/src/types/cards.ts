@@ -29,6 +29,7 @@ export type Card<E extends Entity = Entity> = {
   uid: string
   startDate: number
   endDate?: number
+  creationDate?: number
   publishDate: number
   severity: Severity
   entityRecipients: [E]
