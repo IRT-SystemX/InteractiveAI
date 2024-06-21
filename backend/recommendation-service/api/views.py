@@ -1,5 +1,6 @@
 import importlib
 
+from api.utils import load_usecases_db
 from apiflask import APIBlueprint, HTTPError
 from apiflask.views import MethodView
 from cab_common_auth.decorators import (
@@ -10,7 +11,7 @@ from cab_common_auth.decorators import (
 from flask import abort, jsonify, request
 from marshmallow.exceptions import ValidationError
 from settings import logger
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 
 from .exceptions import InvalidUseCase
 from .models import UseCaseModel, db
@@ -171,6 +172,34 @@ class UseCase(MethodView):
             return {"error": "Use case not found"}, 404
 
 
+class DeleteDataService(MethodView):
+    @protected_admin
+    def delete(self):
+        from flask import current_app
+
+        use_case_factory = current_app.use_case_factory
+        try:
+            # unregister all use_cases
+            use_case_factory.unregister_all_use_cases()
+            # Delete all records from all models
+            for mapper in db.Model.registry.mappers:
+                model = mapper.class_
+                if hasattr(model, "__tablename__"):
+                    db.session.query(model).delete()
+            db.session.commit()
+            return {"message": "All data deleted successfully"}, 200
+        except OperationalError as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+        except Exception as e:
+            db.session.rollback()
+            load_usecases_db(use_case_factory)
+            return {"error": str(e)}, 500
+
+
+api_bp.add_url_rule(
+    "/delete_all_data", view_func=DeleteDataService.as_view("delete_data")
+)
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
 api_bp.add_url_rule(
     "/recommendation", view_func=RecommendationView.as_view("recommendation")

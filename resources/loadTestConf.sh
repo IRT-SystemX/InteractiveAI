@@ -32,4 +32,6 @@ fi
 	./loadEventServicesUseCase.sh $url
 	cd ../cabUsecasesContext
 	./loadContextServicesUseCase.sh $url
+	cd ../cabUsecasesRecommendation
+	./loadRecommendationServicesUseCase.sh $url
 )
