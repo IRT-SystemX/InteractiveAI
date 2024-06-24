@@ -29,34 +29,36 @@
           <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
         <template #footer="{ selected }">
-          <table v-if="recommendations.length">
-            <thead>
-              <tr>
-                <th>KPI</th>
-                <th
-                  v-for="(recommendation, index) of recommendations"
-                  :key="recommendation.title"
-                  :class="{ active: selected?.title === recommendation.title }">
-                  P{{ index }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="key of ['efficiency_of_the_reco', 'type_of_the_reco']" :key="key">
-                <td>{{ $t(`rte.kpis.${key}`) }}</td>
-                <td
-                  v-for="recommendation of recommendations"
-                  :key="recommendation.title"
-                  :class="{ active: selected?.title === recommendation.title }">
-                  {{
-                    isFinite(recommendation.kpis?.[key])
-                      ? recommendation.kpis?.[key].toFixed(4)
-                      : recommendation.kpis?.[key]
-                  }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div style="flex: none; overflow: auto">
+            <table v-if="recommendations.length">
+              <thead>
+                <tr>
+                  <th>KPI</th>
+                  <th
+                    v-for="(recommendation, index) of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    P{{ index }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="key of ['efficiency_of_the_reco', 'type_of_the_reco']" :key="key">
+                  <td>{{ $t(`rte.kpis.${key}`) }}</td>
+                  <td
+                    v-for="recommendation of recommendations"
+                    :key="recommendation.title"
+                    :class="{ active: selected?.title === recommendation.title }">
+                    {{
+                      isFinite(recommendation.kpis?.[key])
+                        ? recommendation.kpis?.[key].toFixed(4)
+                        : recommendation.kpis?.[key]
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </template>
       </Recommendations>
     </Default>
@@ -122,8 +124,6 @@ function primaryAction() {
 </script>
 <style scoped lang="scss">
 table {
-  overflow: auto;
-  width: 100%;
   border-collapse: collapse;
   tr > * {
     border-right: 2px solid var(--color-background);
