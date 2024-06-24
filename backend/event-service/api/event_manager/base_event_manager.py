@@ -6,9 +6,10 @@ from settings import logger
 from ..clients.cards_publication import CardPubClient
 from ..clients.historic import HistoricClient
 from ..models import EventModel, db
+from abc import ABC
 
 
-class BaseEventManager:
+class BaseEventManager(ABC):
     def __init__(self) -> None:
         self.severity_map = {
             "HIGH": "ALARM",
@@ -116,8 +117,12 @@ class BaseEventManager:
 
         return card_pub_client.create_card(card_payload)
 
+    def get_unique_fields(self, data):
+        return None
+
     def create_event(self, data):
-        event_id, _ = self.get_event_id()
+        unique_fields = self.get_unique_fields(data)
+        event_id, _ = self.get_event_id(unique_by_fields=unique_fields)
         data["id_event"] = str(event_id)
 
         # Set parent_event_id if provided
@@ -128,6 +133,7 @@ class BaseEventManager:
         # Create a new card (notification)
         of_response = self.create_card(start_date, end_date, data)
         data["of_uid"] = of_response.get("uid")
+
         # Trace in historic service
         self.trace_event(start_date, end_date, data)
 
@@ -153,7 +159,7 @@ class BaseEventManager:
             self.delete_card(f"cabProcess.{event_id}")
             db.session.delete(event)
             db.session.commit()
-            return '', 204  # No content, indicating successful deletion
+            return "", 204  # No content, indicating successful deletion
         return {"error": "Event not found"}, 404
 
     def delete_card(self, card_id):
