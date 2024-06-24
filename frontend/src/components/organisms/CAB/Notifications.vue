@@ -76,6 +76,7 @@
               v-for="c of filtered(section.filter)[key]"
               :key="c.id"
               :card="c"
+              :callback
               :is-child="key !== '_DEFAULT'">
               <template #title="{ card }">
                 <slot name="title" :card>{{ card.titleTranslated }}</slot>
@@ -148,12 +149,14 @@ const props = withDefaults(
     autoclose?: boolean
     sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
     groupFn?: (card: Card<E>) => string
+    callback?: (card: Card<E>) => void
     entity: E
   }>(),
   {
     autoclose: true,
     sections: () => [{ name: 'main', weight: 1, filter: () => true }],
-    groupFn: () => '_DEFAULT'
+    groupFn: () => '_DEFAULT',
+    callback: undefined
   }
 )
 

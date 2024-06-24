@@ -69,6 +69,7 @@
   "modal.error.ERR_BAD_REQUEST": "Requête invalide",
   "modal.error.ERR_BAD_RESPONSE": "Erreur réponse serveur",
   "modal.error.ERR_NETWORK": "Erreur réseau",
+  "modal.error.NO_CONTEXT": "Impossible de récupérer les recommandations en l'absence de contexte",
   "modal.error.default": "La requête à {url} a échoué avec le code {code} et le message {message}",
   "modal.info.SUBSCRIPTION_ACTIVE": "Un utilisateur est connecté, le déconnecter ?",
   "recommendations.description": "Description",

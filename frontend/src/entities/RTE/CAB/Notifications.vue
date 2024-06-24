@@ -12,7 +12,13 @@
         weight: 1,
         filter: (card) => !FILTER.includes(card.data.criticality)
       }
-    ]">
+    ]"
+    :callback="
+      (card) => {
+        card.read = true
+        appStore._card = card.severity === 'INFORMATION' ? undefined : card
+      }
+    ">
     <template #severity>Sûreté</template>
     <template #icon="{ card }">
       <Zap
@@ -44,8 +50,11 @@ import Button from '@/components/atoms/Button.vue'
 import SVG from '@/components/atoms/SVG.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
 import Notifications from '@/components/organisms/CAB/Notifications.vue'
+import { useAppStore } from '@/stores/app'
 import type { Criticality } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
 const FILTER: Criticality[] = ['HIGH', 'MEDIUM', 'LOW', 'ND']
+
+const appStore = useAppStore()
 </script>

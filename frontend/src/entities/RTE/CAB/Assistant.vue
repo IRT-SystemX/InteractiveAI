@@ -18,10 +18,10 @@
         v-model:recommendations="recommendations"
         :buttons="[$t('recommendations.button1'), $t('recommendations.button2')]"
         @selected="onSelection">
-        <template #default="{ recommendation }">
+        <template #default="{ recommendation, index }">
           <div class="flex">
             <main>
-              <h2>{{ recommendation.title }}</h2>
+              <h2>P{{ index }}: {{ recommendation.title }}</h2>
             </main>
           </div>
         </template>

@@ -68,6 +68,7 @@
   "modal.error.ERR_BAD_REQUEST": "Bad request",
   "modal.error.ERR_BAD_RESPONSE": "Server response error",
   "modal.error.ERR_NETWORK": "Network error",
+  "modal.error.NO_CONTEXT": "Unable to retrieve recommendations without context",
   "modal.error.default": "Request to {url} failed with code {code} and message {message}",
   "modal.info.SUBSCRIPTION_ACTIVE": "A user is logged in, log them out?",
   "recommendations.description": "Description",

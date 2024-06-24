@@ -83,7 +83,16 @@ export const useServicesStore = defineStore('services', () => {
   }
 
   async function getRecommendation<E extends Entity>(event: Card<E>, context = _context.value) {
-    if (!context) return
+    if (!context) {
+      const appStore = useAppStore()
+      appStore.addModal({
+        data: t('modal.error.NO_CONTEXT'),
+        type: 'info'
+      })
+      appStore._card = undefined
+      appStore.tab.assistant = 0
+      return
+    }
     const { data } = await servicesApi.getRecommendation<E>({
       event: getRootCard(event).data.metadata,
       context: context.data

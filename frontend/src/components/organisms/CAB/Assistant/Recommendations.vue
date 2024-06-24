@@ -24,7 +24,7 @@
     </div>
   </div>
   <Card
-    v-for="recommendation of recommendations"
+    v-for="(recommendation, index) of recommendations"
     :key="recommendation?.title"
     class="cab-recommendation"
     :class="{ selected: recommendation?.title === selected?.title }"
@@ -35,7 +35,7 @@
         $emit('hover', recommendation)
       }
     ">
-    <slot :recommendation>
+    <slot :recommendation :index>
       <h1>{{ recommendation.title }}</h1>
     </slot>
     <template #outer>
