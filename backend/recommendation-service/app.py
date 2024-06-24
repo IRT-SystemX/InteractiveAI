@@ -1,18 +1,12 @@
-from api.recommendation_manager.da_manager import DAManager
-from api.recommendation_manager.rte_manager import RTEManager
-from api.recommendation_manager.sncf_manager import SNCFManager
-from api.utils import UseCaseFactory
+from api.models import db
+from api.utils import UseCaseFactory, load_usecases_db
 from api.views import api_bp
 from apiflask import APIFlask
 from settings import logger
 
 from config import DevConfig, ProdConfig, TestConfig
 
-config_mapping = {
-    'dev': DevConfig,
-    'test': TestConfig,
-    'prod': ProdConfig
-}
+config_mapping = {"dev": DevConfig, "test": TestConfig, "prod": ProdConfig}
 
 
 def create_app(config_mode):
@@ -20,14 +14,21 @@ def create_app(config_mode):
     app = APIFlask("recommendation-service")
     app.register_blueprint(api_bp)
     app.config.from_object(config_mapping.get(config_mode, DevConfig))
+
     # Create the application context
     app_ctx = app.app_context()
     app_ctx.push()
+
+    # intiate database
+    db.init_app(app)
+    db.create_all()
+
     # add use_case_factory
     use_case_factory = UseCaseFactory()
-    use_case_factory.register_use_case('DA', DAManager())
-    use_case_factory.register_use_case('RTE', RTEManager())
-    use_case_factory.register_use_case('SNCF', SNCFManager())
+
+    # Load use cases from the database
+    load_usecases_db(use_case_factory)
+
     app.use_case_factory = use_case_factory
 
     return app
