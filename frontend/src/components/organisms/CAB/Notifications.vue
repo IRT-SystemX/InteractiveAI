@@ -151,12 +151,14 @@ const props = withDefaults(
     groupFn?: (card: Card<E>) => string
     selection?: (card: Card<E>) => void
     entity: E
+    onDeletion?: (card: Card<E>, type: 'SINGLE' | 'ALL') => void
   }>(),
   {
     autoclose: true,
     sections: () => [{ name: 'main', weight: 1, filter: () => true }],
     groupFn: () => '_DEFAULT',
-    selection: undefined
+    selection: undefined,
+    onDeletion: (card: Card<E>) => useCardsStore().acknowledge(card)
   }
 )
 
@@ -200,18 +202,18 @@ function closeModal(success: boolean, modal: (typeof modals.value)[0]) {
   modals.value.splice(modals.value.indexOf(modal), 1)
 }
 
-function confirmDeletion(card: Card) {
+function confirmDeletion(card: Card<E>) {
   if (card.data.criticality !== 'ND') {
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
       id: 'confirm',
       callback: (success) => {
         if (success) {
-          cardsStore.acknowledge(card)
+          props.onDeletion(card, 'SINGLE')
         }
       }
     })
-  } else cardsStore.acknowledge(card)
+  } else props.onDeletion(card, 'SINGLE')
 }
 
 function deleteAll() {
@@ -220,7 +222,7 @@ function deleteAll() {
     id: 'confirm',
     callback: (success) => {
       if (success) {
-        for (const card of cardsStore.cards(props.entity)) cardsStore.acknowledge(card)
+        for (const card of cardsStore.cards(props.entity)) props.onDeletion(card, 'ALL')
       }
     }
   })

@@ -77,16 +77,16 @@ export function isSubscriptionActive() {
   return http.get<boolean>('/cards/willNewSubscriptionDisconnectAnExistingSubscription')
 }
 
-export function get(id: string) {
+export function get(id: Card['id']) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
-export function remove(id: string) {
+export function remove(id: Card['id']) {
   return http.delete<null>(`/cardspub/cards/${id}`)
 }
 
-export function removeEvent(id: string) {
-  return http.delete<null>(`/cab_event/api/v1/event/${id}`)
+export function removeEvent(uid: Card['processInstanceId']) {
+  return http.delete<null>(`/cab_event/api/v1/event/${uid}`)
 }
 
 export function acknowledge(card: Card) {

@@ -26,7 +26,7 @@ export type Card<E extends Entity = Entity> = {
   read?: boolean
   id: `${Card['process']}.${Card['processInstanceId']}`
   processInstanceId: UUID
-  uid: string
+  uid: UUID
   startDate: number
   endDate?: number
   publishDate: number

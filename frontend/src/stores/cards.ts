@@ -125,21 +125,17 @@ export const useCardsStore = defineStore('cards', () => {
     cardsApi.unsubscribe()
   }
 
-  async function hydrate(id: string) {
-    const { data } = await cardsApi.get(id)
-    const i = _cards.value.findIndex((card) => card.id === data.card.id)
-    if (i !== -1) {
-      _cards.value[i] = { ..._cards.value[i], ...data.card }
-    } else {
-      _cards.value.push(data.card)
-    }
-  }
-
   function acknowledge<E extends Entity = Entity>(card: Card<E>) {
     for (const children of cards(card.entityRecipients[0]))
       if (children.data.parent_event_id === card.processInstanceId) acknowledge(children)
     cardsApi.acknowledge(card)
   }
 
-  return { _cards, cards, subscribe, hydrate, unsubscribe, acknowledge }
+  function remove<E extends Entity = Entity>(card: Card<E>) {
+    for (const children of cards(card.entityRecipients[0]))
+      if (children.data.parent_event_id === card.processInstanceId) remove(children)
+    cardsApi.removeEvent(card.processInstanceId)
+  }
+
+  return { _cards, cards, subscribe, unsubscribe, acknowledge, remove }
 })
