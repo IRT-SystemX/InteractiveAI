@@ -4,8 +4,12 @@
       <img v-if="context" :src="`data:image/png;base64, ${context}`" class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
     </template>
-    <Notification :card="appStore.card('RTE')" :top="1" :right="1"></Notification>
-    <Notification :card="appStore.card('RTE')" :top="1" :left="1">
+    <Notification
+      :card="appStore.card('RTE')"
+      :shown="!!appStore.card('RTE')"
+      :top="1"
+      :right="1"></Notification>
+    <Notification :card="appStore.card('RTE')" :shown="!!appStore.card('RTE')" :top="1" :left="1">
       <template #title>KPIs</template>
       <b></b>
       <div v-for="(value, key) of appStore.card('RTE')!.data.metadata.kpis" :key="key">

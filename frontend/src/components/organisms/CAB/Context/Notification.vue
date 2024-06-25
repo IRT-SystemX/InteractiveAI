@@ -1,10 +1,12 @@
 <template>
   <div
-    v-if="card"
+    v-if="shown"
     class="cab-context-notification"
     :class="{ expanded }"
     :style="{
-      'border-color': `var(--color-${criticalityToColor(card.data.criticality)})`
+      'border-color': card
+        ? `var(--color-${criticalityToColor(card.data.criticality)})`
+        : `var(--color-${color})`
     }">
     <Button
       :icon="$t(`cab.context.notification.expanded.${expanded}`)"
@@ -15,10 +17,16 @@
     </Button>
     <main v-if="expanded">
       <h1>
-        <slot name="title">{{ format(card.startDate, 'p') }}: {{ card.titleTranslated }}</slot>
+        <slot name="title">
+          <template v-if="card">
+            {{ format(card.startDate, 'p') }}: {{ card.titleTranslated }}
+          </template>
+        </slot>
       </h1>
 
-      <slot>{{ card.summaryTranslated }}</slot>
+      <slot>
+        <template v-if="card">{{ card.summaryTranslated }}</template>
+      </slot>
     </main>
   </div>
 </template>
@@ -31,7 +39,15 @@ import { format } from '@/plugins/date'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
-defineProps<{ card?: Card; top?: number; right?: number; bottom?: number; left?: number }>()
+defineProps<{
+  card?: Card
+  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+  top?: number
+  right?: number
+  bottom?: number
+  left?: number
+  shown: boolean
+}>()
 
 const expanded = ref(true)
 </script>

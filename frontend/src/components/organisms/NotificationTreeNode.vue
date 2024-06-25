@@ -65,7 +65,7 @@ import Notification from '../molecules/Notification.vue'
 const props = defineProps<{
   card: Card<E>
   isChild: boolean
-  callback?: (card: Card<E>) => void
+  selection?: (card: Card<E>) => void
 }>()
 
 const cardsStore = useCardsStore()
@@ -80,7 +80,7 @@ const children = computed(() =>
 )
 
 function selected(card: Card<E>) {
-  if (props.callback) props.callback(card)
+  if (props.selection) props.selection(card)
   else {
     card.read = true
     appStore._card = card

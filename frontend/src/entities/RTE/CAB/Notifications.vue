@@ -13,7 +13,7 @@
         filter: (card) => !FILTER.includes(card.data.criticality)
       }
     ]"
-    :callback="
+    :selection="
       (card) => {
         card.read = true
         appStore._card = card.severity === 'INFORMATION' ? undefined : card
