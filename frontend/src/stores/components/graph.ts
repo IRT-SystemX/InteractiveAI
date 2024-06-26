@@ -16,6 +16,8 @@ import eventBus from '@/plugins/eventBus'
 import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
 
+import { useCardsStore } from '../cards'
+
 // Utilities
 const config = {
   // Dimensions of the viewport
@@ -209,6 +211,8 @@ export const useGraphStore = defineStore('graph', () => {
         document.getElementById('d3-graph')!.clientWidth / 2
       )
     )
+
+    setStatuses(useCardsStore().cards('ORANGE'))
   }
 
   function setStatuses(cards: Card[]) {
