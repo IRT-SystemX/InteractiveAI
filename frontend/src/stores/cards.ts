@@ -134,7 +134,7 @@ export const useCardsStore = defineStore('cards', () => {
   function remove<E extends Entity = Entity>(card: Card<E>) {
     for (const children of cards(card.entityRecipients[0]))
       if (children.data.parent_event_id === card.processInstanceId) remove(children)
-    cardsApi.removeEvent(card.processInstanceId)
+    cardsApi.remove(card.id)
   }
 
   return { _cards, cards, subscribe, unsubscribe, acknowledge, remove }
