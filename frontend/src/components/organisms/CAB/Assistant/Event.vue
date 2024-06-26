@@ -64,7 +64,7 @@ withDefaults(
     secondaryAction?: (card?: Card) => void
   }>(),
   {
-    primaryAction: () => {
+    primaryAction: () => () => {
       useAppStore().tab.assistant = 2
     },
     secondaryAction: undefined,
