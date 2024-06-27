@@ -3,8 +3,11 @@ import importlib
 from api.exceptions import InvalidUseCase
 from apiflask import APIBlueprint
 from apiflask.views import MethodView
-from cab_common_auth.decorators import (get_use_cases, protected,
-                                        protected_admin)
+from cab_common_auth.decorators import (
+    get_use_cases,
+    protected,
+    protected_admin,
+)
 from settings import logger
 from sqlalchemy.exc import IntegrityError, OperationalError
 from .utils import load_usecases_db
@@ -140,7 +143,8 @@ class UseCases(MethodView):
             db.session.add(use_case_db)
             db.session.commit()
         except IntegrityError:
-            # If a unique constraint violation occurs, update the existing record
+            # If a unique constraint violation occurs,
+            # update the existing record
             db.session.rollback()
             existing_use_case = UseCaseModel.query.filter_by(
                 name=use_case_db.name
@@ -170,6 +174,7 @@ class DeleteDataService(MethodView):
     @protected_admin
     def delete(self):
         from flask import current_app
+
         use_case_factory = current_app.use_case_factory
         try:
             # unregister all use_cases
