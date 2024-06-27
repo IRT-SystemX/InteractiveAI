@@ -247,7 +247,7 @@ services:
 
   cabcapitalization:
     container_name: cab_capitalization
-    image: cab/cab_capitalization
+    image: cab/cabcapitalization
     build:
       context: ../../../backend
       dockerfile: Capitalization-Service-Dockerfile
