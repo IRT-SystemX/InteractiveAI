@@ -224,22 +224,21 @@ function selected(card: Card<E>) {
   .end {
     justify-self: end;
   }
-  &:has(.cab-timeline-event-middle) .cab-timeline-event-top,
-  &:has(.cab-timeline-event-middle) .cab-timeline-event-bottom {
-    padding: calc(var(--unit) / 2) 0;
-  }
 
   &-top,
   &-bottom {
     font-size: 0.75rem;
     flex: 1;
     width: max-content;
-    padding: var(--unit) 0;
     display: flex;
     justify-content: space-between;
   }
   &-top {
+    padding-bottom: var(--unit);
     align-items: flex-end;
+  }
+  &-bottom {
+    padding-top: var(--unit);
   }
 
   &-middle {
