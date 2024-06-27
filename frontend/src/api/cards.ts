@@ -81,6 +81,10 @@ export function get(id: Card['id']) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
+export function update(card: any) {
+  return http.post<Card>(`/cab_event/api/v1/events`, card)
+}
+
 export function remove(id: Card['id']) {
   return http.delete<null>(`/cardspub/cards/${id}`)
 }
