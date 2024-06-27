@@ -65,6 +65,7 @@ import Notification from '../molecules/Notification.vue'
 const props = defineProps<{
   card: Card<E>
   isChild: boolean
+  hasBeenAcknowledged?: boolean
   selection?: (card: Card<E>) => void
 }>()
 
@@ -75,7 +76,7 @@ const showChildren = ref(true)
 
 const children = computed(() =>
   cardsStore
-    .cards(props.card.entityRecipients[0])
+    .cards(props.card.entityRecipients[0], props.hasBeenAcknowledged)
     .filter((card) => card.data.parent_event_id === props.card.processInstanceId)
 )
 

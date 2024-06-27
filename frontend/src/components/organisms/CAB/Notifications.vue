@@ -77,6 +77,7 @@
               :key="c.id"
               :card="c"
               :selection
+              :has-been-acknowledged
               :is-child="key !== '_DEFAULT'">
               <template #title="{ card }">
                 <slot name="title" :card>{{ card.titleTranslated }}</slot>
