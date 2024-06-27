@@ -232,18 +232,6 @@ services:
     depends_on:
       - db_postgres_recommendation
 
-  mongodb:
-    image: mongo:4.4.4-bionic
-    ports:
-      - '27017:27017'
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
-  rabbitmq:
-    container_name: rabbit
-    image: rabbitmq:3-management
-    hostname: rabbit
-
   db_postgres_recommendation:
     container_name: db_postgres_recommendation
     image: postgres:14.7
@@ -256,6 +244,56 @@ services:
       - '5437:5432'
     volumes:
       - postgres_recommendation_data:/var/lib/postgresql/data/
+
+  cabcapitalization:
+    container_name: cab_capitalization
+    image: cab/cabcapitalization
+    build:
+      context: ../../../backend
+      dockerfile: Capitalization-Service-Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_capitalization:5432/cab-capitalization
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - PYTHONPATH=/my_app
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
+    restart: unless-stopped
+    command: sh -c "./entrypoint.sh"
+    ports:
+      - 5200:5000
+    volumes:
+      - ../../../backend/capitalization-service:/code
+    depends_on:
+      - db_postgres_capitalization
+
+  db_postgres_capitalization:
+    container_name: db_postgres_capitalization
+    image: postgres:14.7
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cab-capitalization
+    ports:
+      - '5438:5432'
+    volumes:
+      - postgres_capitalization_data:/var/lib/postgresql/data/
+
+  mongodb:
+    image: mongo:4.4.4-bionic
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+  rabbitmq:
+    container_name: rabbit
+    image: rabbitmq:3-management
+    hostname: rabbit
+
 
 
   #  If you want to persist queue after rabbit docker container removal mount
@@ -380,4 +418,5 @@ volumes:
   postgres_historic_data:
   postgres_correlation_data:
   postgres_recommendation_data:
+  postgres_capitalization_data:
   pgadmin:
