@@ -93,13 +93,13 @@ class ProcedureView(MethodView):
 
         use_case_factory = current_app.use_case_factory
         # Create an instance of the appropriate use case class using the factory
-        use_case = use_case_factory.get_use_case(use_case_name)
+        manager = use_case_factory.get_recommendation_manager(use_case_name)
 
         # Call the appropriate method on the use case
         event_data = data.get("event", {})
         event_type = event_data.get("event_type")
         try:
-            result = use_case.get_procedure(event_type)
+            result = manager.get_procedure(event_type)
             # Return the result as JSON
             return jsonify(result)
         except ValidationError as e:
