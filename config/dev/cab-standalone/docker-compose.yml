@@ -263,7 +263,7 @@ services:
     restart: unless-stopped
     command: sh -c "./entrypoint.sh"
     ports:
-      - 5200:5000
+      - 5500:5000
     volumes:
       - ../../../backend/capitalization-service:/code
     depends_on:
