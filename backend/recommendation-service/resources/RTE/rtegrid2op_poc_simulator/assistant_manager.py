@@ -1,33 +1,40 @@
+import os
+from enum import Enum
+import importlib.util
+import sys
+import numpy as np
+import toml
+try:
+    from lightsim2grid import LightSimBackend
+    BkClass = LightSimBackend
+except ImportError:
+    from grid2op.Backend import PandaPowerBackend
+    BkClass = PandaPowerBackend
 import grid2op
 from grid2op.Chronics import FromHandlers
 from grid2op.Chronics.handlers import PerfectForecastHandler, CSVHandler
 from grid2op.Agent import BaseAgent
 
-try:
-    from lightsim2grid import LightSimBackend
-
-    bkClass = LightSimBackend
-except ImportError:
-    from grid2op.Backend import PandaPowerBackend
-
-    bkClass = PandaPowerBackend
-
-import toml
-import os
-import json
-import numpy as np
-from flask import current_app
-from enum import Enum
-import importlib.util
-import sys
-
 
 class AgentType(Enum):
+    """Recomendations' agent type
+
+    Args:
+        Enum (): Type "onto" or "IA"
+    """
     onto = 1
     IA = 2
 
 
 def lazy_import(name):
+    """Import library method
+
+    Args:
+        name (string): Name of the library to be imported
+
+    Returns:
+        module: Imported library
+    """
     spec = importlib.util.find_spec(name)
     loader = importlib.util.LazyLoader(spec.loader)
     spec.loader = loader
@@ -38,6 +45,8 @@ def lazy_import(name):
 
 
 class AgentManager:
+    """RTE IA agent object based on Grid2Op and XD_silly
+    """
     def __init__(self):
         # Load RTE simulator configuration
         script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,12 +56,12 @@ class AgentManager:
         config_assistant = toml.load(config_path)
 
         # grid2op Environment and observation definition and loading
-        env_name = os.path.join(script_dir, "env_icaps_input_data_test")
+        env_name = os.path.join(script_dir, config_assistant["env_name"])
 
         forecasts_horizons = [5, 10, 15, 20, 25, 30]
         self.env = grid2op.make(
             env_name,
-            backend=bkClass(),
+            backend=BkClass(),
             data_feeding_kwargs={
                 "gridvalueClass": FromHandlers,
                 "gen_p_handler": CSVHandler("prod_p"),
@@ -73,10 +82,10 @@ class AgentManager:
         )
         self.env.seed(config_assistant["env_seed"])
         # Search scenario with provided name
-        for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
+        for sc_id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
             sp_end = os.path.basename(sp)
             if sp_end == config_assistant["scenario_name"]:
-                self.id_scenario = id
+                self.id_scenario = sc_id
 
         self.env.set_id(self.id_scenario)  # Scenario choice
         self.obs = self.env.reset()
@@ -86,7 +95,8 @@ class AgentManager:
         else:
             self.previous_step = self.obs.current_step
         # assistant definition and loading
-        assistant_path = os.path.join(script_dir, "XD_silly_repo")
+        assistant_path = os.path.join(
+            script_dir, config_assistant["assistant_name"])
         assistant_seed = config_assistant["assistant_seed"]
 
         from .XD_silly_repo import submission
@@ -105,21 +115,47 @@ class AgentManager:
         # Action "do nothing"
         self.action_do_nothing = self.env.action_space({})
 
+        self.recommendations = []
+
     def reset_obs_if_needed(self, obs_dict):
+        """Reset obs
+
+        Args:
+            obs_dict (dict): Observation dictionary
+        """
         if self.nb_timestep < 0:
             self.env.set_id(self.id_scenario)
             self.obs = self.env.reset()
             self.previous_step = "1"
-            self.get_nbOfTimestepSinceLastObs(obs_dict)
+            self.get_nb_of_timestep_since_last_obs(obs_dict)
 
-    def get_nbOfTimestepSinceLastObs(self, obs_dict):
+    def get_nb_of_timestep_since_last_obs(self, obs_dict):
+        """Count number of simulation timestep bewteen 2 consecutive
+        call to this function.
+
+        Args:
+            obs_dict (dict): Observation dictionary
+
+        Returns:
+            int : Number of timesteps
+        """
         self.nb_timestep = int(obs_dict.get("current_step")[0]) - int(
             self.previous_step
         )
         return self.nb_timestep
 
-    def recommendate(self, obs_dict, n_actions=3):
-        self.get_nbOfTimestepSinceLastObs(obs_dict)
+    def create_recommendation(self, obs_dict, n_actions=3):
+        """Create rte IA agent recomendations
+
+        Args:
+            obs_dict (dict): Observation dictionary
+            n_actions (int, optional): Number of recomendations
+                that should be generated.Defaults to 3.
+
+        Returns:
+            [act_dict]: Recomendations objects compliant with RTE simulator
+        """
+        self.get_nb_of_timestep_since_last_obs(obs_dict)
         self.reset_obs_if_needed(obs_dict)
         if (
             self.nb_timestep > 1
@@ -141,7 +177,15 @@ class AgentManager:
         )
         return self.recommendations
 
-    def getParadeInfo(self, act):
+    def get_parade_info(self, act):
+        """Compile unitary recomendation in json format for CAB's frontend compliance
+
+        Args:
+            act (): Unitary action object
+
+        Returns:
+            dict: Recomendations data in json format
+        """
         kpis = {}
         title = []
         description = []
@@ -256,7 +300,7 @@ class AgentManager:
             )
             title.append(
                 "Parade topologique: prise de schéma au poste "
-                + str(switch["substation"])
+                + str(bus_switch_impact["substation"])
             )
             description.append("Changement de bus:")
             for switch in bus_switch_impact:
@@ -307,7 +351,8 @@ class AgentManager:
                     )
                 )
 
-        # Any of the above cases, then the recommendation is most likely "Do nothing"
+        # Any of the above cases,
+        # then the recommendation is most likely "Do nothing"
         if not title and act == self.action_do_nothing:
             kpis["type_of_the_reco"] = (
                 "Ne rien faire"  # pour renvoyer le kpi type_of_the_reco
@@ -321,7 +366,7 @@ class AgentManager:
         description = "".join(description)
 
         if title:
-            obs_simulate, reward_simulate, done_simulate, info_simulate = (
+            obs_simulate, _, _, _ = (
                 self.obs.simulate(act, time_step=1)
             )
             kpis["efficiency_of_the_reco"] = float(
@@ -337,60 +382,16 @@ class AgentManager:
             "kpis": kpis,
         }
 
-    def getlistOfParadeInfo(self):
+    def get_list_of_parade_info(self):
+        """Compile RTE IA agent recomendations in a single list
+            for CAB's frontend compliance
+
+        Returns:
+            [act_dict]: List of action dictionary
+        """
         list_of_act_dict = []
         for rec in self.recommendations:
-            act, max_forecasted_rho_0 = rec
-            act_dict = self.getParadeInfo(act)
+            act, _ = rec
+            act_dict = self.get_parade_info(act)
             list_of_act_dict.append(act_dict)
         return list_of_act_dict
-
-
-if __name__ == "__main__":
-    ## Parameters for this example
-    iteration_in_cab = range(10)
-    event_received = False
-    context_received = False
-
-    ## Init (must be used in CAB)
-    agentM = AgentManager()
-    # print(agentM.env.chronics_handler.get_name())
-
-    ## Input from RTE simulator (for this example)
-    # obs_backup = agentM.obs
-    with open("obs153.json") as mon_fichier1:
-        obs_dict1 = json.load(mon_fichier1)
-    # print(obs_dict1)
-
-    ## To test reset function
-    with open("obs88.json") as mon_fichier2:
-        obs_dict2 = json.load(mon_fichier2)
-    # print(obs_dict2)
-
-    obs_dict = None
-    for ii in iteration_in_cab:
-        print("Simulation iteration : ", ii)
-        if ii == 3 or ii == 6:
-            event_received = True
-            context_received = True
-            if ii == 3:
-                obs_dict = obs_dict1
-            elif ii == 6:
-                obs_dict = obs_dict2
-        else:
-            event_received = False
-            context_received = False
-            obs_dict = None
-
-        if event_received and context_received:
-            # Main calls to use in CAB in this same order any time both an event and a context is received
-            recommendation = agentM.recommendate(obs_dict)
-            parades = agentM.getlistOfParadeInfo()
-
-            # Test for this example (Should be remove)
-            print("nb_of_timestep = ", agentM.nb_timestep)
-            print("recommendation = ", recommendation)
-            parades_json = json.dumps(parades)
-            """with open("parades_json", "w") as f:
-                f.write(parades_json)"""
-            print("parades = ", parades)
