@@ -4,17 +4,13 @@ import importlib.util
 import sys
 import numpy as np
 import toml
-try:
-    from lightsim2grid import LightSimBackend
-    BkClass = LightSimBackend
-except ImportError:
-    from grid2op.Backend import PandaPowerBackend
-    BkClass = PandaPowerBackend
+from lightsim2grid import LightSimBackend
 import grid2op
 from grid2op.Chronics import FromHandlers
 from grid2op.Chronics.handlers import PerfectForecastHandler, CSVHandler
 from grid2op.Agent import BaseAgent
 
+BkClass = LightSimBackend
 
 class AgentType(Enum):
     """Recomendations' agent type
@@ -26,22 +22,25 @@ class AgentType(Enum):
     IA = 2
 
 
-def lazy_import(name):
-    """Import library method
+def lazy_import_package(package_name, package_path):
+    """Import a package dynamically from a given path
 
     Args:
-        name (string): Name of the library to be imported
+        package_name (string): Name of the package to be imported
+        package_path (string): Path to the package directory
 
     Returns:
-        module: Imported library
+        module: Imported package
     """
-    spec = importlib.util.find_spec(name)
-    loader = importlib.util.LazyLoader(spec.loader)
-    spec.loader = loader
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    loader.exec_module(module)
-    return module
+    spec = importlib.util.spec_from_file_location(package_name,
+                                                  os.path.join(package_path, '__init__.py'))
+    if spec and spec.loader:
+        package = importlib.util.module_from_spec(spec)
+        sys.modules[package_name] = package
+        spec.loader.exec_module(package)
+        return package
+    else:
+        raise ImportError(f"Cannot import package {package_name} from {package_path}")
 
 
 class AgentManager:
@@ -98,12 +97,12 @@ class AgentManager:
         assistant_path = os.path.join(
             script_dir, config_assistant["assistant_name"])
         assistant_seed = config_assistant["assistant_seed"]
-
-        from .XD_silly_repo import submission
+        submission_path = os.path.join(assistant_path, "submission")
+        submission = lazy_import_package("submission", submission_path)
 
         self.assistant = submission.make_agent(
             self.env.copy(),
-            os.path.join(assistant_path, "submission"),
+            submission_path,
         )
         if not isinstance(self.assistant, BaseAgent):
             msg_ = "Your assistant must be a grid2op.Agent.BaseAgent"
@@ -208,7 +207,7 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        '"{}" de {:.2f} MW'.format(gen_name, r_amount)
+                        f'"{gen_name}" de {r_amount:.2f} MW'
                     )
 
         # storage
@@ -226,13 +225,9 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        'Demande à l\'unité "{}" de {} {:.2f} MW (setpoint: {:.2f} MW)'
-                        "".format(
-                            name_,
-                            "charger" if amount_ > 0.0 else "decharger",
-                            np.abs(amount_),
-                            amount_,
-                        )
+                        f'Demande à l\'unité "{name_}" de '
+                        f'{"charger" if amount_ > 0.0 else "decharger"} '
+                        f'{abs(amount_):.2f} MW (setpoint: {amount_:.2f} MW)'
                     )
 
         # curtailment
@@ -250,8 +245,9 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        'Limiter l\'unité "{}" à {:.1f}% de sa capacité max (setpoint: {:.3f})'
-                        "".format(name_, 100.0 * amount_, amount_)
+                        f'Limiter l\'unité "{name_}" à '
+                        f'{100.0 * amount_:.1f}% de sa capacité max '
+                        f'(setpoint: {amount_:.3f})'
                     )
 
         # force line status
@@ -266,17 +262,15 @@ class AgentManager:
             reconnections = force_line_impact["reconnections"]
             if reconnections["count"] > 0:
                 description.append(
-                    "Reconnection de {} lignes ({})".format(
-                        reconnections["count"], reconnections["powerlines"]
-                    )
+                    f"Reconnection de {reconnections['count']} lignes "
+                    f"({reconnections['powerlines']})"
                 )
 
             disconnections = force_line_impact["disconnections"]
             if disconnections["count"] > 0:
                 description.append(
-                    "Déconnection de {} lignes ({})".format(
-                        disconnections["count"], disconnections["powerlines"]
-                    )
+                    f"Déconnection de {disconnections['count']} lignes "
+                    f"({disconnections['powerlines']})"
                 )
 
         # swtich line status
@@ -287,9 +281,8 @@ class AgentManager:
             )
             title.append("Parade topologique: changer l'état d'une ligne")
             description.append(
-                "Changer le statut de {} lignes ({})".format(
-                    swith_line_impact["count"], swith_line_impact["powerlines"]
-                )
+                f"Changer le statut de {swith_line_impact['count']} lignes "
+                f"({swith_line_impact['powerlines']})"
             )
 
         # topology
@@ -305,11 +298,8 @@ class AgentManager:
             description.append("Changement de bus:")
             for switch in bus_switch_impact:
                 description.append(
-                    "\t \t - Switch bus de {} id {} [au poste {}]".format(
-                        switch["object_type"],
-                        switch["object_id"],
-                        switch["substation"],
-                    )
+                    f"\t \t - Switch bus de {switch['object_type']} id "
+                    f"{switch['object_id']} [au poste {switch['substation']}]"
                 )
 
         assigned_bus_impact = impact["topology"]["assigned_bus"]
@@ -330,11 +320,8 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    " Assigner le bus {} à {} id {}".format(
-                        assigned["bus"],
-                        assigned["object_type"],
-                        assigned["object_id"],
-                    )
+                    f" Assigner le bus {assigned['bus']} à "
+                    f"{assigned['object_type']} id {assigned['object_id']}"
                 )
             if disconnect_bus_impact:
                 description.append("")
@@ -344,11 +331,9 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    "Déconnecter {} id {} \t".format(
-                        disconnected["object_type"],
-                        disconnected["object_id"],
-                        disconnected["substation"],
-                    )
+                    f"Déconnecter {disconnected['object_type']} avec l'id "
+                    f"{disconnected['object_id']} [au niveau du poste "
+                    f"{disconnected['substation']}]"
                 )
 
         # Any of the above cases,
