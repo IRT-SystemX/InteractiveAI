@@ -1,43 +1,51 @@
+import os
+from enum import Enum
+import importlib.util
+import sys
+import numpy as np
+import toml
+from lightsim2grid import LightSimBackend
 import grid2op
 from grid2op.Chronics import FromHandlers
 from grid2op.Chronics.handlers import PerfectForecastHandler, CSVHandler
 from grid2op.Agent import BaseAgent
 
-try:
-    from lightsim2grid import LightSimBackend
-
-    bkClass = LightSimBackend
-except ImportError:
-    from grid2op.Backend import PandaPowerBackend
-
-    bkClass = PandaPowerBackend
-
-import toml
-import os
-import json
-import numpy as np
-from flask import current_app
-from enum import Enum
-import importlib.util
-import sys
-
+BkClass = LightSimBackend
 
 class AgentType(Enum):
+    """Recomendations' agent type
+
+    Args:
+        Enum (): Type "onto" or "IA"
+    """
     onto = 1
     IA = 2
 
 
-def lazy_import(name):
-    spec = importlib.util.find_spec(name)
-    loader = importlib.util.LazyLoader(spec.loader)
-    spec.loader = loader
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    loader.exec_module(module)
-    return module
+def lazy_import_package(package_name, package_path):
+    """Import a package dynamically from a given path
+
+    Args:
+        package_name (string): Name of the package to be imported
+        package_path (string): Path to the package directory
+
+    Returns:
+        module: Imported package
+    """
+    spec = importlib.util.spec_from_file_location(package_name,
+                                                  os.path.join(package_path, '__init__.py'))
+    if spec and spec.loader:
+        package = importlib.util.module_from_spec(spec)
+        sys.modules[package_name] = package
+        spec.loader.exec_module(package)
+        return package
+    else:
+        raise ImportError(f"Cannot import package {package_name} from {package_path}")
 
 
 class AgentManager:
+    """RTE IA agent object based on Grid2Op and XD_silly
+    """
     def __init__(self):
         # Load RTE simulator configuration
         script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,12 +55,12 @@ class AgentManager:
         config_assistant = toml.load(config_path)
 
         # grid2op Environment and observation definition and loading
-        env_name = os.path.join(script_dir, "env_icaps_input_data_test")
+        env_name = os.path.join(script_dir, config_assistant["env_name"])
 
         forecasts_horizons = [5, 10, 15, 20, 25, 30]
         self.env = grid2op.make(
             env_name,
-            backend=bkClass(),
+            backend=BkClass(),
             data_feeding_kwargs={
                 "gridvalueClass": FromHandlers,
                 "gen_p_handler": CSVHandler("prod_p"),
@@ -73,10 +81,10 @@ class AgentManager:
         )
         self.env.seed(config_assistant["env_seed"])
         # Search scenario with provided name
-        for id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
+        for sc_id, sp in enumerate(self.env.chronics_handler.real_data.subpaths):
             sp_end = os.path.basename(sp)
             if sp_end == config_assistant["scenario_name"]:
-                self.id_scenario = id
+                self.id_scenario = sc_id
 
         self.env.set_id(self.id_scenario)  # Scenario choice
         self.obs = self.env.reset()
@@ -86,14 +94,15 @@ class AgentManager:
         else:
             self.previous_step = self.obs.current_step
         # assistant definition and loading
-        assistant_path = os.path.join(script_dir, "XD_silly_repo")
+        assistant_path = os.path.join(
+            script_dir, config_assistant["assistant_name"])
         assistant_seed = config_assistant["assistant_seed"]
-
-        from .XD_silly_repo import submission
+        submission_path = os.path.join(assistant_path, "submission")
+        submission = lazy_import_package("submission", submission_path)
 
         self.assistant = submission.make_agent(
             self.env.copy(),
-            os.path.join(assistant_path, "submission"),
+            submission_path,
         )
         if not isinstance(self.assistant, BaseAgent):
             msg_ = "Your assistant must be a grid2op.Agent.BaseAgent"
@@ -105,21 +114,47 @@ class AgentManager:
         # Action "do nothing"
         self.action_do_nothing = self.env.action_space({})
 
+        self.recommendations = []
+
     def reset_obs_if_needed(self, obs_dict):
+        """Reset obs
+
+        Args:
+            obs_dict (dict): Observation dictionary
+        """
         if self.nb_timestep < 0:
             self.env.set_id(self.id_scenario)
             self.obs = self.env.reset()
             self.previous_step = "1"
-            self.get_nbOfTimestepSinceLastObs(obs_dict)
+            self.get_nb_of_timestep_since_last_obs(obs_dict)
 
-    def get_nbOfTimestepSinceLastObs(self, obs_dict):
+    def get_nb_of_timestep_since_last_obs(self, obs_dict):
+        """Count number of simulation timestep bewteen 2 consecutive
+        call to this function.
+
+        Args:
+            obs_dict (dict): Observation dictionary
+
+        Returns:
+            int : Number of timesteps
+        """
         self.nb_timestep = int(obs_dict.get("current_step")[0]) - int(
             self.previous_step
         )
         return self.nb_timestep
 
-    def recommendate(self, obs_dict, n_actions=3):
-        self.get_nbOfTimestepSinceLastObs(obs_dict)
+    def create_recommendation(self, obs_dict, n_actions=3):
+        """Create rte IA agent recomendations
+
+        Args:
+            obs_dict (dict): Observation dictionary
+            n_actions (int, optional): Number of recomendations
+                that should be generated.Defaults to 3.
+
+        Returns:
+            [act_dict]: Recomendations objects compliant with RTE simulator
+        """
+        self.get_nb_of_timestep_since_last_obs(obs_dict)
         self.reset_obs_if_needed(obs_dict)
         if (
             self.nb_timestep > 1
@@ -141,7 +176,15 @@ class AgentManager:
         )
         return self.recommendations
 
-    def getParadeInfo(self, act):
+    def get_parade_info(self, act):
+        """Compile unitary recomendation in json format for CAB's frontend compliance
+
+        Args:
+            act (): Unitary action object
+
+        Returns:
+            dict: Recomendations data in json format
+        """
         kpis = {}
         title = []
         description = []
@@ -164,7 +207,7 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        '"{}" de {:.2f} MW'.format(gen_name, r_amount)
+                        f'"{gen_name}" de {r_amount:.2f} MW'
                     )
 
         # storage
@@ -182,13 +225,9 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        'Demande à l\'unité "{}" de {} {:.2f} MW (setpoint: {:.2f} MW)'
-                        "".format(
-                            name_,
-                            "charger" if amount_ > 0.0 else "decharger",
-                            np.abs(amount_),
-                            amount_,
-                        )
+                        f'Demande à l\'unité "{name_}" de '
+                        f'{"charger" if amount_ > 0.0 else "decharger"} '
+                        f'{abs(amount_):.2f} MW (setpoint: {amount_:.2f} MW)'
                     )
 
         # curtailment
@@ -206,8 +245,9 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        'Limiter l\'unité "{}" à {:.1f}% de sa capacité max (setpoint: {:.3f})'
-                        "".format(name_, 100.0 * amount_, amount_)
+                        f'Limiter l\'unité "{name_}" à '
+                        f'{100.0 * amount_:.1f}% de sa capacité max '
+                        f'(setpoint: {amount_:.3f})'
                     )
 
         # force line status
@@ -222,17 +262,15 @@ class AgentManager:
             reconnections = force_line_impact["reconnections"]
             if reconnections["count"] > 0:
                 description.append(
-                    "Reconnection de {} lignes ({})".format(
-                        reconnections["count"], reconnections["powerlines"]
-                    )
+                    f"Reconnection de {reconnections['count']} lignes "
+                    f"({reconnections['powerlines']})"
                 )
 
             disconnections = force_line_impact["disconnections"]
             if disconnections["count"] > 0:
                 description.append(
-                    "Déconnection de {} lignes ({})".format(
-                        disconnections["count"], disconnections["powerlines"]
-                    )
+                    f"Déconnection de {disconnections['count']} lignes "
+                    f"({disconnections['powerlines']})"
                 )
 
         # swtich line status
@@ -243,9 +281,8 @@ class AgentManager:
             )
             title.append("Parade topologique: changer l'état d'une ligne")
             description.append(
-                "Changer le statut de {} lignes ({})".format(
-                    swith_line_impact["count"], swith_line_impact["powerlines"]
-                )
+                f"Changer le statut de {swith_line_impact['count']} lignes "
+                f"({swith_line_impact['powerlines']})"
             )
 
         # topology
@@ -256,16 +293,13 @@ class AgentManager:
             )
             title.append(
                 "Parade topologique: prise de schéma au poste "
-                + str(switch["substation"])
+                + str(bus_switch_impact["substation"])
             )
             description.append("Changement de bus:")
             for switch in bus_switch_impact:
                 description.append(
-                    "\t \t - Switch bus de {} id {} [au poste {}]".format(
-                        switch["object_type"],
-                        switch["object_id"],
-                        switch["substation"],
-                    )
+                    f"\t \t - Switch bus de {switch['object_type']} id "
+                    f"{switch['object_id']} [au poste {switch['substation']}]"
                 )
 
         assigned_bus_impact = impact["topology"]["assigned_bus"]
@@ -286,11 +320,8 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    " Assigner le bus {} à {} id {}".format(
-                        assigned["bus"],
-                        assigned["object_type"],
-                        assigned["object_id"],
-                    )
+                    f" Assigner le bus {assigned['bus']} à "
+                    f"{assigned['object_type']} id {assigned['object_id']}"
                 )
             if disconnect_bus_impact:
                 description.append("")
@@ -300,14 +331,13 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    "Déconnecter {} id {} \t".format(
-                        disconnected["object_type"],
-                        disconnected["object_id"],
-                        disconnected["substation"],
-                    )
+                    f"Déconnecter {disconnected['object_type']} avec l'id "
+                    f"{disconnected['object_id']} [au niveau du poste "
+                    f"{disconnected['substation']}]"
                 )
 
-        # Any of the above cases, then the recommendation is most likely "Do nothing"
+        # Any of the above cases,
+        # then the recommendation is most likely "Do nothing"
         if not title and act == self.action_do_nothing:
             kpis["type_of_the_reco"] = (
                 "Ne rien faire"  # pour renvoyer le kpi type_of_the_reco
@@ -321,7 +351,7 @@ class AgentManager:
         description = "".join(description)
 
         if title:
-            obs_simulate, reward_simulate, done_simulate, info_simulate = (
+            obs_simulate, _, _, _ = (
                 self.obs.simulate(act, time_step=1)
             )
             kpis["efficiency_of_the_reco"] = float(
@@ -337,60 +367,16 @@ class AgentManager:
             "kpis": kpis,
         }
 
-    def getlistOfParadeInfo(self):
+    def get_list_of_parade_info(self):
+        """Compile RTE IA agent recomendations in a single list
+            for CAB's frontend compliance
+
+        Returns:
+            [act_dict]: List of action dictionary
+        """
         list_of_act_dict = []
         for rec in self.recommendations:
-            act, max_forecasted_rho_0 = rec
-            act_dict = self.getParadeInfo(act)
+            act, _ = rec
+            act_dict = self.get_parade_info(act)
             list_of_act_dict.append(act_dict)
         return list_of_act_dict
-
-
-if __name__ == "__main__":
-    ## Parameters for this example
-    iteration_in_cab = range(10)
-    event_received = False
-    context_received = False
-
-    ## Init (must be used in CAB)
-    agentM = AgentManager()
-    # print(agentM.env.chronics_handler.get_name())
-
-    ## Input from RTE simulator (for this example)
-    # obs_backup = agentM.obs
-    with open("obs153.json") as mon_fichier1:
-        obs_dict1 = json.load(mon_fichier1)
-    # print(obs_dict1)
-
-    ## To test reset function
-    with open("obs88.json") as mon_fichier2:
-        obs_dict2 = json.load(mon_fichier2)
-    # print(obs_dict2)
-
-    obs_dict = None
-    for ii in iteration_in_cab:
-        print("Simulation iteration : ", ii)
-        if ii == 3 or ii == 6:
-            event_received = True
-            context_received = True
-            if ii == 3:
-                obs_dict = obs_dict1
-            elif ii == 6:
-                obs_dict = obs_dict2
-        else:
-            event_received = False
-            context_received = False
-            obs_dict = None
-
-        if event_received and context_received:
-            # Main calls to use in CAB in this same order any time both an event and a context is received
-            recommendation = agentM.recommendate(obs_dict)
-            parades = agentM.getlistOfParadeInfo()
-
-            # Test for this example (Should be remove)
-            print("nb_of_timestep = ", agentM.nb_timestep)
-            print("recommendation = ", recommendation)
-            parades_json = json.dumps(parades)
-            """with open("parades_json", "w") as f:
-                f.write(parades_json)"""
-            print("parades = ", parades)
