@@ -7,10 +7,10 @@
         v-if="type === 'choice'"
         color="secondary"
         type="button"
-        @click="$emit('close', id, 'ko')">
+        @click="$emit('close', false)">
         {{ $t('button.no') }}
       </Button>
-      <Button type="button" @click="$emit('close', id, 'ok')">
+      <Button type="button" @click="$emit('close', true)">
         {{ type === 'choice' ? $t('button.yes') : $t('button.ok') }}
       </Button>
     </div>
@@ -30,7 +30,7 @@ withDefaults(
   { id: uuid() }
 )
 defineEmits<{
-  close: [id: UUID, res: 'ok' | 'ko']
+  close: [success: boolean]
 }>()
 </script>
 <style lang="scss">

@@ -19,6 +19,10 @@ class UseCaseFactory:
             raise ValueError(f"Unknown use case '{name}'")
         return use_case
 
+    def unregister_all_use_cases(self):
+        self._use_cases.clear()
+        logger.info("All use cases have been unregistered.")
+
 
 def load_usecases_db(use_case_factory):
     use_cases = UseCaseModel.query.all()

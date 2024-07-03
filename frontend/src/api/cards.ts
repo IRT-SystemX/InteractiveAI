@@ -1,6 +1,6 @@
-import eventBus from '@/plugins/eventBus'
 import http from '@/plugins/http'
 import i18n from '@/plugins/i18n'
+import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
 import type { Card, CardEvent } from '@/types/cards'
 
@@ -18,6 +18,7 @@ export async function subscribe(
   handler: (card: CardEvent) => void
 ) {
   const authStore = useAuthStore()
+  const appStore = useAppStore()
   controller = new AbortController()
   const response = await fetch(
     import.meta.env.VITE_API +
@@ -47,13 +48,17 @@ export async function subscribe(
         switch (data) {
           case 'INIT':
           case 'RELOAD':
-          case 'HEARTBEAT':
           case 'BUSINESS_CONFIG_CHANGE':
           case 'USER_CONFIG_CHANGE':
             break
+          case 'HEARTBEAT':
+            appStore.status.notifications.state = 'ONLINE'
+            appStore.status.notifications.last = Date.now()
+            break
           case 'DISCONNECT_USER_DUE_TO_NEW_CONNECTION':
+            appStore.status.notifications.state = 'OFFLINE'
             controller.abort()
-            eventBus.emit('modal:open', {
+            appStore.addModal({
               data: t(`modal.error.DISCONNECT_USER_DUE_TO_NEW_CONNECTION`),
               type: 'info'
             })
@@ -72,16 +77,20 @@ export function isSubscriptionActive() {
   return http.get<boolean>('/cards/willNewSubscriptionDisconnectAnExistingSubscription')
 }
 
-export function get(id: string) {
+export function get(id: Card['id']) {
   return http.get<{ card: Card }>(`/cards/cards/${id}`)
 }
 
-export function remove(id: string) {
+export function update(card: any) {
+  return http.post<Card>(`/cab_event/api/v1/events`, card)
+}
+
+export function remove(id: Card['id']) {
   return http.delete<null>(`/cardspub/cards/${id}`)
 }
 
-export function removeEvent(id: string) {
-  return http.delete<null>(`cab_event/api/v1/event/${id}`)
+export function removeEvent(uid: Card['processInstanceId']) {
+  return http.delete<null>(`/cab_event/api/v1/event/${uid}`)
 }
 
 export function acknowledge(card: Card) {

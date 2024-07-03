@@ -216,6 +216,7 @@ services:
     restart: unless-stopped
     environment:
       - GATEWAY_SERVICE=http://frontend:80
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_recommendation:5432/cab-recommendation
       - FLASK_APP=app:create_app('dev')
       - PYTHONPATH=/my_app
       - FLASK_ENV=development
@@ -228,6 +229,58 @@ services:
       - 5400:5000
     volumes:
       - ./../../../backend/recommendation-service:/my_app
+    depends_on:
+      - db_postgres_recommendation
+
+  db_postgres_recommendation:
+    container_name: db_postgres_recommendation
+    image: postgres:14.7
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cab-recommendation
+    ports:
+      - '5437:5432'
+    volumes:
+      - postgres_recommendation_data:/var/lib/postgresql/data/
+
+  cabcapitalization:
+    container_name: cab_capitalization
+    image: cab/cabcapitalization
+    build:
+      context: ../../../backend
+      dockerfile: Capitalization-Service-Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_capitalization:5432/cab-capitalization
+      - FLASK_APP=app:create_app('dev')
+      - FLASK_ENV=development
+      - PYTHONPATH=/my_app
+      - URL_INTROSPECT=http://frontend:80/auth/check_token
+      - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
+      - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
+      - TZ=UTC   # Set timezone to UTC
+    restart: unless-stopped
+    command: sh -c "./entrypoint.sh"
+    ports:
+      - 5500:5000
+    volumes:
+      - ../../../backend/capitalization-service:/code
+    depends_on:
+      - db_postgres_capitalization
+
+  db_postgres_capitalization:
+    container_name: db_postgres_capitalization
+    image: postgres:14.7
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cab-capitalization
+    ports:
+      - '5438:5432'
+    volumes:
+      - postgres_capitalization_data:/var/lib/postgresql/data/
 
   mongodb:
     image: mongo:4.4.4-bionic
@@ -240,6 +293,8 @@ services:
     container_name: rabbit
     image: rabbitmq:3-management
     hostname: rabbit
+
+
 
   #  If you want to persist queue after rabbit docker container removal mount
   #  a volume to store persistance data
@@ -362,4 +417,6 @@ volumes:
   postgres_event_data:
   postgres_historic_data:
   postgres_correlation_data:
+  postgres_recommendation_data:
+  postgres_capitalization_data:
   pgadmin:

@@ -1,4 +1,5 @@
-import type { Criticality } from '@/types/cards'
+import { useCardsStore } from '@/stores/cards'
+import { type Card, CRITICALITIES, type Criticality } from '@/types/cards'
 import type { UUID } from '@/types/formats'
 
 /**
@@ -83,9 +84,7 @@ export function hashColor(src: string | number, lightness = 66, saturation = 100
     hash = src.charCodeAt(i) + ((hash << 5) - hash)
     hash &= hash
   }
-  return `hsl(${
-    hash % 360
-  }, ${saturation}%, calc(var(--lightness) + var(--lightness-factor) * ${lightness}%))`
+  return `hsl(${hash % 360}, ${saturation}%, ${lightness}%)`
 }
 
 /**
@@ -116,10 +115,63 @@ export function addOrUpdate<T>(
   return array
 }
 
+/**
+ * Generates a universally unique identifier (UUID).
+ *
+ * @return {UUID} The generated UUID.
+ */
 export function uuid() {
   return window.isSecureContext
     ? crypto.randomUUID()
     : ('10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
         (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16)
       ) as UUID)
+}
+
+/**
+ * Returns the maximum criticality of the given cards, excluding those that have not been acknowledged if specified.
+ *
+ * @param {Criticality} [minimum='ND'] - The minimum criticality to consider. Defaults to 'ND'.
+ * @param {Card[]} cards - The array of cards to find the maximum criticality from. Defaults to non-acknowledged cards.
+ * @return {Criticality} The maximum criticality of the given cards.
+ */
+export function maxCriticality(
+  minimum: Criticality = 'ND',
+  cards: Card[] = useCardsStore()._cards.filter((card) => !card.hasBeenAcknowledged)
+) {
+  return cards.reduce(
+    (prev: Criticality, curr) =>
+      CRITICALITIES.indexOf(curr.data.criticality) > CRITICALITIES.indexOf(prev)
+        ? curr.data.criticality
+        : prev,
+    minimum
+  )
+}
+
+/**
+ * Retrieves the value of a CSS variable from the document's body.
+ *
+ * @param {string} variable - The name of the CSS variable to retrieve.
+ * @return {string} The value of the CSS variable, or an empty string if it is not found.
+ */
+export const getCSSVariable = (variable: string) =>
+  getComputedStyle(document.body).getPropertyValue(`--${variable}`)
+
+/**
+ * Returns the root card of a given card by traversing up the parent_event_id chain.
+ *
+ * @param {Card} card - The card from which to start the traversal.
+ * @return {Card} The root card of the given card.
+ */
+export function getRootCard(card: Card) {
+  const cardsStore = useCardsStore()
+  let curr = card
+  while (card?.data.parent_event_id) {
+    const parent = cardsStore._cards.find(
+      (card) => card.processInstanceId === curr?.data.parent_event_id
+    )
+    if (!parent) break
+    curr = parent
+  }
+  return curr
 }

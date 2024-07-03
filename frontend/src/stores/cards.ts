@@ -9,14 +9,16 @@ import { type Card, type CardEvent, CardOperationType } from '@/types/cards'
 import { type Entity } from '@/types/entities'
 import { uuid } from '@/utils/utils'
 
+import { useAppStore } from './app'
+
 const { t } = i18n.global
 
 export const useCardsStore = defineStore('cards', () => {
   const _cards = ref<Card[]>([])
 
-  function cards<T extends Entity>(entity: T, hasBeenAcknowledged: boolean | 'all' = false) {
-    return _cards.value.filter<Card<T>>(
-      (card): card is Card<T> =>
+  function cards<E extends Entity>(entity: E, hasBeenAcknowledged: boolean | 'all' = false) {
+    return _cards.value.filter<Card<E>>(
+      (card): card is Card<E> =>
         card.entityRecipients.includes(entity) &&
         (hasBeenAcknowledged === 'all'
           ? true
@@ -25,44 +27,24 @@ export const useCardsStore = defineStore('cards', () => {
     )
   }
 
-  const traverse = (arr: any[], parentId: string): any[] =>
-    arr
-      .filter((node) => node.data.parent_event_id === parentId)
-      .reduce(
-        (result, current) => [
-          ...result,
-          {
-            ...current,
-            children: traverse(arr, current.processInstanceId),
-            read: false
-          }
-        ],
-        []
-      )
-
-  const parseTree = <E extends Entity>(arr: Card<E>[]) =>
-    arr
-      .filter((c) => !c.data.parent_event_id)
-      .map((node) => ({
-        ...node,
-        children: traverse(arr, node.processInstanceId),
-        read: false
-      }))
-
   async function subscribe(entity: Entity, hydrated = true) {
+    const appStore = useAppStore()
     const { data } = await cardsApi.isSubscriptionActive()
     if (data) {
-      const id = uuid()
-      eventBus.emit('modal:open', {
-        id,
+      appStore.addModal({
         data: t('modal.info.SUBSCRIPTION_ACTIVE'),
-        type: 'choice'
+        type: 'choice',
+        callback: (success) => {
+          if (success) {
+            appStore.status.notifications.state = 'ONLINE'
+            _subscribe(entity, hydrated)
+          } else {
+            appStore.status.notifications.state = 'OFFLINE'
+          }
+        }
       })
-      eventBus.on(
-        'modal:close',
-        (data) => data.id === id && data.res === 'ok' && _subscribe(entity, hydrated)
-      )
     } else {
+      appStore.status.notifications.state = 'ONLINE'
       _cards.value = []
       _subscribe(entity, hydrated)
     }
@@ -70,6 +52,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   async function _subscribe(entity: Entity, hydrated = false) {
     const handler = async (cardEvent: CardEvent) => {
+      const appStore = useAppStore()
       let existingCard = null
       if (cardEvent.type === 'ACK' && cardEvent.entitiesAcks.includes(entity))
         existingCard = _cards.value.findIndex((card) => cardEvent.cardId === card.id)
@@ -98,7 +81,7 @@ export const useCardsStore = defineStore('cards', () => {
               _cards.value[existingCard].data.criticality !== 'ND' &&
               hydratedCard?.data.criticality === 'ND'
             )
-              eventBus.emit('notifications:close', _cards.value[existingCard])
+              eventBus.emit('notifications:ended', _cards.value[existingCard])
             _cards.value.splice(existingCard, 1, {
               ...cardEvent.card,
               ...hydratedCard
@@ -110,9 +93,11 @@ export const useCardsStore = defineStore('cards', () => {
             })
           break
         case CardOperationType.DELETE:
+          if (cardEvent.cardId === appStore._card?.id) appStore._card = undefined
           _cards.value.splice(existingCard, 1)
           break
         case CardOperationType.ACK:
+          if (cardEvent.cardId === appStore._card?.id) appStore._card = undefined
           _cards.value[existingCard].hasBeenAcknowledged = true
           break
       }
@@ -140,21 +125,17 @@ export const useCardsStore = defineStore('cards', () => {
     cardsApi.unsubscribe()
   }
 
-  async function hydrate(id: string) {
-    const { data } = await cardsApi.get(id)
-    const i = _cards.value.findIndex((card) => card.id === data.card.id)
-    if (i !== -1) {
-      _cards.value[i] = { ..._cards.value[i], ...data.card }
-    } else {
-      _cards.value.push(data.card)
-    }
-  }
-
   function acknowledge<E extends Entity = Entity>(card: Card<E>) {
     for (const children of cards(card.entityRecipients[0]))
       if (children.data.parent_event_id === card.processInstanceId) acknowledge(children)
     cardsApi.acknowledge(card)
   }
 
-  return { _cards, parseTree, cards, subscribe, hydrate, unsubscribe, acknowledge }
+  function remove<E extends Entity = Entity>(card: Card<E>) {
+    for (const children of cards(card.entityRecipients[0]))
+      if (children.data.parent_event_id === card.processInstanceId) remove(children)
+    cardsApi.remove(card.id)
+  }
+
+  return { _cards, cards, subscribe, unsubscribe, acknowledge, remove }
 })

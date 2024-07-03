@@ -1,17 +1,23 @@
 <template>
-  <button class="cab-btn" :class="[size, color, { icon }]" :type>
+  <button
+    class="cab-btn"
+    :class="[size, color, { icon }]"
+    :type
+    :aria-label="icon"
+    :style="{ '--color-button-background': customColor }">
     <slot></slot>
   </button>
 </template>
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    icon?: boolean
+    icon?: string
     size?: 'big' | 'medium' | 'small'
+    customColor?: string
     color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
     type?: 'button' | 'submit' | 'reset'
   }>(),
-  { size: 'medium', color: 'primary', type: 'button' }
+  { size: 'medium', color: 'primary', type: 'button', icon: undefined, customColor: undefined }
 )
 </script>
 <style lang="scss">
@@ -55,6 +61,12 @@ withDefaults(
     padding: 0;
   }
 
+  &.big {
+    padding: var(--spacing-2);
+    margin: var(--spacing-2);
+    font-weight: bold;
+  }
+
   &.primary {
     --color-button-background: var(--color-primary);
   }
@@ -63,7 +75,7 @@ withDefaults(
     color: var(--color-text);
   }
   &.success {
-    --color-button-background: background: var(--color-success);
+    --color-button-background: var(--color-success);
   }
   &.warning {
     --color-button-background: var(--color-warning);
@@ -75,6 +87,17 @@ withDefaults(
   &.icon {
     aspect-ratio: 1;
     display: flex;
+
+    .lucide {
+      filter: drop-shadow(
+          calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-button-background), #000 20%)
+        )
+        drop-shadow(
+          calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
+            color-mix(in srgb, var(--color-button-background), #ccc 20%)
+        );
+    }
   }
 }
 </style>

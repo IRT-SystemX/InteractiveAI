@@ -21,7 +21,7 @@ defineProps<{
 }
 
 [speech-bubble] {
-  --bbColor: var(--color-grey-300);
+  --bbColor: var(--color-grey-200);
   --bbArrowSize: 1.5rem;
   --bbBorderRadius: var(--radius-medium);
   --bbPadding: var(--spacing-1);

@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="0.578" timestamp="2024-06-21T11:40:47.676419" hostname="E840-5CG812289J"><testcase classname="tests.test_views" name="test_rte_get_recommendation" time="0.020"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+    def app():
+&gt;       app = create_app("test")
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app.py:23: in create_app
+    db.init_app(app)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;[RuntimeError("The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?") raised in repr()] SQLAlchemy object at 0x7fc4c0e9afc0&gt;
+app = &lt;APIFlask 'recommendation-service'&gt;
+
+    def init_app(self, app: Flask) -&gt; None:
+        """Initialize a Flask application for use with this extension instance. This
+        must be called before accessing the database engine or session with the app.
+    
+        This sets default configuration values, then configures the extension on the
+        application and creates the engines for each bind key. Therefore, this must be
+        called after the application has been configured. Changes to application config
+        after this call will not be reflected.
+    
+        The following keys from ``app.config`` are used:
+    
+        - :data:`.SQLALCHEMY_DATABASE_URI`
+        - :data:`.SQLALCHEMY_ENGINE_OPTIONS`
+        - :data:`.SQLALCHEMY_ECHO`
+        - :data:`.SQLALCHEMY_BINDS`
+        - :data:`.SQLALCHEMY_RECORD_QUERIES`
+        - :data:`.SQLALCHEMY_TRACK_MODIFICATIONS`
+    
+        :param app: The Flask application to initialize.
+        """
+        if "sqlalchemy" in app.extensions:
+            raise RuntimeError(
+                "A 'SQLAlchemy' instance has already been registered on this Flask app."
+                " Import and use that instance instead."
+            )
+    
+        app.extensions["sqlalchemy"] = self
+    
+        if self._add_models_to_shell:
+            from .cli import add_models_to_shell
+    
+            app.shell_context_processor(add_models_to_shell)
+    
+        if app.config.get("SQLALCHEMY_COMMIT_ON_TEARDOWN", False):
+            import warnings
+    
+            warnings.warn(
+                "'SQLALCHEMY_COMMIT_ON_TEARDOWN' is deprecated and will be removed in"
+                " Flask-SQAlchemy 3.1. Call 'db.session.commit()'` directly instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            app.teardown_appcontext(self._teardown_commit)
+        else:
+            app.teardown_appcontext(self._teardown_session)
+    
+        basic_uri: str | sa.engine.URL | None = app.config.setdefault(
+            "SQLALCHEMY_DATABASE_URI", None
+        )
+        basic_engine_options = self._engine_options.copy()
+        basic_engine_options.update(
+            app.config.setdefault("SQLALCHEMY_ENGINE_OPTIONS", {})
+        )
+        echo: bool = app.config.setdefault("SQLALCHEMY_ECHO", False)
+        config_binds: dict[
+            str | None, str | sa.engine.URL | dict[str, t.Any]
+        ] = app.config.setdefault("SQLALCHEMY_BINDS", {})
+        engine_options: dict[str | None, dict[str, t.Any]] = {}
+    
+        # Build the engine config for each bind key.
+        for key, value in config_binds.items():
+            engine_options[key] = self._engine_options.copy()
+    
+            if isinstance(value, (str, sa.engine.URL)):
+                engine_options[key]["url"] = value
+            else:
+                engine_options[key].update(value)
+    
+        # Build the engine config for the default bind key.
+        if basic_uri is not None:
+            basic_engine_options["url"] = basic_uri
+    
+        if "url" in basic_engine_options:
+            engine_options.setdefault(None, {}).update(basic_engine_options)
+    
+        if not engine_options:
+&gt;           raise RuntimeError(
+                "Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set."
+            )
+E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
+
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_sncf_get_recommendation" time="0.015"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+    def app():
+&gt;       app = create_app("test")
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app.py:23: in create_app
+    db.init_app(app)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;[RuntimeError("The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?") raised in repr()] SQLAlchemy object at 0x7fc4c0e9afc0&gt;
+app = &lt;APIFlask 'recommendation-service'&gt;
+
+    def init_app(self, app: Flask) -&gt; None:
+        """Initialize a Flask application for use with this extension instance. This
+        must be called before accessing the database engine or session with the app.
+    
+        This sets default configuration values, then configures the extension on the
+        application and creates the engines for each bind key. Therefore, this must be
+        called after the application has been configured. Changes to application config
+        after this call will not be reflected.
+    
+        The following keys from ``app.config`` are used:
+    
+        - :data:`.SQLALCHEMY_DATABASE_URI`
+        - :data:`.SQLALCHEMY_ENGINE_OPTIONS`
+        - :data:`.SQLALCHEMY_ECHO`
+        - :data:`.SQLALCHEMY_BINDS`
+        - :data:`.SQLALCHEMY_RECORD_QUERIES`
+        - :data:`.SQLALCHEMY_TRACK_MODIFICATIONS`
+    
+        :param app: The Flask application to initialize.
+        """
+        if "sqlalchemy" in app.extensions:
+            raise RuntimeError(
+                "A 'SQLAlchemy' instance has already been registered on this Flask app."
+                " Import and use that instance instead."
+            )
+    
+        app.extensions["sqlalchemy"] = self
+    
+        if self._add_models_to_shell:
+            from .cli import add_models_to_shell
+    
+            app.shell_context_processor(add_models_to_shell)
+    
+        if app.config.get("SQLALCHEMY_COMMIT_ON_TEARDOWN", False):
+            import warnings
+    
+            warnings.warn(
+                "'SQLALCHEMY_COMMIT_ON_TEARDOWN' is deprecated and will be removed in"
+                " Flask-SQAlchemy 3.1. Call 'db.session.commit()'` directly instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            app.teardown_appcontext(self._teardown_commit)
+        else:
+            app.teardown_appcontext(self._teardown_session)
+    
+        basic_uri: str | sa.engine.URL | None = app.config.setdefault(
+            "SQLALCHEMY_DATABASE_URI", None
+        )
+        basic_engine_options = self._engine_options.copy()
+        basic_engine_options.update(
+            app.config.setdefault("SQLALCHEMY_ENGINE_OPTIONS", {})
+        )
+        echo: bool = app.config.setdefault("SQLALCHEMY_ECHO", False)
+        config_binds: dict[
+            str | None, str | sa.engine.URL | dict[str, t.Any]
+        ] = app.config.setdefault("SQLALCHEMY_BINDS", {})
+        engine_options: dict[str | None, dict[str, t.Any]] = {}
+    
+        # Build the engine config for each bind key.
+        for key, value in config_binds.items():
+            engine_options[key] = self._engine_options.copy()
+    
+            if isinstance(value, (str, sa.engine.URL)):
+                engine_options[key]["url"] = value
+            else:
+                engine_options[key].update(value)
+    
+        # Build the engine config for the default bind key.
+        if basic_uri is not None:
+            basic_engine_options["url"] = basic_uri
+    
+        if "url" in basic_engine_options:
+            engine_options.setdefault(None, {}).update(basic_engine_options)
+    
+        if not engine_options:
+&gt;           raise RuntimeError(
+                "Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set."
+            )
+E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
+
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_da_get_recommendation_1" time="0.016"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+    def app():
+&gt;       app = create_app("test")
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app.py:23: in create_app
+    db.init_app(app)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;[RuntimeError("The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?") raised in repr()] SQLAlchemy object at 0x7fc4c0e9afc0&gt;
+app = &lt;APIFlask 'recommendation-service'&gt;
+
+    def init_app(self, app: Flask) -&gt; None:
+        """Initialize a Flask application for use with this extension instance. This
+        must be called before accessing the database engine or session with the app.
+    
+        This sets default configuration values, then configures the extension on the
+        application and creates the engines for each bind key. Therefore, this must be
+        called after the application has been configured. Changes to application config
+        after this call will not be reflected.
+    
+        The following keys from ``app.config`` are used:
+    
+        - :data:`.SQLALCHEMY_DATABASE_URI`
+        - :data:`.SQLALCHEMY_ENGINE_OPTIONS`
+        - :data:`.SQLALCHEMY_ECHO`
+        - :data:`.SQLALCHEMY_BINDS`
+        - :data:`.SQLALCHEMY_RECORD_QUERIES`
+        - :data:`.SQLALCHEMY_TRACK_MODIFICATIONS`
+    
+        :param app: The Flask application to initialize.
+        """
+        if "sqlalchemy" in app.extensions:
+            raise RuntimeError(
+                "A 'SQLAlchemy' instance has already been registered on this Flask app."
+                " Import and use that instance instead."
+            )
+    
+        app.extensions["sqlalchemy"] = self
+    
+        if self._add_models_to_shell:
+            from .cli import add_models_to_shell
+    
+            app.shell_context_processor(add_models_to_shell)
+    
+        if app.config.get("SQLALCHEMY_COMMIT_ON_TEARDOWN", False):
+            import warnings
+    
+            warnings.warn(
+                "'SQLALCHEMY_COMMIT_ON_TEARDOWN' is deprecated and will be removed in"
+                " Flask-SQAlchemy 3.1. Call 'db.session.commit()'` directly instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            app.teardown_appcontext(self._teardown_commit)
+        else:
+            app.teardown_appcontext(self._teardown_session)
+    
+        basic_uri: str | sa.engine.URL | None = app.config.setdefault(
+            "SQLALCHEMY_DATABASE_URI", None
+        )
+        basic_engine_options = self._engine_options.copy()
+        basic_engine_options.update(
+            app.config.setdefault("SQLALCHEMY_ENGINE_OPTIONS", {})
+        )
+        echo: bool = app.config.setdefault("SQLALCHEMY_ECHO", False)
+        config_binds: dict[
+            str | None, str | sa.engine.URL | dict[str, t.Any]
+        ] = app.config.setdefault("SQLALCHEMY_BINDS", {})
+        engine_options: dict[str | None, dict[str, t.Any]] = {}
+    
+        # Build the engine config for each bind key.
+        for key, value in config_binds.items():
+            engine_options[key] = self._engine_options.copy()
+    
+            if isinstance(value, (str, sa.engine.URL)):
+                engine_options[key]["url"] = value
+            else:
+                engine_options[key].update(value)
+    
+        # Build the engine config for the default bind key.
+        if basic_uri is not None:
+            basic_engine_options["url"] = basic_uri
+    
+        if "url" in basic_engine_options:
+            engine_options.setdefault(None, {}).update(basic_engine_options)
+    
+        if not engine_options:
+&gt;           raise RuntimeError(
+                "Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set."
+            )
+E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
+
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_da_get_recommendation_2" time="0.014"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+    def app():
+&gt;       app = create_app("test")
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app.py:23: in create_app
+    db.init_app(app)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;[RuntimeError("The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?") raised in repr()] SQLAlchemy object at 0x7fc4c0e9afc0&gt;
+app = &lt;APIFlask 'recommendation-service'&gt;
+
+    def init_app(self, app: Flask) -&gt; None:
+        """Initialize a Flask application for use with this extension instance. This
+        must be called before accessing the database engine or session with the app.
+    
+        This sets default configuration values, then configures the extension on the
+        application and creates the engines for each bind key. Therefore, this must be
+        called after the application has been configured. Changes to application config
+        after this call will not be reflected.
+    
+        The following keys from ``app.config`` are used:
+    
+        - :data:`.SQLALCHEMY_DATABASE_URI`
+        - :data:`.SQLALCHEMY_ENGINE_OPTIONS`
+        - :data:`.SQLALCHEMY_ECHO`
+        - :data:`.SQLALCHEMY_BINDS`
+        - :data:`.SQLALCHEMY_RECORD_QUERIES`
+        - :data:`.SQLALCHEMY_TRACK_MODIFICATIONS`
+    
+        :param app: The Flask application to initialize.
+        """
+        if "sqlalchemy" in app.extensions:
+            raise RuntimeError(
+                "A 'SQLAlchemy' instance has already been registered on this Flask app."
+                " Import and use that instance instead."
+            )
+    
+        app.extensions["sqlalchemy"] = self
+    
+        if self._add_models_to_shell:
+            from .cli import add_models_to_shell
+    
+            app.shell_context_processor(add_models_to_shell)
+    
+        if app.config.get("SQLALCHEMY_COMMIT_ON_TEARDOWN", False):
+            import warnings
+    
+            warnings.warn(
+                "'SQLALCHEMY_COMMIT_ON_TEARDOWN' is deprecated and will be removed in"
+                " Flask-SQAlchemy 3.1. Call 'db.session.commit()'` directly instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            app.teardown_appcontext(self._teardown_commit)
+        else:
+            app.teardown_appcontext(self._teardown_session)
+    
+        basic_uri: str | sa.engine.URL | None = app.config.setdefault(
+            "SQLALCHEMY_DATABASE_URI", None
+        )
+        basic_engine_options = self._engine_options.copy()
+        basic_engine_options.update(
+            app.config.setdefault("SQLALCHEMY_ENGINE_OPTIONS", {})
+        )
+        echo: bool = app.config.setdefault("SQLALCHEMY_ECHO", False)
+        config_binds: dict[
+            str | None, str | sa.engine.URL | dict[str, t.Any]
+        ] = app.config.setdefault("SQLALCHEMY_BINDS", {})
+        engine_options: dict[str | None, dict[str, t.Any]] = {}
+    
+        # Build the engine config for each bind key.
+        for key, value in config_binds.items():
+            engine_options[key] = self._engine_options.copy()
+    
+            if isinstance(value, (str, sa.engine.URL)):
+                engine_options[key]["url"] = value
+            else:
+                engine_options[key].update(value)
+    
+        # Build the engine config for the default bind key.
+        if basic_uri is not None:
+            basic_engine_options["url"] = basic_uri
+    
+        if "url" in basic_engine_options:
+            engine_options.setdefault(None, {}).update(basic_engine_options)
+    
+        if not engine_options:
+&gt;           raise RuntimeError(
+                "Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set."
+            )
+E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
+
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_health_check" time="0.014"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+    def app():
+&gt;       app = create_app("test")
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app.py:23: in create_app
+    db.init_app(app)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;[RuntimeError("The current Flask app is not registered with this 'SQLAlchemy' instance. Did you forget to call 'init_app', or did you create multiple 'SQLAlchemy' instances?") raised in repr()] SQLAlchemy object at 0x7fc4c0e9afc0&gt;
+app = &lt;APIFlask 'recommendation-service'&gt;
+
+    def init_app(self, app: Flask) -&gt; None:
+        """Initialize a Flask application for use with this extension instance. This
+        must be called before accessing the database engine or session with the app.
+    
+        This sets default configuration values, then configures the extension on the
+        application and creates the engines for each bind key. Therefore, this must be
+        called after the application has been configured. Changes to application config
+        after this call will not be reflected.
+    
+        The following keys from ``app.config`` are used:
+    
+        - :data:`.SQLALCHEMY_DATABASE_URI`
+        - :data:`.SQLALCHEMY_ENGINE_OPTIONS`
+        - :data:`.SQLALCHEMY_ECHO`
+        - :data:`.SQLALCHEMY_BINDS`
+        - :data:`.SQLALCHEMY_RECORD_QUERIES`
+        - :data:`.SQLALCHEMY_TRACK_MODIFICATIONS`
+    
+        :param app: The Flask application to initialize.
+        """
+        if "sqlalchemy" in app.extensions:
+            raise RuntimeError(
+                "A 'SQLAlchemy' instance has already been registered on this Flask app."
+                " Import and use that instance instead."
+            )
+    
+        app.extensions["sqlalchemy"] = self
+    
+        if self._add_models_to_shell:
+            from .cli import add_models_to_shell
+    
+            app.shell_context_processor(add_models_to_shell)
+    
+        if app.config.get("SQLALCHEMY_COMMIT_ON_TEARDOWN", False):
+            import warnings
+    
+            warnings.warn(
+                "'SQLALCHEMY_COMMIT_ON_TEARDOWN' is deprecated and will be removed in"
+                " Flask-SQAlchemy 3.1. Call 'db.session.commit()'` directly instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            app.teardown_appcontext(self._teardown_commit)
+        else:
+            app.teardown_appcontext(self._teardown_session)
+    
+        basic_uri: str | sa.engine.URL | None = app.config.setdefault(
+            "SQLALCHEMY_DATABASE_URI", None
+        )
+        basic_engine_options = self._engine_options.copy()
+        basic_engine_options.update(
+            app.config.setdefault("SQLALCHEMY_ENGINE_OPTIONS", {})
+        )
+        echo: bool = app.config.setdefault("SQLALCHEMY_ECHO", False)
+        config_binds: dict[
+            str | None, str | sa.engine.URL | dict[str, t.Any]
+        ] = app.config.setdefault("SQLALCHEMY_BINDS", {})
+        engine_options: dict[str | None, dict[str, t.Any]] = {}
+    
+        # Build the engine config for each bind key.
+        for key, value in config_binds.items():
+            engine_options[key] = self._engine_options.copy()
+    
+            if isinstance(value, (str, sa.engine.URL)):
+                engine_options[key]["url"] = value
+            else:
+                engine_options[key].update(value)
+    
+        # Build the engine config for the default bind key.
+        if basic_uri is not None:
+            basic_engine_options["url"] = basic_uri
+    
+        if "url" in basic_engine_options:
+            engine_options.setdefault(None, {}).update(basic_engine_options)
+    
+        if not engine_options:
+&gt;           raise RuntimeError(
+                "Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set."
+            )
+E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
+
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase></testsuite></testsuites>

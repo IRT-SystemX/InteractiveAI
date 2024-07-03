@@ -167,15 +167,15 @@
         },
         "position_agents": {
             "0": [
-                8,
-                2
+                112,
+                5
             ],
             "1": [
-                8,
+                260,
                 2
             ],
             "2": [
-                8,
+                295,
                 2
             ]
         }
@@ -184,13 +184,13 @@
         "event_type" : "PASSENGER",
         "agent_id": 0,
         "agent_position": [
-            119,
-            3
+            112,
+            5
         ],
         "malfunction_stop_position": [
-            119,
-            3
+            100,
+            6
         ],
-        "delay": 400
+        "delay": 382
     }
 }

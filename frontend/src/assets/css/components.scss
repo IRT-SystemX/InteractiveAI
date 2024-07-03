@@ -19,6 +19,7 @@ a.router-link-exact-active {
   background-color: var(--color-grey-200);
   padding: var(--spacing-1);
   color: var(--color-text);
+  font-feature-settings: 'liga', 'calt', 'ss02';
 }
 
 input:-webkit-autofill,
@@ -29,14 +30,15 @@ input:-webkit-autofill:focus {
 }
 
 .cab-panel {
+  --color-panel-background: var(--color-background);
   position: relative;
   border-radius: var(--radius-big);
-  background: var(--color-background);
+  background: var(--color-panel-background);
   box-shadow:
     inset calc(var(--unit) * 0.5) calc(var(--unit) * 0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-background), #000 20%),
+      color-mix(in srgb, var(--color-panel-background), #000 20%),
     inset calc(var(--unit) * -0.5) calc(var(--unit) * -0.5) calc(var(--unit) * 1)
-      color-mix(in srgb, var(--color-background), #ccc 20%);
+      color-mix(in srgb, var(--color-panel-background), #ccc 20%);
   padding: var(--spacing-1);
 }
 

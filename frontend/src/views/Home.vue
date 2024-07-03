@@ -12,7 +12,7 @@
       </Card>
     </RouterLink>
   </div>
-  <div v-else class="flex flex-center h-100">Aucune entité</div>
+  <div v-else class="flex flex-center h-100">{{ $t('home.no_entity') }}</div>
 </template>
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'

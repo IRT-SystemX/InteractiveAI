@@ -74,6 +74,25 @@ python -m flask run --host=0.0.0.0 --reload
    * Option 2:
       Update start_service.bash and use it to run service
 
+### Specific Configuration for the RTE Use Case
+
+For the RTE use case, the recommendation service utilizes the resources `XD_silly_repo` and `env_icaps_input_data_test`. 
+- `env_icaps_input_data_test` is a grid2op compliant scenarios' collection package.
+- `XD_silly_repo` is a compliant a grid2op compliant RL agent package.
+
+If you wish to modify these, you must add your replacement folders in [`backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator`](../backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator) and update there in the file `CONFIG_RTE.toml` the followings parameter to match your new folders:
+
+For the scenario collection integration:
+- `env_name`: Name of the scenario folder. By default, it is set to `"env_icaps_input_data_test"` at the moment.
+- `env_seed`: Seed to initialize the grid2op environment. By default, it is set to `2118338672` at the moment.
+- `scenario_name`: Name of the scenario to be executed. By default, it is set to `'jan_28_1'` at the moment.
+
+For the RL agent integration:
+- `assistant_name`: Name of the RL agent folder. By default, it is set to `"XD_silly_repo"` at the moment.
+- `assistant_seed`: Seed to initialize the RL agent. By default it is set to `1227139268` at the moment.
+
+It is recommended to rebuild and restart the recommendation service for these changes to take effect.
+
 ### Running All Services (Dev Mode)
 
 To run all services on the dev server you can check the steps in the main README file

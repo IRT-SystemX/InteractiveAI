@@ -13,8 +13,20 @@ import { computed, ref } from 'vue'
 
 //import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
 import eventBus from '@/plugins/eventBus'
-import { type Card, CriticalityArray } from '@/types/cards'
+import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
+
+import { useCardsStore } from '../cards'
+
+// Utilities
+const config = {
+  // Dimensions of the viewport
+  width: 0,
+  height: 0,
+  force: 200,
+  radius: 50,
+  kpi: 'ratio_err'
+}
 
 export const useGraphStore = defineStore('graph', () => {
   const data = ref<{
@@ -75,16 +87,6 @@ export const useGraphStore = defineStore('graph', () => {
     data.value = res
 
     return res
-  }
-
-  // Utilities
-  const config = {
-    // Dimensions of the viewport
-    width: 0,
-    height: 0,
-    force: 200,
-    radius: 50,
-    kpi: 'ratio_err'
   }
 
   const ctx: {
@@ -209,10 +211,12 @@ export const useGraphStore = defineStore('graph', () => {
         document.getElementById('d3-graph')!.clientWidth / 2
       )
     )
+
+    setStatuses(useCardsStore().cards('ORANGE'))
   }
 
   function setStatuses(cards: Card[]) {
-    for (const criticality of CriticalityArray) {
+    for (const criticality of CRITICALITIES) {
       ctx.nodes?.classed(criticality, false)
     }
     for (const card of cards) {

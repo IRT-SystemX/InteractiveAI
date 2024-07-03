@@ -3,7 +3,7 @@
     <h1>{{ $t('cab.timeline') }}</h1>
     <Timeline
       v-slot="{ card }"
-      :now="servicesStore.context('RTE')?.date && new Date(servicesStore.context('RTE').date)"
+      :now="servicesStore.context('RTE') && new Date(servicesStore.context('RTE')!.date)"
       :start="-30"
       :end="210"
       entity="RTE">

@@ -19,7 +19,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { arrow, autoUpdate, flip, type Placement, shift, useFloating } from '@floating-ui/vue'
+import {
+  arrow,
+  autoUpdate,
+  flip,
+  offset,
+  type Placement,
+  shift,
+  useFloating
+} from '@floating-ui/vue'
 import { ref } from 'vue'
 
 const props = withDefaults(
@@ -38,7 +46,7 @@ const floatingArrow = ref<HTMLDivElement | null>(null)
 
 const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
   placement: props.placement,
-  middleware: [flip(), shift(), arrow({ element: floatingArrow, padding: 8 })],
+  middleware: [flip(), shift(), arrow({ element: floatingArrow }), offset(8)],
   whileElementsMounted: autoUpdate
 })
 </script>
@@ -51,7 +59,8 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
     &.hover:hover > .cab-tooltip-content,
     &.click.visible > .cab-tooltip-content,
     &.click:focus > .cab-tooltip-content {
-      display: block;
+      visibility: visible;
+      opacity: 1;
     }
 
     &[class*='top'] .cab-tooltip-arrow {
@@ -68,7 +77,7 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
     }
   }
   &-content {
-    display: none;
+    visibility: hidden;
     width: max-content;
     background-color: var(--color-grey-800);
     color: var(--color-text-inverted);
@@ -77,6 +86,8 @@ const { floatingStyles, middlewareData } = useFloating(slot, tooltip, {
     border-radius: var(--radius-medium);
     z-index: 3000;
     max-width: 300px;
+    opacity: 0;
+    transition: opacity var(--duration);
   }
   &-arrow {
     width: var(--unit);

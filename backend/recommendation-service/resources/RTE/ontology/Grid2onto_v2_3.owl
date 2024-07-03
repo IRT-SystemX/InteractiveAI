@@ -1,0 +1,3133 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto">
+    <Prefix name="" IRI="http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/RTEOntology"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+
+    <Annotation>
+        <AnnotationProperty IRI="#status"/>
+        <Literal>beta</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
+        <Literal>V1.2</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="#A_or"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#A_unit_label"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action_battery"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action_do_nothing"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action_prod"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Action_topo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Atypic_observation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Available_margins_for_dispatching"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bus"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bus_level_modification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Comfort"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Context"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Critical_observation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Curtailment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decrease_energy_losses_objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decrease_nb_actions_objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decrease_nb_overloads"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decreasing_losses"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decreasing_nb_actions"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decreasing_nb_overloads"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Decreasing_operator_workload"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Distance_from_reference_topology"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid_area"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid_component"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid_system"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Electrical_grid_topology"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Energy_losses"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Event"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Explanation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Final_situation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Forecast"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gen_p"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gen_q"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gen_v"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Generator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Goal"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Grid_region"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Grid_state"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Human"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hydro_generator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Increase_grid_optimisation_objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Increase_operator_confort_objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Initial_situation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Is_in_overload"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Issue_alert"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Junior_profile"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#KPI_datum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#KV_unit_label"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Line_level_modification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Line_status"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#List_of_actions"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#List_recommanded_actions"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Load"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Load_p"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Load_q"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Load_v"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Loss_of_line"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MW_unit_label"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Machine"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Maintenance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Make_grid_safe_objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Max_overload"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mva_unit_label"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Node"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Normal_observation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Normal_powerline"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Nuclear_generator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Number_of_actions"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Number_of_available_assets"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Number_of_available_flexibilities"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Number_of_overloads"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Objective"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Observation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Operator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Optimisation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#P_or"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Physical_grid_characteristics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Power_flow"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Powerline"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Powerline_overload_issue"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Powerline_recommanded_action"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Profile"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Q_or"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Recommanded_action"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Redispatching"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Renewable_energy_share"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Request_function"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Rho"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Safety"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Senior_profile"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Set_line_status"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Set_topo_vect"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Similar_situation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Simulation_step"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Situation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Solar_generator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Storage"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Substation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Switch_line_status"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Thermal_generator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Time_stamp"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Topo_vect"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Transformer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#V_or"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Voltage"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Wind_generator"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#achives"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#bearer_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_goal"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_input"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_measurement"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_measurement_unit"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_output"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_part"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_participant"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_profile"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_quality"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_value_specification"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#has_weights"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_about"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_associated_with"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_goal_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_input_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_measurement_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_output_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_part_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_quality_measurement_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_quality_of"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_realised_by"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#realises"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#requests"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_final_gen_p_value"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_final_value"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_final_value_gen_q"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_initial_value"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_initial_value_gen_q"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_intial_gen_p_value"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_value"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#acronym"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#status"/>
+    </Declaration>
+    <Declaration>
+        <Datatype IRI="#List_float"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#Context"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Observation"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Similar_situation"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#is_about"/>
+                <Class IRI="#Issue_alert"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Node"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_measurement"/>
+                <Class IRI="#Voltage"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Generator"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Load"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Powerline"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Observation"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Event"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Observation"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Powerline_overload_issue"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Issue_alert"/>
+            <ObjectUnionOf>
+                <ObjectIntersectionOf>
+                    <Class IRI="#Issue_alert"/>
+                    <ObjectSomeValuesFrom>
+                        <ObjectProperty IRI="#has_measurement"/>
+                        <ObjectIntersectionOf>
+                            <Class IRI="#Rho"/>
+                            <DataSomeValuesFrom>
+                                <DataProperty IRI="#has_value"/>
+                                <DatatypeRestriction>
+                                    <Datatype abbreviatedIRI="xsd:float"/>
+                                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minExclusive">
+                                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#float">1.0</Literal>
+                                    </FacetRestriction>
+                                </DatatypeRestriction>
+                            </DataSomeValuesFrom>
+                        </ObjectIntersectionOf>
+                    </ObjectSomeValuesFrom>
+                </ObjectIntersectionOf>
+                <ObjectUnionOf>
+                    <ObjectIntersectionOf>
+                        <Class IRI="#Max_overload"/>
+                        <DataSomeValuesFrom>
+                            <DataProperty IRI="#has_value"/>
+                            <DatatypeRestriction>
+                                <Datatype abbreviatedIRI="xsd:float"/>
+                                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minExclusive">
+                                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#float">1.0</Literal>
+                                </FacetRestriction>
+                            </DatatypeRestriction>
+                        </DataSomeValuesFrom>
+                    </ObjectIntersectionOf>
+                    <ObjectIntersectionOf>
+                        <Class IRI="#Number_of_overloads"/>
+                        <DataSomeValuesFrom>
+                            <DataProperty IRI="#has_value"/>
+                            <DatatypeRestriction>
+                                <Datatype abbreviatedIRI="xsd:float"/>
+                                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minExclusive">
+                                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#float">0.0</Literal>
+                                </FacetRestriction>
+                            </DatatypeRestriction>
+                        </DataSomeValuesFrom>
+                    </ObjectIntersectionOf>
+                </ObjectUnionOf>
+            </ObjectUnionOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Powerline_recommanded_action"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Recommanded_action"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#is_about"/>
+                <Class IRI="#Powerline"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#is_associated_with"/>
+                <Class IRI="#Powerline_overload_issue"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Substation"/>
+        <ObjectUnionOf>
+            <ObjectIntersectionOf>
+                <Class IRI="#Generator"/>
+                <Class IRI="#Load"/>
+                <ObjectSomeValuesFrom>
+                    <ObjectProperty IRI="#has_part"/>
+                    <Class IRI="#Powerline"/>
+                </ObjectSomeValuesFrom>
+            </ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#has_part"/>
+                <Class IRI="#Node"/>
+            </ObjectSomeValuesFrom>
+        </ObjectUnionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#A_or"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#A_or"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#A_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#A_unit_label"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000003"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_realised_by"/>
+            <Class IRI="#Operator"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_battery"/>
+        <Class IRI="#Action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_do_nothing"/>
+        <Class IRI="#Action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_prod"/>
+        <Class IRI="#Action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_prod"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Load"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_topo"/>
+        <Class IRI="#Action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Action_topo"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <ObjectIntersectionOf>
+                <Class IRI="#Powerline"/>
+                <Class IRI="#Substation"/>
+            </ObjectIntersectionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Atypic_observation"/>
+        <Class IRI="#Observation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Available_margins_for_dispatching"/>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Available_margins_for_dispatching"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Optimisation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bus"/>
+        <Class IRI="#Substation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bus_level_modification"/>
+        <Class IRI="#Action_topo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Comfort"/>
+        <Class IRI="#Goal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Comfort"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Operator"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Context"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000300"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Critical_observation"/>
+        <Class IRI="#Observation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Curtailment"/>
+        <Class IRI="#Action_prod"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decrease_energy_losses_objective"/>
+        <Class IRI="#Increase_grid_optimisation_objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decrease_nb_actions_objective"/>
+        <Class IRI="#Increase_operator_confort_objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decrease_nb_overloads"/>
+        <Class IRI="#Make_grid_safe_objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decreasing_losses"/>
+        <Class IRI="#Request_function"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decreasing_nb_actions"/>
+        <Class IRI="#Request_function"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decreasing_nb_overloads"/>
+        <Class IRI="#Request_function"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Decreasing_operator_workload"/>
+        <Class IRI="#Request_function"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Distance_from_reference_topology"/>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Distance_from_reference_topology"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid_topology"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Distance_from_reference_topology"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Comfort"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000027"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Electrical_grid_component"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_area"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000006"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_area"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <ObjectIntersectionOf>
+                <Class IRI="#Powerline"/>
+                <Class IRI="#Substation"/>
+            </ObjectIntersectionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_component"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000030"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000032"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_system"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000027"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_system"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Electrical_grid_area"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_topology"/>
+        <Class IRI="http://purl.obolibrary.org/obo/PATO_0001241"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Electrical_grid_topology"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Energy_losses"/>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Energy_losses"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Optimisation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Event"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Explanation"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000300"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Final_situation"/>
+        <Class IRI="#Situation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Forecast"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_p"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_p"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#MW_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_q"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_q"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#Mva_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_v"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gen_v"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#KV_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Generator"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Goal"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000005"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_region"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000006"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_region"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <ObjectIntersectionOf>
+                <Class IRI="#Powerline"/>
+                <Class IRI="#Substation"/>
+            </ObjectIntersectionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_state"/>
+        <Class IRI="#Observation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_state"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Electrical_grid_state_measurement_datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_state"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Line_status"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Grid_state"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Topo_vect"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Human"/>
+        <Class IRI="#Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hydro_generator"/>
+        <Class IRI="#Generator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Increase_grid_optimisation_objective"/>
+        <Class IRI="#Objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Increase_operator_confort_objective"/>
+        <Class IRI="#Objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Initial_situation"/>
+        <Class IRI="#Situation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Is_in_overload"/>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Is_in_overload"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Safety"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Issue_alert"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000027"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Junior_profile"/>
+        <Class IRI="#Profile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KPI_datum"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000109"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KPI_datum"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Grid_state"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KPI_datum"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_measurement_of"/>
+            <Class IRI="#Goal"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KV_unit_label"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000003"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Line_level_modification"/>
+        <Class IRI="#Action_topo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Line_status"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Line_status"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Powerline"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#List_of_actions"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#List_recommanded_actions"/>
+        <Class IRI="#List_of_actions"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load_p"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load_p"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#MW_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load_q"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load_q"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#Mva_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Load_v"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Loss_of_line"/>
+        <Class IRI="#Event"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MW_unit_label"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000003"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Machine"/>
+        <Class IRI="#Operator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Maintenance"/>
+        <Class IRI="#Event"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Make_grid_safe_objective"/>
+        <Class IRI="#Objective"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Max_overload"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Max_overload"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Safety"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mva_unit_label"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000003"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Node"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Normal_observation"/>
+        <Class IRI="#Observation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Normal_powerline"/>
+        <Class IRI="#Powerline"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Nuclear_generator"/>
+        <Class IRI="#Generator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_actions"/>
+        <Class IRI="http://purl.obolibrary.org/obo/APOLLO_SV_00000032"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_actions"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_actions"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Action"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_actions"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Comfort"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_assets"/>
+        <Class IRI="http://purl.obolibrary.org/obo/APOLLO_SV_00000032"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_assets"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_assets"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Comfort"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_flexibilities"/>
+        <Class IRI="http://purl.obolibrary.org/obo/APOLLO_SV_00000032"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_flexibilities"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_available_flexibilities"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Optimisation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_overloads"/>
+        <Class IRI="http://purl.obolibrary.org/obo/APOLLO_SV_00000032"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_overloads"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Number_of_overloads"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Safety"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Objective"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000005"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Observation"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000030"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Operator"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000030"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Operator"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_profile"/>
+            <Class IRI="#Profile"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Operator"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_weights"/>
+            <Class IRI="#Goal"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Operator"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#requests"/>
+            <Class IRI="#Request_function"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Optimisation"/>
+        <Class IRI="#Goal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Optimisation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#P_or"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#P_or"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#MW_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Physical_grid_characteristics"/>
+        <Class IRI="http://purl.obolibrary.org/obo/PATO_0001241"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Physical_grid_characteristics"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Power_flow"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000015"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Powerline"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Powerline"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_measurement"/>
+            <Class IRI="#Power_flow"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Powerline_overload_issue"/>
+        <Class IRI="#Issue_alert"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Powerline_recommanded_action"/>
+        <Class IRI="#Recommanded_action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Profile"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000023"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Q_or"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Q_or"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#Mva_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Qualitative_measurement_datum_KPI"/>
+        <Class IRI="#KPI_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+        <Class IRI="#KPI_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Recommanded_action"/>
+        <Class IRI="#Action"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Redispatching"/>
+        <Class IRI="#Action_prod"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Renewable_energy_share"/>
+        <Class IRI="#Quantitative_measurement_datum_KPI"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Renewable_energy_share"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_quality_measurement_of"/>
+            <Class IRI="#Comfort"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Request_function"/>
+        <Class IRI="http://purl.obolibrary.org/obo/BFO_0000034"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Request_function"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#achives"/>
+            <Class IRI="#Goal"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Request_function"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#bearer_of"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Rho"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Safety"/>
+        <Class IRI="#Goal"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Safety"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Senior_profile"/>
+        <Class IRI="#Profile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Set_line_status"/>
+        <Class IRI="#Action_topo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Set_topo_vect"/>
+        <Class IRI="#Action_topo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Similar_situation"/>
+        <Class IRI="#Situation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Simulation_step"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000009"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Situation"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000584"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Situation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#KPI_datum"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Situation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Simulation_step"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Situation"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#has_part"/>
+            <Class IRI="#Time_stamp"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Solar_generator"/>
+        <Class IRI="#Generator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Storage"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Substation"/>
+        <Class IRI="#Electrical_grid_component"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Switch_line_status"/>
+        <Class IRI="#Action_topo"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Thermal_generator"/>
+        <Class IRI="#Generator"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Time_stamp"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000009"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Topo_vect"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Topo_vect"/>
+        <ObjectAllValuesFrom>
+            <ObjectProperty IRI="#is_about"/>
+            <Class IRI="#Electrical_grid"/>
+        </ObjectAllValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Transformer"/>
+        <Class IRI="#Powerline"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#V_or"/>
+        <Class IRI="#Electrical_grid_state_measurement_datum"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#V_or"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.obolibrary.org/obo/IAO_0000039"/>
+            <Class IRI="#KV_unit_label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Voltage"/>
+        <Class IRI="http://purl.obolibrary.org/obo/IAO_0000003"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Wind_generator"/>
+        <Class IRI="#Generator"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#has_measurement_unit"/>
+        <ObjectProperty IRI="#has_value_specification"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_goal"/>
+        <ObjectProperty IRI="#is_goal_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_input"/>
+        <ObjectProperty IRI="#is_input_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_measurement"/>
+        <ObjectProperty IRI="#is_measurement_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_output"/>
+        <ObjectProperty IRI="#is_output_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_part"/>
+        <ObjectProperty IRI="#is_part_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#has_quality"/>
+        <ObjectProperty IRI="#is_quality_of"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#is_realised_by"/>
+        <ObjectProperty IRI="#realises"/>
+    </InverseObjectProperties>
+    <SymmetricObjectProperty>
+        <ObjectProperty IRI="#is_associated_with"/>
+    </SymmetricObjectProperty>
+    <TransitiveObjectProperty>
+        <ObjectProperty IRI="#has_part"/>
+    </TransitiveObjectProperty>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_final_gen_p_value"/>
+        <DataProperty IRI="#has_final_value"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_final_value"/>
+        <DataProperty IRI="#has_value"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_final_value_gen_q"/>
+        <DataProperty IRI="#has_final_value"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_initial_value"/>
+        <DataProperty IRI="#has_value"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_initial_value_gen_q"/>
+        <DataProperty IRI="#has_initial_value"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_intial_gen_p_value"/>
+        <DataProperty IRI="#has_initial_value"/>
+    </SubDataPropertyOf>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#has_value"/>
+    </FunctionalDataProperty>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#A_or</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#A_or</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#A_or</IRI>
+        <Literal>Le courant à l&apos;extrémité d&apos;origine de chaque ligne électrique (exprimé en A).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#A_or</IRI>
+        <Literal xml:lang="fr">intensité à l&apos;origine de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Action</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Action</IRI>
+        <Literal xml:lang="fr">Modification d&apos;un composant du réseau électrique pour accomplir un objectif donné.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Action</IRI>
+        <Literal xml:lang="fr">Action</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Action</IRI>
+        <Literal>Consider the temporal aspects.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Action</IRI>
+        <Literal>See:https://grid2op.readthedocs.io/en/latest/action.html#main-action-properties</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Action_battery</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Action_battery</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Action_battery</IRI>
+        <Literal xml:lang="fr">Action pouvant charger ou décharger une batterie</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Action_battery</IRI>
+        <Literal xml:lang="fr">Action sur une batterie</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Action_do_nothing</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Action_do_nothing</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Action_do_nothing</IRI>
+        <Literal>Action_rien_faire</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Action_prod</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Action_prod</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Action_prod</IRI>
+        <Literal xml:lang="fr">Action agissant sur un moyen de production : écrettement, redispatching, ...</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Action_prod</IRI>
+        <Literal xml:lang="fr">Action sur un moyen de production</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Action_prod</IRI>
+        <Literal xml:lang="fr">Action sur un moyen de production</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Action_topo</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Action_topo</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Action_topo</IRI>
+        <Literal xml:lang="fr">Action sur les composants de type ligne, transformateur et bus servant à ré-aiguiller les flux électriques.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Action_topo</IRI>
+        <Literal xml:lang="fr">Action topologique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Atypic_observation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Atypic_observation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Atypic_observation</IRI>
+        <Literal xml:lang="fr">Observation peu rencontrée dans l&apos;historique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Atypic_observation</IRI>
+        <Literal xml:lang="fr">Observation critique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Available_margins_for_dispatching</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Available_margins_for_dispatching</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Available_margins_for_dispatching</IRI>
+        <Literal xml:lang="fr">Indicateur quantitatif</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Bus</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Bus</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Bus</IRI>
+        <Literal xml:lang="fr">Composant du réseau électrique servant de point de connexion physique entre différents ouvrages (lignes et transformateur)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Bus</IRI>
+        <Literal xml:lang="fr">Jeu de barres</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Comfort</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Comfort</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Comfort</IRI>
+        <Literal xml:lang="fr">Objectif orienté utilisateur.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Comfort</IRI>
+        <Literal xml:lang="fr">Confort</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Context</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Context</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Context</IRI>
+        <Literal xml:lang="fr">Contexte associé à un événement. Il peut s&apos;agir de KPIs, d&apos;observations choisies</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Context</IRI>
+        <Literal xml:lang="fr">Contexte</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Critical_observation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Critical_observation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Critical_observation</IRI>
+        <Literal>Observation importante pouvant mener par exemple à un événement réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Critical_observation</IRI>
+        <Literal xml:lang="fr">Observation critique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decrease_energy_losses_objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decrease_energy_losses_objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decrease_energy_losses_objective</IRI>
+        <Literal xml:lang="fr">Objectif de réduction des pertes électriques pour accomplir l&apos;objectif de type optimisation du réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Decrease_energy_losses_objective</IRI>
+        <Literal xml:lang="fr">Objectif de décroissance des pertes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decrease_nb_actions_objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decrease_nb_actions_objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decrease_nb_actions_objective</IRI>
+        <Literal xml:lang="fr">Objectif de mise en oeuvre d&apos;un nombre d&apos;actions réduite pour accomplir l&apos;objectif de confort de l&apos;utilisateur.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Decrease_nb_actions_objective</IRI>
+        <Literal xml:lang="fr">Objectif de réduction du nombre d&apos;actions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decrease_nb_overloads</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decrease_nb_overloads</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decrease_nb_overloads</IRI>
+        <Literal xml:lang="fr">Objectif de réduction du nombre de surcharges pour accomplir l&apos;objectif de sécurité</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Decrease_nb_overloads</IRI>
+        <Literal xml:lang="fr">Objectif de réduction du nombre de surcharges</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decreasing_losses</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decreasing_losses</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decreasing_losses</IRI>
+        <Literal xml:lang="fr">Objectif de décroissance des pertes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decreasing_nb_actions</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decreasing_nb_actions</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decreasing_nb_actions</IRI>
+        <Literal xml:lang="fr">Objectif de réduction du nombre d&apos;actions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decreasing_nb_overloads</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decreasing_nb_overloads</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decreasing_nb_overloads</IRI>
+        <Literal xml:lang="fr">Objectif de réduction du nombre de surcharges</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Decreasing_operator_workload</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Decreasing_operator_workload</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Decreasing_operator_workload</IRI>
+        <Literal xml:lang="fr">Réduction de la charge de l&apos;opérateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Distance_from_reference_topology</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Distance_from_reference_topology</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Distance_from_reference_topology</IRI>
+        <Literal xml:lang="fr">Distance à la topologie de référence</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Electrical_grid</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Electrical_grid</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Electrical_grid</IRI>
+        <Literal xml:lang="fr">Ensemble d&apos;infrastructures énergétiques permettant d&apos;acheminer l&apos;électricité des centres de production (générateur) vers les consommateurs.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid</IRI>
+        <Literal xml:lang="fr">Réseau électrique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Electrical_grid_area</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Electrical_grid_area</IRI>
+        <Literal xml:lang="fr">Périmètre géographique réduit du réseau électrique complet</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid_area</IRI>
+        <Literal xml:lang="fr">Zone du réseau électrique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Electrical_grid_component</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Electrical_grid_component</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid_component</IRI>
+        <Literal xml:lang="fr">Composant du réseau électrique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid_component</IRI>
+        <Literal xml:lang="fr">Element matériel du réseau, aussi appelé infrastructure</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Electrical_grid_state_measurement_datum</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Electrical_grid_state_measurement_datum</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Electrical_grid_state_measurement_datum</IRI>
+        <Literal xml:lang="fr">Mesure d&apos;une grandeur sur le réseau électrique (par opposition à estimation)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid_state_measurement_datum</IRI>
+        <Literal xml:lang="fr">Mesure</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Electrical_grid_system</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Electrical_grid_system</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Electrical_grid_system</IRI>
+        <Literal xml:lang="fr">Système électrique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Energy_losses</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Energy_losses</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Energy_losses</IRI>
+        <Literal xml:lang="fr">Pertes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Event</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Event</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Event</IRI>
+        <Literal xml:lang="fr">Evenement</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Explanation</IRI>
+        <Literal xml:lang="fr">Explication</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Explanation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Explanation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Final_situation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Final_situation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Final_situation</IRI>
+        <Literal xml:lang="fr">Situation finale</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Forecast</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Forecast</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Forecast</IRI>
+        <Literal xml:lang="fr">Prévision</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Gen_p</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Gen_p</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Gen_p</IRI>
+        <Literal xml:lang="fr">La valeur de production active de chaque générateur (exprimée en MW).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Gen_p</IRI>
+        <Literal xml:lang="fr">Puissance active du générateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Gen_q</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Gen_q</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Gen_q</IRI>
+        <Literal xml:lang="fr">La valeur de production réactive de chaque générateur (exprimée en MVar).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Gen_q</IRI>
+        <Literal xml:lang="fr">Puissance réactive du générateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Gen_v</IRI>
+        <Literal xml:lang="fr">Tension au générateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Gen_v</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Gen_v</IRI>
+        <Literal xml:lang="fr">Le module de la tension du bus auquel chaque générateur est connecté (exprimée en kV).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <IRI>#Gen_v</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Generator</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Generator</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Generator</IRI>
+        <Literal xml:lang="fr">Générateur produisant de l&apos;électricité</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Generator</IRI>
+        <Literal xml:lang="fr">Générateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Goal</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Goal</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Goal</IRI>
+        <Literal xml:lang="fr">Objectif que l&apos;on cherche à résoudre par l&apos;application d&apos;actions.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Goal</IRI>
+        <Literal xml:lang="fr">Goal</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Grid_region</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Grid_region</IRI>
+        <Literal xml:lang="fr">Une région est un type de zone du réseau électrique.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Grid_region</IRI>
+        <Literal xml:lang="fr">Région du réseau électrique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Grid_state</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Grid_state</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Grid_state</IRI>
+        <Literal xml:lang="fr">Etat du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Grid_state</IRI>
+        <Literal xml:lang="fr">Etat du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Human</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Human</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Human</IRI>
+        <Literal xml:lang="fr">Agent humain agissant sur le réseau. Définit l&apos;origine d&apos;une recommandation comme venant de l&apos;humain.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Human</IRI>
+        <Literal xml:lang="fr">Humain</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Increase_grid_optimisation_objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Increase_grid_optimisation_objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Increase_grid_optimisation_objective</IRI>
+        <Literal xml:lang="fr">Type d&apos;objectif associé à l&apos;optimisation du réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Increase_grid_optimisation_objective</IRI>
+        <Literal xml:lang="fr">Objectif d&apos;optimisation du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Increase_operator_confort_objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Increase_operator_confort_objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Increase_operator_confort_objective</IRI>
+        <Literal xml:lang="fr">Type d&apos;objectif associé à l&apos;amélioration du confort de l&apos;utilisateur.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Increase_operator_confort_objective</IRI>
+        <Literal xml:lang="fr">Objectif d&apos;améloration du confort de l&apos;opérateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Initial_situation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Initial_situation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Initial_situation</IRI>
+        <Literal xml:lang="fr">Situation initiale</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Issue_alert</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Issue_alert</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Issue_alert</IRI>
+        <Literal>Problème rencontré sur le réseau électrique.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Issue_alert</IRI>
+        <Literal xml:lang="fr">Problème</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Junior_profile</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Junior_profile</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Junior_profile</IRI>
+        <Literal xml:lang="fr">Opérateur junior, nouveau dans la conduite du réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Junior_profile</IRI>
+        <Literal xml:lang="fr">Profil junior</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#KPI_datum</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#KPI_datum</IRI>
+        <Literal xml:lang="fr">Indicateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <IRI>#KPI_datum</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Line_status</IRI>
+        <Literal>Gives the status (connected / disconnected) for every powerline (True at position i means the powerline i is connected)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Line_status</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Line_status</IRI>
+        <Literal xml:lang="fr">Statut de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <IRI>#Line_status</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#List_of_actions</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#List_of_actions</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#List_of_actions</IRI>
+        <Literal xml:lang="fr">Liste d&apos;actions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#List_recommanded_actions</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#List_recommanded_actions</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#List_recommanded_actions</IRI>
+        <Literal xml:lang="fr">Liste d&apos;actions recommandées</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Load</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Load</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Load</IRI>
+        <Literal xml:lang="fr">Charge consommant de l&apos;électricité</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Load</IRI>
+        <Literal xml:lang="fr">Charge</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Load_p</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Load_p</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Load_p</IRI>
+        <Literal xml:lang="fr">The active load value of each consumption (expressed in MW).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Load_p</IRI>
+        <Literal xml:lang="fr">Puissance active de la charge</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Load_q</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Load_q</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Load_q</IRI>
+        <Literal xml:lang="fr">La valeur de la puissance réactive de la charge de chaque consommation (exprimée en MVar).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Load_q</IRI>
+        <Literal xml:lang="fr">Puissance réactive de la charge</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Load_v</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Load_v</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Loss_of_line</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Loss_of_line</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Machine</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Machine</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Machine</IRI>
+        <Literal xml:lang="fr">Agent machine agissant sur le réseau. Définit l&apos;origine d&apos;une recommandation comme venant d&apos;un processus machine (IA par exemple).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Machine</IRI>
+        <Literal xml:lang="fr">Machine</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Maintenance</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Maintenance</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Make_grid_safe_objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Make_grid_safe_objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Make_grid_safe_objective</IRI>
+        <Literal xml:lang="fr">Type d&apos;objectif associé à la sécurisation du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Make_grid_safe_objective</IRI>
+        <Literal xml:lang="fr">Objectif de sécurisation du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Node</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Node</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Node</IRI>
+        <Literal xml:lang="fr">Point de connexion électrique entre plusieurs lignes ou transformateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Node</IRI>
+        <Literal xml:lang="fr">Nœud</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Normal_observation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Normal_observation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Normal_observation</IRI>
+        <Literal xml:lang="fr">Observation fréquemment obtenue dans l&apos;historique</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Normal_observation</IRI>
+        <Literal xml:lang="fr">Observation normale</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Number_of_actions</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Number_of_actions</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Number_of_actions</IRI>
+        <Literal>Nombre d&apos;actions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Number_of_actions</IRI>
+        <Literal xml:lang="fr">Nombre d&apos;actions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Number_of_available_assets</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Number_of_available_assets</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Number_of_available_assets</IRI>
+        <Literal xml:lang="fr">Nombre d&apos;infrastructures disponibles pour réaliser une action.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Number_of_available_assets</IRI>
+        <Literal xml:lang="fr">Nombre d&apos;élements disponibles</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Number_of_available_flexibilities</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Number_of_available_flexibilities</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Number_of_available_flexibilities</IRI>
+        <Literal xml:lang="fr">Nombre de flexibilités disponibles</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Number_of_available_flexibilities</IRI>
+        <Literal xml:lang="fr">Nombre de flexibilités disponibles</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Number_of_overloads</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Number_of_overloads</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Number_of_overloads</IRI>
+        <Literal xml:lang="fr">Nombre de lignes en surcharge (rho supérieur à 1).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Number_of_overloads</IRI>
+        <Literal>Nombre de surcharges</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Objective</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Objective</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Objective</IRI>
+        <Literal xml:lang="fr">Objectif</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Observation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Observation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Observation</IRI>
+        <Literal xml:lang="fr">Ensemble d&apos;éléments observables sur le réseau à un instant donné.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Observation</IRI>
+        <Literal xml:lang="fr">Observation Grid2op</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Operator</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Operator</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Operator</IRI>
+        <Literal xml:lang="fr">Type d&apos;agent réalisant la conduite du réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Operator</IRI>
+        <Literal xml:lang="fr">Opérateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Optimisation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Optimisation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Optimisation</IRI>
+        <Literal xml:lang="fr">Une fois l&apos;objectif de sécurité atteint, l&apos;optimisation du réseau consiste à alller au plus près des marges pour par exemple minimiser les pertes électriques, augmenter la réserve de puissance réactive.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Optimisation</IRI>
+        <Literal xml:lang="fr">Optimisation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#P_or</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#P_or</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#P_or</IRI>
+        <Literal xml:lang="fr">La puissance active à l&apos;origine de chaque ligne électrique (exprimé en MW).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#P_or</IRI>
+        <Literal xml:lang="fr">Puissance active</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Physical_grid_characteristics</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Physical_grid_characteristics</IRI>
+        <Literal xml:lang="fr">Observations décrivant d&apos;un point de vue physique le réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Physical_grid_characteristics</IRI>
+        <Literal xml:lang="fr">Caractéristiques physiques</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#status"/>
+        <IRI>#Physical_grid_characteristics</IRI>
+        <Literal>Deprecated</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Power_flow</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Power_flow</IRI>
+        <Literal xml:lang="fr">Calcul de répartition</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Powerline</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Powerline</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Powerline</IRI>
+        <Literal xml:lang="fr">Infrastructure principale du réseau électrique reliant deux noeuds du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Powerline</IRI>
+        <Literal xml:lang="fr">Ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Powerline_overload_issue</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Powerline_overload_issue</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Powerline_overload_issue</IRI>
+        <Literal xml:lang="fr">Problème de surcharge de ligne(s)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Powerline_recommanded_action</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Powerline_recommanded_action</IRI>
+        <Literal>27/03/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Powerline_recommanded_action</IRI>
+        <Literal xml:lang="fr">Action, agissant sur une ligne, proposée pour accomplir un objectif donné.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Profile</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Profile</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Profile</IRI>
+        <Literal xml:lang="fr">Profil d&apos;expertise de l&apos;opérateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Profile</IRI>
+        <Literal xml:lang="fr">Profile</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Q_or</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Q_or</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Q_or</IRI>
+        <Literal xml:lang="fr">La puissance réactive à l&apos;extrémité d&apos;origine de chaque ligne électrique (exprimé en MVar).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Q_or</IRI>
+        <Literal xml:lang="fr">Puissance active</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Qualitative_measurement_datum_KPI</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Qualitative_measurement_datum_KPI</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Qualitative_measurement_datum_KPI</IRI>
+        <Literal>Indicateur qualitatif</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Quantitative_measurement_datum_KPI</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Quantitative_measurement_datum_KPI</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Quantitative_measurement_datum_KPI</IRI>
+        <Literal xml:lang="fr">Indicateur quantitatif</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Recommanded_action</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Recommanded_action</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Recommanded_action</IRI>
+        <Literal xml:lang="fr">Action proposée pour accomplir un objectif donné.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Recommanded_action</IRI>
+        <Literal xml:lang="fr">Action recommandée</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Renewable_energy_share</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Renewable_energy_share</IRI>
+        <Literal xml:lang="fr">Pourcentage d&apos;énergie renouvelable produite sur le réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Renewable_energy_share</IRI>
+        <Literal xml:lang="fr">Proportion de renouvelable</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Request_function</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Request_function</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Rho</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Rho</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Rho</IRI>
+        <Literal xml:lang="fr">Charge de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Rho</IRI>
+        <Literal>The capacity of each powerline. It is defined at the observed current flow divided by the thermal limit of each powerline (no unit).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Safety</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Safety</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Safety</IRI>
+        <Literal xml:lang="fr">Objectif principal à accomplir sur le réseau assurant le réseau est exploité dans ses limites, notamment sans que les lignes entrent en surcharge.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Safety</IRI>
+        <Literal xml:lang="fr">Sécurité</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Senior_profile</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Senior_profile</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Senior_profile</IRI>
+        <Literal xml:lang="fr">Opérateur expert, aguerri à la conduite du réseau.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Senior_profile</IRI>
+        <Literal xml:lang="fr">Profil expert</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Set_line_status</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Set_line_status</IRI>
+        <Literal>23/03/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Set_line_status</IRI>
+        <Literal xml:lang="fr">Action menée sur les lignes servant à ré-aiguiller les flux électriques. Il s&apos;agit d&apos;une action Grid2op définissant l&apos;état (connecté ou déconnecté) des lignes.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Set_line_status</IRI>
+        <Literal xml:lang="fr">Définition de l&apos;état de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Set_topo_vect</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Set_topo_vect</IRI>
+        <Literal>23/03/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Set_topo_vect</IRI>
+        <Literal xml:lang="fr">Il s&apos;agit d&apos;une action Grid2op définissant la connectivité des lignes aux différents bus de leurs postes origine et extrémité.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Set_topo_vect</IRI>
+        <Literal xml:lang="fr">Définition de la topologie du réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Similar_situation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Similar_situation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Similar_situation</IRI>
+        <Literal xml:lang="fr">Situation similaire</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Situation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Situation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Situation</IRI>
+        <Literal xml:lang="fr">Ensemble des informations définissant l&apos;état du réseau à un instant donné.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Situation</IRI>
+        <Literal xml:lang="fr">Situation de réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator"/>
+        <IRI>#Storage</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Storage</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Storage</IRI>
+        <Literal xml:lang="fr">Batterie ayant une capacité de stockage électrique sur le réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Storage</IRI>
+        <Literal xml:lang="fr">Batterie</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Substation</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Substation</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Substation</IRI>
+        <Literal xml:lang="fr">Poste électrique, lieu de connexion de lignes électriques dans lequel</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Substation</IRI>
+        <Literal xml:lang="fr">Poste</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#Switch_line_status</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Switch_line_status</IRI>
+        <Literal>24/03/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Switch_line_status</IRI>
+        <Literal xml:lang="fr">Il s&apos;agit d&apos;une action Grid2op modifiant ou non l&apos;état (de connecté à déconnecté, de déconnecté à connecté) des lignes.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Switch_line_status</IRI>
+        <Literal xml:lang="fr">Changement de l&apos;état de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Topo_vect</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Topo_vect</IRI>
+        <Literal xml:lang="fr">For each object (load, generator, ends of a powerline) it gives on which bus this object is connected in its substation.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Topo_vect</IRI>
+        <Literal xml:lang="fr">Topologie vectorielle</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <IRI>#Topo_vect</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator"/>
+        <IRI>#Transformer</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Transformer</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#Transformer</IRI>
+        <Literal xml:lang="fr">Composant du réseau électrique pouvant augmenter ou baisser les niveaux de tension sur le réseau</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#Transformer</IRI>
+        <Literal xml:lang="fr">Transformateur</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor"/>
+        <IRI>#V_or</IRI>
+        <Literal>Laure CROCHEPIERRE</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#V_or</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description"/>
+        <IRI>#V_or</IRI>
+        <Literal xml:lang="fr">Le module de la tension au niveau du bus auquel l&apos;extrémité d&apos;origine de chaque ligne électrique est connectée (exprimée en kV).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/title"/>
+        <IRI>#V_or</IRI>
+        <Literal xml:lang="fr">Tension à l&apos;origine de la ligne</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/date"/>
+        <IRI>#Voltage</IRI>
+        <Literal>30/01/2024</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi -->
+

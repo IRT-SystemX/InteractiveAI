@@ -10,6 +10,13 @@ const graphStore = useGraphStore()
 
 const graphHTML = ref<HTMLDivElement>()
 
+watch(
+  () => graphStore.data,
+  (value) => {
+    graphStore.setup(value!, graphHTML.value!)
+  }
+)
+
 onMounted(() => {
   graphStore.setup(
     {
@@ -19,13 +26,6 @@ onMounted(() => {
     graphHTML.value!
   )
 })
-
-watch(
-  () => graphStore.data,
-  (value) => {
-    graphStore.setup(value!, graphHTML.value!)
-  }
-)
 </script>
 <style lang="scss">
 #cab-graph {

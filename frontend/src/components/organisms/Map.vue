@@ -1,59 +1,64 @@
 <template>
-  <l-map ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
-    <l-tile-layer
+  <LMap ref="map" v-model:zoom="zoom" :center="[47, 2]" :max-bounds-viscosity="0.5">
+    <LTileLayer
       v-for="tileLayer of tileLayers"
       :key="tileLayer"
       :url="tileLayer"
       layer-type="base"
-      name="OpenStreetMap"></l-tile-layer>
-    <l-polyline
+      name="OpenStreetMap" />
+    <LPolyline
       v-for="polyline of mapStore.polylines"
       :key="polyline.id"
-      :color="polyline.options?.color || 'var(--color-primary)'"
+      :color="
+        polyline.options?.color || `var(--color-${criticalityToColor(maxCriticality('ROUTINE'))})`
+      "
       :weight="8"
-      :lat-lngs="polyline.waypoints"></l-polyline>
-    <l-circle-marker
+      :lat-lngs="polyline.waypoints" />
+    <LCircleMarker
       v-for="waypoint of mapStore.waypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
-      color="var(--color-primary)"
+      :color="`var(--color-${criticalityToColor(maxCriticality('ROUTINE'))})`"
       fill-color="#fff"
       :weight="2"
       :fill-opacity="1"
       :radius="8"
-      v-bind="waypoint.options">
-      <l-tooltip
+      v-bind="waypoint.options"
+      @click="waypointClick">
+      <LTooltip
         :options="{
           permanent: waypoint.permanentTooltip,
           direction: 'top',
           offset: [0, waypoint.options?.radius ? -waypoint.options?.radius : -8]
         }">
         {{ waypoint.id }}
-      </l-tooltip>
-    </l-circle-marker>
-    <l-marker
+      </LTooltip>
+    </LCircleMarker>
+    <LMarker
       v-for="waypoint of mapStore.contextWaypoints"
       :key="waypoint.id"
       :lat-lng="[waypoint.lat, waypoint.lng]"
-      :z-index-offset="10000">
-      <l-tooltip
+      :z-index-offset="10000"
+      @click="contextClick">
+      <LTooltip
         :options="{ permanent: waypoint.permanentTooltip, direction: 'top', offset: [0, -12] }">
         {{ waypoint.id }}
-      </l-tooltip>
-      <l-icon
+      </LTooltip>
+      <LIcon
         :icon-url="`/img/icons/map_markers/${$route.params.entity}.svg`"
         :icon-size="[32, 32]"
         class="context-marker"
-        :class-name="'context-marker ' + waypoint.severity"></l-icon>
-    </l-marker>
-  </l-map>
+        :class-name="'context-marker ' + waypoint.severity" />
+    </LMarker>
+    <LControlScale />
+  </LMap>
   <label class="cab-map-lockview p-1 flex flex-wrap">
     <input v-model="lockView" type="checkbox" style="display: none" @change="toggleLockView" />
     <div class="ml-1">
       <LocateFixed v-if="lockView" />
       <LocateOff v-else />
     </div>
-    {{ lockView ? $t('map.lockview') : $t('map.no-lockview') }}
+    {{ lockView ? $t('map.lockview') : $t('map.no_lockview') }}
   </label>
 </template>
 <script setup lang="ts">
@@ -61,6 +66,7 @@ import 'leaflet/dist/leaflet.css'
 
 import {
   LCircleMarker,
+  LControlScale,
   LIcon,
   LMap,
   LMarker,
@@ -72,21 +78,37 @@ import { latLngBounds } from 'leaflet'
 import { LocateFixed, LocateOff } from 'lucide-vue-next'
 import { onUnmounted, ref, watch } from 'vue'
 
+import { useAppStore } from '@/stores/app'
 import { useMapStore } from '@/stores/components/map'
-
-const mapStore = useMapStore()
-
-const lockView = ref(true)
-const zoom = ref(6)
-
-const map = ref()
+import type { Waypoint } from '@/types/components/map'
+import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
 withDefaults(
   defineProps<{
     tileLayers?: string[]
+    contextClick?: (waypoint: Waypoint) => void
+    waypointClick?: (waypoint: Waypoint) => void
   }>(),
-  { tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'] }
+  {
+    tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'],
+    contextClick: undefined,
+    waypointClick: undefined
+  }
 )
+
+const mapStore = useMapStore()
+const appStore = useAppStore()
+
+const lockView = ref(true)
+const zoom = ref(6)
+const map = ref()
+
+watch(mapStore.contextWaypoints, () => {
+  toggleLockView()
+})
+watch(appStore.panels, () => {
+  map.value.leafletObject.invalidateSize()
+})
 
 function toggleLockView() {
   if (!lockView.value) {
@@ -97,10 +119,6 @@ function toggleLockView() {
     })
   }
 }
-
-watch(mapStore.contextWaypoints, () => {
-  toggleLockView()
-})
 
 onUnmounted(() => {
   mapStore.reset()

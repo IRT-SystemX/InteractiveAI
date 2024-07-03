@@ -6,7 +6,6 @@
 </template>
 <script setup lang="ts">
 const value = defineModel<boolean>()
-
 withDefaults(defineProps<{ size?: number }>(), { size: 16 })
 </script>
 <style lang="scss">

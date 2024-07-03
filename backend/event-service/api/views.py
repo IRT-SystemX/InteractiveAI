@@ -3,10 +3,14 @@ import importlib
 from api.exceptions import InvalidUseCase
 from apiflask import APIBlueprint
 from apiflask.views import MethodView
-from cab_common_auth.decorators import (get_use_cases, protected,
-                                        protected_admin)
+from cab_common_auth.decorators import (
+    get_use_cases,
+    protected,
+    protected_admin,
+)
 from settings import logger
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
+from .utils import load_usecases_db
 
 from .models import EventModel, UseCaseModel, db
 from .schemas import EventIn, EventOut, UseCaseIn, UseCaseOut
@@ -139,7 +143,8 @@ class UseCases(MethodView):
             db.session.add(use_case_db)
             db.session.commit()
         except IntegrityError:
-            # If a unique constraint violation occurs, update the existing record
+            # If a unique constraint violation occurs,
+            # update the existing record
             db.session.rollback()
             existing_use_case = UseCaseModel.query.filter_by(
                 name=use_case_db.name
@@ -165,6 +170,34 @@ class UseCase(MethodView):
             return {"error": "Use case not found"}, 404
 
 
+class DeleteDataService(MethodView):
+    @protected_admin
+    def delete(self):
+        from flask import current_app
+
+        use_case_factory = current_app.use_case_factory
+        try:
+            # unregister all use_cases
+            use_case_factory.unregister_all_use_cases()
+            # Delete all records from all models
+            for mapper in db.Model.registry.mappers:
+                model = mapper.class_
+                if hasattr(model, "__tablename__"):
+                    db.session.query(model).delete()
+            db.session.commit()
+            return {"message": "All data deleted successfully"}, 200
+        except OperationalError as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+        except Exception as e:
+            db.session.rollback()
+            load_usecases_db(use_case_factory)
+            return {"error": str(e)}, 500
+
+
+api_bp.add_url_rule(
+    "/delete_all_data", view_func=DeleteDataService.as_view("delete_data")
+)
 api_bp.add_url_rule("/health", view_func=HealthCheck.as_view("health"))
 api_bp.add_url_rule("/event/<event_id>", view_func=Event.as_view("event"))
 api_bp.add_url_rule("/events", view_func=Events.as_view("events"))

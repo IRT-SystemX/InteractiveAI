@@ -1,5 +1,9 @@
 <template>
-  <Avatar v-if="chatbot" :size="200" class="self-center" status="error" />
+  <Avatar
+    v-if="chatbot"
+    :size="200"
+    class="self-center"
+    :status="criticalityToColor(card.data.criticality)" />
   <SpeechBubble position="bottom" arrow="left">
     <slot name="event">
       <i18n-t scope="global" keypath="event.text">
@@ -11,26 +15,23 @@
       </i18n-t>
     </slot>
   </SpeechBubble>
-  <!--<div class="flex flex-center-y">
-    <Button color="secondary" type="button" @click="secondaryAction">
-      {{ $t('event.button.secondary') }}
-    </Button>
-    <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" class="ml-1" />
-  </div>-->
   <div class="flex flex-center-y">
-    <Button type="button" @click="primaryAction">
+    <Button v-if="primaryAction" type="button" @click="primaryAction">
       <slot name="button-primary">
         {{ $t('event.button.primary') }}
       </slot>
     </Button>
-    <Tooltip placement="bottom-end" class="ml-1">
+    <Tooltip
+      v-if="$t('event.tooltip.primary') !== 'event.tooltip.primary' || $slots.tooltip"
+      placement="bottom-end"
+      class="ml-1">
       <template #tooltip>
-        {{ $t('event.tooltip.primary') }}
+        <slot name="tooltip">{{ $t('event.tooltip.primary') }}</slot>
       </template>
       <Info fill="var(--color-grey-600)" stroke="var(--color-background)" :width="20" />
     </Tooltip>
   </div>
-  <div class="flex flex-center-y">
+  <div v-if="secondaryAction" class="flex flex-center-y">
     <Button type="button" color="secondary" @click="secondaryAction">
       <slot name="button-secondary">
         {{ $t('event.button.secondary') }}
@@ -51,7 +52,7 @@ import Avatar from '@/components/atoms/Avatar.vue'
 import Button from '@/components/atoms/Button.vue'
 import SpeechBubble from '@/components/atoms/SpeechBubble.vue'
 import Tooltip from '@/components/atoms/Tooltip.vue'
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import type { Card } from '@/types/cards'
 import { criticalityToColor } from '@/utils/utils'
 
@@ -59,12 +60,14 @@ withDefaults(
   defineProps<{
     chatbot?: boolean
     card: Card
-    primaryAction?: (card?: Card) => void
+    primaryAction?: ((card?: Card) => void) | null
     secondaryAction?: (card?: Card) => void
   }>(),
   {
-    primaryAction: () => eventBus.emit('assistant:tab', 2),
-    secondaryAction: () => {},
+    primaryAction: () => () => {
+      useAppStore().tab.assistant = 2
+    },
+    secondaryAction: undefined,
     chatbot: true
   }
 )

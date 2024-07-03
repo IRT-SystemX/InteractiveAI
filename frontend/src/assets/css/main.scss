@@ -4,6 +4,7 @@
 #app {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
   display: grid;
   grid-template-columns: [main] 1fr;
   grid-template-rows: [navbar] 60px [content] 1fr;
@@ -13,19 +14,6 @@
     color var(--duration),
     background-color var(--duration);
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
   font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -61,8 +49,31 @@
 
 button {
   color: var(--color-text);
+  cursor: pointer;
   border: none;
   background: none;
+}
+
+img {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+progress {
+  outline: 2px solid var(--color-grey-600);
+  border: 2px solid #fff0;
+  border-radius: var(--radius-circular);
+  &::-webkit-progress-bar {
+    background-color: #fff0;
+  }
+  &::-webkit-progress-value {
+    padding: 2px;
+    border-radius: 10px;
+    background-color: var(--color-primary);
+  }
 }
 
 h1,

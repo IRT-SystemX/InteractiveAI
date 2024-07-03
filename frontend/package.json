@@ -1,6 +1,6 @@
 {
   "name": "cab-front",
-  "version": "4.0.6",
+  "version": "4.1.15",
   "private": true,
   "license": "MPL-2.0",
   "type": "module",
@@ -20,7 +20,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "lint:svg": "svgo -rf src public/img",
+    "lint:svg": "svgo -rf public/img & svgo -rf src",
     "format": "prettier --write src/",
     "commit": "commit",
     "prepare": "cd .. && husky frontend/.husky"
@@ -32,6 +32,7 @@
     "axios": "^1.6.2",
     "d3": "^7.8.5",
     "date-fns": "^3.3.1",
+    "gsap": "^3.12.5",
     "lucide-vue-next": "0.x",
     "mitt": "^3.0.1",
     "modern-normalize": "^2.0.0",

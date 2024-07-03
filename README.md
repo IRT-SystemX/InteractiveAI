@@ -62,7 +62,11 @@ Below are the steps to start all services. For other methods, please consult the
 
 1. Set-up environement variables
 
-`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_RTE_SIMU` are the simulators endpoints 
+`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_RTE_SIMU` are the simulators endpoints.
+Put for each UC the corresponding IP address.
+
+Examples: 
+
 ```sh
 export VITE_DA_SIMU=http://192.168.209.166:4003
 export VITE_SNCF_SIMU=http://192.168.209.166:5000

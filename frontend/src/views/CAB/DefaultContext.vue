@@ -1,5 +1,5 @@
 <template>
-  <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
+  <Context :tabs="[$t('cab.tab.context')]">
     {{ servicesStore.context('RTE') }}
   </Context>
 </template>
@@ -11,7 +11,6 @@ import { useServicesStore } from '@/stores/services'
 
 const servicesStore = useServicesStore()
 
-const tab = ref(0)
 const contextPID = ref(0)
 
 onBeforeMount(async () => {

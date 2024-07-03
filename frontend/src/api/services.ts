@@ -1,4 +1,6 @@
 import http from '@/plugins/http'
+import { useAppStore } from '@/stores/app'
+import { useServicesStore } from '@/stores/services'
 import type { Card } from '@/types/cards'
 import type { Action, Context, Entity } from '@/types/entities'
 import type { Procedure } from '@/types/procedure'
@@ -22,7 +24,7 @@ export function sendTrace(payload: Trace) {
   })
 }
 
-export function applyRecommendation(data: Action) {
+export function applyRecommendation<E extends Entity = Entity>(data: Action<E>) {
   return http.post<{ message: string }>('/api/v1/recommendations', data)
 }
 
@@ -31,5 +33,19 @@ export function getProcedure(event_type: string) {
     event: {
       event_type
     }
+  })
+}
+export function sendFeedback<E extends Entity = Entity>(
+  recommendation: Recommendation<E>,
+  feedback = false
+) {
+  const card = useAppStore()._card!
+  return http.post('/cab_capitalization/api/v1/feedbacks', {
+    event_id: card.processInstanceId,
+    context_id: useServicesStore().context(card.entityRecipients[0])?.id_context,
+    recommandation: recommendation,
+    feedback: feedback,
+    feedback_date: new Date().toISOString(),
+    use_case: card.entityRecipients[0]
   })
 }

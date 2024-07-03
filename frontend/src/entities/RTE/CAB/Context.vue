@@ -1,45 +1,53 @@
 <template>
-  <Context v-model="tab" :tabs="[$t('cab.tab.context')]">
-    <template v-if="tab === 0">
-      <img
-        v-if="servicesStore.context('RTE')?.data.topology"
-        style="user-drag: none"
-        :src="`data:image/png;base64, ${servicesStore.context('RTE').data.topology}`"
-        class="cab-context-topology" />
+  <Context :tabs="[$t('cab.tab.context')]">
+    <template v-if="appStore.tab.context === 0">
+      <img v-if="context" :src="`data:image/png;base64, ${context}`" class="cab-context-topology" />
       <h1 v-else>Pas de contexte</h1>
     </template>
-    <Notification :card :top="1" :right="1"></Notification>
-    <Notification :card :top="1" :left="1">
+    <Notification
+      :card="appStore.card('RTE')"
+      :shown="!!appStore.card('RTE')"
+      :top="1"
+      :right="1"></Notification>
+    <Notification :card="appStore.card('RTE')" :shown="!!appStore.card('RTE')" :top="1" :left="1">
       <template #title>KPIs</template>
       <b></b>
-      <div v-for="(value, key) of card?.data.metadata.kpis" :key="key">
+      <div v-for="(value, key) of appStore.card('RTE')!.data.metadata.kpis" :key="key">
         <b>{{ $t(`rte.kpis.${key}`) }}</b>
         {{ isFinite(+value) ? (+value).toFixed(4) : value }}
       </div>
     </Notification>
+    <Button
+      v-if="appStore.card('RTE')"
+      icon="Current time frame"
+      style="position: absolute; right: var(--spacing-1); bottom: var(--spacing-1)"
+      @click="appStore._card = undefined">
+      <TimerReset />
+    </Button>
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onUnmounted, ref } from 'vue'
+import { TimerReset } from 'lucide-vue-next'
+import { computed, onBeforeMount, onUnmounted, ref } from 'vue'
 
+import Button from '@/components/atoms/Button.vue'
 import Context from '@/components/organisms/CAB/Context.vue'
 import Notification from '@/components/organisms/CAB/Context/Notification.vue'
-import eventBus from '@/plugins/eventBus'
+import { useAppStore } from '@/stores/app'
 import { useServicesStore } from '@/stores/services'
-import type { Card } from '@/types/cards'
 
 const servicesStore = useServicesStore()
+const appStore = useAppStore()
 
-const tab = ref(0)
 const contextPID = ref(0)
-const card = ref<Card<'RTE'> | undefined>(undefined)
+
+const context = computed(
+  () =>
+    appStore.card('RTE')?.data.metadata.event_context || servicesStore.context('RTE')?.data.topology
+)
 
 onBeforeMount(async () => {
   contextPID.value = await servicesStore.getContext('RTE')
-})
-
-eventBus.on('assistant:selected:RTE', (selected) => {
-  card.value = selected
 })
 
 onUnmounted(() => {

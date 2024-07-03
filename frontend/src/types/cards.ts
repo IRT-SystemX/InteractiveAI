@@ -1,10 +1,12 @@
 import type { Entity, Metadata } from './entities'
 import type { UUID } from './formats'
 
-export const SeverityArray = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
-export type Severity = (typeof SeverityArray)[number]
-export const CriticalityArray = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
-export type Criticality = (typeof CriticalityArray)[number]
+export const SEVERITIES = ['INFORMATION', 'COMPLIANT', 'ACTION', 'ALARM'] as const
+Object.freeze(SEVERITIES)
+export type Severity = (typeof SEVERITIES)[number]
+export const CRITICALITIES = ['ND', 'ROUTINE', 'LOW', 'MEDIUM', 'HIGH'] as const
+Object.freeze(CRITICALITIES)
+export type Criticality = (typeof CRITICALITIES)[number]
 
 type PublisherType = 'EXTERNAL' | 'ENTITY'
 
@@ -15,40 +17,37 @@ export enum CardOperationType {
   ACK = 'ACK'
 }
 
-export type Card<T extends Entity = Entity> = {
+export type Card<E extends Entity = Entity> = {
+  data: {
+    criticality: Criticality
+    metadata: Metadata<E>
+    parent_event_id: Card['processInstanceId'] | null
+  }
+  read?: boolean
+  id: `${Card['process']}.${Card['processInstanceId']}`
+  processInstanceId: UUID
+  uid: UUID
+  startDate: number
+  endDate?: number
+  publishDate: number
   severity: Severity
+  entityRecipients: [E]
+  keepChildCards: boolean
+  hasBeenAcknowledged?: boolean
+  hasBeenRead?: boolean
+  process: 'cabProcess'
+  publisherType: PublisherType
+  processVersion: '1'
   summary: {
     parameters: { summary: string }
     key: string
   }
   summaryTranslated: string
-  keepChildCards: boolean
-  hasBeenAcknowledged?: boolean
-  hasBeenRead?: boolean
-  processInstanceId: UUID
-  process: `${Lowercase<T>}Process`
-  publisherType: PublisherType
-  endDate: number
-  publishDate: number
-  processVersion: '1'
   title: { parameters: { title: string }; key: string }
   titleTranslated: string
-  uid: string
   publisher: string
-  entityRecipients: [T]
-  id: `${Card['process']}.${Card['processInstanceId']}`
+  processStateKey: `cabProcess.${string}`
   state: string
-  startDate: number
-  data: {
-    criticality: Criticality
-    metadata: Metadata<T>
-    parent_event_id: Card['processInstanceId']
-  }
-}
-
-export interface CardTree<T extends Entity = Entity> extends Card<T> {
-  children: CardTree<T>[]
-  read?: boolean
 }
 
 export type CardAck = {
@@ -64,16 +63,16 @@ export type CardDelete = {
   cardId: string
 }
 
-export type CardAdd<T extends Entity = Entity> = {
+export type CardAdd<E extends Entity = Entity> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.ADD
-  card: Card<T>
+  card: Card<E>
 }
 
-export type CardUpdate<T extends Entity = Entity> = {
+export type CardUpdate<E extends Entity = Entity> = {
   entityRecipientsIds: Entity[]
   type: CardOperationType.UPDATE
-  card: Card<T>
+  card: Card<E>
 }
 
-export type CardEvent<T extends Entity = Entity> = CardAdd<T> | CardUpdate<T> | CardAck | CardDelete
+export type CardEvent<E extends Entity = Entity> = CardAdd<E> | CardUpdate<E> | CardAck | CardDelete

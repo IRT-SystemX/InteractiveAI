@@ -4,11 +4,11 @@
       v-for="modal of modals"
       :key="modal.message"
       type="choice"
-      @close="(...$event) => closeModal(...$event, modal)">
+      @close="closeModal($event, modal)">
       {{ modal.message }}
     </Modal>
     <section
-      v-for="section of sections"
+      v-for="(section, index) of sections"
       :key="section.name"
       class="cab-notifications flex flex-col"
       :style="{
@@ -19,123 +19,115 @@
           {{ $t(`cab.notifications.${section.name}`) }}
           {{ hasBeenAcknowledged ? $t('cab.notifications.archived') : '' }}
         </h1>
-        <Tooltip>
-          <template #tooltip>
-            {{ $t(`cab.notifications.${section.name}`) }}
-            {{ $t('cab.notifications.archived') }}
-          </template>
-          <button>
-            <Inbox
-              :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'"
-              @click="hasBeenAcknowledged = !hasBeenAcknowledged" />
-          </button>
-        </Tooltip>
+        <div v-if="index === 0" class="flex">
+          <Tooltip>
+            <template #tooltip>
+              {{ $t(`cab.notifications.button.delete_all`) }}
+            </template>
+            <button :aria-label="$t(`cab.notifications.button.delete_all`)" @click="deleteAll">
+              <Eraser />
+            </button>
+          </Tooltip>
+          <Tooltip>
+            <template #tooltip>
+              {{ $t(`cab.notifications.${section.name}`) }}
+              {{ $t('cab.notifications.archived') }}
+            </template>
+            <button
+              :aria-label="
+                $t(`cab.notifications.${section.name}`) + ' ' + $t('cab.notifications.archived')
+              "
+              @click="hasBeenAcknowledged = !hasBeenAcknowledged">
+              <Inbox :stroke="hasBeenAcknowledged ? 'var(--color-primary)' : 'currentColor'" />
+            </button>
+          </Tooltip>
+        </div>
       </header>
-      <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
-        <template
-          v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
-            return (
-              CriticalityArray.indexOf(
-                filtered(section.filter)[b].reduce(
-                  (prev: Criticality, curr) =>
-                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                      ? curr.data.criticality
-                      : prev,
-                  'ND'
-                )
-              ) -
-              CriticalityArray.indexOf(
-                filtered(section.filter)[a].reduce(
-                  (prev: Criticality, curr) =>
-                    CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                      ? curr.data.criticality
-                      : prev,
-                  'ND'
-                )
+      <slot name="notifications" :section>
+        <div v-if="Object.keys(filtered(section.filter)).length" class="card-container">
+          <template
+            v-for="key of Object.keys(filtered(section.filter)).sort((a, b) => {
+              return (
+                CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[b])) -
+                CRITICALITIES.indexOf(maxCriticality('ND', filtered(section.filter)[a]))
               )
-            )
-          })"
-          :key>
-          <Notification
-            v-if="key !== '_DEFAULT'"
-            :criticality="
-              filtered(section.filter)[key].reduce(
-                (prev: Criticality, curr) =>
-                  CriticalityArray.indexOf(curr.data.criticality) > CriticalityArray.indexOf(prev)
-                    ? curr.data.criticality
-                    : prev,
-                'ND'
-              )
-            ">
-            <div class="flex flex-center-y flex-gap">
-              <ChevronDown />
-              <header
-                class="flex flex-1"
-                :style="{
-                  color: filtered(section.filter)[key].every((c) => c.read)
-                    ? 'var(--color-grey-600)'
-                    : undefined
-                }">
-                <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
-                <aside>
-                  {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
-                </aside>
-              </header>
-            </div>
-          </Notification>
-          <NotificationTreeNode
-            v-for="c of filtered(section.filter)[key]"
-            :key="c.id"
-            :card="c"
-            :is-child="key !== '_DEFAULT'">
-            <template #title="{ card }">
-              <slot name="title" :card>{{ card.titleTranslated }}</slot>
-            </template>
-            <template #severity="{ card }">
-              <slot name="severity" :card>
-                {{ format(new Date(card.startDate), 'p') }}
-              </slot>
-              <slot name="icon" :card>
-                <SVG
-                  src="/img/icons/warning_hex.svg"
-                  :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
-                  :width="16"
-                  class="ml-1"></SVG>
-              </slot>
-            </template>
-            <template #default="{ card }">
-              <slot>
-                {{ card.summaryTranslated }}
-              </slot>
-            </template>
-            <template #actions="{ card }">
-              <slot
-                name="actions"
-                :card
-                :deletion="confirmDeletion"
-                :has-been-acknowledged="hasBeenAcknowledged">
-                <Tooltip v-if="!hasBeenAcknowledged">
-                  <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
-                  <Button
-                    size="small"
-                    color="secondary"
-                    :aria-label="$t('cab.notifications.archived')">
-                    <Inbox :height="12" @click.stop="confirmDeletion(card)" />
-                  </Button>
-                </Tooltip>
-              </slot>
-            </template>
-          </NotificationTreeNode>
-        </template>
-      </div>
-      <div v-else class="card-container-empty">
-        {{ $t('cab.notifications.empty') }}
-      </div>
+            })"
+            :key>
+            <Notification
+              v-if="key !== '_DEFAULT'"
+              :criticality="maxCriticality('ND', filtered(section.filter)[key])">
+              <div class="flex flex-center-y flex-gap">
+                <ChevronDown />
+                <header
+                  class="flex flex-1"
+                  :style="{
+                    color: filtered(section.filter)[key].every((c) => c.read)
+                      ? 'var(--color-grey-600)'
+                      : undefined
+                  }">
+                  <b class="flex-1">Application {{ +/\d+/.exec(key)![0] }}</b>
+                  <aside>
+                    {{ $t('cab.notifications.group', filtered(section.filter)[key].length) }}
+                  </aside>
+                </header>
+              </div>
+            </Notification>
+            <NotificationTreeNode
+              v-for="c of filtered(section.filter)[key]"
+              :key="c.id"
+              :card="c"
+              :selection
+              :has-been-acknowledged
+              :is-child="key !== '_DEFAULT'">
+              <template #title="{ card }">
+                <slot name="title" :card>{{ card.titleTranslated }}</slot>
+              </template>
+              <template #severity="{ card }">
+                <slot name="severity" :card>
+                  {{ format(new Date(card.startDate), 'p') }}
+                </slot>
+                <slot name="icon" :card>
+                  <SVG
+                    src="/img/icons/warning_hex.svg"
+                    :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"
+                    :width="16"
+                    class="ml-1"></SVG>
+                </slot>
+              </template>
+              <template #default="{ card }">
+                <slot>
+                  {{ card.summaryTranslated }}
+                </slot>
+              </template>
+              <template #actions="{ card }">
+                <slot
+                  name="actions"
+                  :card
+                  :deletion="confirmDeletion"
+                  :has-been-acknowledged="hasBeenAcknowledged">
+                  <Tooltip v-if="!hasBeenAcknowledged">
+                    <template #tooltip>{{ $t('card.actions.delete.tooltip') }}</template>
+                    <Button
+                      size="small"
+                      color="secondary"
+                      :aria-label="$t('cab.notifications.archived')">
+                      <Inbox :height="12" @click.stop="confirmDeletion(card)" />
+                    </Button>
+                  </Tooltip>
+                </slot>
+              </template>
+            </NotificationTreeNode>
+          </template>
+        </div>
+        <div v-else class="card-container-empty">
+          {{ $t('cab.notifications.empty') }}
+        </div>
+      </slot>
     </section>
   </section>
 </template>
-<script setup lang="ts" generic="T extends Entity">
-import { ChevronDown, Inbox } from 'lucide-vue-next'
+<script setup lang="ts" generic="E extends Entity">
+import { ChevronDown, Eraser, Inbox } from 'lucide-vue-next'
 import groupBy from 'object.groupby'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -149,46 +141,54 @@ import NotificationTreeNode from '@/components/organisms/NotificationTreeNode.vu
 import { format } from '@/plugins/date'
 import eventBus from '@/plugins/eventBus'
 import { useCardsStore } from '@/stores/cards'
-import { type Card, type Criticality, CriticalityArray } from '@/types/cards'
+import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Entity } from '@/types/entities'
-import { criticalityToColor } from '@/utils/utils'
+import { criticalityToColor, maxCriticality } from '@/utils/utils'
+
+const props = withDefaults(
+  defineProps<{
+    autoclose?: boolean
+    sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
+    groupFn?: (card: Card<E>) => string
+    selection?: (card: Card<E>) => void
+    entity: E
+    onDeletion?: (card: Card<E>, type: 'SINGLE' | 'ALL') => void
+  }>(),
+  {
+    autoclose: true,
+    sections: () => [{ name: 'main', weight: 1, filter: () => true }],
+    groupFn: () => '_DEFAULT',
+    selection: undefined,
+    onDeletion: (card: Card<E>) => useCardsStore().acknowledge(card)
+  }
+)
 
 const { t } = useI18n()
 const cardsStore = useCardsStore()
 
-const props = withDefaults(
-  defineProps<{
-    sections?: { name: string; weight: number; filter: (card: Card) => boolean }[]
-    groupFn?: (card: Card<T>) => string
-    entity: T
-  }>(),
-  {
-    sections: () => [{ name: 'main', weight: 1, filter: () => true }],
-    groupFn: () => '_DEFAULT'
-  }
-)
-
 const cards = computed(() =>
-  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)].sort(
-    (a, b) =>
-      CriticalityArray.indexOf(b.data.criticality) - CriticalityArray.indexOf(a.data.criticality)
-  )
+  [...cardsStore.cards(props.entity, hasBeenAcknowledged.value)]
+    .filter((c) => !c.data.parent_event_id)
+    .sort(
+      (a, b) =>
+        CRITICALITIES.indexOf(b.data.criticality) - CRITICALITIES.indexOf(a.data.criticality)
+    )
 )
 
 function filtered(fn: (typeof props.sections)[number]['filter']) {
-  return groupBy(cardsStore.parseTree(cards.value.filter(fn)), props.groupFn)
+  return groupBy(cards.value.filter(fn), props.groupFn)
 }
 
 const hasBeenAcknowledged = ref(false)
-const modals = ref<{ callback: (res: 'ok' | 'ko') => void; message: string; id: string }[]>([])
+const modals = ref<{ callback: (success: boolean) => void; message: string; id: string }[]>([])
 
-eventBus.on('notifications:close', () => {
-  if (modals.value.find((m) => m.id === 'ended')) return
+eventBus.on('notifications:ended', () => {
+  if (modals.value.find((m) => m.id === 'ended') || !props.autoclose) return
   modals.value.push({
     message: t('cab.notifications.ended'),
     id: 'ended',
-    callback: (res) => {
-      if (res === 'ok') {
+    callback: (success) => {
+      if (success) {
         for (const card of cardsStore
           .cards(props.entity)
           .filter((c) => c.data.criticality === 'ND'))
@@ -198,23 +198,35 @@ eventBus.on('notifications:close', () => {
   })
 })
 
-function closeModal(_: any, res: 'ok' | 'ko', modal: (typeof modals.value)[0]) {
-  modal.callback(res)
+function closeModal(success: boolean, modal: (typeof modals.value)[0]) {
+  modal.callback(success)
   modals.value.splice(modals.value.indexOf(modal), 1)
 }
 
-function confirmDeletion(card: Card) {
+function confirmDeletion(card: Card<E>) {
   if (card.data.criticality !== 'ND') {
     modals.value.push({
       message: t('cab.notifications.delete', { event: card.titleTranslated }),
       id: 'confirm',
-      callback: (res) => {
-        if (res === 'ok') {
-          cardsStore.acknowledge(card)
+      callback: (success) => {
+        if (success) {
+          props.onDeletion(card, 'SINGLE')
         }
       }
     })
-  } else cardsStore.acknowledge(card)
+  } else props.onDeletion(card, 'SINGLE')
+}
+
+function deleteAll() {
+  modals.value.push({
+    message: t('cab.notifications.delete_all'),
+    id: 'confirm',
+    callback: (success) => {
+      if (success) {
+        for (const card of cardsStore.cards(props.entity)) props.onDeletion(card, 'ALL')
+      }
+    }
+  })
 }
 </script>
 <style lang="scss">

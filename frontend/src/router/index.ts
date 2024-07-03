@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
-import { EntitiesArray, type Entity } from '@/types/entities'
+import { ENTITIES, type Entity } from '@/types/entities'
 import CAB from '@/views/CAB.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
@@ -26,7 +26,7 @@ const router = createRouter({
       }
     },
     {
-      path: `/cab/:entity(${EntitiesArray.join('|')})`,
+      path: `/cab/:entity(${ENTITIES.join('|')})`,
       name: 'cab',
       component: CAB,
       meta: {
