@@ -4,47 +4,33 @@ from api.manager.base_manager import BaseRecommendationManager
 from owlready2 import get_ontology
 from settings import logger
 
-from .rtegrid2op_poc_simulator.assistant_manager import AgentManager, AgentType
+from .rtegrid2op_poc_simulator.assistantManager import AgentManager, AgentType
 
 
-class RTEManager(BaseRecommendationManager):
-    """Rte recomendation service
-
-    Args:
-        BaseRecommendationManager (): CAB recomendation service instance
-    """
-
+class RTEManager(AgentManager, BaseRecommendationManager):
     def __init__(self):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.owl_file_path = os.path.join(
-            script_dir, "ontology/Grid2onto_v2_3.owl"
+            script_dir, "ontology/Grid2onto_v2_3_1.owl"
         )
-        self.onto_iao_file = os.path.join(
-            script_dir, "ontology/iao_module.owl"
-        )
-        self.onto_bfo_file = os.path.join(
-            script_dir, "ontology/bfo_module.owl"
-        )
-        self.rl_agent_manager = AgentManager()
+        # self.onto_iao_file = os.path.join(
+        #     script_dir, "ontology/iao_module.owl"
+        # )
+        # self.onto_bfo_file = os.path.join(
+        #     script_dir, "ontology/bfo_module.owl"
+        # )
         super().__init__()
 
     def get_recommendation(self, request_data):
-        """Get IA agent and ontology recomendations
-
-        Args:
-            request_data (dict): A dictionary with keys "context" and "event"
-
-        Returns:
-            list[dict]: List of recomendations
-        """
-        self.rl_agent_manager.create_recommendation(
-            request_data.get("context", {}).get("observation"))
+        self.recommendate(request_data.get("context", {}).get("observation"))
         logger.info("Getting parades")
-        parades = self.rl_agent_manager.get_list_of_parade_info()
+        parades = self.getlistOfParadeInfo()
 
         onto_recommendation = []
         event_data = request_data.get("event", {})
+        event_id = event_data.get("event_id")
         event_line = event_data.get("line")
+        event_flow = event_data.get("flux")
         if event_line:
             logger.info("Getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(event_line)
@@ -54,19 +40,10 @@ class RTEManager(BaseRecommendationManager):
         return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_line):
-        """Get Ontology recomendations
-
-        Args:
-            event_line (string): Line name
-
-        Returns:
-            dict: One ontology recomendation
-        """
         # Default output
         output_json = {
             "title": "Parade ontologique par defaut",
-            "description": ("Aucune recommandation n’a pu être générée car cette surcharge "
-                            "n’a jamais été observée dans le passé"),
+            "description": "Aucune recommandation n’a pu être générée car cette surcharge n’a jamais été observée dans le passé",
             "use_case": "RTE",
             "agent_type": AgentType.onto.name,
             "actions": [{}],
@@ -77,12 +54,7 @@ class RTEManager(BaseRecommendationManager):
         }
 
         # Loading ontology
-        rte_onto = get_ontology(self.owl_file_path).load()
-        onto_iao = get_ontology(self.onto_iao_file).load()
-        onto_bfo = get_ontology(self.onto_bfo_file).load()
-        rte_onto.imported_ontologies.append(onto_iao)
-        rte_onto.imported_ontologies.append(onto_bfo)
-        rte_onto.save(file=self.owl_file_path, format="rdfxml")
+        RTE_onto = get_ontology(self.owl_file_path).load()
 
         # Get all powerlines
         powerlines_query = """
@@ -93,14 +65,14 @@ class RTEManager(BaseRecommendationManager):
             PREFIX xml: <http://www.w3.org/XML/1998/namespace>
             PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
-           
+            
             SELECT DISTINCT ?line
             WHERE {{
                 ?line rdf:type cab:Powerline .
             }}
         """
 
-        powerlines_list = list(rte_onto.world.sparql(powerlines_query))
+        powerlines_list = list(RTE_onto.world.sparql(powerlines_query))
 
         our_powerline = "powerline_" + event_line
 
@@ -122,7 +94,7 @@ class RTEManager(BaseRecommendationManager):
                 + selected_powerline
             )
 
-            # Get all similar situations
+            ## Get all similar situations
             similar_situations_query = """
                 PREFIX owl: <http://www.w3.org/2002/07/owl#>
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -132,28 +104,31 @@ class RTEManager(BaseRecommendationManager):
                 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
                 PREFIX cab: <http://www.semanticweb.org/emna.amdouni/ontologies/2023/0/Grid2Onto#>
             
-            SELECT DISTINCT ?similarIssue ?line ?pastActionText ?category ?efficacity 
-                        {{ 
-                            ?similarIssue a cab:Powerline_overload_issue .
-                            ?similarIssue cab:is_associated_with ?pastAction .
-                            ?pastAction cab:has_initial_value ?pastActionText .
-                            ?pastAction rdf:type ?category .
-                            ?initial a cab:Initial_situation . 
-                            ?initial cab:has_part ?pastAction .
-                            ?line a cab:Powerline . 
-                            ?initial cab:is_about ?line . 
-                            ?rho a  cab:Rho .
-                            ?similarIssue cab:has_measurement ?rho .
-                            ?rho cab:has_final_value ?efficacity
-                            FILTER (?category != <http://www.w3.org/2002/07/owl#NamedIndividual>)
-                            FILTER (?line = <{line}>)
-                        }}
+                SELECT DISTINCT ?similarIssue ?line ?pastActionText ?actionDictVal ?category ?efficacity 
+                            {{ 
+                                ?similarIssue a cab:Powerline_overload_issue .
+                                ?similarIssue cab:is_associated_with ?pastAction .
+                                ?pastAction cab:has_initial_value ?pastActionText .
+                                ?pastAction rdf:type ?category .
+                                ?actionDict a cab:Action_dict .
+                                ?pastAction cab:has_part ?actionDict .
+                                ?actionDict cab:has_initial_value ?actionDictVal .
+                                ?initial a cab:Initial_situation . 
+                                ?initial cab:has_part ?pastAction .
+                                ?line a cab:Powerline . 
+                                ?initial cab:is_about ?line . 
+                                ?rho a  cab:Rho .
+                                ?similarIssue cab:has_measurement ?rho .
+                                ?rho cab:has_final_value ?efficacity
+                                FILTER (?category != <http://www.w3.org/2002/07/owl#NamedIndividual>)
+                                FILTER (?line = <{line}>)
+                            }}
                     """.format(
                 line=selected_powerline_iri
             )
 
             similar_situations = list(
-                rte_onto.world.sparql(similar_situations_query)
+                RTE_onto.world.sparql(similar_situations_query)
             )
             if similar_situations:
                 # compute number of situations and rho max
@@ -162,12 +137,14 @@ class RTEManager(BaseRecommendationManager):
 
                 for situation in similar_situations:
                     recommendation = str(situation[2])
-                    category = str(situation[3])
-                    category = category.replace(prefix_onto, "")
+                    action = str(situation[3])
+                    category = str(situation[4])
+                    category = category.replace(prefix_onto,"")
+                    efficacity = situation[4]
                     if recommendation not in distinct_recommendations:
                         distinct_recommendations.add(recommendation)
 
-                        nb_past_actions_query = f"""
+                        nb_past_Actions_query = f"""
                             PREFIX owl: <http://www.w3.org/2002/07/owl#>
                             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -189,17 +166,14 @@ class RTEManager(BaseRecommendationManager):
                         }}
                         """
                         nb_similar_situations = list(
-                            rte_onto.world.sparql(nb_past_actions_query)
+                            RTE_onto.world.sparql(nb_past_Actions_query)
                         )[0][0]
                         output_json = {
                             "title": recommendation,
-                            "description": (
-                                f"Cette parade a été rencontrée {nb_similar_situations} "
-                                "fois dans le passé."
-                            ),
+                            "description": f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
                             "use_case": "RTE",
                             "agent_type": AgentType.onto.name,
-                            "actions": [{}],
+                            "actions": action,
                             "kpis": {
                                 "type_of_the_reco": category,
                                 "efficiency_of_the_reco": rho_max,
