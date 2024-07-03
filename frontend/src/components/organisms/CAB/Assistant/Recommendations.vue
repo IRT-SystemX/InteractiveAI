@@ -65,6 +65,7 @@
 import { ThumbsDown } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
 
+import { sendFeedback } from '@/api/services'
 import Button from '@/components/atoms/Button.vue'
 import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
@@ -90,8 +91,11 @@ onBeforeMount(() => {
   buttons.value = props.buttons
 })
 
-function close(success: boolean) {
-  if (success) emit('selected', selected.value!)
+async function close(success: boolean) {
+  if (success) {
+    await sendFeedback(selected.value!, true)
+    emit('selected', selected.value!)
+  }
   confirm.value = false
 }
 
@@ -99,7 +103,8 @@ function closeKpi(kpi: (typeof props)['buttons'][number]) {
   buttons.value?.splice(buttons.value.indexOf(kpi), 1)
 }
 
-function downvote(recommendation: Recommendation<E>) {
+async function downvote(recommendation: Recommendation<E>) {
+  await sendFeedback(recommendation)
   emit(
     'update:recommendations',
     props.recommendations.filter((rec) => rec.title !== recommendation.title)
