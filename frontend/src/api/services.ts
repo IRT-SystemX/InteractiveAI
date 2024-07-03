@@ -40,10 +40,10 @@ export function sendFeedback<E extends Entity = Entity>(
   feedback = false
 ) {
   const card = useAppStore()._card!
-  return http.post('/capitalisation/feedback', {
-    event: card.id,
-    context: useServicesStore().context(card.entityRecipients[0])?.id_context,
-    recommendation,
+  return http.post('/cab_capitalization/api/v1/feedbacks', {
+    event_id: card.processInstanceId,
+    context_id: useServicesStore().context(card.entityRecipients[0])?.id_context,
+    recommandation: recommendation,
     feedback: feedback,
     feedback_date: new Date().toISOString(),
     use_case: card.entityRecipients[0]
