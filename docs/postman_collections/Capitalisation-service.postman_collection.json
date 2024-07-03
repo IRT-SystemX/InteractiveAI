@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "d2b8f4bb-0f5a-48ee-8155-61576dbb590b",
+		"name": "Capitalisation-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get feedback",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1FkMjFNNzlVRUZjQl9BeFhDcWhUZDlrZDBKZGZpbmxyQnJNbFJqTEVzIn0.eyJleHAiOjE2OTgwNjQxMTUsImlhdCI6MTY5ODA2MzgxNSwianRpIjoiMjc5ODVjODItNjU3MC00MWEzLWJkZGItYWNmMzU0ODI2YjBmIiwiaXNzIjoiaHR0cHM6Ly9mcm9udGVuZC5jYWItZGV2LmlydHN5c3RlbXgub3JnL3JlYWxtcy9kZXYiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoicHVibGlzaGVyX3Rlc3QiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvcGZhYi1jbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiM2M4NDUyZWEtYTllZi00OTU1LWIxYzUtNTA2ZGUxNmE3YjhmIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiM2M4NDUyZWEtYTllZi00OTU1LWIxYzUtNTA2ZGUxNmE3YjhmIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJncm91cHMiOiJEaXNwYXRjaGVyO1JlYWRPbmx5O1N1cGVydmlzb3IiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwdWJsaXNoZXJfdGVzdCIsImdpdmVuX25hbWUiOiIiLCJmYW1pbHlfbmFtZSI6IiJ9.GwYHSmebGUeX69lwkuDRlHVfKeVVO92FrVDw55eAVHr8g18zzhGvFCSUN7K8s_YJHNqq2BCHOPZ35gZ38vXvh43Lhr8Sj7E4e1tA0uqIQv9KNwfaZe69m99QsIjCgckB8ewG6bzLkYXiDzMtwgN2kt2qCrMXilaoymS-SOjwz7r0ZJfaf3gKJ4No6gZgG6q4stpbIwbyhemUH-D4eEI2pYqhGB8pDywLZKPTiovwEQBu2rOmV15XbR9ALoq2zN5_Rdhfu-1jKhAy6t0K_3s7b09IQ4p-glu3h5qSWJMhtZCgspjncvh65jrCrOz4904MbmOwA37aH658IfIwZ9z0Uw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Fast-Forward",
+						"value": "frontend.cab-dev.irtsystemx.org",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_capitalization/api/v1/feedback",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_capitalization",
+						"api",
+						"v1",
+						"feedback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add feedback",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "rte_user",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1FkMjFNNzlVRUZjQl9BeFhDcWhUZDlrZDBKZGZpbmxyQnJNbFJqTEVzIn0.eyJleHAiOjE3MDA4Njk3NzMsImlhdCI6MTcwMDgzMzc3MywianRpIjoiM2UxOGRkNmItMTFhNC00OTc5LWIzNWUtNzNmMDNlNjM2YjNlIiwiaXNzIjoiaHR0cHM6Ly9mcm9udGVuZC5jYWItZGV2LmlydHN5c3RlbXgub3JnLyovcmVhbG1zL2RldiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJvcmFuZ2VfdXNlciIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZmFiLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiI3MmNhNmQ1MS0yZGZhLTRkMWEtYjNlNi1hMmI2Y2ExNjM0ZDgiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI3MmNhNmQ1MS0yZGZhLTRkMWEtYjNlNi1hMmI2Y2ExNjM0ZDgiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImdyb3VwcyI6IlJURTtBRE1JTjtSZWFkT25seSIsInByZWZlcnJlZF91c2VybmFtZSI6Im9yYW5nZV91c2VyIiwiZW50aXRpZXNJZCI6Ik9SQU5HRSJ9.HlcuiIn5bePvoTlt0PdCD6xQGk7lNm0nk7YEszyj9NLStWrBRoi7ULJ9st30LuV3gkqDbVIUM8LuSjOmdfnfrE5sxxmJb5Yj1By9sZJsTidryuFClvcRR8kMmyGHTw2KDxu7qo-fNyRYgRFp-MqGoA0ariLu32J2SG6Su6rfBRmkjJLOF6DJFdo-qzuXZoCg5RGbGZJ1ql-8B3We5fsYkduC2ABWgXUBqIc75krkTSbzanOvF6uCjk4szdMttXOdQmmr-3sFd8m5N0AaLQA2SxGwLzKmZJ71lTfg5T7-0dEi8a3VPZSgtwahzPHQ6VuYSND_DtCRO6AUXhiQyM6mDQ",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "http://{{ENV_ENDPOINT_UI}}/auth/token",
+							"type": "string"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "opfab-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"event_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"context_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"recommandation\": {\n        \"s1\": \"abd\"\n    },\n    \"feedback\": true,\n    \"feedback_date\": \"2023-12-03T17:02:59.005266\",\n    \"use_case\": \"RTE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENV_ENDPOINT_UI}}/cab_capitalization/api/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"{{ENV_ENDPOINT_UI}}"
+					],
+					"path": [
+						"cab_capitalization",
+						"api",
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
