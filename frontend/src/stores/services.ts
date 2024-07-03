@@ -35,12 +35,12 @@ export const useServicesStore = defineStore('services', () => {
     let contextPID = 0
     // Handler
     const handler = async () => {
+      const appStore = useAppStore()
       try {
         const { data } = await servicesApi.getContext<E>()
         if (!entity) {
           _context.value = data[0]
         }
-        const appStore = useAppStore()
         const res = data.find((el): el is FullContext<E> => el.use_case === entity)
         // If context is not available, return
         if (!res) {
@@ -62,6 +62,7 @@ export const useServicesStore = defineStore('services', () => {
         }
         appStore.status.context.last = Date.now()
       } catch (err) {
+        appStore.status.context.state = 'OFFLINE'
         clearInterval(contextPID)
         useAppStore().addModal({
           data: t('modal.error.CONTEXT_FAILED'),
