@@ -3,11 +3,20 @@ import os
 from api.manager.base_manager import BaseRecommendationManager
 from owlready2 import get_ontology
 from settings import logger
+import json
 
-from .rtegrid2op_poc_simulator.assistantManager import AgentManager, AgentType
+from .rtegrid2op_poc_simulator.assistant_manager import AgentManager, AgentType
 
 
-class RTEManager(AgentManager, BaseRecommendationManager):
+
+
+class RTEManager(BaseRecommendationManager):
+    """Rte recomendation service
+
+    Args:
+        BaseRecommendationManager (): CAB recomendation service instance
+    """
+
     def __init__(self):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         self.owl_file_path = os.path.join(
@@ -19,18 +28,29 @@ class RTEManager(AgentManager, BaseRecommendationManager):
         # self.onto_bfo_file = os.path.join(
         #     script_dir, "ontology/bfo_module.owl"
         # )
+        self.rl_agent_manager = AgentManager()
+
         super().__init__()
 
     def get_recommendation(self, request_data):
-        self.recommendate(request_data.get("context", {}).get("observation"))
+        """Get IA agent and ontology recomendations
+
+        Args:
+            request_data (dict): A dictionary with keys "context" and "event"
+
+        Returns:
+            list[dict]: List of recomendations
+        """
+        self.rl_agent_manager.create_recommendation(
+            request_data.get("context", {}).get("observation"))
+
         logger.info("Getting parades")
-        parades = self.getlistOfParadeInfo()
+        parades = self.rl_agent_manager.get_list_of_parade_info()
+
 
         onto_recommendation = []
         event_data = request_data.get("event", {})
-        event_id = event_data.get("event_id")
         event_line = event_data.get("line")
-        event_flow = event_data.get("flux")
         if event_line:
             logger.info("Getting ontology recommendation")
             onto_recommendation = self.get_onto_recommendation(event_line)
@@ -40,10 +60,21 @@ class RTEManager(AgentManager, BaseRecommendationManager):
         return parades + onto_recommendation
 
     def get_onto_recommendation(self, event_line):
+        
+        """Get Ontology recomendations
+
+        Args:
+            event_line (string): Line name
+
+        Returns:
+            dict: One ontology recomendation
+        """
+
         # Default output
         output_json = {
             "title": "Parade ontologique par defaut",
-            "description": "Aucune recommandation n’a pu être générée car cette surcharge n’a jamais été observée dans le passé",
+            "description": ("Aucune recommandation n’a pu être générée car cette surcharge "
+                            "n’a jamais été observée dans le passé"),
             "use_case": "RTE",
             "agent_type": AgentType.onto.name,
             "actions": [{}],
@@ -52,6 +83,7 @@ class RTEManager(AgentManager, BaseRecommendationManager):
                 "efficiency_of_the_reco": 1.99999,
             },
         }
+
 
         # Loading ontology
         RTE_onto = get_ontology(self.owl_file_path).load()
@@ -138,6 +170,10 @@ class RTEManager(AgentManager, BaseRecommendationManager):
                 for situation in similar_situations:
                     recommendation = str(situation[2])
                     action = str(situation[3])
+                    action = action.replace("'", '"')
+                    action = action.replace("False", "false").replace("True", "true")
+                    action_dict = json.loads(action)
+
                     category = str(situation[4])
                     category = category.replace(prefix_onto,"")
                     efficacity = situation[4]
@@ -173,7 +209,7 @@ class RTEManager(AgentManager, BaseRecommendationManager):
                             "description": f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
                             "use_case": "RTE",
                             "agent_type": AgentType.onto.name,
-                            "actions": action,
+                            "actions": [action_dict],
                             "kpis": {
                                 "type_of_the_reco": category,
                                 "efficiency_of_the_reco": rho_max,
