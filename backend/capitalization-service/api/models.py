@@ -4,7 +4,7 @@ db = SQLAlchemy()
 
 
 class FeedbackModel(db.Model):
-    id_feedback = db.Column(db.Integer, primary_key=True)
+    id_feedback = db.Column(db.String, primary_key=True)
     event_id = db.Column(db.String(255))
     context_id = db.Column(db.String(255))
     recommandation = db.Column(db.JSON)
