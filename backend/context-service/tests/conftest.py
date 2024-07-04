@@ -18,13 +18,6 @@ def app():
 
         yield app
 
-        use_case_factory = app.use_case_factory
-        try:
-            orange_factory = use_case_factory.get_context_manager("ORANGE")
-            orange_factory.correaltion_manager.correlation_request_process.terminate()
-        except Exception as e:
-            logger.info(f"Ignore this error {e}")
-
         # Clean up the database after the test
         db.session.remove()
         db.drop_all()
