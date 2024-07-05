@@ -45,6 +45,7 @@
       <div class="cab-timeline-event-top">
         <slot :card></slot>
       </div>
+      <div class="cab-timeline-event-middle"></div>
       <div class="cab-timeline-event-bottom">
         {{
           format(
@@ -234,11 +235,7 @@ function selected(card: Card<E>) {
     justify-content: space-between;
   }
   &-top {
-    padding-bottom: var(--unit);
     align-items: flex-end;
-  }
-  &-bottom {
-    padding-top: var(--unit);
   }
 
   &-middle {
