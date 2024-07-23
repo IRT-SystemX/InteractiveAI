@@ -68,9 +68,7 @@ Put for each UC the corresponding IP address.
 Examples: 
 
 ```sh
-export VITE_DA_SIMU=http://192.168.209.166:4003
-export VITE_SNCF_SIMU=http://192.168.209.166:5000
-export VITE_RTE_SIMU=http://192.168.209.166:5100
+export VITE_RTE_SIMU=http://[Service url]:[Service port]
 ```
 
 2. Run Cab-assistant
