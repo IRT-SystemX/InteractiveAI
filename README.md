@@ -1,4 +1,6 @@
 # InteractiveAI Assistant Platform
+**An interactive AI Assistant Platform for Real Time operations**
+
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
@@ -30,8 +32,11 @@
 ## About The Project
 
 InteractiveAI platform provides support in augmented decision-making for complex steering systems.
+It is a prototype of a bi-directional virtual assistant, open in terms of industrial applications, in which it will be possible to evaluate the forms of exchange between the expert and an AI that learns continuously, both from the information flows received and the decisions made by the human. The platform will help and assist the operator of a complex operation to resolve incidents/faults in his industrial environment.
 
-The platform make use of the project OperatorFabric for notification management.
+As it is designed, the platform is generic, it can be used for different use cases. As an example, the use case of managing **power line** overloads at **RTE** (Réseau de Transport d'Electricité français) is provided.
+
+The platform uses the project **OperatorFabric** for notification management.
 
 
 <!-- GETTING STARTED -->
