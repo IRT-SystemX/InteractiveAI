@@ -68,90 +68,11 @@ def rte_auth_mocker(client, mocker):
 
 
 @pytest.fixture
-def da_auth_mocker(client, mocker):
-    # Mock the keycloak.introspect method to return a valid response
-    mocker.patch(
-        "cab_common_auth.decorators.keycloak.introspect",
-        return_value={
-            "exp": 1684401219,
-            "iat": 1683796419,
-            "jti": "a28734f6-f5c8-4130-8fb7-573d75c39d8c",
-            "iss": "http://192.168.211.95:3200/realms/dev",
-            "aud": "account",
-            "sub": "da_user",
-            "typ": "Bearer",
-            "azp": "opfab-client",
-            "session_state": "bd3b8610-1d05-4bdd-916b-61dcfe6d5e72",
-            "preferred_username": "da_user",
-            "email_verified": False,
-            "acr": "1",
-            "realm_access": {"roles": ["offline_access", "uma_authorization"]},
-            "resource_access": {
-                "account": {
-                    "roles": [
-                        "manage-account",
-                        "manage-account-links",
-                        "view-profile",
-                    ]
-                }
-            },
-            "scope": "email profile",
-            "sid": "bd3b8610-1d05-4bdd-916b-61dcfe6d5e72",
-            "groups": "RTE;ADMIN;ReadOnly",
-            "entitiesId": "DA",
-            "client_id": "opfab-client",
-            "username": "da_user",
-            "active": True,
-        },
-    )
-
-
-@pytest.fixture
-def sncf_auth_mocker(client, mocker):
-    # Mock the keycloak.introspect method to return a valid response
-    mocker.patch(
-        "cab_common_auth.decorators.keycloak.introspect",
-        return_value={
-            "exp": 1684413915,
-            "iat": 1683809115,
-            "jti": "6f63636a-625a-4926-9684-6d5ed3b80e2a",
-            "iss": "http://192.168.211.95:3200/realms/dev",
-            "aud": "account",
-            "sub": "sncf_user",
-            "typ": "Bearer",
-            "azp": "opfab-client",
-            "session_state": "0dee604d-5c03-416c-8d95-59b0aa95b61a",
-            "preferred_username": "sncf_user",
-            "email_verified": False,
-            "acr": "1",
-            "realm_access": {"roles": ["offline_access", "uma_authorization"]},
-            "resource_access": {
-                "account": {
-                    "roles": [
-                        "manage-account",
-                        "manage-account-links",
-                        "view-profile",
-                    ]
-                }
-            },
-            "scope": "email profile",
-            "sid": "0dee604d-5c03-416c-8d95-59b0aa95b61a",
-            "entitiesId": "SNCF",
-            "client_id": "opfab-client",
-            "username": "sncf_user",
-            "active": True,
-        },
-    )
-
-
-@pytest.fixture
 def mock_of_create_cards_request(requests_mock):
     mock_response_cards = {"id": "string", "uid": "string"}
     requests_mock.post("http://op/cards", json=mock_response_cards)
     mock_response_historic = {}
-    requests_mock.post(
-        "http://historic/api/v1/traces", json=mock_response_historic
-    )
+    requests_mock.post("http://historic/api/v1/traces", json=mock_response_historic)
 
 
 @pytest.fixture(scope="function")
@@ -161,32 +82,13 @@ def create_usecases(client):
 
         db.create_all()
 
-        da_use_case = UseCaseModel(
-            name="DA",
-            event_manager_class="DAEventManager",
-            metadata_schema_class="MetadataSchemaDA",
-        )
-
-        orange_use_case = UseCaseModel(
-            name="ORANGE",
-            event_manager_class="OrangeEventManager",
-            metadata_schema_class="MetadataSchemaOrange",
-        )
         rte_use_case = UseCaseModel(
             name="RTE",
             event_manager_class="RTEEventManager",
             metadata_schema_class="MetadataSchemaRTE",
         )
-        sncf_use_case = UseCaseModel(
-            name="SNCF",
-            event_manager_class="SNCFEventManager",
-            metadata_schema_class="MetadataSchemaSNCF",
-        )
 
-        db.session.add(da_use_case)
-        db.session.add(orange_use_case)
         db.session.add(rte_use_case)
-        db.session.add(sncf_use_case)
         db.session.commit()
         # add use_case_factory
         use_case_factory = current_app.use_case_factory
