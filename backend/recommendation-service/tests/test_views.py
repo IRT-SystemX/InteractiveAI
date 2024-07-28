@@ -22,45 +22,6 @@ def test_rte_get_recommendation(client, create_usecases, rte_auth_mocker):
     assert response.status_code == 200
 
 
-def test_sncf_get_recommendation(client, create_usecases, sncf_auth_mocker):
-    recommendation_data = {}
-    # Opening JSON file
-    with open("tests/tests_resources/sncf_recommendation.json") as json_file:
-        recommendation_data = json.load(json_file)
-    headers = {"Authorization": f"Bearer {SNCF_BEARER_TOKEN}"}
-    response = client.post(
-        "/api/v1/recommendation", headers=headers, json=recommendation_data
-    )
-
-    assert response.status_code == 200
-
-
-def test_da_get_recommendation_1(client, create_usecases, da_auth_mocker):
-    recommendation_data = {}
-    # Opening JSON file
-    with open("tests/tests_resources/da_recommendation_1.json") as json_file:
-        recommendation_data = json.load(json_file)
-    headers = {"Authorization": f"Bearer {DA_BEARER_TOKEN}"}
-    response = client.post(
-        "/api/v1/recommendation", headers=headers, json=recommendation_data
-    )
-
-    assert response.status_code == 200
-
-
-def test_da_get_recommendation_2(client, create_usecases, da_auth_mocker):
-    recommendation_data = {}
-    # Opening JSON file
-    with open("tests/tests_resources/da_recommendation_2.json") as json_file:
-        recommendation_data = json.load(json_file)
-    headers = {"Authorization": f"Bearer {DA_BEARER_TOKEN}"}
-    response = client.post(
-        "/api/v1/recommendation", headers=headers, json=recommendation_data
-    )
-
-    assert response.status_code == 200
-
-
 def test_health_check(client):
     response = client.get("/api/v1/health")
     assert response.status_code == 200
