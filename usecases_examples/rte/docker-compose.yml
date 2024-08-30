@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  rte-simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rte-simulator
+    container_name: rte-simulator
+    ports:
+      - "5100:5000"
+    volumes:
+      - .:/code

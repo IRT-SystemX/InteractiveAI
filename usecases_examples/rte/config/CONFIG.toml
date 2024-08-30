@@ -1,0 +1,12 @@
+titre = "Simulator configuration"
+env_name = "Ressources/env_ICAPS_input_data_test"
+env_seed = 2118338672
+scenario_name = "jan_28_1"
+time_step_forecast = 3
+duration_step_forecast = 3
+refresh_frequency_step = 3
+step_start_security_analysis = 5
+assistant_path = "Ressources/XD_silly_repo"
+assistant_seed = 1227139268
+stepDuration_s = 0
+scenario_first_step = 0
