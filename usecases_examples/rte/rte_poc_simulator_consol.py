@@ -34,40 +34,40 @@ except ImportError:
 
 
 class Listener():
-    """This class has all the simulator's functions that will stream and diagnose any Grid2Op selected data and events."""
+    """Class containing simulator functions to stream and diagnose Grid2Op data and events."""
 
-    def __init__(self,
-                 init_obs):
+    def __init__(self, init_obs):
+        """Initialize the Listener with initial observation."""
         self._current_issues = None
         self._anticipation = None
         self.line_statuses = init_obs.line_status
         self.subs_on_bus_2 = np.repeat(False, init_obs.n_sub)
         self.objs_on_bus_2 = {id: [] for id in range(init_obs.n_sub)}
 
-    def _stop_if_action(self,
-                        act):
+    def _stop_if_action(self, act):
+        """Check if the given action can affect the grid."""
         if act.can_affect_something():
             logging.info("The current action has a chance to change the grid")
             return True
         return False
 
-    def _stop_if_bad_kpi(self,
-                         obs):
+    def _stop_if_bad_kpi(self, obs):
+        """Check if there is an overload in the grid."""
         # Check if overload
         if obs.rho.max() >= 1.0:
             # logging.info("Overload")
             return True
         return False
 
-    def _stop_if_line_disconnected(self,
-                                   obs):
+    def _stop_if_line_disconnected(self, obs):
+        """Check if any line is disconnected."""
         if np.any(obs.line_status == False):
             # logging.info("Line disconnected")
             return True
         return False
 
-    def _stop_if_alarm(self,
-                       obs):
+    def _stop_if_alarm(self, obs):
+        """Check if an alarm is raised by the assistant."""
         do_stop_if_alarm = True
         if do_stop_if_alarm:
             if np.any(obs.time_since_last_alarm == 0):
@@ -75,11 +75,8 @@ class Listener():
                 return True
         return False
 
-    def _stop_if_anticipation_security_analysis(self,
-                                                obs,
-                                                env,
-                                                contingency_line_ids):
-        '''Clean version for security risk analysis; Last version'''
+    def _stop_if_anticipation_security_analysis(self, obs, env, contingency_line_ids):
+        """Perform security analysis for anticipation of N-1 events."""
         # Launch the security analysis
         anticipation = []
         security_analysis = SecurityAnalysis(env)
@@ -107,11 +104,8 @@ class Listener():
             return True
         return False
 
-    def _stop_if_issue(self,
-                       obs,
-                       f_obs,
-                       f_env,
-                       contingency_line_ids):
+    def _stop_if_issue(self, obs, f_obs, f_env, contingency_line_ids):
+        """Check for various issues in the grid."""
         issues = []
         self._current_issues = []
         if self._stop_if_alarm(obs):
@@ -133,18 +127,12 @@ class Listener():
             return True
         return False
 
-    def stop_for_issue_state(self,
-                             obs,
-                             f_obs,
-                             f_env,
-                             contingency_line_ids):
-        """Function transfering private result to the simulator."""
+    def stop_for_issue_state(self, obs, f_obs, f_env, contingency_line_ids):
+        """Transfer private result to the simulator."""
         return self._stop_if_issue(obs, f_obs, f_env, contingency_line_ids)
 
-    def update_objs_on_bus_switch(self,
-                                  objs_on_bus_2,
-                                  elem,
-                                  pos_topo_vect):
+    def update_objs_on_bus_switch(self, objs_on_bus_2, elem, pos_topo_vect):
+        """Update objects on bus 2 after a bus switch."""
         if pos_topo_vect[elem["object_id"]] in objs_on_bus_2[elem["substation"]]:
             # elem was on bus 2,remove it from objs_on_bus_2
             objs_on_bus_2[elem["substation"]] = [
@@ -157,10 +145,8 @@ class Listener():
                 pos_topo_vect[elem["object_id"]])
         return objs_on_bus_2
 
-    def update_objs_on_bus_assign(self,
-                                  objs_on_bus_2,
-                                  elem,
-                                  pos_topo_vect):
+    def update_objs_on_bus_assign(self, objs_on_bus_2, elem, pos_topo_vect):
+        """Update objects on bus 2 after a bus assignment."""
         if (
             pos_topo_vect[elem["object_id"]
                           ] in objs_on_bus_2[elem["substation"]]
@@ -181,11 +167,8 @@ class Listener():
                 pos_topo_vect[elem["object_id"]])
         return objs_on_bus_2
 
-    def update_objs_on_bus(self,
-                           objs_on_bus_2,
-                           elem,
-                           topo_vect_dict,
-                           kind):
+    def update_objs_on_bus(self, objs_on_bus_2, elem, topo_vect_dict, kind):
+        """Update objects on bus 2 based on topology changes."""
         for object_type, pos_topo_vect in topo_vect_dict.items():
             if elem["object_type"] == object_type and elem["bus"]:
                 if kind == "bus_switch":
@@ -198,12 +181,8 @@ class Listener():
                 break
         return objs_on_bus_2
 
-    def get_distance_from_obs(self,
-                              act,
-                              line_statuses,
-                              subs_on_bus_2,
-                              objs_on_bus_2,
-                              obs):
+    def get_distance_from_obs(self, act, line_statuses, subs_on_bus_2, objs_on_bus_2, obs):
+        """Calculate the distance from the reference topology."""
         impact_on_objs = act.impact_on_objects()
 
         # lines reconnetions/disconnections
@@ -245,9 +224,8 @@ class Listener():
             line_statuses.sum() + sum(subs_on_bus_2)
         return distance, line_statuses, subs_on_bus_2, objs_on_bus_2
 
-    def trigger_kpis(self,
-                     obs,
-                     act):
+    def trigger_kpis(self, obs, act):
+        """Calculate and return various KPIs for the current state."""
         kpis = {}
         if obs.rho.max() > 1:
             kpis["max_overload"] = float(
@@ -273,15 +251,20 @@ class Listener():
 
     @property
     def current_issues(self):
+        """Return the current issues detected by the Listener."""
         return self._current_issues
 
     @property
     def anticipation(self):
+        """Return the anticipation results from security analysis."""
         return self._anticipation
 
 
 class Communicate:
+    """Class handling communication with the CAB API."""
+
     def __init__(self):
+        """Initialize the Communicate class for handling CAB API communication."""
         logging.info("COMMUNICATIONS' SETUP FOR THIS SESSION : \n")
         try:
             self.outputsConfig = toml.load("API_RTE_CAB.toml")
@@ -305,6 +288,7 @@ class Communicate:
         # self.datestr = datetime.now(timezone.utc)   #.strftime("%d/%m/%Y %H:%M:%S")
 
     def choose_a_CAB_application(self):
+        """Prompt user to choose a CAB server application."""
         authorization = False
         connexion_counter = 0
         print(f"Choose the targeted CAB application between: \n\
@@ -340,9 +324,8 @@ class Communicate:
             connexion_counter += 1
         return authorization
 
-    def login(self,
-              username,
-              password):
+    def login(self, username, password):
+        """Perform login to the CAB API."""
         # url = self.outputsConfig['Connexion']['login_url']
         url = self.cab_url + self.outputsConfig['Connexion']['login_port']
 
@@ -365,11 +348,8 @@ class Communicate:
             authorization = True
         return authorization
 
-    def send_context_online(self,
-                            env,
-                            obs,
-                            scn_first_step,
-                            context_date):
+    def send_context_online(self, env, obs, scn_first_step, context_date):
+        """Send context information to the CAB API."""
         try:
             plot_helper = PlotMatplot(env.observation_space)
             plot_helper.plot_obs(obs, line_info="rho",
@@ -431,9 +411,8 @@ class Communicate:
             with open("obs757.json","w") as f:
                 json.dump(obs.to_json(),f,indent=4,ensure_ascii=False)'''
 
-    def send_payload_and_store_it(self,
-                                  payload,
-                                  obs, scn_first_step):
+    def send_payload_and_store_it(self, payload, obs, scn_first_step):
+        """Send payload to CAB API and store it locally."""
         try:
 
             # Use for debug
@@ -503,7 +482,7 @@ class Communicate:
                           case_assist_alarm=False,
                           case_anticip=False,
                           case_line_lost=False):
-        """Function that generate cab compliant Event and send it online."""
+        """Generate and send event information to CAB API."""
         if zone is None:
             zone = []
         if line is None:
@@ -622,6 +601,7 @@ class Communicate:
                 print(e)
 
     def issues_follow_up(self):
+        """Update the list of ongoing issues."""
         # already exist => change start_date and end_date,and update list
         # doesn't exist => create payload and add to list
         self.list_of_issues[self.payload["title"]] = self.payload
@@ -630,11 +610,12 @@ class Communicate:
     def send_issues_ending_online(self,
                                   stepDuration,
                                   context_date):
+        """Send information about resolved issues to CAB API."""
         for key in list(self.list_of_issues.keys()):
             value = self.list_of_issues[key]
             # if value["end_date"] >= obs.get_time_stamp(): # scenario based realtime
             # or (('Surcharge sur ligne' in value["title"]) and (value["title"] != self.payload["title"]))  : # realtime,scenario based
-            if (datetime.strptime(value["end_date"], "%Y-%m-%d %H:%M:%S.%f%z") < context_date):
+            if datetime.strptime(value["end_date"], "%Y-%m-%d %H:%M:%S.%f%z") < context_date :
                 value["criticality"] = "ND"
                 payload = json.dumps(value)
 
@@ -663,10 +644,11 @@ class Communicate:
                 del self.list_of_issues[key]
 
     def get_act_from_api(self):
-        """Function that initiate the connexion with CAB through allowing the user to choose any available server."""
+        """Retrieve action recommendations from CAB API."""
+        # Function that initiate the connexion with CAB through allowing the user to choose any available server.
         get_act_counter = 0
         act_dict = {}
-        while bool(act_dict) == False:
+        while bool(act_dict) is False:
             if get_act_counter == 0:
                 val = input(
                     "\n There is an event : Check CAB for recommendations\n Press 'Enter' once you have made your choice in CAB application.")
@@ -681,12 +663,12 @@ class Communicate:
             # print(response.text)
             # print(response.json())
             act_dict = response.json()
-            if bool(act_dict) == False and get_act_counter >= 1:
+            if bool(act_dict) is False and get_act_counter >= 1:
                 logging.info(
                     "\n Any recommendation was received! \n The simulation will continue with a default NULL recommendation.")
                 time.sleep(1)
                 break
-            elif bool(act_dict) == True:
+            elif bool(act_dict) :
                 logging.info("\n CAB' s recommendation received! \n")
             get_act_counter += 1
         # print(act_dict)
@@ -695,7 +677,7 @@ class Communicate:
 
 def search_chronic_num_from_name(scenario_name,
                                  env):
-    """Function that identify a chronic ID from it name in a data storage base."""
+    """Find the chronic ID from its name in the data storage base."""
     found_id = None
     # Search scenario with provided name
     for id, sp in enumerate(env.chronics_handler.real_data.subpaths):
@@ -706,20 +688,21 @@ def search_chronic_num_from_name(scenario_name,
 
 
 def get_curent_lines_in_bad_KPI(obs):
-    """Function that identify the line of the grid in bad KPI."""
+    """Identify the line with the worst KPI in the grid."""
     res = np.where(obs.rho == obs.rho.max())
     name = obs.name_line[res[0]]
     return name[0]
 
 
 def get_curent_lines_lost(obs):
-    res = np.where(obs.line_status == False)
-    name = (obs.name_line[res[0]])
+    """Identify disconnected lines in the grid."""
+    res = np.where(obs.line_status is False)
+    name = obs.name_line[res[0]]
     return name[0]
 
 
 def get_zone_where_alarm_occured(obs):
-    """Function triggering the cardinal zone of the grid where the event occurs."""
+    """Determine the cardinal zone where an alarm occurred."""
     zone_idx = np.where(obs.last_alarm > -1)
     # obs.last_alarm = [86 -1 -1] =[EST,CENTRE ,OUEST] => zone = EST
     if zone_idx[0] == 0:
@@ -877,6 +860,7 @@ def load_assistant(assistant_path,
 
 def local_XD_Silly(obs,
                    assistant):
+    """Get local recommendations from the XD_Silly assistant."""
     recos = assistant.make_recommandations(obs, n_actions=3)
     if len(recos) > 0:
         local_act, _ = recos[0]
@@ -885,12 +869,14 @@ def local_XD_Silly(obs,
 
 def get_nbOfTimestepSinceLastObs(obs_dict,
                                  previous_step):
+    """Calculate the number of timesteps since the last observation."""
     nb_timestep = int(obs_dict.get("current_step")[0])-int(previous_step)
     return nb_timestep
 
 
 def targeted_scenario_act_fixed(env,
                                 obs):
+    """Apply fixed actions for specific steps in the targeted scenario."""
     act = None
     topo_trigger = False
     # Manual action's correction on specifics steps
@@ -946,7 +932,7 @@ def targeted_scenario_act_fixed(env,
 
 
 def run_simulator():
-    """Function runing RTE simulator."""
+    """Main function to run the RTE simulator based on Grid2Op platform."""
     # Logger
     logging.getLogger().setLevel(logging.INFO)
     logging.info(" Welcome to RTE Simulator based on Grid2Op platform! \n")
@@ -1038,10 +1024,10 @@ def run_simulator():
 
     # Context refreshing rate
     try:
-        sendTempo = com.outputsConfig['Outputs']['Context']['tempo']
+        send_tempo = com.outputsConfig['Outputs']['Context']['tempo']
     except Exception as e:
         print(e)
-        sendTempo = 50  # by default
+        send_tempo = 50  # by default
 
     event_resolved_trigger = False
 
@@ -1108,7 +1094,7 @@ def run_simulator():
         # Forecast events checking
         obs_forecast = None
         f_env = None
-        if (obs.current_step == anticipation_compute_step):
+        if obs.current_step == anticipation_compute_step:
             anticipation_compute_step = obs.current_step + \
                 config['refresh_frequency_step']
             # pour dans 15 min (time_step_forecast=3)
@@ -1120,8 +1106,8 @@ def run_simulator():
         # Added to send context online sequentialy
         if obs.current_step >= config['scenario_first_step']:
             context_just_sent = False
-            if (obs.current_step == com.push_step or event_resolved_trigger == True) and com.CAB_API_on is True:
-                com.push_step = obs.current_step + sendTempo
+            if (obs.current_step == com.push_step or event_resolved_trigger is True) and com.CAB_API_on is True:
+                com.push_step = obs.current_step + send_tempo
                 com.send_context_online(
                     env, obs, config['scenario_first_step'], context_date)
                 event_resolved_trigger = False
@@ -1136,8 +1122,8 @@ def run_simulator():
             # ----------------------------------------------------------------------------------
             if "Overload" in listen.current_issues:
                 if obs.current_step >= config['scenario_first_step']:
-                    com.push_step = obs.current_step + sendTempo
-                    if com.CAB_API_on is True and context_just_sent == False:
+                    com.push_step = obs.current_step + send_tempo
+                    if com.CAB_API_on is True and context_just_sent is False:
                         com.send_context_online(env,
                                                 obs,
                                                 config['scenario_first_step'],
@@ -1176,7 +1162,7 @@ def run_simulator():
             if "Assistant raised an alarm" in listen.current_issues:
                 if obs.current_step >= config['scenario_first_step']:
 
-                    # com.push_step = obs.current_step + sendTempo
+                    # com.push_step = obs.current_step + send_tempo
                     # if com.CAB_API_on is True and context_just_sent == False:
                     #     com.send_context_online(env,obs,config['scenario_first_step'],context_date)
                     #     context_just_sent = True
@@ -1197,7 +1183,7 @@ def run_simulator():
             if "Anticipation N-1" in listen.current_issues:
                 if obs.current_step >= config['scenario_first_step']:
 
-                    # #com.push_step = obs.current_step + sendTempo
+                    # #com.push_step = obs.current_step + send_tempo
                     # if com.CAB_API_on is True: # and context_just_sent == False:
                     #     com.send_context_online(obs_forecast._obs_env,obs_forecast,config['scenario_first_step'],context_date)
                     #     #context_just_sent = True
@@ -1230,7 +1216,7 @@ def run_simulator():
 
             if "Line lost" in listen.current_issues:
                 if obs.current_step >= config['scenario_first_step']:
-                    # com.push_step = obs.current_step + sendTempo
+                    # com.push_step = obs.current_step + send_tempo
                     # if com.CAB_API_on == True and context_just_sent == False:
                     #     com.send_context_online(env,obs,config['scenario_first_step'],context_date)
                     #     context_just_sent = True

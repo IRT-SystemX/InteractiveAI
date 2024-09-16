@@ -1,12 +1,25 @@
 version: "3.5"
 services:
-  rte-simulator:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: rte-simulator
-    container_name: rte-simulator
+      dockerfile: Dockerfile.app
+    image: rte-simulator-app
+    container_name: rte-simulator-app
+    restart: always
     ports:
       - "5100:5000"
+    volumes:
+      - .:/code
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: rte-simulator-api
+    container_name: rte-simulator-api
+    restart: always
+    ports:
+      - "5101:5000"
     volumes:
       - .:/code

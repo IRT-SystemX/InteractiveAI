@@ -9,9 +9,10 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <style>
         #message-container {
+            display: none;
             width: 100%;
-            background-color: rgb(0, 247, 255); /* Couleur de fond légère */
-            color: black; /* Définit la couleur du texte à blanc */
+            background-color: rgb(0, 247, 255);
+            color: black;
             font-weight: bold;
             text-align: center;
             padding: 10px 0;
@@ -19,25 +20,25 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000; /* S'assure que le div reste au-dessus des autres éléments */
+            z-index: 1000;
             font-size: 24px;
         }
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%; /* Assure que le body prend toute la hauteur de la fenêtre */
-            margin: 0; /* Enlève les marges par défaut */
-            display: flex; /* Utilise flexbox pour le layout principal */
-            width: 100%; /* Assure que le body utilise toute la largeur de la fenêtre */
-            box-sizing: border-box; /* Inclut padding et border dans la hauteur/ largeur */
+            height: 100%;
+            margin: 0;
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
             padding-top: 29px;
         }
         #header {
-            width: 100%; /* Prend toute la largeur de la fenêtre */
-            position: fixed; /* Fixe le div en haut de la page */
-            top: 0; /* Aucun espace entre le div et le haut de la page */
-            background-color: #f0f0f0; /* Couleur de fond (ajustez selon vos besoins) */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre légère pour un effet de profondeur */
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         #sidebar {
             width: 440px;
@@ -46,39 +47,39 @@
             height: calc(100vh - 5%);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Organise le contenu en début et fin de sidebar */
-            box-sizing: border-box; /* Inclut padding et border dans la hauteur calculée */
-            overflow-y: auto; /* Ajoute un défilement si le contenu interne dépasse la hauteur */
+            justify-content: space-between;
+            box-sizing: border-box;
+            overflow-y: auto;
             font-size: 22px;
         }
         #user-info {
-            border: 2px solid #ccc; /* Ajoute une bordure solide */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Ajoute une ombre légère */
-            padding: 20px; /* Ajoute de l'espace autour du contenu à l'intérieur du div */
-            margin-bottom: 20px; /* Maintient l'espacement avec les éléments suivants */
-            background-color: #f9f9f9; /* Couleur de fond légère pour le div */
-            box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur et la hauteur totales du div */
-            overflow: hidden; /* Masque les parties du contenu qui dépasseraient */
+            border: 2px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            overflow: hidden;
         }
         #user-info span {
-            display: block; /* Chaque span prend toute la largeur disponible */
-            white-space: nowrap; /* Empêche le texte de passer à la ligne suivante */
+            display: block;
+            white-space: nowrap;
         }
         #user-info span:hover {
-            overflow: visible; /* Rend le texte débordant visible au survol */
-            background-color: #f9f9f9; /* Maintient le fond pour la lisibilité */
-            position: relative; /* Positionne le texte par rapport à son conteneur */
-            z-index: 10; /* S'assure que le texte est au-dessus des autres éléments */
-            width: auto; /* Permet au texte de prendre la largeur nécessaire */
-            white-space: normal; /* Permet au texte de passer à la ligne si nécessaire */
+            overflow: visible;
+            background-color: #f9f9f9;
+            position: relative;
+            z-index: 10;
+            width: auto;
+            white-space: normal;
         }
         #user-info form {
             display: flex;
-            flex-direction: column; /* Organise les champs de formulaire verticalement */
+            flex-direction: column;
         }
         #user-info button {
-            width: auto; /* Permet au bouton de s'ajuster à son contenu */
-            padding: 10px 20px; /* Ajoute du padding pour rendre le bouton plus cliquable */
+            width: auto;
+            padding: 10px 20px;
             font-weight: 630;
         }
         #logout-button {
@@ -92,51 +93,72 @@
             cursor: pointer;
         }
         #main-content {
-            /* flex-grow: 1; Prend tout l'espace restant */
             display: flex;
-            flex-direction: column; /* Organise les enfants verticalement */
-            height: calc(100vh - 5%); /* Assure que main-content prend toute la hauteur de la fenêtre */
-            width: calc(100% - 20%); /* Calcule la largeur restante après la sidebar */
-            margin-left: 1%; /* Espacement entre sidebar et main-content */
+            flex-direction: column;
+            height: calc(100vh - 5%);
+            width: calc(100% - 20%);
+            margin-left: 1%;
             overflow: hidden;
         }
         #graph-container {
-            flex: 0 0 65vh; /* Permet à l'image de prendre une partie de l'espace disponible */
-            min-height: 500px; /* Hauteur minimale pour tester */
+            flex: 1;
+            min-height: 500px;
             overflow: auto;
-            background-color: #f0f0f0; /* Couleur de fond pour visualiser le conteneur */
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: flex-start;
+        }
+        #graph-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #graph-content svg,
+        #graph-content canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+        }
+        svg {
+            width: 100% !important;
+            height: 100% !important;
         }
         .sub-div-graph {
-            flex: 1;  /* Distribue l'espace disponible uniformément entre les divs */
-            padding: 10px; /* Ajoute un peu d'espace autour du contenu de chaque div */
-            box-sizing: border-box; /* Inclut le padding dans le calcul de la largeur/hauteur */
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
         }
         #sub-div-container {
-            display: flex; /* Utilise flexbox pour organiser les enfants horizontalement */
-            height: 35vh; /* Hauteur totale du conteneur égale à la hauteur de la fenêtre */
-            margin: 0; /* Enlève les marges par défaut */
-            padding: 0; /* Enlève le padding par défaut */
-            box-sizing: border-box; /* Inclut padding et border dans la hauteur/ largeur */
+            display: flex;
+            height: 35vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             margin-left: 0;
         }
         .sub-div {
-            flex: 1; /* Distribue l'espace disponible uniformément entre les divs */
+            flex: 1;
             display: flex;
             background-color: #ccc;
-            flex-direction: column; /* Organise les enfants verticalement */
-            justify-content: center; /* Centre le contenu verticalement */
-            align-items: center; /* Centre le contenu horizontalement */
-            padding: 10px; /* Padding uniforme pour tous les sub-div */
-            box-sizing: border-box; /* Inclut le padding dans le calcul de la largeur/hauteur */
-            height: 33vh; /* Hauteur fixe pour chaque sub-div */
-            overflow: auto; /* Cache le contenu débordant par défaut *//
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            height: 33vh;
+            overflow: auto;
         }
         .sub-div:last-child {
-            margin-right: 10; /* Pas de marge à droite pour le dernier div */
+            margin-right: 10;
         }
         .btn-grey {
             background-color: #f0f0f0;
-            color: black; /* Texte blanc */
+            color: black;
         }
         .sub-div {
             padding: 20px;
@@ -154,11 +176,21 @@
             font-weight: 630;
         }
         #actions-div {
-            overflow-y: auto; /* Permet le défilement vertical si le contenu dépasse la hauteur */
+            overflow-y: auto;
+        }
+        .action-card {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .action-card h4 {
+            margin-top: 0;
         }
         #events-div{
             width: 300px;
-            overflow-y: auto; /* Permet le défilement vertical si le contenu dépasse la hauteur */
+            overflow-y: auto;
         }
         .event-card {
             margin: 10px;
@@ -223,7 +255,7 @@
             {{message}}
         </div>
         <div id="graph-container" class="sub-div-graph">
-            <h1>Graphique Interactif</h1>
+            <h2 id="graph-title">Graphique Interactif</h2>
             <div id="graph-content"></div>
         </div>
         <div id="sub-div-container">
@@ -231,23 +263,15 @@
             </div>
             <div class="sub-div">
                 <div id="status-div" class="status-div">Démarrez le simulateur</div>
-                <button id="startButton" type="submit" class="btn btn-lg btn-grey status-button">Start</button>
-                <button id="continueButton" class="btn btn-lg btn-grey status-button" onclick="continueSimulation()">Continue</button>
-                <button id="stopResetButton" class="btn btn-lg btn-grey status-button">Stop and Reset</button>
+                <button id="startButton" type="submit" class="btn btn-lg btn-grey status-button">Démarrer</button>
+                <button id="continueButton" class="btn btn-lg btn-grey status-button" onclick="continueSimulation()">Continuer</button>
+                <button id="stopResetButton" class="btn btn-lg btn-grey status-button">Arrêter et réinitialiser</button>
             </div >
             <div class="sub-div" id="actions-div">
+                <div id="action-container"></div>
             </div>
         </div>
     </div>
-
-    <script>
-        setTimeout(function() {
-            var messageDiv = document.getElementById('message-container');
-            if (messageDiv) {
-                messageDiv.style.display = 'none'; // Masque le div
-            }
-        }, 5000); // 5000 millisecondes = 5 secondes
-    </script>
 
     <script>
         function logout() {
@@ -265,6 +289,7 @@
         });
         socket.on('update_graph', function(receivedData) {
             console.log("Données reçues:", receivedData);
+            var graphTitle = document.getElementById('graph-title')
             if (receivedData && receivedData.data) {
                 var graphContainer = document.getElementById('graph-content');
                 graphContainer.innerHTML = receivedData.data;
@@ -275,6 +300,9 @@
                     eval(scripts[i].text);
                 }
                 
+                // Masquer le titre du graphique
+                graphTitle.style.display = 'none';
+
                 console.log("Graphique mis à jour");
             } else {
                 console.error("Données de graphique invalides");
@@ -294,11 +322,11 @@
                     const data = JSON.parse(event.data);
                     console.log(data);  
                     if (data.div === 'events-div') {
-                        addEventCard(data.content); // Utilisez la fonction addEventCard pour ajouter des cartes
+                        addEventCard(data.content); 
                     } else if (data.div === 'message-container') {
-                        addMessage(data.content); // Utilisez la fonction addEventCard pour ajouter des cartes
+                        addMessage(data.content); 
                     } else if (data.div === 'actions-div') {
-                        postAction(data.content); // Utilisez la fonction addEventCard pour ajouter des cartes
+                        postAction(data.content); 
                     } else {
                         const outDiv = document.getElementById(data.div);
                         outDiv.innerHTML = data.content;
@@ -329,15 +357,32 @@
         }
 
         function addMessage(content) {
-            const eventsDiv = document.getElementById('message-container');
+            const messageContainer = document.getElementById('message-container');
             console.log(content);
-            eventsDiv.innerHTML = content.message; // Remplace le contenu existant par le nouveau message
+            messageContainer.style.display = 'block'; // Affiche le div
+            messageContainer.innerHTML = content; // Remplace le contenu existant par le nouveau message
+            
+            // Masque le message après 5 secondes
+            setTimeout(() => {
+                messageContainer.style.display = 'none';
+            }, 15000);
         }
 
         function postAction(content) {
-            const eventsDiv = document.getElementById('actions-div');
+            const actionContainer = document.getElementById('action-container');
             console.log(content);
-            eventsDiv.innerHTML = content; // Remplace le contenu existant par le nouveau message
+            
+            if (typeof content === 'string') {
+                // Si le contenu est une chaîne, on l'affiche directement
+                actionContainer.innerHTML = content;
+            } else if (typeof content === 'object' && content.title && content.description) {
+                // Si le contenu est un objet avec titre et description, on crée une carte
+                const card = document.createElement('div');
+                card.className = 'action-card';
+                card.innerHTML = `<h4>${content.title}</h4><p>${content.description}</p>`;
+                actionContainer.innerHTML = ''; // Efface le contenu précédent
+                actionContainer.appendChild(card);
+            }
         }
 
         function disableSidebar() {
@@ -351,14 +396,13 @@
                 }
             });
         }
-    </script>
 
-    <script>
         function continueSimulation() {
             fetch('/continue_simulation', { method: 'POST' })
                 .then(response => {
                     if (response.ok) {
                         console.log('Simulation continued');
+                        document.getElementById('action-container').innerHTML = '';
                     }
                 })
                 .catch(error => console.error('Error:', error));

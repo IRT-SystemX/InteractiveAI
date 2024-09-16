@@ -539,11 +539,11 @@ class Communicate:
         try:
             while bool(self.act_dict) is False:
                 if get_act_counter == 0:
-                    yield (
-                        "data: {\"div\": \"message-container\", \"content\": "
-                        "{ \"message\": \"La simulation est en pause. Veillez consulter "
-                        "les recommendations de CAB avant de faire une nouvelle action ici!\"}}\n\n"
-                    )
+                    message = {
+                    "div": "message-container",
+                    "content": "La simulation est en pause. Veillez consulter les recommendations de CAB avant de faire une nouvelle action ici!"
+                    }
+                    yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
@@ -554,10 +554,11 @@ class Communicate:
                     while get_pause_status():
                         time.sleep(1)
                 else:
-                    yield (
-                        "data: {\"div\": \"message-container\", \"content\": "
-                        "{ \"message\": \"Aucune recommendation n'a été reçu de CAB!\"}}\n\n"
-                    )
+                    message = {
+                    "div": "message-container",
+                    "content": "Aucune recommendation n'a été reçu de CAB!"
+                    }
+                    yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
@@ -580,22 +581,23 @@ class Communicate:
                 self.act_dict = response.json()
                 if bool(self.act_dict) is False and get_act_counter >= 1:
                     logging.info(
-                        "\n Any recommendation was received! \n"
-                        " The simulation will continue with a default NULL recommendation."
+                        "\n Aucune recommendation n'a été reçu ! \n"
+                        " La siumation se prousuivra avec la recommendation NULL par défaut."
                     )
-                    yield (
-                        "data: {\"div\": \"message-container\", \"content\": "
-                        "{ \"message\": \"Any recommendation was received! \n"
-                        " The simulation will continue with a default NULL recommendation.\"} }\n\n"
-                    )
+                    message = {
+                    "div": "message-container",
+                    "content": "Aucune recommendation n'a été reçu ! La siumation se prousuivra avec la recommendation NULL par défaut."
+                    }
+                    yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     break
                 if bool(self.act_dict) is True:
                     logging.info("\n CAB' s recommendation received! \n")
-                    yield (
-                        "data: {\"div\": \"message-container\", \"content\": "
-                        "\"CAB' s recommendation received!\"}\n\n"
-                    )
+                    message = {
+                    "div": "message-container",
+                    "content": "La recommendation de CAB vient dêtre reçu !"
+                    }
+                    yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                 get_act_counter += 1
 

@@ -137,6 +137,14 @@
     </style>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
     <h1 class="center-text">Welcom to RTE Simulator based on Grid2Op platform !</h1>
     <!-- Début du formulaire de connexion -->
     <div class="login-container">

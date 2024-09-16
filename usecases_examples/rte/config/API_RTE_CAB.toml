@@ -2,9 +2,9 @@ titre = "API RTE - CAB"
 
 [Connexion]
 login_port = "auth/token"
-cab_server_url_1 = "http://192.168.211.95:3200/"
-cab_server_url_2 = "http://192.168.208.57:3200/"
-cab_server_url_3 = "http://frontend.cab-dev.irtsystemx.org/"
+cab_server_url_1 = "http://frontend.cab-dev.irtsystemx.org/"
+cab_server_url_2 = "http://192.168.211.95:3200/"
+cab_server_url_3 = "http://192.168.208.57:3200/"
 
 [Outputs]
 activate = "yes"

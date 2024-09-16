@@ -1,13 +1,11 @@
 import urllib.parse
-import time
 from flask import Flask, jsonify, request
 from flask import render_template, redirect
 from flask import url_for, session, g
-from flask import Response, stream_with_context
+from flask import Response, stream_with_context, flash
 from flask_socketio import SocketIO
 from app.models.Communicate import Communicate
 from app.models.Simulator import Simulator
-from app.models.utils import  generate_graph_html
 from config.config import set_pause
 
 
@@ -27,14 +25,6 @@ socketio = SocketIO(app)
 
 com = Communicate()
 simu = Simulator(socketio)
-
-
-# def background_thread():
-#     """Generate and send the graph periodically."""
-#     while True:
-#         time.sleep(10)  # Mettre à jour le graphique toutes les 10 secondes
-#         graph_html = generate_graph_html(simu.env, simu.obs, socketio)
-#         socketio.emit('update_graph', {'html': graph_html})
 
 
 @app.route("/")
@@ -71,6 +61,7 @@ def load_simulation():
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
+
 @app.route('/add_server', methods=['POST'])
 def add_server():
     """
@@ -87,6 +78,7 @@ def add_server():
             return jsonify({"success": True})
     
     return jsonify({"success": False})
+
 
 @app.route('/delete_server', methods=['POST'])
 def delete_server():
@@ -109,17 +101,23 @@ def login():
         server = request.form['server_url']
         username = request.form['username']
         password = request.form['password']
-        com.choose_a_cab_application(urllib.parse.unquote(server))
-        is_authorized = com.login(username, password)
-        if com.cab_url:
-            if is_authorized:
-                session['username'] = username
-                session['server'] = server
-                return redirect(url_for('load_simulation'))
-            return redirect(url_for('index',
-                                    error="Échec de la connexion. Veuillez réessayer."))
-        return redirect(url_for('index',
-                                error="Serveur non disponible. Veuillez choisir un autre serveur."))
+        try:
+            com.choose_a_cab_application(urllib.parse.unquote(server))
+            is_authorized = com.login(username, password)
+            if com.cab_url:
+                if is_authorized:
+                    session['username'] = username
+                    session['server'] = server
+                    return redirect(url_for('load_simulation'))
+                else:
+                    flash("Échec de la connexion. Veuillez réessayer.")
+            else:
+                flash("Serveur non disponible. Veuillez choisir un autre serveur.")
+        except ConnectionRefusedError:
+            flash("Le serveur a refusé la connexion. Veuillez réessayer plus tard.")
+        except Exception as e:
+            flash("Une erreur s'est produite. La connexion n'a pas pu s'établir avec le serveur.")
+        
     return redirect(url_for('index'))
 
 
@@ -170,10 +168,6 @@ def start_simulation():
     """Start the simulation."""
     if 'username' in session:
         if not hasattr(g, 'thread_started') or not g.thread_started:
-            # thread = Thread(target=background_thread)
-            # thread.start()
-            # g.thread_started = True  # Marquer le thread comme démarré
-
             response = Response(stream_with_context(simu.run_simulator(com)),
                                 mimetype='text/event-stream')
             response.headers['Cache-Control'] = 'no-cache'

@@ -276,6 +276,25 @@ def generate_graph_html(env, obs):
                                    line_info="rho",
                                    load_info=None,
                                    gen_info=None)
+        
+        # Supprimer les axes
+        ax = fig.gca()
+        ax.axis('off')
+        
+        # Ajuster les limites de l'axe pour éliminer la ligne à gauche
+        xlim = ax.get_xlim()
+        ylim = ax.get_ylim()
+        ax.set_xlim(xlim[0], xlim[1])
+        ax.set_ylim(ylim[0], ylim[1] * 1.02)  # Ajuster également la limite supérieure si nécessaire
+        
+        # Ajuster les marges pour enlever l'espace blanc autour du graphique
+        plt.subplots_adjust(left=0.02, right=1, top=1, bottom=0, wspace=0, hspace=0)
+        plt.margins(0, 0)
+        
+        # Recadrer la figure pour éliminer tout espace blanc résiduel
+        fig.tight_layout(pad=0)
+
+        # Convertir la figure en HTML
         graph_html = mpld3.fig_to_html(fig)
         plt.close(fig)
         

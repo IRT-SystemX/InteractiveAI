@@ -7,6 +7,7 @@ from grid2op.Chronics import FromHandlers
 from lightsim2grid import LightSimBackend
 import numpy as np
 import toml
+import json
 import matplotlib
 matplotlib.use('agg')
 from app.models.Listener import Listener
@@ -85,8 +86,13 @@ class Simulator:
             self.config['scenario_name'], self.env)
         self.env.set_id(id_scenario)  # Scenario choice
         self.obs = self.env.reset()
-        logging.info("The scenario launched is : %s \n",
+        logging.info("Le scénario chargé est : %s \n",
                      self.env.chronics_handler.get_name())
+        message = {
+                    "div": "message-container",
+                    "content": f"Le scénario chargé est : {self.env.chronics_handler.get_name()}"
+                }
+        yield f"data: {json.dumps(message)}\n\n"
 
         assistant_path = self.config['assistant_path']
         assistant_seed = int(self.config['assistant_seed'])
@@ -104,7 +110,12 @@ class Simulator:
         except Exception as e:
             logging.error(e)
 
-        logging.info("The simulation is loaded.\n")
+        logging.info("Le scénario est chargé.\n")
+        message = {
+                    "div": "message-container",
+                    "content": "Le scénario est chargé."
+                }
+        yield f"data: {json.dumps(message)}\n\n"
         self.listen = Listener(self.obs)
         return act
 
@@ -130,6 +141,7 @@ class Simulator:
         done = False
         silent_mode_msg_trigger = True
         step_counter = 0
+        clear_parade_flag = False
 
         while not done:
             context_date = date + timedelta(minutes=float(5))*step_counter
@@ -145,46 +157,53 @@ class Simulator:
             # Begining of steps : Observation updates
             self.obs, _, done, _ = self.env.step(act)
 
-            # Pour l'affichage du graphique dans le simulateur
-            graph_html = generate_graph_html(self.env,
-                                self.obs)
-            print("Contenu du graphique:", graph_html[:200]) 
-            self.socketio.emit('update_graph',
-                                 {'data': graph_html})
-            print("Émission du graphique effectuée")
-            time.sleep(5)
+            # Vider le div des parades
+            if self.obs.current_step >= self.config['scenario_first_step'] and clear_parade_flag:
+                empty_message = {
+                    "title": "",
+                    "description": ""
+                }
+                yield f"data: {{\"div\": \"actions-div\", \"content\": {json.dumps(empty_message)}}}\n\n"
+                clear_parade_flag = False
+
+            if self.obs.current_step >= self.config['scenario_first_step']:
+                # Pour l'affichage du graphique dans le simulateur
+                graph_html = generate_graph_html(self.env,
+                                    self.obs)
+                # print("Contenu du graphique:", graph_html[:200]) 
+                self.socketio.emit('update_graph',
+                                    {'data': graph_html})
+                
 
             # To handle between "silent mode" and "stream simulation" (with or withough CAB)
             # (The stream simulation starts at step scenario_first_step)
             if self.obs.current_step >= self.config['scenario_first_step']:
-                logging.info("Simulation step %s",
+                logging.info("Pas de simulation : %s",
                              self.obs.current_step)
                 yield (
                     f"data: {{\"div\": \"status-div\", \"content\": "
-                    f"\"Simulation step {self.obs.current_step}\"}}\n\n"
+                    f"\"Pas de simulation : {self.obs.current_step}\"}}\n\n"
                 )
-                time.sleep(1)
             elif self.obs.current_step == self.config['scenario_first_step'] - 1:
                 print("\n")
-                logging.info("The simulator is now connected to CAB\n")
-                yield (
-                    "data: {\"div\": \"message-container\", \"content\": "
-                    "{ \"message\": \"The simulator is now connected to CAB\"}}\n\n"
-                )
-                time.sleep(1)
+                logging.info("Le simulateur est à présent connecté à CAB.\n")
+                message = {
+                    "div": "message-container",
+                    "content": "Le simulateur est à présent connecté à CAB."
+                }
+                yield f"data: {json.dumps(message)}\n\n"
                 silent_mode_msg_trigger = False
             else:
                 if silent_mode_msg_trigger:
-                    logging.info('Status: The scenario unfolds in silent mode.\n'
-                                 'The simulator will reconnect to CAB from the step %s',
+                    logging.info('Status: Le scénario se déroule en arière plan.\n'
+                                 'Le simulateur va se connecter à CAB à partir du pas %s',
                                  self.config['scenario_first_step'])
-                    yield (
-                        f"data: {{ \"div\": \"status-div\", \"content\": "
-                        f"\"Status: The scenario unfolds in silent mode.\n"
-                        f"The simulator will reconnect to CAB from the step "
-                        f"{self.config['scenario_first_step']} (see configuration file)\"}}\n\n"
+                    message = (
+                        f"Status: Le scénario se déroule en arière plan.\n"
+                        f"Le simulateur va se connecter à CAB à partir du pas "
+                        f"{self.config['scenario_first_step']} (Voir les paramètres de configuration)"
                     )
-                    time.sleep(1)
+                    yield f"data: {{ \"div\": \"status-div\", \"content\": {json.dumps(message)} }}\n\n"
                     silent_mode_msg_trigger = False
                 if self.obs.current_step % 50 == 0:
                     print("step",
@@ -252,21 +271,20 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: there is an Overload")
-                        yield (
-                            "data: {\"div\": \"message-container\", \"content\": "
-                            "{ \"message\": \"Status: there is an Overload\" }}\n\n"
-                        )
-                        time.sleep(1)
+                        logging.info("Status: Il y a une surcharge sur le réseau")
+                        message = {
+                            "div": "message-container",
+                            "content": "Status: Il y a une surcharge sur le réseau"
+                        }
+                        yield f"data: {json.dumps(message)}\n\n"
                         yield (
                             f"data: {{\"div\": \"events-div\", \"content\": {{ \"title\": "
-                            f"\"Status: there is an Overload on line "
+                            f"\"Status: Il y a une surcharge sur la ligne "
                             f"{get_curent_lines_in_bad_kpi(self.obs)}\" , "
                             f"\"description\": \"La surcharge est de "
                             f"{np.round(np.float64(self.obs.rho.max()*100),decimals=1,out=None)}%\""
                             f" }}}}\n\n"
                         )
-                        time.sleep(1)
 
                         if not img_b64_current:
                             img_b64_current = create_observation_image(self.env,
@@ -286,29 +304,24 @@ class Simulator:
                         act = local_xd_silly(self.obs, self.local_assistant)
                         if com.cab_api_on is False:
                             logging.info("Parade : %s", act)
-                            yield (
-                                f"data: {{\"div\": \"actions-div\", \"content\": "
-                                f"\"Parade : {str(act)}\"}}\n\n"
-                            )
-                            time.sleep(1)
+                            parade_message = {
+                                "title": "Parade",
+                                "description": f"{str(act)}"
+                            }
+                            yield f"data: {{\"div\": \"actions-div\", \"content\": {json.dumps(parade_message)}}}\n\n"
+                            clear_parade_flag = True
 
                     else:
                         # Récuperer les parades de CAB
                         yield from com.get_act_from_api()
-                        time.sleep(1)
                         act = expand_act_from_cab(self.env, com.act_dict)
                         logging.info("Parade : %s", act)
-                        yield (
-                            f"data: {{\"div\": \"actions-div\", \"content\": "
-                            f"\"Parade : {str(act)}\"}}\n\n"
-                        )
-                        time.sleep(1)
-
-                    # Added for IA Agent testing (required assistantManager.py file)
-                    # obs_dict = obs.to_json()
-                    # recommendation = agentM.recommendate(obs_dict)
-                    # parades = agentM.getlistOfParadeInfo()
-                    # act,__ = recommendation[0]
+                        parade_message = {
+                                "title": "Parade",
+                                "description": f"{str(act)}"
+                            }
+                        yield f"data: {{\"div\": \"actions-div\", \"content\": {json.dumps(parade_message)}}}\n\n"
+                        clear_parade_flag = True
 
                     event_resolved_trigger = True
 
@@ -327,13 +340,12 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: there is an IA Agent alert")
+                        logging.info("Status: Il y a une alerte de l'agent IA")
                         yield (
                             "data: {\"div\": \"events-div\", \"content\": "
-                            "{ \"title\": \"Status: there is an IA Agent alert\", "
+                            "{ \"title\": \"Status: Il y a une alerte de l'agent IA\", "
                             "\"description\": \"\" } }\n\n"
                         )
-                        time.sleep(1)
 
                         if not img_b64_current:
                             img_b64_current = create_observation_image(self.env,
@@ -366,22 +378,21 @@ class Simulator:
                                 context_just_sent = True
 
                         logging.info(
-                            "Status: there is an Anticipation N-1 event")
-                        yield (
-                            "data: {\"div\": \"message-container\", \"content\": "
-                            "{ \"message\": \"Status: there is an Anticipation N-1 event\"}}\n\n"
-                        )
-                        time.sleep(1)
+                            "Status: Il y a un événement de type 'anticipation N-1' ")
+                        message = {
+                            "div": "message-container",
+                            "content": "Status: Il y a un événement de type 'anticipation N-1' "
+                        }
+                        yield f"data: {json.dumps(message)}\n\n"
 
                         for x in self.listen.anticipation:
                             logging.info(
-                                "There is a line lost anticipation event %s", x)
+                                "Il y a un événement d'anticipation de perte de ligne %s", x)
                             yield (
                                 f"data: {{\"div\": \"events-div\", \"content\": "
-                                f"{{ \"title\": \"There is a line lost anticipation event\", "
+                                f"{{ \"title\": \"Il y a un événement d'anticipation de perte de ligne\", "
                                 f"\"description\": \"{x}\"}} }}\n\n"
                             )
-                            time.sleep(1)
 
                             if not img_b64_forecast:
                                 img_b64_forecast = create_observation_image(obs_forecast._obs_env,
@@ -400,16 +411,15 @@ class Simulator:
                         event_resolved_trigger = True
                         obs_forecast = None
                         if self.obs.current_step >= self.config['scenario_first_step']:
-                            yield (
-                                "data: {\"div\": \"message-container\", \"content\": "
-                                "{ \"message\": \"La simulation est en pause.\"} }\n\n"
-                            )
-                            time.sleep(1)
+                            message = {
+                                "div": "message-container",
+                                "content": "La simulation est en pause."
+                            }
+                            yield f"data: {json.dumps(message)}\n\n"
                             yield (
                                 "data: {\"div\": \"status-div\", \"content\": "
                                 "\"Cliquez sur 'Continuer' pour poursuivre la simulation.\"}\n\n"
                             )
-                            time.sleep(1)
                             set_pause(True)
                             while get_pause_status():
                                 time.sleep(1)
@@ -429,14 +439,13 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: there is a Line lost %s",
+                        logging.info("Status: Il y a une perte de ligne %s",
                                      get_curent_lines_lost(self.obs))
                         yield (
                             f"data: {{\"div\": \"events-div\", \"content\": "
-                            f"{{ \"title\": \"Status: there is a Line lost\" , "
+                            f"{{ \"title\": \"Status: Il y a une perte de ligne \" , "
                             f"\"description\": \"{get_curent_lines_lost(self.obs)}\" }}}}\n\n"
                         )
-                        time.sleep(1)
 
                         if not img_b64_current:
                             img_b64_current = create_observation_image(self.env,
@@ -453,16 +462,15 @@ class Simulator:
                                               case_line_lost=True)
                         event_resolved_trigger = True
                         if self.obs.current_step >= self.config['scenario_first_step']:
-                            yield (
-                                "data: {\"div\": \"message-container\", \"content\": "
-                                "{ \"message\": \"La simulation est en pause.\"} }\n\n"
-                            )
-                            time.sleep(1)
+                            message = {
+                                "div": "message-container",
+                                "content": "La simulation est en pause."
+                            }
+                            yield f"data: {json.dumps(message)}\n\n"
                             yield (
                                 "data: {\"div\": \"status-div\", \"content\": "
                                 "\"Cliquez sur 'Continuer' pour poursuivre la simulation.\"}\n\n"
                             )
-                            time.sleep(1)
                             set_pause(True)
                             while get_pause_status():
                                 time.sleep(1)
