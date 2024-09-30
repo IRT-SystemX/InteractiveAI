@@ -34,7 +34,7 @@
 InteractiveAI platform provides support in augmented decision-making for complex steering systems.
 It is a prototype of a bi-directional virtual assistant, open in terms of industrial applications, in which it will be possible to evaluate the forms of exchange between the expert and an AI that learns continuously, both from the information flows received and the decisions made by the human. The platform will help and assist the operator of a complex operation to resolve incidents/faults in his industrial environment.
 
-As it is designed, the platform is generic, it can be used for different use cases. As an example, the use case of managing **power line** overloads at **RTE** (Réseau de Transport d'Electricité français) is provided.
+As it is designed, the platform is generic, it can be used for different use cases. As an example, the use case of managing **power line** overloads at **RTE** (Réseau de Transport d'Electricité français) is provided. To install and run the RTE simulator, please refer to the detailed guide available in the file RTE simulator's [README](/usecases_examples/rte/README.md). This guide provides specific instructions for setting up and running the RTE use case.
 
 The platform uses the project **OperatorFabric** for notification management.
 
