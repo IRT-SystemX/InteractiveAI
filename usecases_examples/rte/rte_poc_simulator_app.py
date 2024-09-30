@@ -17,9 +17,9 @@ class Recommendation:
         self.data = {}
 
 
-Recommend = Recommendation
+Recommend = Recommendation()
 
-app = Flask(__name__,template_folder='app/templates')
+app = Flask(__name__, template_folder='app/templates')
 app.secret_key = 'votre_clé_secrète_ici'
 socketio = SocketIO(app)
 
@@ -37,18 +37,17 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     """Display the dashboard."""
-    # com_tempo = com.outputsConfig['Outputs']['Context']['tempo']
     # Récupérer le nom d'utilisateur
     username = session.get('username', 'Invité')
     server = session.get('server', 'Null')
-    # act = session.get('act', None)
-    message = session.get('message', '')
+    # Récupérer tous les messages
+    messages = session.pop('message', [])
     return render_template('dashboard.html',
                            username=username,
                            server=server,
                            config=simu.config,
                            com=com,
-                           message=message)
+                           messages=messages)
 
 
 @app.route('/load_simulation')
@@ -56,8 +55,10 @@ def load_simulation():
     """Load the simulation."""
     if 'username' in session:
         simu.load_and_edit_config()
-        simu.initialize_simulation(com)
-        session['message'] = "The simulation is loaded."
+        simu.initialize_simulation(com, session)
+        if 'message' not in session or isinstance(session['message'], str):
+            session['message'] = []
+        session['message'].append("La simulation est chargée.")
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
@@ -124,25 +125,24 @@ def login():
 @app.route('/edit_config', methods=['POST'])
 def edit_config():
     """Modify the simulation configuration."""
-    # session.pop('act', None)
     session.pop('message', None)
     new_params = {
         'env_seed': int(request.form['env_seed']),
         'scenario_name': request.form['scenario_name'],
-        'assistant_seed':   int(request.form['assistant_seed']),
+        'assistant_seed': int(request.form['assistant_seed']),
     }
     simu.load_and_edit_config(new_params)
-    simu.initialize_simulation(com)
-    session['message'] = "The simulation is loaded."
+    simu.initialize_simulation(com, session)
+    if 'message' not in session or isinstance(session['message'], str):
+        session['message'] = []
+    session['message'].append("La simulation est chargée.")
     return redirect(url_for('dashboard'))
 
 
 @app.route('/edit_simulation_settings', methods=['POST'])
 def edit_simulation_settings():
     """Modify simulation parameters."""
-    # session.pop('act', None)
     session.pop('message', None)
-    # Charger et éditer la configuration
     new_params = {
         'refresh_frequency_step': int(request.form['refresh_frequency_step']),
         'time_step_forecast': int(request.form['time_step_forecast']),
@@ -154,9 +154,10 @@ def edit_simulation_settings():
     new_tempo = int(request.form['tempo'])
     simu.load_and_edit_config(new_params)
     com.edit_parameters('Outputs.Context.tempo', new_tempo)
-    simu.initialize_simulation(com)
-    # session['act'] = act
-    session['message'] = "The simulation is loaded."
+    simu.initialize_simulation(com, session)
+    if 'message' not in session or isinstance(session['message'], str):
+        session['message'] = []
+    session['message'].append("La simulation est chargée.")
     return redirect(url_for('dashboard'))
 
 
@@ -198,7 +199,7 @@ def logout():
 @app.route('/reset_simulation', methods=['POST'])
 def reset_simulation():
     """Reset the simulation."""
-    simu.initialize_simulation(com)
+    simu.initialize_simulation(com, session)
     return jsonify({"message": "Simulation reset successfully"})
 
 
@@ -229,4 +230,4 @@ def send_act():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True, host='0.0.0.0', port=5000)

@@ -55,16 +55,20 @@ class Simulator:
             with open(config_path, 'w', encoding='utf-8') as config_file:
                 toml.dump(self.config, config_file)
 
-    def initialize_simulation(self, com):
+    def initialize_simulation(self, com, session):
         """
         Initialize the simulation with configuration parameters.
 
         Args:
             com: Communication object for interacting with the environment.
+            session: Flask session object for storing messages.
 
         Returns:
             grid2op.Action.BaseAction: Initial action for the simulation.
         """
+        if 'message' not in session or not isinstance(session['message'], list):
+            session['message'] = []
+
         forecasts_horizons = [5, 10, 15, 20, 25, 30]
         self.env = grid2op.make(self.config['env_name'],
                                 backend=BkClass(),
@@ -87,12 +91,8 @@ class Simulator:
         self.env.set_id(id_scenario)  # Scenario choice
         self.obs = self.env.reset()
         logging.info("Le scénario chargé est : %s \n",
-                     self.env.chronics_handler.get_name())
-        message = {
-                    "div": "message-container",
-                    "content": f"Le scénario chargé est : {self.env.chronics_handler.get_name()}"
-                }
-        yield f"data: {json.dumps(message)}\n\n"
+                    self.env.chronics_handler.get_name())
+        session['message'].append(f"Le scénario chargé est : {self.env.chronics_handler.get_name()}")
 
         assistant_path = self.config['assistant_path']
         assistant_seed = int(self.config['assistant_seed'])
@@ -111,11 +111,7 @@ class Simulator:
             logging.error(e)
 
         logging.info("Le scénario est chargé.\n")
-        message = {
-                    "div": "message-container",
-                    "content": "Le scénario est chargé."
-                }
-        yield f"data: {json.dumps(message)}\n\n"
+        session['message'].append("Le scénario est chargé.")
         self.listen = Listener(self.obs)
         return act
 
@@ -441,6 +437,14 @@ class Simulator:
 
                         logging.info("Status: Il y a une perte de ligne %s",
                                      get_curent_lines_lost(self.obs))
+                        
+                        logging.info(
+                            "Status: Il y a un événement de type 'anticipation N-1' ")
+                        message = {
+                            "div": "message-container",
+                            "content": "Status: Il y a une perte de ligne ' "
+                        }
+                        yield f"data: {json.dumps(message)}\n\n"
                         yield (
                             f"data: {{\"div\": \"events-div\", \"content\": "
                             f"{{ \"title\": \"Status: Il y a une perte de ligne \" , "

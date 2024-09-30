@@ -4,7 +4,7 @@ class Recommendation:
     def __init__(self):
         self.data = {}
 
-Recommend = Recommendation
+recommend = Recommendation()
 
 app = Flask(__name__)
 
@@ -15,8 +15,8 @@ def home_page():
 
 @app.route('/api/v1/recommendations', methods=['POST'])
 def receive_act():
-    Recommend.data = (request.get_json())
-    print(Recommend.data)
+    recommend.data = (request.get_json())
+    print(recommend.data)
     return jsonify({
         "message" : "OK"
     })
@@ -24,11 +24,11 @@ def receive_act():
 @app.route('/api/v1/recommendations', methods=['GET'])
 def send_act():
     act_dict = {}
-    act_dict = Recommend.data
-    Recommend.data = {}
+    act_dict = recommend.data
+    recommend.data = {}
     print(act_dict)
     return jsonify(act_dict)
 
 
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0', port=5000)

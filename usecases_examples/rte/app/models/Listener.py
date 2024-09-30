@@ -61,7 +61,7 @@ class Listener:
             bool: True if a line is disconnected, False otherwise.
         """
         if np.any(obs.line_status is False):
-            # logging.info("Line disconnected")
+            logging.info("Line disconnected")
             return True
         return False
 

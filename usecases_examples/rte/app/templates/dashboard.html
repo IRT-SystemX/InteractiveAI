@@ -362,10 +362,41 @@
             messageContainer.style.display = 'block'; // Affiche le div
             messageContainer.innerHTML = content; // Remplace le contenu existant par le nouveau message
             
-            // Masque le message après 5 secondes
+            // Masque le message après 10 secondes
             setTimeout(() => {
                 messageContainer.style.display = 'none';
-            }, 15000);
+                sessionStorage.removeItem('message');
+            }, 10000);
+        }
+
+        // Récupérer le message de la session et l'afficher
+        // document.addEventListener('DOMContentLoaded', (event) => {
+        //     const message = "{{ session.get('message', '') }}";
+        //     if (message) {
+        //         addMessage(message);
+        //         // Stocker le message dans sessionStorage pour le gérer côté client
+        //         sessionStorage.setItem('message', message);
+        //     }
+        // });
+        
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const messagesData = {{ messages | tojson | safe }}; 
+            if (messagesData.length > 0) {
+                messagesData.forEach(message => addMessage(message));
+                // Stocker les messages dans sessionStorage pour les gérer côté client
+                sessionStorage.setItem('messages', JSON.stringify(messagesData));
+            }
+        });
+
+        // Vérifier si un message est stocké dans sessionStorage
+        // const storedMessage = sessionStorage.getItem('message');
+        // if (storedMessage) {
+        //     addMessage(storedMessage);
+        // }
+
+        const storedMessages = JSON.parse(sessionStorage.getItem('messages') || '[]');
+        if (storedMessages.length > 0) {
+            storedMessages.forEach(message => addMessage(message));
         }
 
         function postAction(content) {
@@ -382,6 +413,11 @@
                 card.innerHTML = `<h4>${content.title}</h4><p>${content.description}</p>`;
                 actionContainer.innerHTML = ''; // Efface le contenu précédent
                 actionContainer.appendChild(card);
+
+                // Ajouter une durée d'affichage de 30 secondes
+                setTimeout(() => {
+                actionContainer.innerHTML = ''; // Efface le contenu après 10 secondes
+                }, 30000);
             }
         }
 

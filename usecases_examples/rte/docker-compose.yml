@@ -20,6 +20,6 @@ services:
     container_name: rte-simulator-api
     restart: always
     ports:
-      - "5101:5000"
+      - "5100:5000"
     volumes:
       - .:/code

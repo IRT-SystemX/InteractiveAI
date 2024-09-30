@@ -39,11 +39,9 @@ And it can also be found here [Grid2Op/README.md](Grid2Op/README.md).
 * Docker and Docker Compose
 
 ## 1.2 Setup a Virtualenv (optional)
-Follow this section in case you are working on localhost, and without Docker.
-
 ### Create a virtual environment 
 ```commandline
-cd InteractiveAI/usecases_examples/rte
+cd my-project-folder
 pip3 install -U virtualenv
 python3 -m virtualenv venv_grid2op
 ```
@@ -54,80 +52,69 @@ source venv_grid2op/bin/activate
 ```
 
 ## 1.3 Installation of the simulator layer
-Either use CASE 1 or CASE 2 to install the RTE's simulator of your choice.
-
 
 ### 1.3.1 CASE 1 : Console Simulator
 
-1. Install dependencies for the console simulator (optional, yet required when working on localhost):
+1. Install dependencies for the console simulator:
 
 ```commandline
-cd InteractiveAI/usecases_examples/rte
+cd rte
 pip install -r requirements-consol.txt
 ```
 
-2. Launch the CAB event listener server, compatible with the console simulator.
+2. Install API-specific dependencies:
 
 ```commandline
-docker-compose up -d --build api
+pip install -r requirements-api.txt
 ```
 
-The launched API might be accessible at this address: 
-http://SERVER_ADDRESS:5100
-
-The SERVER_ADDRESS will be the one of the computer used to launch the Docker command.
+3. For the Docker environment, use the provided docker-compose.yml and Dockerfile.
 
 ### 1.3.2 CASE 2 : Web App Simulator
 
-1. Install dependencies for the console simulator (optional, yet required when working on localhost):
+1. Install dependencies for the console simulator:
 
 ```commandline
-cd InteractiveAI/usecases_examples/rte
+cd rte
 pip install -r requirements-app.txt
 ```
 
-**2. Launch the whole all in one web app simulator through docker on a computer (BEST APPROACH):** 
-
-```commandline
-docker-compose up -d --build app
+3. For the Docker environment, use the provided docker-compose.yml and Dockerfile.
 ```
-
-The launched app might be accessible at this address: 
-http://SERVER_ADDRESS:5100/
-
-The SERVER_ADDRESS will be the one of the computer used to launch the Docker command.
+cd rte
+docker-compose up -d --build
+```
 
 # 2 Run the simulator
 
 ## 2.1 CASE 1 : Console Simulator
 
 ### Configurate the simulator settings
-* Define your simulation configuration in the file: [`/InteractiveAI/usecases_examples/rte/config/CONFIG.toml`](/usecases_examples/rte/config/CONFIG.toml)
-* Define CAB connection settings in the file: [`/InteractiveAI/usecases_examples/rte/config/API_RTE_CAB.toml`](/usecases_examples/rte/config/API_RTE_CAB.toml)
+* Define your simulation configuration in the file: [`/rtegrid2op_poc_simulator/config/CONFIG.toml`](/rtegrid2op_poc_simulator/config/CONFIG.toml)
+* Define CAB connection settings in the file: [`/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml`](/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml)
 
 ### Run the simulator in your terminal
 ```commandline
-cd InteractiveAI/usecases_examples/rte
+cd rte
 python rte_poc_simulator_consol.py
 ```
 
 ## 2.2 CASE 2 : Web App Simulator
 
-### To launch the simulator app (BEST APPROACH)
+### To launch the simulator app
 Open a web browser and navigate to the URL returned by Docker after running the containers. 
-This URL will typically be `http://localhost:5100/` unless you've configured a different port.
+This URL will typically be `http://localhost:5100` unless you've configured a different port.
 
 Note: If you're running Docker on a remote machine or using Docker Toolbox on Windows, 
 you may need to replace 'localhost' with the appropriate IP address.
-For example : http://SERVER_ADDRESS:5100/  with **SERVER_ADDRESS** the one of your remote machine.
 
 ### Run the simulator in your terminal (optional)
 ```commandline
-cd InteractiveAI/usecases_examples/rte
+cd rte
 python rte_poc_simulator_app.py
 ```
 
-## 2.3 Credentials required to run any simulator
+## 2.3 Credentials required to run the simulation
 
 To run the simulation, you will need the following credentials:
 
