@@ -540,8 +540,8 @@ class Communicate:
             while bool(self.act_dict) is False:
                 if get_act_counter == 0:
                     message = {
-                    "div": "message-container",
-                    "content": "La simulation est en pause. Veillez consulter les recommendations de CAB avant de faire une nouvelle action ici!"
+                        "div": "message-container",
+                        "content": "La simulation est en pause. Veillez consulter les recommendations de CAB avant de faire une nouvelle action ici!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
@@ -555,8 +555,8 @@ class Communicate:
                         time.sleep(1)
                 else:
                     message = {
-                    "div": "message-container",
-                    "content": "Aucune recommendation n'a été reçu de CAB!"
+                        "div": "message-container",
+                        "content": "Aucune recommendation n'a été reçu de CAB!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
@@ -585,8 +585,8 @@ class Communicate:
                         " La siumation se prousuivra avec la recommendation NULL par défaut."
                     )
                     message = {
-                    "div": "message-container",
-                    "content": "Aucune recommendation n'a été reçu ! La siumation se prousuivra avec la recommendation NULL par défaut."
+                        "div": "message-container",
+                        "content": "Aucune recommendation n'a été reçu ! La siumation se prousuivra avec la recommendation NULL par défaut."
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
@@ -594,8 +594,8 @@ class Communicate:
                 if bool(self.act_dict) is True:
                     logging.info("\n CAB' s recommendation received! \n")
                     message = {
-                    "div": "message-container",
-                    "content": "La recommendation de CAB vient dêtre reçu !"
+                        "div": "message-container",
+                        "content": "La recommendation de CAB vient dêtre reçu !"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
