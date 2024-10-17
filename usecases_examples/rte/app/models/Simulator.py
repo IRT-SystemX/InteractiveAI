@@ -191,12 +191,12 @@ class Simulator:
                 silent_mode_msg_trigger = False
             else:
                 if silent_mode_msg_trigger:
-                    logging.info('Status: Le scénario se déroule en arière plan.\n'
-                                 'Le simulateur va se connecter à CAB à partir du pas %s',
+                    logging.info('Status: Le scénario se déroule en arrière plan.\n'
+                                 'Le simulateur va se connecter à CAB à partir du pas : %s',
                                  self.config['scenario_first_step'])
                     message = (
-                        f"Status: Le scénario se déroule en arière plan.\n"
-                        f"Le simulateur va se connecter à CAB à partir du pas "
+                        f"Status: Le scénario se déroule en arrière plan.\n"
+                        f"Le simulateur va se connecter à CAB à partir du pas : "
                         f"{self.config['scenario_first_step']} (Voir les paramètres de configuration)"
                     )
                     yield f"data: {{ \"div\": \"status-div\", \"content\": {json.dumps(message)} }}\n\n"

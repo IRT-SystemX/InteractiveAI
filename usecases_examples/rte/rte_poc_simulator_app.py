@@ -223,8 +223,8 @@ def receive_act():
 def send_act():
     """Send recommendations."""
     act_dict = {}
-    act_dict = Recommendation.data
-    Recommendation.data = {}
+    act_dict = Recommend.data
+    Recommend.data = {}
     print(act_dict)
     return jsonify(act_dict)
 
