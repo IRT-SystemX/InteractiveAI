@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y default-jre
 RUN mkdir /my_app
 RUN mkdir /cab_common
 
+# required for pip install LightSim2Grid (RuntimeError: Unsupported compiler -- at least C++11 support is needed!)
+RUN apt-get install build-essential -y
+	
 # Install recommendation-service modules
 COPY ./recommendation-service/ /my_app/
 COPY ./cab_common/ /cab_common/

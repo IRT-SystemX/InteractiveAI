@@ -46,7 +46,8 @@ services:
       - TZ=UTC   # Set timezone to UTC
     command: sh -c "./entrypoint.sh"
     ports:
-      - 5000:5000
+    # avoid port conflict under macOS
+      - 5001:5000
     volumes:
       - ../../../backend/event-service:/code
     depends_on:
@@ -145,6 +146,7 @@ services:
     ports:
       - '3200:80'
     depends_on:
+#      - cabcorrelation
       - cabrecommendation
       - cabevent
       - cabcontext
@@ -152,6 +154,54 @@ services:
       - users
       - businessconfig
       - cards-consultation
+# Commented out - dockerfile missing!
+#  cabcorrelation:
+#    container_name: cab_correlation
+#    image: cab/cabcorrelation
+#    build:
+#      context: ../../../backend
+#      dockerfile: Correlation-Service-Dockerfile
+#    restart: unless-stopped
+#    environment:
+#      - CARDS_PUBLICATION_SERVICE=http://cards-publication:8080
+#      - GATEWAY_SERVICE=http://frontend:80
+#      - HISTORIC_SERVICE=http://cabhistoric:5000
+#      - DATABASE_URL=postgresql://postgres:postgres@db_postgres_correlation:5432/cab-correlation
+#      - PYTHONPATH=/code
+#      - FLASK_APP=app:create_app('dev', scheduler=True)
+#      # - FLASK_ENV=development
+#      - URL_INTROSPECT="http://frontend:80/auth/check_token"
+#      - KEYCLOAK_SERVER_URL="http://frontend:80/auth/"
+#      - CONTEXT_URL=http://cabcontext:5000
+#      - EVENT_URL=http://cabevent:5000
+#      - CAB_USERNAME=publisher_test
+#      - CAB_PASSWORD=test
+#      - AUTH_DISABLED=True
+#      - DEFAULT_USE_CASE=ORANGE
+#      - TZ=UTC   # Set timezone to UTC
+#
+#    command: sh -c "./entrypoint.sh"
+#    ports:
+#      - 5300:5000
+#    volumes:
+#      - ./../../../backend/correlation-service:/code
+#    depends_on:
+#      - db_postgres_correlation
+#      - cabevent
+#      - cabcontext
+#
+#  db_postgres_correlation:
+#    container_name: db_postgres_correlation
+#    image: postgres:14.7
+#    environment:
+#      - POSTGRES_HOST_AUTH_METHOD=trust
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=postgres
+#      - POSTGRES_DB=cab-correlation
+#    ports:
+#      - '5435:5432'
+#    volumes:
+#      - postgres_correlation_data:/var/lib/postgresql/data/
 
   cabrecommendation:
     container_name: cab_recommendation
@@ -348,6 +398,8 @@ services:
   web-ui:
     container_name: web-ui
     image: 'lfeoperatorfabric/of-web-ui:3.11.0.RELEASE'
+    # Needed for macOS ARM
+    platform: linux/x86_64
     ports:
       - '2002:80'
     depends_on:
