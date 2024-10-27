@@ -11,7 +11,6 @@ import {
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-//import type { CorrelationData, CorrelationKey, KPI } from '@/entities/ORANGE/types'
 import eventBus from '@/plugins/eventBus'
 import { type Card, CRITICALITIES } from '@/types/cards'
 import type { Link, Node } from '@/types/components/graph'
@@ -212,7 +211,7 @@ export const useGraphStore = defineStore('graph', () => {
       )
     )
 
-    setStatuses(useCardsStore().cards('ORANGE'))
+    setStatuses(useCardsStore()._cards)
   }
 
   function setStatuses(cards: Card[]) {

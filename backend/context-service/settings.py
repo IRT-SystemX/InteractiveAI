@@ -1,8 +1,4 @@
-import os
 import logging.config
-
-CORRELATION_SERVICE = os.getenv('CORRELATION_SERVICE')
-
 
 DEFAULT_LOGGING = {
     'version': 1,

@@ -20,6 +20,4 @@ fi
 (
 	cd cards
 	./sendCard.sh rteProcess/event.json $url
-	./sendCard.sh orangeProcess/event.json $url
-	./sendCard.sh sncfProcess/event.json $url
 )
