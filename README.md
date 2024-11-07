@@ -48,15 +48,10 @@ The platform uses the project **OperatorFabric** for notification management.
 
 ### Setting Up the Environment
 
-1. Clone the repo of the assistant
+Clone the repo of the assistant
 ```sh
 git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
 ```
-
-2. Download recommendation-service resources and copy them into `backend/recommendation-service/resources`
-
-3. Download correlation-service ai_models and copy them into `backend/correlation-service/api/ai_models`
-
 
 ## Usage
 
