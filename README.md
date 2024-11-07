@@ -61,6 +61,7 @@ Below are the steps to start all services. For other methods, please consult the
 ### Running All Services (Dev Mode)
 
 1. Set-up environement variables
+   
 
 `VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_RTE_SIMU` are the simulators endpoints.
 Put for each UC the corresponding IP address.
@@ -70,7 +71,9 @@ Examples:
 ```sh
 export VITE_RTE_SIMU=http://[Service url]:[Service port]
 ```
-
+> **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/rte/ then set the VITE_RTE_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
+>
+> 
 2. Run Cab-assistant
 ```sh
 cd config/dev/cab-standalone
