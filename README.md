@@ -129,10 +129,6 @@ Some examples of credentials:
 | username         | password |
 | ---------------- | -------- |
 | `admin`          | `test`   |
-| `publisher_test` | `test`   |
-| `da_user`        | `test`   |
-| `sncf_user`      | `test`   |
-| `orange_user`    | `test`   |
 | `rte_user`       | `test`   |
 
 
