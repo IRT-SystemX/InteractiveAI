@@ -8,26 +8,26 @@ Before starting InteractiveAI, it's recommended to set up the following services
 
 #### 1.1 Event Service
 
-To set up the Event Service for your use case (RTE), follow these steps:
+To set up the Event Service for your use case (PowerGrid), follow these steps:
 
 #### 1. Create a Folder and Files
 
-Start by creating a folder named `RTE` under `backend/event-service/resources` with the following files:
+Start by creating a folder named `PowerGrid` under `backend/event-service/resources` with the following files:
 
 ##### `event_manager.py`
 
-event_manager.py defines a custom event manager (RTEEventManager) tailored for the RTE use case within InteractiveAI, allowing customization of event handling behaviors, such as ensuring uniqueness based on specified fields.
+event_manager.py defines a custom event manager (PowerGridEventManager) tailored for the PowerGrid use case within InteractiveAI, allowing customization of event handling behaviors, such as ensuring uniqueness based on specified fields.
 
 
 ```python
-# backend/event-service/resources/RTE/event_manager.py
+# backend/event-service/resources/PowerGrid/event_manager.py
 
 from api.event_manager.base_event_manager import BaseEventManager
 
-class RTEEventManager(BaseEventManager):
+class PowerGridEventManager(BaseEventManager):
     def __init__(self):
         super().__init__()
-        self.use_case = "RTE"
+        self.use_case = "PowerGrid"
         self.use_case_process = "cabProcess"
     
     # Optional: Customize Event Uniqueness
@@ -43,16 +43,16 @@ class RTEEventManager(BaseEventManager):
 
 ##### `schemas.py`
 
-schemas.py defines the metadata schema (MetadataSchemaRTE) used by InteractiveAI to validate and structure incoming events specific to the RTE use case, ensuring data consistency and compliance with predefined formats and rules.
+schemas.py defines the metadata schema (MetadataSchemaPowerGrid) used by InteractiveAI to validate and structure incoming events specific to the PowerGrid use case, ensuring data consistency and compliance with predefined formats and rules.
 
 ```python
-# backend/event-service/resources/RTE/schemas.py
+# backend/event-service/resources/PowerGrid/schemas.py
 
 from apiflask.fields import Float, String, Dict
 from apiflask.validators import OneOf
 from api.schemas import MetadataSchema
 
-class MetadataSchemaRTE(MetadataSchema):
+class MetadataSchemaPowerGrid(MetadataSchema):
     event_type = String(
         required=True,
         validate=OneOf(["KPI", "anticipation", "agent", "consignation"]),
@@ -67,7 +67,7 @@ class MetadataSchemaRTE(MetadataSchema):
 
 #### Optional: Customize Event Uniqueness
 
-The `RTEEventManager` class can override the `get_unique_fields` method to specify unique fields for ensuring event uniqueness in InteractiveAI. Modify this method according to your specific requirements and the data structure of your events.
+The `PowerGridEventManager` class can override the `get_unique_fields` method to specify unique fields for ensuring event uniqueness in InteractiveAI. Modify this method according to your specific requirements and the data structure of your events.
 
 #### 2. Integration with InteractiveAI
 
@@ -76,39 +76,39 @@ Further integration steps with InteractiveAI will depend on your specific deploy
 
 #### 1.2 Context Service
 
-#### Files for RTE in Context Service
+#### Files for PowerGrid in Context Service
 
-To integrate RTE with the Context Service, create the following files under `backend/context-service/resources/RTE`:
+To integrate PowerGrid with the Context Service, create the following files under `backend/context-service/resources/PowerGrid`:
 
 ###### `context_manager.py`
 
-`context_manager.py` defines a custom context manager (`RTEContextManager`) for the RTE use case within the Context Service, inheriting from `BaseContextManager` to manage context-related operations.
+`context_manager.py` defines a custom context manager (`PowerGridContextManager`) for the PowerGrid use case within the Context Service, inheriting from `BaseContextManager` to manage context-related operations.
 
 
 ```python
-# backend/context-service/resources/RTE/context_manager.py
+# backend/context-service/resources/PowerGrid/context_manager.py
 
 from api.context_manager.base_context_manager import BaseContextManager
 
-class RTEContextManager(BaseContextManager):
+class PowerGridContextManager(BaseContextManager):
     def __init__(self):
         super().__init__()
-        self.use_case = "RTE"
+        self.use_case = "PowerGrid"
 ```
 
 
 ###### `schemas.py`
 
-`schemas.py` defines the metadata schema (`MetadataSchemaRTE`) used by the Context Service to validate and structure data specific to the RTE use case ensuring data integrity and adherence to predefined formats.
+`schemas.py` defines the metadata schema (`MetadataSchemaPowerGrid`) used by the Context Service to validate and structure data specific to the PowerGrid use case ensuring data integrity and adherence to predefined formats.
 
 
 ```python
-# backend/context-service/resources/RTE/schemas.py
+# backend/context-service/resources/PowerGrid/schemas.py
 
 from api.schemas import MetadataSchema
 from apiflask.fields import Dict, String
 
-class MetadataSchemaRTE(MetadataSchema):
+class MetadataSchemaPowerGrid(MetadataSchema):
     topology = String(allow_none=False)
     observation = Dict(allow_none=False)
 ```
@@ -118,36 +118,36 @@ class MetadataSchemaRTE(MetadataSchema):
 
 No specific setup instructions provided.
 
-##### File for RTE in Recommendation Service
+##### File for PowerGrid in Recommendation Service
 
-To integrate RTE with the Recommendation Service, create the following file under `backend/recommendation-service/resources/RTE`:
+To integrate PowerGrid with the Recommendation Service, create the following file under `backend/recommendation-service/resources/PowerGrid`:
 
 ###### `manager.py`
 
-`manager.py` defines a custom recommendation manager (`RTEManager`) for the RTE use case within the Recommendation Service. It extends `BaseRecommendationManager` and overrides the `get_recommendation` method to generate RTE-specific recommendations based on `request_data`.
-This file enables RTE-specific recommendation functionality within the Recommendation Service of InteractiveAI.
+`manager.py` defines a custom recommendation manager (`PowerGridManager`) for the PowerGrid use case within the Recommendation Service. It extends `BaseRecommendationManager` and overrides the `get_recommendation` method to generate PowerGrid-specific recommendations based on `request_data`.
+This file enables PowerGrid-specific recommendation functionality within the Recommendation Service of InteractiveAI.
 
 ```python
-# backend/recommendation-service/resources/RTE/manager.py
+# backend/recommendation-service/resources/PowerGrid/manager.py
 
 from api.manager.base_manager import BaseRecommendationManager
 
-class RTEManager(BaseRecommendationManager):
+class PowerGridManager(BaseRecommendationManager):
     def __init__(self):
         super().__init__()
 
     def get_recommendation(self, request_data):
         """
-        Override to provide recommendations specific to the RTE use case.
+        Override to provide recommendations specific to the PowerGrid use case.
         
-        This method generates and returns recommendations tailored for RTE.
+        This method generates and returns recommendations tailored for PowerGrid.
         """
         action_dict = {}
 
         output_json = {
             "title": "recommendation",
             "description": "description",
-            "use_case": "RTE",
+            "use_case": "PowerGrid",
             "agent_type": "agent_type",
             "actions": [action_dict],
         }
@@ -174,8 +174,8 @@ curl -v http://localhost:2103/users -H "Authorization:Bearer $token" -H "Content
 Example Response:
 ```json
 [
-    {"login": "admin", "entities": ["RTE"], "groups": ["ADMIN"]},
-    {"login": "rte_user", "entities": ["RTE"], "groups": ["ReadOnly", "RTE", "ADMIN", "Dispatcher"]}
+    {"login": "admin", "entities": ["PowerGrid"], "groups": ["ADMIN"]},
+    {"login": "PowerGrid_user", "entities": ["PowerGrid"], "groups": ["ReadOnly", "PowerGrid", "ADMIN", "Dispatcher"]}
 ]
 ```
 
@@ -191,7 +191,7 @@ Example Response:
 ```json
 [
     {"id": "ADMIN", "name": "ADMINISTRATORS", "description": "The admin group", "realtime": false},
-    {"id": "RTE", "name": "RTE France", "description": "RTE TSO Group", "realtime": false},
+    {"id": "PowerGrid", "name": "RTE France", "description": "RTE TSO Group", "realtime": false},
     {"id": "Dispatcher", "name": "Dispatcher", "description": "Dispatcher Group", "perimeters": ["cabProcess"], "realtime": true},
     {"id": "Planner", "name": "Planner", "description": "Planner Group", "perimeters": ["cabProcess"], "realtime": true},
     {"id": "Supervisor", "name": "Supervisor", "description": "Supervisor Group", "perimeters": ["cabProcess"], "realtime": true},
@@ -211,7 +211,7 @@ curl http://localhost:2103/entities -H "Authorization:Bearer $token" -H "Content
 Example Response:
 ```json
 [
-    {"id": "RTE", "name": "Electricity Transmission Network", "description": "Electricity Transmission Network", "entityAllowedToSendCard": true, "parents": ["IRT_MAIN"]},
+    {"id": "PowerGrid", "name": "Electricity Transmission Network", "description": "Electricity Transmission Network", "entityAllowedToSendCard": true, "parents": ["IRT_MAIN"]},
     {"id": "IRT_MAIN", "name": "IRT Control Centers", "description": "IRT Control Centers", "entityAllowedToSendCard": false}
 ]
 ```
@@ -228,12 +228,12 @@ Post a new event use case:
 curl -X POST $url:3200/cab_event/api/v1/usecases -H "Content-type:application/json" -H "Authorization:Bearer $token" --data @$1.json -v
 ```
 
-Example JSON (`rteEvent.json`):
+Example JSON (`PowerGridEvent.json`):
 ```json
 {
-    "name": "RTE",
-    "event_manager_class": "RTEEventManager",
-    "metadata_schema_class": "MetadataSchemaRTE"
+    "name": "PowerGrid",
+    "event_manager_class": "PowerGridEventManager",
+    "metadata_schema_class": "MetadataSchemaPowerGrid"
 }
 ```
 
@@ -245,12 +245,12 @@ Post a new context use case:
 curl -X POST $url:3200/cabcontext/api/v1/usecases -H "Content-type:application/json" -H "Authorization:Bearer $token" --data @$1.json -v
 ```
 
-Example JSON (`rteContext.json`):
+Example JSON (`PowerGridContext.json`):
 ```json
 {
-    "name": "RTE",
-    "context_manager_class": "RTEContextManager",
-    "metadata_schema_class": "MetadataSchemaRTE"
+    "name": "PowerGrid",
+    "context_manager_class": "PowerGridContextManager",
+    "metadata_schema_class": "MetadataSchemaPowerGrid"
 }
 ```
 
@@ -262,10 +262,10 @@ Post a new recommendation use case:
 curl -X POST $url:3200/cab_recommendation/api/v1/usecases -H "Content-type:application/json" -H "Authorization:Bearer $token" --data @$1.json -v
 ```
 
-Example JSON (`rteRecommendationUC.json`):
+Example JSON (`PowerGridRecommendationUC.json`):
 ```json
 {
-    "name": "RTE",
-    "manager_class": "RTEManager"
+    "name": "PowerGrid",
+    "manager_class": "PowerGridManager"
 }
 ```

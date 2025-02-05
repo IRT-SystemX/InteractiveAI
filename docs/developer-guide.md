@@ -65,7 +65,7 @@ pip install -r requirements.txt
          FLASK_APP="app:create_app('test')"
          FLASK_ENV="development"
          AUTH_DISABLED="True"
-         DEFAULT_USE_CASE=YOUR_USE_CASE ("SNCF", "RTE", "DA")
+         DEFAULT_USE_CASE=YOUR_USE_CASE ("SNCF", "PowerGrid", "DA")
       then start service using command:
 ```sh
 python -m flask run --host=0.0.0.0 --reload
@@ -74,13 +74,13 @@ python -m flask run --host=0.0.0.0 --reload
    * Option 2:
       Update start_service.bash and use it to run service
 
-### Specific Configuration for the RTE Use Case
+### Specific Configuration for the PowerGrid Use Case
 
-For the RTE use case, the recommendation service utilizes the resources `XD_silly_repo` and `env_icaps_input_data_test`. 
+For the PowerGrid use case, the recommendation service utilizes the resources `XD_silly_repo` and `env_icaps_input_data_test`. 
 - `env_icaps_input_data_test` is a grid2op compliant scenarios' collection package.
 - `XD_silly_repo` is a compliant a grid2op compliant RL agent package.
 
-If you wish to modify these, you must add your replacement folders in [`backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator`](../backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator) and update there in the file `CONFIG_RTE.toml` the followings parameter to match your new folders:
+If you wish to modify these, you must add your replacement folders in [`backend/recommendation-service/resources/PowerGrid/PowerGridgrid2op_poc_simulator`](../backend/recommendation-service/resources/PowerGrid/PowerGridgrid2op_poc_simulator) and update there in the file `CONFIG_POWERGRID.toml` the followings parameter to match your new folders:
 
 For the scenario collection integration:
 - `env_name`: Name of the scenario folder. By default, it is set to `"env_icaps_input_data_test"` at the moment.

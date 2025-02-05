@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="0.578" timestamp="2024-06-21T11:40:47.676419" hostname="E840-5CG812289J"><testcase classname="tests.test_views" name="test_rte_get_recommendation" time="0.020"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="0.578" timestamp="2024-06-21T11:40:47.676419" hostname="E840-5CG812289J"><testcase classname="tests.test_views" name="test_PowerGrid_get_recommendation" time="0.020"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
     def app():
 &gt;       app = create_app("test")
 

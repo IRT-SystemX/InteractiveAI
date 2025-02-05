@@ -10,7 +10,7 @@ operatorfabric.users.default:
   users:
     - login: admin
       groups: ["ADMIN"]
-      entities: ["SNCF","ORANGE", "DA", "RTE"]
+      entities: ["SNCF","ORANGE", "DA", "PowerGrid"]
     - login: ilyes
       firstname : Ilyes
       lastname : KAANICH
@@ -20,19 +20,19 @@ operatorfabric.users.default:
       groups: ["Planner", "ReadOnly"]
       entities: ["SNCF"]
     - login: orange_user
-      groups: [ "RTE","ADMIN","ReadOnly","Dispatcher"]
+      groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "ORANGE" ]
     - login: da_user
       groups: ["ReadOnly","Dispatcher"]
       entities: ["DA"]
-    - login: rte_user
-      groups: [ "RTE","ADMIN","ReadOnly","Dispatcher"]
-      entities: [ "RTE" ]
+    - login: PowerGrid_user
+      groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
+      entities: [ "PowerGrid" ]
   groups:
     - id: ADMIN
       name: ADMINISTRATORS
       description: The admin group
-    - id: RTE
+    - id: PowerGrid
       name: RTE France
       description: RTE TSO Group
       realtime: false
@@ -69,7 +69,7 @@ operatorfabric.users.default:
      name: Dassault Aviation
      description: Dassault Aviation
      parents : ["IRT_MAIN"]
-   - id: RTE
+   - id: PowerGrid
      name: Electricity Transmission Network
      description: Electricity Transmission Network
      parents : ["IRT_MAIN"]

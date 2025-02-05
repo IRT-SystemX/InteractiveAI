@@ -2,8 +2,8 @@ FROM node:20-alpine as build-step
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
-ARG VITE_RTE_SIMU
-ENV VITE_RTE_SIMU=$VITE_RTE_SIMU
+ARG VITE_POWERGRID_SIMU
+ENV VITE_POWERGRID_SIMU=$VITE_POWERGRID_SIMU
 RUN npm ci
 RUN npm run build
 

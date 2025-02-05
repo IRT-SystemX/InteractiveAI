@@ -135,10 +135,10 @@ services:
       context: ../../../frontend
       dockerfile: Dockerfile
       args:
-        VITE_RTE_SIMU: ${VITE_RTE_SIMU}
+        VITE_POWERGRID_SIMU: ${VITE_POWERGRID_SIMU}
     restart: unless-stopped
     environment:
-      - VITE_RTE_SIMU=${VITE_RTE_SIMU}
+      - VITE_POWERGRID_SIMU=${VITE_POWERGRID_SIMU}
     volumes:
       - './ui-config:/usr/share/nginx/html/opfab'
       - './nginx-cors-permissive.conf:/etc/nginx/conf.d/default.conf'

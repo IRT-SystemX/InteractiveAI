@@ -1,0 +1,5 @@
+{
+    "name": "PowerGrid",
+    "context_manager_class": "PowerGridContextManager",
+    "metadata_schema_class": "MetadataSchemaPowerGrid"
+}

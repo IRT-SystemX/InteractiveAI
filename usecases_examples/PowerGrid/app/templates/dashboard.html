@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Tableau de bord</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://mpld3.github.io/js/mpld3.v0.5.2.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <style>
+        #message-container {
+            display: none;
+            width: 100%;
+            background-color: rgb(0, 247, 255);
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            font-size: 24px;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            padding-top: 29px;
+        }
+        #header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #sidebar {
+            width: 440px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            height: calc(100vh - 5%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            overflow-y: auto;
+            font-size: 22px;
+        }
+        #user-info {
+            border: 2px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        #user-info span {
+            display: block;
+            white-space: nowrap;
+        }
+        #user-info span:hover {
+            overflow: visible;
+            background-color: #f9f9f9;
+            position: relative;
+            z-index: 10;
+            width: auto;
+            white-space: normal;
+        }
+        #user-info form {
+            display: flex;
+            flex-direction: column;
+        }
+        #user-info button {
+            width: auto;
+            padding: 10px 20px;
+            font-weight: 630;
+        }
+        #logout-button {
+            display: flex;
+            justify-content: center;
+            font-weight: 630;
+            padding: 10px 20px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #main-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 5%);
+            width: calc(100% - 20%);
+            margin-left: 1%;
+            overflow: hidden;
+        }
+        #graph-container {
+            flex: 1;
+            min-height: 500px;
+            overflow: auto;
+            background-color: #FFFFFF;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: flex-start;
+        }
+        #graph-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #graph-content svg,
+        #graph-content canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+        }
+        svg {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .sub-div-graph {
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #sub-div-container {
+            display: flex;
+            height: 35vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            margin-left: 0;
+        }
+        .sub-div {
+            flex: 1;
+            display: flex;
+            background-color: #ccc;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            height: 33vh;
+            overflow: auto;
+        }
+        .sub-div:last-child {
+            margin-right: 10;
+        }
+        .btn-grey {
+            background-color: #f0f0f0;
+            color: black;
+        }
+        .sub-div {
+            padding: 20px;
+            margin: 10px;
+            
+        }
+        .status-div {
+            margin-bottom: 50px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .status-button {
+            margin-bottom: 30px;
+            width: 200px;
+            font-weight: 630;
+        }
+        #actions-div {
+            overflow-y: auto;
+        }
+        .action-card {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .action-card h4 {
+            margin-top: 0;
+        }
+        #events-div{
+            width: 300px;
+            overflow-y: auto;
+        }
+        .event-card {
+            margin: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .center-text {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h2 class="center-text">PowerGrid Simulator based on Grid2Op platform</h1>
+    </div>
+    <div id="sidebar">
+        <div>
+            <h3>Configuration du simulateur</h3>
+            <div id="user-info">
+                Utilisateur: <span id="username">{{ username }}</span><br>
+                Serveur connecté: <span id="server">{{ server }}</span><br>
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <button id="logout-button" onclick="logout()">Déconnexion</button>
+                </div>
+            </div>
+            <div id="user-info">
+                <form action="{{ url_for('edit_config') }}" method="post">
+                    Grid2Op environement's seed: <input type="text" name="env_seed" value="{{ config['env_seed'] }}"><br>
+                    Scenario name: <input type="text" name="scenario_name" value="{{ config['scenario_name'] }}"><br>
+                    Assistant seed: <input type="text" name="assistant_seed" value="{{ config['assistant_seed'] }}"><br>
+                    <button type="submit">Mettre à jour</button>
+                </form>
+            </div>
+            <div id="user-info">
+                <form action="{{ url_for('edit_simulation_settings') }}" method="post">
+                    <form action="{{ url_for('edit_simulation_settings') }}" method="post">
+                        <label for="scenario_first_step">Premier pas du scénario [step]:</label>
+                        <input type="number" id="scenario_first_step" name="scenario_first_step" value="{{ config['scenario_first_step'] }}" required><br>
+                        <label for="stepDuration_s">Durée du pas de temps [seconde]:</label>
+                        <input type="number" id="stepDuration_s" name="stepDuration_s" value="{{ config['stepDuration_s'] }}" required><br>
+                        <label for="tempo">Fréquence d'envoie du contexte à InteractiveAI [step]:</label>
+                        <input type="number" id="tempo" name="tempo" value="{{ com.outputs_config['Outputs']['Context']['tempo'] }}" required><br>
+                        <label for="refresh_frequency_step">Fréquence de rafraîchissement de l'analyse de risque en Anticipation [step]:</label>
+                        <input type="number" id="refresh_frequency_step" name="refresh_frequency_step" value="{{ config['refresh_frequency_step'] }}" required><br>
+                        <label for="time_step_forecast">Portée de l'analyse de risque en anticipation [step]:</label>
+                        <input type="number" id="time_step_forecast" name="time_step_forecast" value="{{ config['time_step_forecast'] }}" required><br>
+                        <label for="duration_step_forecast">Durée de l'analyse de risque [step]:</label>
+                        <input type="number" id="duration_step_forecast" name="duration_step_forecast" value="{{ config['duration_step_forecast'] }}" required><br>
+                        <label for="step_start_security_analysis">Début de l'analyse de sécurité [step]:</label>
+                        <input type="number" id="step_start_security_analysis" name="step_start_security_analysis" value="{{ config['step_start_security_analysis'] }}" required><br>
+                        <button type="submit">Mettre à jour</button>
+                    </form>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="main-content">
+        <div id="message-container">
+            {{message}}
+        </div>
+        <div id="graph-container" class="sub-div-graph">
+            <h2 id="graph-title">Graphique Interactif</h2>
+            <div id="graph-content"></div>
+        </div>
+        <div id="sub-div-container">
+            <div class="sub-div" id="events-div" >
+            </div>
+            <div class="sub-div">
+                <div id="status-div" class="status-div">Démarrez le simulateur</div>
+                <button id="startButton" type="submit" class="btn btn-lg btn-grey status-button">Démarrer</button>
+                <button id="continueButton" class="btn btn-lg btn-grey status-button" onclick="continueSimulation()">Continuer</button>
+                <button id="stopResetButton" class="btn btn-lg btn-grey status-button">Arrêter et réinitialiser</button>
+            </div >
+            <div class="sub-div" id="actions-div">
+                <div id="action-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            // Implémentez la logique de déconnexion ici
+            // Par exemple, redirection vers la page de connexion
+            window.location.href = '/'; // Modifiez selon votre URL de connexion
+        }
+    </script>
+
+    
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+            console.log('Connecté au serveur Socket.IO');
+        });
+        socket.on('update_graph', function(receivedData) {
+            console.log("Données reçues:", receivedData);
+            var graphTitle = document.getElementById('graph-title')
+            if (receivedData && receivedData.data) {
+                var graphContainer = document.getElementById('graph-content');
+                graphContainer.innerHTML = receivedData.data;
+                
+                // Exécuter les scripts injectés
+                var scripts = graphContainer.getElementsByTagName('script');
+                for (var i = 0; i < scripts.length; i++) {
+                    eval(scripts[i].text);
+                }
+                
+                // Masquer le titre du graphique
+                graphTitle.style.display = 'none';
+
+                console.log("Graphique mis à jour");
+            } else {
+                console.error("Données de graphique invalides");
+            }
+        });
+    </script>
+
+    <script>
+        var eventSource = null;
+        const startButton = document.getElementById('startButton');
+    
+        startButton.addEventListener('click', function() {
+            if (!eventSource) {
+                eventSource = new EventSource('/start_simulation');
+    
+                eventSource.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    console.log(data);  
+                    if (data.div === 'events-div') {
+                        addEventCard(data.content); 
+                    } else if (data.div === 'message-container') {
+                        addMessage(data.content); 
+                    } else if (data.div === 'actions-div') {
+                        postAction(data.content); 
+                    } else {
+                        const outDiv = document.getElementById(data.div);
+                        outDiv.innerHTML = data.content;
+                    }
+                };
+    
+                eventSource.onerror = function(err) {
+                    console.error('EventSource failed:', err);
+                    eventSource.close();
+                    eventSource = null;
+                };
+    
+                startButton.disabled = true; // Disable the button after starting
+            }
+        });
+
+        document.getElementById('startButton').addEventListener('click', function() {
+            disableSidebar();
+        });
+    
+        function addEventCard(content) {
+            const eventsDiv = document.getElementById('events-div');
+            const card = document.createElement('div');
+            card.className = 'event-card';
+            console.log(content);
+            card.innerHTML = `<h4>${content.title}</h4><p>${content.description}</p>`;
+            eventsDiv.appendChild(card);
+        }
+
+        function addMessage(content) {
+            const messageContainer = document.getElementById('message-container');
+            console.log(content);
+            messageContainer.style.display = 'block'; // Affiche le div
+            messageContainer.innerHTML = content; // Remplace le contenu existant par le nouveau message
+            
+            // Masque le message après 10 secondes
+            setTimeout(() => {
+                messageContainer.style.display = 'none';
+                sessionStorage.removeItem('message');
+            }, 10000);
+        }
+
+        // Récupérer le message de la session et l'afficher
+        // document.addEventListener('DOMContentLoaded', (event) => {
+        //     const message = "{{ session.get('message', '') }}";
+        //     if (message) {
+        //         addMessage(message);
+        //         // Stocker le message dans sessionStorage pour le gérer côté client
+        //         sessionStorage.setItem('message', message);
+        //     }
+        // });
+        
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const messagesData = {{ messages | tojson | safe }}; 
+            if (messagesData.length > 0) {
+                messagesData.forEach(message => addMessage(message));
+                // Stocker les messages dans sessionStorage pour les gérer côté client
+                sessionStorage.setItem('messages', JSON.stringify(messagesData));
+            }
+        });
+
+        // Vérifier si un message est stocké dans sessionStorage
+        // const storedMessage = sessionStorage.getItem('message');
+        // if (storedMessage) {
+        //     addMessage(storedMessage);
+        // }
+
+        const storedMessages = JSON.parse(sessionStorage.getItem('messages') || '[]');
+        if (storedMessages.length > 0) {
+            storedMessages.forEach(message => addMessage(message));
+        }
+
+        function postAction(content) {
+            const actionContainer = document.getElementById('action-container');
+            console.log(content);
+            
+            if (typeof content === 'string') {
+                // Si le contenu est une chaîne, on l'affiche directement
+                actionContainer.innerHTML = content;
+            } else if (typeof content === 'object' && content.title && content.description) {
+                // Si le contenu est un objet avec titre et description, on crée une carte
+                const card = document.createElement('div');
+                card.className = 'action-card';
+                card.innerHTML = `<h4>${content.title}</h4><p>${content.description}</p>`;
+                actionContainer.innerHTML = ''; // Efface le contenu précédent
+                actionContainer.appendChild(card);
+
+                // Ajouter une durée d'affichage de 30 secondes
+                setTimeout(() => {
+                actionContainer.innerHTML = ''; // Efface le contenu après 10 secondes
+                }, 30000);
+            }
+        }
+
+        function disableSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const inputs = sidebar.querySelectorAll('input, button, select, textarea, a');
+            inputs.forEach(input => {
+                input.disabled = true; // Désactive les éléments de formulaire
+                if (input.tagName === 'A') {
+                    input.setAttribute('onclick', 'return false;'); // Désactive les liens
+                    input.style.pointerEvents = 'none'; // Empêche les clics sur les liens
+                }
+            });
+        }
+
+        function continueSimulation() {
+            fetch('/continue_simulation', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Simulation continued');
+                        document.getElementById('action-container').innerHTML = '';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+    <script>
+        document.getElementById('stopResetButton').addEventListener('click', function() {
+            if (eventSource) {
+                eventSource.close(); // Ferme l'EventSource
+                eventSource = null;
+            }
+
+            // Réactive le bouton Start
+            startButton.disabled = false;
+
+            enableSidebar(); // Réactive la sidebar
+
+            
+            startButton.disabled = false; // Réactive le bouton start
+            enableSidebar(); // Réactive la sidebar
+
+            // Appel AJAX pour réinitialiser la simulation sur le serveur
+            fetch('/reset_simulation', {
+                method: 'POST'
+            }).then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        });
+
+        function enableSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const inputs = sidebar.querySelectorAll('input, button, select, textarea, a');
+            inputs.forEach(input => {
+                input.disabled = false; // Réactive les éléments de formulaire
+                if (input.tagName === 'A') {
+                    input.removeAttribute('onclick'); // Réactive les liens
+                    input.style.pointerEvents = 'auto'; // Permet les clics sur les liens
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=RTE",
+					"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=PowerGrid",
 					"protocol": "http",
 					"host": [
 						"{{ENV_ENDPOINT_HISTORIC}}"
@@ -33,7 +33,7 @@
 						},
 						{
 							"key": "use_case",
-							"value": "RTE"
+							"value": "PowerGrid"
 						}
 					]
 				}
@@ -93,7 +93,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"PowerGrid\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"PowerGrid\"\n    }\n]"
 				},
 				{
 					"name": "Traces",
@@ -151,7 +151,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"MEDIUM\",\n            \"data\": {\n                \"event_type\": \"agent\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2012-01-04T07:25:00.000000\",\n            \"description\": \"Soyez vigilant sur la zone Est\",\n            \"id_event\": \"be9bf8bb-8b11-43bc-9474-cccda94e622d\",\n            \"title\": \"Alerte Agent IA\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2012-01-04T07:25:00\",\n        \"id_trace\": \"4a565b7a-c95f-43e5-a9a2-8132979046e0\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    },\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"MEDIUM\",\n            \"data\": {\n                \"event_type\": \"agent\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2012-01-04T07:25:00.000000\",\n            \"description\": \"Soyez vigilant sur la zone Est\",\n            \"id_event\": \"be9bf8bb-8b11-43bc-9474-cccda94e622d\",\n            \"title\": \"Alerte Agent IA\",\n            \"use_case\": \"PowerGrid\"\n        },\n        \"date\": \"2012-01-04T07:25:00\",\n        \"id_trace\": \"4a565b7a-c95f-43e5-a9a2-8132979046e0\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"PowerGrid\"\n    },\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"PowerGrid\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"PowerGrid\"\n    }\n]"
 				},
 				{
 					"name": "Traces",
@@ -273,7 +273,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=RTE",
+							"raw": "http://{{ENV_ENDPOINT_HISTORIC}}/api/v1/traces?date_start=2022-11-21T16:33:51.304097&use_case=PowerGrid",
 							"protocol": "http",
 							"host": [
 								"{{ENV_ENDPOINT_HISTORIC}}"
@@ -295,7 +295,7 @@
 								},
 								{
 									"key": "use_case",
-									"value": "RTE"
+									"value": "PowerGrid"
 								}
 							]
 						}
@@ -326,7 +326,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"RTE\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"RTE\"\n    }\n]"
+					"body": "[\n    {\n        \"data\": {\n            \"criticality\": \"ROUTINE\",\n            \"data\": {\n                \"event_type\": \"KPI\",\n                \"flux\": 456.34,\n                \"line\": \"1_2_3\",\n                \"zone\": \"Est\"\n            },\n            \"date\": \"2022-11-22T16:33:51.304097\",\n            \"description\": \"this is a description\",\n            \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n            \"title\": \"this is a title\",\n            \"use_case\": \"PowerGrid\"\n        },\n        \"date\": \"2022-11-22T16:22:57.371000\",\n        \"id_trace\": \"872a026e-4456-44fd-a3de-918c0a4ad530\",\n        \"step\": \"EVENT\",\n        \"use_case\": \"PowerGrid\"\n    }\n]"
 				}
 			]
 		},
@@ -337,7 +337,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"data\": {\n    },\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"RTE\"\n}",
+					"raw": "{\n    \"data\": {\n    },\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"PowerGrid\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -365,7 +365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"date\": \"2022-11-22T16:33:51.304097\",\n        \"description\": \"this is a description\",\n        \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n        \"data\": {\n            \"event_type\": \"KPI\",\n            \"flux\": 456.34,\n            \"line\": \"1_2_3\",\n            \"zone\": \"Est\"\n        },\n        \"use_case\": \"RTE\"\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"date\": \"2022-11-22T16:33:51.304097\",\n        \"description\": \"this is a description\",\n        \"id_event\": \"7d7f743d-16de-4564-a973-1d14e9726e2e\",\n        \"data\": {\n            \"event_type\": \"KPI\",\n            \"flux\": 456.34,\n            \"line\": \"1_2_3\",\n            \"zone\": \"Est\"\n        },\n        \"use_case\": \"PowerGrid\"\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -397,7 +397,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n    },\n    \"date\": \"2022-11-22T16:22:57.371Z\",\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -443,7 +443,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"data\": {},\n    \"date\": \"2022-11-22T16:22:57.371000\",\n    \"id_trace\": \"16fcd0b0-0913-4ea9-b1be-13f92c792567\",\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"RTE\"\n}"
+					"body": "{\n    \"data\": {},\n    \"date\": \"2022-11-22T16:22:57.371000\",\n    \"id_trace\": \"16fcd0b0-0913-4ea9-b1be-13f92c792567\",\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"PowerGrid\"\n}"
 				},
 				{
 					"name": "Traces",
@@ -452,7 +452,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"ASKFORHELP\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -507,7 +507,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"description\": \"this is a description\",\n        \"use_case\": \"RTE\"\n    },\n    \"step\": \"EVENT\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n        \"title\": \"this is a title\",\n        \"criticality\": \"ROUTINE\",\n        \"description\": \"this is a description\",\n        \"use_case\": \"PowerGrid\"\n    },\n    \"step\": \"EVENT\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -553,7 +553,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"criticality\": \"ROUTINE\",\n        \"description\": \"this is a description\",\n        \"title\": \"this is a title\",\n        \"use_case\": \"RTE\"\n    },\n    \"date\": null,\n    \"id_trace\": \"2d7100d5-c675-4ce8-971d-00c7012646fe\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"RTE\"\n}"
+					"body": "{\n    \"data\": {\n        \"criticality\": \"ROUTINE\",\n        \"description\": \"this is a description\",\n        \"title\": \"this is a title\",\n        \"use_case\": \"PowerGrid\"\n    },\n    \"date\": null,\n    \"id_trace\": \"2d7100d5-c675-4ce8-971d-00c7012646fe\",\n    \"step\": \"EVENT\",\n    \"use_case\": \"PowerGrid\"\n}"
 				},
 				{
 					"name": "Traces",
@@ -562,7 +562,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"AWARD\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"AWARD\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -608,7 +608,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"data\": {},\n    \"date\": null,\n    \"id_trace\": \"921ec919-1e6a-4e46-be94-199f284e8156\",\n    \"step\": \"AWARD\",\n    \"use_case\": \"RTE\"\n}"
+					"body": "{\n    \"data\": {},\n    \"date\": null,\n    \"id_trace\": \"921ec919-1e6a-4e46-be94-199f284e8156\",\n    \"step\": \"AWARD\",\n    \"use_case\": \"PowerGrid\"\n}"
 				},
 				{
 					"name": "Traces",
@@ -617,7 +617,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"RTE\"\n}",
+							"raw": "{\n    \"data\": {\n    },\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"PowerGrid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -663,7 +663,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"data\": {},\n    \"date\": null,\n    \"id_trace\": \"6311e903-2607-44f3-a14d-cdb8d75e168d\",\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"RTE\"\n}"
+					"body": "{\n    \"data\": {},\n    \"date\": null,\n    \"id_trace\": \"6311e903-2607-44f3-a14d-cdb8d75e168d\",\n    \"step\": \"SOLUTION\",\n    \"use_case\": \"PowerGrid\"\n}"
 				}
 			]
 		}

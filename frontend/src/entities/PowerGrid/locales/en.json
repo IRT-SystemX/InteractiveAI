@@ -1,0 +1,21 @@
+{
+  "cab.assistant": "Recommendations",
+  "cab.notifications.main": "Alerts",
+  "cab.notifications.sub": "Tasks",
+  "event.button.primary": "Consult the recommendations",
+  "event.button.secondary": "Use the analysis tool",
+  "event.text": "{event} detected. Would you like help processing the event?",
+  "recommendations.button.secondary": "Use the study tool",
+  "recommendations.button1": "Maximum charge",
+  "recommendations.button2": "LTTD > 2h",
+  "recommendations.description": "Parry description",
+  "recommendations.modal": "You are about to apply the {recommendation} parry. Would you like to continue?",
+  "PowerGrid.kpis.curtailment_volume": "Curtailment volume",
+  "PowerGrid.kpis.distance_from_reference_topology": "Distance to reference topology",
+  "PowerGrid.kpis.efficiency": "Maximum charge",
+  "PowerGrid.kpis.max_overload": "Maximum line load",
+  "PowerGrid.kpis.redispatching_volume": "Redispatch volume",
+  "PowerGrid.kpis.renewable_energy_share": "Proportion of renewable",
+  "PowerGrid.kpis.total_consumption": "Total consumption",
+  "PowerGrid.kpis.type": "Type of parade"
+}

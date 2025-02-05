@@ -29,7 +29,7 @@ def client(app):
 
 
 @pytest.fixture
-def rte_auth_mocker(client, mocker):
+def PowerGrid_auth_mocker(client, mocker):
     # Mock the keycloak.introspect method to return a valid response
     mocker.patch(
         "cab_common_auth.decorators.keycloak.introspect",
@@ -39,13 +39,13 @@ def rte_auth_mocker(client, mocker):
             "jti": "716b02d4-29ba-41bd-85b2-8004cec1a033",
             "iss": "http://192.168.211.95:3200/realms/dev",
             "aud": "account",
-            "sub": "rte_user",
+            "sub": "PowerGrid_user",
             "typ": "Bearer",
             "azp": "opfab-client",
             "session_state": "8976b125-39a8-4bdf-b523-7e0dcbcdd3b4",
             "given_name": "",
             "family_name": "",
-            "preferred_username": "rte_user",
+            "preferred_username": "PowerGrid_user",
             "email_verified": False,
             "acr": "1",
             "realm_access": {"roles": ["offline_access", "uma_authorization"]},
@@ -61,9 +61,9 @@ def rte_auth_mocker(client, mocker):
             "scope": "email profile",
             "sid": "8976b125-39a8-4bdf-b523-7e0dcbcdd3b4",
             "groups": "Dispatcher;ReadOnly;Supervisor",
-            "entitiesId": "RTE",
+            "entitiesId": "PowerGrid",
             "client_id": "opfab-client",
-            "username": "rte_user",
+            "username": "PowerGrid_user",
             "active": True,
         },
     )
@@ -101,7 +101,7 @@ def publisher_test_auth_mocker(client, mocker):
             "scope": "email profile",
             "sid": "c8f122de-77aa-46e5-8e0f-37516e0f2933",
             "groups": "Dispatcher;ReadOnly;Supervisor",
-            "entitiesId": "SNCF;ORANGE;DA;RTE",
+            "entitiesId": "SNCF;ORANGE;DA;PowerGrid",
             "client_id": "opfab-client",
             "username": "publisher_test",
             "active": True,
@@ -117,7 +117,7 @@ def create_contexts(client, publisher_test_auth_mocker):
         context_data = {
             "date": "2022-11-07T16:06:00.741655",
             "data": {"observation": {"rho": 11}, "topology": "iii"},
-            "use_case": "RTE",
+            "use_case": "PowerGrid",
         }
 
         client.post("/api/v1/contexts", headers=headers, json=context_data)
@@ -150,13 +150,13 @@ def create_usecases(client):
 
         db.create_all()
 
-        rte_use_case = UseCaseModel(
-            name="RTE",
-            context_manager_class="RTEContextManager",
-            metadata_schema_class="MetadataSchemaRTE",
+        PowerGrid_use_case = UseCaseModel(
+            name="PowerGrid",
+            context_manager_class="PowerGridContextManager",
+            metadata_schema_class="MetadataSchemaPowerGrid",
         )
 
-        db.session.add(rte_use_case)
+        db.session.add(PowerGrid_use_case)
         db.session.commit()
         # add use_case_factory
         use_case_factory = current_app.use_case_factory

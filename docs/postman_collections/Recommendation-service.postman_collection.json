@@ -95,7 +95,7 @@
 			},
 			"response": [
 				{
-					"name": "Get recommendation RTE",
+					"name": "Get recommendation PowerGrid",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -233,7 +233,7 @@
 					"body": null
 				},
 				{
-					"name": "Get recommendation RTE",
+					"name": "Get recommendation PowerGrid",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -449,7 +449,7 @@
 					"body": "{\n    \"recommendation\": [\n        \"Trains impactés : TGV 8404 et TGV 5440.\",\n        \"La prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 7652 reste la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 5440 devait être la gare de Angoulême, sera maintenant la gare de Poitiers.\"\n    ]\n}"
 				},
 				{
-					"name": "Get recommendation RTE",
+					"name": "Get recommendation PowerGrid",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],

@@ -1,4 +1,4 @@
-# RTE grid2op POC simulator
+# PowerGrid grid2op POC simulator
 
 This POC use Grid2Op platform to perform it simulation.
 
@@ -58,7 +58,7 @@ source venv_grid2op/bin/activate
 1. Install dependencies for the console simulator:
 
 ```commandline
-cd rte
+cd PowerGrid
 pip install -r requirements-consol.txt
 ```
 
@@ -75,13 +75,13 @@ pip install -r requirements-api.txt
 1. Install dependencies for the console simulator:
 
 ```commandline
-cd rte
+cd PowerGrid
 pip install -r requirements-app.txt
 ```
 
 3. For the Docker environment, use the provided docker-compose.yml and Dockerfile.
 ```
-cd rte
+cd PowerGrid
 docker-compose up -d --build
 ```
 
@@ -90,13 +90,13 @@ docker-compose up -d --build
 ## 2.1 CASE 1 : Console Simulator
 
 ### Configurate the simulator settings
-* Define your simulation configuration in the file: [`/rtegrid2op_poc_simulator/config/CONFIG.toml`](/rtegrid2op_poc_simulator/config/CONFIG.toml)
-* Define InteractiveAI connection settings in the file: [`/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml`](/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml)
+* Define your simulation configuration in the file: [`/PowerGridgrid2op_poc_simulator/config/CONFIG.toml`](/PowerGridgrid2op_poc_simulator/config/CONFIG.toml)
+* Define InteractiveAI connection settings in the file: [`/PowerGridgrid2op_poc_simulator/config/API_POWERGRID_CAB.toml`](/PowerGridgrid2op_poc_simulator/config/API_POWERGRID_CAB.toml)
 
 ### Run the simulator in your terminal
 ```commandline
-cd rte
-python rte_poc_simulator_consol.py
+cd PowerGrid
+python PowerGrid_poc_simulator_consol.py
 ```
 
 ## 2.2 CASE 2 : Web App Simulator
@@ -110,8 +110,8 @@ you may need to replace 'localhost' with the appropriate IP address.
 
 ### Run the simulator in your terminal (optional)
 ```commandline
-cd rte
-python rte_poc_simulator_app.py
+cd PowerGrid
+python PowerGrid_poc_simulator_app.py
 ```
 
 ## 2.3 Credentials required to run the simulation
@@ -122,7 +122,7 @@ To run the simulation, you will need the following credentials:
    - Username: `publisher_test`
    - Password: `test`
 
-These credentials are created by the InteractiveAI platform. The RTE's simulator only requests access to the InteractiveAI platform server using these credentials.
+These credentials are created by the InteractiveAI platform. The PowerGrid's simulator only requests access to the InteractiveAI platform server using these credentials.
 
 
 # 3 Project Structure
@@ -135,8 +135,8 @@ These credentials are created by the InteractiveAI platform. The RTE's simulator
 
 ## 3.2 Important Files
 
-- `rte_poc_simulator_consol.py`: Main script to run the simulator in console mode.
-- `rte_poc_simulator_app.py`: Main script to run the simulator in web application mode.
+- `PowerGrid_poc_simulator_consol.py`: Main script to run the simulator in console mode.
+- `PowerGrid_poc_simulator_app.py`: Main script to run the simulator in web application mode.
 - `requirements-consol.txt`: List of dependencies for the console mode simulator.
 - `requirements-app.txt`: List of dependencies for the web application mode simulator.
 - `docker-compose.yml`: Configuration for the Docker environment.

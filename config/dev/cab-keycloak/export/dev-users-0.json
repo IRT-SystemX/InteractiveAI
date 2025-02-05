@@ -9,7 +9,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["SNCF;ORANGE;DA;RTE"], 
+        "entitiesId": ["SNCF;ORANGE;DA;PowerGrid"], 
         "groups": ["ADMIN"]
       },
       "credentials": [
@@ -44,7 +44,7 @@
       "emailVerified": false,
       "attributes": {
         "entitiesId": ["ORANGE"],
-        "groups": ["RTE;ADMIN;ReadOnly"]
+        "groups": ["PowerGrid;ADMIN;ReadOnly"]
       },
       "credentials": [
         {
@@ -78,7 +78,7 @@
       "emailVerified": false,
       "attributes": {
         "entitiesId": ["DA"],
-        "groups": ["RTE;ADMIN;ReadOnly"]
+        "groups": ["PowerGrid;ADMIN;ReadOnly"]
       },
       "credentials": [
         {
@@ -160,14 +160,14 @@
     {
       "id": "793c4666-1162-44a0-b372-42fbaa348e78",
       "createdTimestamp": 1557499736343,
-      "username": "rte_user",
+      "username": "PowerGrid_user",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
       "firstName": "",
       "lastName": "",
       "attributes": {
-        "entitiesId": ["RTE"],
+        "entitiesId": ["PowerGrid"],
         "groups": ["Dispatcher;ReadOnly;Supervisor"]
       },
       "credentials": [
@@ -239,7 +239,7 @@
       "firstName": "",
       "lastName": "",
       "attributes": {
-        "entitiesId": ["SNCF;ORANGE;DA;RTE"],
+        "entitiesId": ["SNCF;ORANGE;DA;PowerGrid"],
         "groups": ["Dispatcher;ReadOnly;Supervisor"]
       },
       "credentials": [

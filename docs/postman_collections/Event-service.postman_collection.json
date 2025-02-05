@@ -100,13 +100,13 @@
 			},
 			"response": [
 				{
-					"name": "event RTE",
+					"name": "event PowerGrid",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"date\": \"2022-11-07T15:23:53.595Z\",\r\n    \"description\": \"s\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"RTE\"\r\n}",
+							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"date\": \"2022-11-07T15:23:53.595Z\",\r\n    \"description\": \"s\",\r\n    \"metadata\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Est\",\r\n        \"line\": 123,\r\n        \"flux\": 456\r\n    },\r\n    \"use_case\": \"PowerGrid\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,16 +153,16 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"criticality\": \"ROUTINE\",\n    \"date\": \"2022-11-07T15:23:53.595000+00:00\",\n    \"description\": \"s\",\n    \"id_event\": \"3\",\n    \"metadata\": {\n        \"event_type\": \"KPI\",\n        \"flux\": 456,\n        \"line\": 123,\n        \"zone\": \"Est\"\n    },\n    \"use_case\": \"RTE\"\n}"
+					"body": "{\n    \"criticality\": \"ROUTINE\",\n    \"date\": \"2022-11-07T15:23:53.595000+00:00\",\n    \"description\": \"s\",\n    \"id_event\": \"3\",\n    \"metadata\": {\n        \"event_type\": \"KPI\",\n        \"flux\": 456,\n        \"line\": 123,\n        \"zone\": \"Est\"\n    },\n    \"use_case\": \"PowerGrid\"\n}"
 				},
 				{
-					"name": "event RTE",
+					"name": "event PowerGrid",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"event with line 1_2_3\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Ouest\",\r\n        \"line\": \"1_2_3\",\r\n        \"flux\": 456.36\r\n    },\r\n    \"use_case\": \"RTE\",\r\n    \"is_active\": false\r\n}",
+							"raw": "{\r\n    \"criticality\": \"ROUTINE\",\r\n    \"title\": \"event with line 1_2_3\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"zone\": \"Ouest\",\r\n        \"line\": \"1_2_3\",\r\n        \"flux\": 456.36\r\n    },\r\n    \"use_case\": \"PowerGrid\",\r\n    \"is_active\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

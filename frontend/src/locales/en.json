@@ -49,7 +49,7 @@
   "card.actions.upvote.tooltip": "I validate this anomaly",
   "card.actions.upvote.tooltip.confirmed": "Anomaly confirmed!",
   "correlations.app": "Application {id}",
-  "entity.RTE": "RTE",
+  "entity.PowerGrid": "PowerGrid",
   "home.no_entity": "No entity",
   "input.placeholder.password": "Password",
   "input.placeholder.username": "Username",
