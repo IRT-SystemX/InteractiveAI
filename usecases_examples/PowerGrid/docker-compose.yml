@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.app
-    image: PowerGrid-simulator-app
+    image: powergrid-simulator-app
     container_name: PowerGrid-simulator-app
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
-    image: PowerGrid-simulator-api
+    image: powergrid-simulator-api
     container_name: PowerGrid-simulator-api
     restart: always
     ports:
