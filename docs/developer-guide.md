@@ -1,6 +1,6 @@
-# Development Guide - Cab Assistant Platform
+# Development Guide - InteractiveAI Assistant Platform
 
-Welcome to the development guide for the Cab Assistant Platform. This guide provides an overview of the development process, including setting up the environment, running the application, and contributing to the project.
+Welcome to the development guide for the InteractiveAI Assistant Platform. This guide provides an overview of the development process, including setting up the environment, running the application, and contributing to the project.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ Before getting started with the development process, ensure that you have the fo
 
 ## 3. Running the Application<a name="running-the-application"></a>
 
-The Cab Assistant Platform can be run in different modes, depending on your development needs. The initial setup mentioned in the README file remains mandatory anyway. If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
+The InteractiveAI Assistant Platform can be run in different modes, depending on your development needs. The initial setup mentioned in the README file remains mandatory anyway. If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
 ### Running Recommendation Service (Dev Mode using docker)
 
@@ -99,7 +99,7 @@ To run all services on the dev server you can check the steps in the main README
 
 ## Contributing
 
-Contributions to the Cab Assistant Platform are welcome! To contribute please make sure to use [developer guide](docs/developer-guide.md)
+Contributions to the InteractiveAI Assistant Platform are welcome! To contribute please make sure to use [developer guide](docs/developer-guide.md)
 
 1. Create a gitlab issue and use it to create your branch from develop branch
 2. Fetch new created branch `git fetch`.

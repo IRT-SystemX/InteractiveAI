@@ -120,7 +120,7 @@ class Simulator:
         Run the RTE simulator.
 
         This function manages the main simulation loop, handling events, 
-        updating observations, and interacting with the CAB system.
+        updating observations, and interacting with the InteractiveAI system.
 
         Args:
             com: Communication object for interacting with the environment.
@@ -171,7 +171,7 @@ class Simulator:
                                     {'data': graph_html})
                 
 
-            # To handle between "silent mode" and "stream simulation" (with or withough CAB)
+            # To handle between "silent mode" and "stream simulation" (with or without InteractiveAI)
             # (The stream simulation starts at step scenario_first_step)
             if self.obs.current_step >= self.config['scenario_first_step']:
                 logging.info("Pas de simulation : %s",
@@ -182,21 +182,21 @@ class Simulator:
                 )
             elif self.obs.current_step == self.config['scenario_first_step'] - 1:
                 print("\n")
-                logging.info("Le simulateur est à présent connecté à CAB.\n")
+                logging.info("Le simulateur est à présent connecté à InteractiveAI.\n")
                 message = {
                     "div": "message-container",
-                    "content": "Le simulateur est à présent connecté à CAB."
+                    "content": "Le simulateur est à présent connecté à InteractiveAI."
                 }
                 yield f"data: {json.dumps(message)}\n\n"
                 silent_mode_msg_trigger = False
             else:
                 if silent_mode_msg_trigger:
                     logging.info('Status: Le scénario se déroule en arrière plan.\n'
-                                 'Le simulateur va se connecter à CAB à partir du pas : %s',
+                                 'Le simulateur va se connecter à InteractiveAI à partir du pas : %s',
                                  self.config['scenario_first_step'])
                     message = (
                         f"Status: Le scénario se déroule en arrière plan.\n"
-                        f"Le simulateur va se connecter à CAB à partir du pas : "
+                        f"Le simulateur va se connecter à InteractiveAI à partir du pas : "
                         f"{self.config['scenario_first_step']} (Voir les paramètres de configuration)"
                     )
                     yield f"data: {{ \"div\": \"status-div\", \"content\": {json.dumps(message)} }}\n\n"
@@ -308,7 +308,7 @@ class Simulator:
                             clear_parade_flag = True
 
                     else:
-                        # Récuperer les parades de CAB
+                        # Récuperer les parades de InteractiveAI
                         yield from com.get_act_from_api()
                         act = expand_act_from_cab(self.env, com.act_dict)
                         logging.info("Parade : %s", act)

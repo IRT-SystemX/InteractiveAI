@@ -1,4 +1,4 @@
-titre = "API RTE - CAB"
+titre = "API RTE - InteractiveAI"
 
 [Connexion]
 login_port = "auth/token"

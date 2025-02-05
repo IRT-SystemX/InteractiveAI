@@ -66,7 +66,7 @@ cd InteractiveAI/usecases_examples/rte
 pip install -r requirements-consol.txt
 ```
 
-2. Launch the CAB event listener server, compatible with the console simulator.
+2. Launch the InteractiveAI event listener server, compatible with the console simulator.
 
 ```commandline
 docker-compose up -d --build api
@@ -103,7 +103,7 @@ The SERVER_ADDRESS will be the one of the computer used to launch the Docker com
 
 ### Configurate the simulator settings
 * Define your simulation configuration in the file: [`/InteractiveAI/usecases_examples/rte/config/CONFIG.toml`](/usecases_examples/rte/config/CONFIG.toml)
-* Define CAB connection settings in the file: [`/InteractiveAI/usecases_examples/rte/config/API_RTE_CAB.toml`](/usecases_examples/rte/config/API_RTE_CAB.toml)
+* Define InteractiveAI connection settings in the file: [`/InteractiveAI/usecases_examples/rte/config/API_RTE_CAB.toml`](/usecases_examples/rte/config/API_RTE_CAB.toml)
 
 ### Run the simulator in your terminal
 ```commandline
@@ -131,11 +131,11 @@ python rte_poc_simulator_app.py
 
 To run the simulation, you will need the following credentials:
 
-**CAB credentials:**
+**InteractiveAI credentials:**
    - Username: `publisher_test`
    - Password: `test`
 
-These credentials are created by the CAB platform. The RTE's simulator only requests access to the CAB platform server using these credentials.
+These credentials are created by the InteractiveAI platform. The RTE's simulator only requests access to the InteractiveAI platform server using these credentials.
 
 
 # 3 Project Structure

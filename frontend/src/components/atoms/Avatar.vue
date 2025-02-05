@@ -6,7 +6,7 @@
       :class="{ visible: !loading }"
       :height="size"
       :width="size"
-      alt="CAB robot avatar"
+      alt="InteractiveAI robot avatar"
       title="Model by sketchfab.com/MoraAzul"></canvas>
   </div>
 </template>

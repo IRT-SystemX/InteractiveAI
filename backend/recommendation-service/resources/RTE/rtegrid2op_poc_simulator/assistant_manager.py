@@ -177,7 +177,7 @@ class AgentManager:
         return self.recommendations
 
     def get_parade_info(self, act):
-        """Compile unitary recomendation in json format for CAB's frontend compliance
+        """Compile unitary recomendation in json format for InteractiveAI's frontend compliance
 
         Args:
             act (): Unitary action object
@@ -369,7 +369,7 @@ class AgentManager:
 
     def get_list_of_parade_info(self):
         """Compile RTE IA agent recomendations in a single list
-            for CAB's frontend compliance
+            for InteractiveAI's frontend compliance
 
         Returns:
             [act_dict]: List of action dictionary

@@ -50,7 +50,7 @@ The platform uses the project **OperatorFabric** for notification management.
 
 Clone the repo of the assistant
 ```sh
-git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
+git clone https://github.com/IRT-SystemX/InteractiveAI.git
 ```
 
 ## Usage
@@ -74,11 +74,12 @@ export VITE_RTE_SIMU=http://[Service url]:[Service port]
 > **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/rte/ then set the VITE_RTE_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
 >
 > 
-2. Run Cab-assistant
+2. Run InteractiveAI assistant
 ```sh
 cd config/dev/cab-standalone
 ./docker-compose.sh
 ```
+> **_NOTE:_** You will see the word cab (Cockpit Assistant Bidirectionnel) on most files in the project. Note that it was the initial project name of InteractiveAI. Might be updated later. 
 
 3. Setting up Keycloak `Frontend URL`  
     * **Access Keycloak Interface**: 

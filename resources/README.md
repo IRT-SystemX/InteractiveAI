@@ -91,7 +91,7 @@ docker-compose up -d --build
 
 ### Configurate the simulator settings
 * Define your simulation configuration in the file: [`/rtegrid2op_poc_simulator/config/CONFIG.toml`](/rtegrid2op_poc_simulator/config/CONFIG.toml)
-* Define CAB connection settings in the file: [`/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml`](/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml)
+* Define InteractiveAI connection settings in the file: [`/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml`](/rtegrid2op_poc_simulator/config/API_RTE_CAB.toml)
 
 ### Run the simulator in your terminal
 ```commandline
@@ -118,11 +118,11 @@ python rte_poc_simulator_app.py
 
 To run the simulation, you will need the following credentials:
 
-**CAB credentials:**
+**InteractiveAI credentials:**
    - Username: `publisher_test`
    - Password: `test`
 
-These credentials are created by the CAB platform. The RTE's simulator only requests access to the CAB platform server using these credentials.
+These credentials are created by the InteractiveAI platform. The RTE's simulator only requests access to the InteractiveAI platform server using these credentials.
 
 
 # 3 Project Structure

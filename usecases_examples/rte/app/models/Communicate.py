@@ -9,7 +9,7 @@ from config.config import logging, set_pause, get_pause_status
 
 class Communicate:
     """
-    Manages communication between the simulator and the CAB API.
+    Manages communication between the simulator and the InteractiveAI API.
     
     This class contains methods for sending and receiving data,
     managing connections, and processing simulator events.
@@ -108,10 +108,10 @@ class Communicate:
 
     def delete_cab_server_url(self, url):
         """
-        Deletes a CAB server URL from the configuration.
+        Deletes a InteractiveAI server URL from the configuration.
 
         Args:
-            url: URL of the CAB server to delete.
+            url: URL of the InteractiveAI server to delete.
 
         Returns:
             bool: True if the server was successfully deleted, False otherwise.
@@ -138,10 +138,10 @@ class Communicate:
 
     def get_cab_server_urls(self):
         """
-        Retrieves the CAB server URLs from the configuration file.
+        Retrieves the InteractiveAI server URLs from the configuration file.
 
         Returns:
-            dict: Dictionary of CAB server URLs.
+            dict: Dictionary of InteractiveAI server URLs.
         """
         try:
             config = toml.load("config/API_RTE_CAB.toml")
@@ -166,13 +166,13 @@ class Communicate:
 
     def choose_a_cab_application(self, server_choice):
         """
-        Selects a CAB application based on the user's choice.
+        Selects a InteractiveAI application based on the user's choice.
 
         Args:
-            server_choice: User's choice for the CAB server.
+            server_choice: User's choice for the InteractiveAI server.
 
         Returns:
-            str: URL of the chosen CAB server, or None if the choice is invalid.
+            str: URL of the chosen InteractiveAI server, or None if the choice is invalid.
         """
         try:
             server_url = server_choice
@@ -192,7 +192,7 @@ class Communicate:
 
     def login(self, username, password):
         """
-        Performs login to the CAB API.
+        Performs login to the InteractiveAI API.
 
         Args:
             username: Username for login.
@@ -261,11 +261,11 @@ class Communicate:
         except Exception as e:
             logging.error(e)
             logging.info(
-                "L'envoi du contexte a échoué : la connexion avec CAB a échoué.")
+                "L'envoi du contexte a échoué : la connexion avec InteractiveAI a échoué.")
 
     def send_payload_and_store_it(self, payload, obs, scn_first_step):
         """
-        Sends the payload to the CAB API and stores it locally.
+        Sends the payload to the InteractiveAI API and stores it locally.
 
         Args:
             payload: The payload to send.
@@ -303,15 +303,15 @@ class Communicate:
                 text = self.payload["title"]
 
                 if self.cab_api_on is True:
-                    logging.info("Event sent to CAB : %s", text)
+                    logging.info("Event sent to InteractiveAI : %s", text)
                 else:
-                    logging.info("Event not sent to CAB : %s", text)
+                    logging.info("Event not sent to InteractiveAI : %s", text)
                 # logging.info("Reponse event: %s", response.text)
 
         except Exception as e:
             logging.error(e)
             logging.info(
-                "The event has not been sent : the connexion with CAB failed")
+                "The event has not been sent : the connexion with InteractiveAI failed")
 
         # Store event in simulator memory
         try:
@@ -337,7 +337,7 @@ class Communicate:
                           case_anticip=False,
                           case_line_lost=False):
         """
-        Function that generate cab compliant Event and send it online.
+        Function that generate InteractiveAI compliant Event and send it online.
 
         Args:
             context_date: Date of the context.
@@ -516,12 +516,12 @@ class Communicate:
                         # print(response.text)
                         # response.raise_for_status()
                     test = value["title"]
-                    logging.info("END event sent to CAB : %s", test)
+                    logging.info("END event sent to InteractiveAI : %s", test)
                     time.sleep(step_duration)
                 except Exception as e:
                     logging.error(e)
                     logging.info(
-                        "The ending event has not been sent : the connexion with CAB failed \n"
+                        "The ending event has not been sent : the connexion with InteractiveAI failed \n"
                     )
 
                 # Use del to remove the item from the dictionary
@@ -529,7 +529,7 @@ class Communicate:
 
     def get_act_from_api(self):
         """
-        Retrieves recommended actions from the CAB API.
+        Retrieves recommended actions from the InteractiveAI API.
 
         Yields:
             str: Formatted messages for the user interface.
@@ -541,13 +541,13 @@ class Communicate:
                 if get_act_counter == 0:
                     message = {
                         "div": "message-container",
-                        "content": "La simulation est en pause. Veillez consulter les recommendations de CAB avant de faire une nouvelle action ici!"
+                        "content": "La simulation est en pause. Veillez consulter les recommendations de InteractiveAI avant de faire une nouvelle action ici!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Cliquez sur 'Continuer' après avoir fait votre choix dans CAB\"}\n\n"
+                        "\"Cliquez sur 'Continuer' après avoir fait votre choix dans InteractiveAI\"}\n\n"
                     )
                     time.sleep(1)
                     set_pause(True)
@@ -556,13 +556,13 @@ class Communicate:
                 else:
                     message = {
                         "div": "message-container",
-                        "content": "Aucune recommendation n'a été reçu de CAB!"
+                        "content": "Aucune recommendation n'a été reçu de InteractiveAI!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Réitérez votre choix dans CAB puis cliquez à nouveau sur "
+                        "\"Réitérez votre choix dans InteractiveAI puis cliquez à nouveau sur "
                         "'Continuer'\"}\n\n"
                     )
                     time.sleep(1)
@@ -592,10 +592,10 @@ class Communicate:
                     time.sleep(1)
                     break
                 if bool(self.act_dict) is True:
-                    logging.info("\n CAB' s recommendation received! \n")
+                    logging.info("\n InteractiveAI' s recommendation received! \n")
                     message = {
                         "div": "message-container",
-                        "content": "La recommendation de CAB vient dêtre reçu !"
+                        "content": "La recommendation de InteractiveAI vient dêtre reçu !"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)

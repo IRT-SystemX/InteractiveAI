@@ -261,10 +261,10 @@ class Listener():
 
 
 class Communicate:
-    """Class handling communication with the CAB API."""
+    """Class handling communication with the InteractiveAI API."""
 
     def __init__(self):
-        """Initialize the Communicate class for handling CAB API communication."""
+        """Initialize the Communicate class for handling InteractiveAI API communication."""
         logging.info("COMMUNICATIONS' SETUP FOR THIS SESSION : \n")
         try:
             self.outputsConfig = toml.load("API_RTE_CAB.toml")
@@ -277,7 +277,7 @@ class Communicate:
         except Exception as e:
             print(e)
             self.CAB_API_on = False
-            logging.info("The connection with CAB is not properly configured.\n \
+            logging.info("The connection with InteractiveAI is not properly configured.\n \
                          It will therefore not be established. \n \
                          Check the file 'API_RTE_CAB.toml' to setup the simulator differently. \n")
 
@@ -288,44 +288,44 @@ class Communicate:
         # self.datestr = datetime.now(timezone.utc)   #.strftime("%d/%m/%Y %H:%M:%S")
 
     def choose_a_CAB_application(self):
-        """Prompt user to choose a CAB server application."""
+        """Prompt user to choose a InteractiveAI server application."""
         authorization = False
         connexion_counter = 0
-        print(f"Choose the targeted CAB application between: \n\
+        print(f"Choose the targeted InteractiveAI application between: \n\
               - A '{self.outputsConfig['Connexion']['cab_server_url_1'][:-1]}' \n\
               - B '{self.outputsConfig['Connexion']['cab_server_url_2'][:-1]}' \n\
               - C '{self.outputsConfig['Connexion']['cab_server_url_3'][:-1]}' ")
         while authorization == False:
             if connexion_counter > 3:
-                logging.info("The connexion with CAB will not be established. \n\
+                logging.info("The connexion with InteractiveAI will not be established. \n\
                        The Simulator will run in a standalone mode.\n")
                 self.CAB_API_on = False
                 break
             if connexion_counter >= 1:
                 print(
                     "Your choice has to be between the 2 available options. Try again!")
-            choice = input("What would be your Cab server's choice? ")
+            choice = input("What would be your InteractiveAI server's choice? ")
             if choice is not None:
                 if choice == 'A':
                     self.cab_url = self.outputsConfig['Connexion']['cab_server_url_1']
                     logging.info(
-                        "The simulator will now perform it connexion with CAB's server '%s'.\n", self.cab_url[:-1])
+                        "The simulator will now perform it connexion with InteractiveAI's server '%s'.\n", self.cab_url[:-1])
                     authorization = True
                 elif choice == 'B':
                     self.cab_url = self.outputsConfig['Connexion']['cab_server_url_2']
                     logging.info(
-                        "The simulator will now perform it connexion with CAB's server '%s'.\n", self.cab_url[:-1])
+                        "The simulator will now perform it connexion with InteractiveAI's server '%s'.\n", self.cab_url[:-1])
                     authorization = True
                 elif choice == 'C':
                     self.cab_url = self.outputsConfig['Connexion']['cab_server_url_3']
                     logging.info(
-                        "The simulator will now perform it connexion with CAB's server '%s'.\n", self.cab_url[:-1])
+                        "The simulator will now perform it connexion with InteractiveAI's server '%s'.\n", self.cab_url[:-1])
                     authorization = True
             connexion_counter += 1
         return authorization
 
     def login(self, username, password):
-        """Perform login to the CAB API."""
+        """Perform login to the InteractiveAI API."""
         # url = self.outputsConfig['Connexion']['login_url']
         url = self.cab_url + self.outputsConfig['Connexion']['login_port']
 
@@ -349,7 +349,7 @@ class Communicate:
         return authorization
 
     def send_context_online(self, env, obs, scn_first_step, context_date):
-        """Send context information to the CAB API."""
+        """Send context information to the InteractiveAI API."""
         try:
             plot_helper = PlotMatplot(env.observation_space)
             plot_helper.plot_obs(obs, line_info="rho",
@@ -367,7 +367,7 @@ class Communicate:
 
         if obs.current_step >= scn_first_step & self.CAB_API_on is True:
             # logging.info("Simulation step %s",step)
-            logging.info("Status: send context to CAB")
+            logging.info("Status: send context to InteractiveAI")
 
         try:
             # url = self.outputsConfig['Outputs']['Context']['url']
@@ -401,7 +401,7 @@ class Communicate:
         except Exception as e:
             print(e)
             logging.info(
-                "The context has not been sent : the connexion with CAB failed")
+                "The context has not been sent : the connexion with InteractiveAI failed")
 
         try:
             img.close()
@@ -412,7 +412,7 @@ class Communicate:
                 json.dump(obs.to_json(),f,indent=4,ensure_ascii=False)'''
 
     def send_payload_and_store_it(self, payload, obs, scn_first_step):
-        """Send payload to CAB API and store it locally."""
+        """Send payload to InteractiveAI API and store it locally."""
         try:
 
             # Use for debug
@@ -446,15 +446,15 @@ class Communicate:
                 text = self.payload["title"]
 
                 if self.CAB_API_on is True:
-                    logging.info(f"Event sent to CAB : {text}")
+                    logging.info(f"Event sent to InteractiveAI : {text}")
                 else:
-                    print(f"Event sent to CAB : {text}")
+                    print(f"Event sent to InteractiveAI : {text}")
                 # print("Réponse",response.text)
 
         except Exception as e:
             print(e)
             logging.info(
-                "The event has not been sent : the connexion with CAB failed")
+                "The event has not been sent : the connexion with InteractiveAI failed")
 
         # Store event in simulator memory
         try:
@@ -482,7 +482,7 @@ class Communicate:
                           case_assist_alarm=False,
                           case_anticip=False,
                           case_line_lost=False):
-        """Generate and send event information to CAB API."""
+        """Generate and send event information to InteractiveAI API."""
         if zone is None:
             zone = []
         if line is None:
@@ -610,7 +610,7 @@ class Communicate:
     def send_issues_ending_online(self,
                                   stepDuration,
                                   context_date):
-        """Send information about resolved issues to CAB API."""
+        """Send information about resolved issues to InteractiveAI API."""
         for key in list(self.list_of_issues.keys()):
             value = self.list_of_issues[key]
             # if value["end_date"] >= obs.get_time_stamp(): # scenario based realtime
@@ -633,28 +633,28 @@ class Communicate:
                             "POST", url, headers=headers, data=payload, timeout=15)
                     # print(response.text)
                     test = value["title"]
-                    logging.info(f"END event sent to CAB : {test}")
+                    logging.info(f"END event sent to InteractiveAI : {test}")
                     time.sleep(stepDuration)
                 except Exception as e:
                     print(e)
                     logging.info(
-                        "The ending event has not been sent : the connexion with CAB failed \n")
+                        "The ending event has not been sent : the connexion with InteractiveAI failed \n")
 
                 # Use del to remove the item from the dictionary
                 del self.list_of_issues[key]
 
     def get_act_from_api(self):
-        """Retrieve action recommendations from CAB API."""
+        """Retrieve action recommendations from InteractiveAI API."""
         # Function that initiate the connexion with CAB through allowing the user to choose any available server.
         get_act_counter = 0
         act_dict = {}
         while bool(act_dict) is False:
             if get_act_counter == 0:
                 val = input(
-                    "\n There is an event : Check CAB for recommendations\n Press 'Enter' once you have made your choice in CAB application.")
+                    "\n There is an event : Check InteractiveAI for recommendations\n Press 'Enter' once you have made your choice in InteractiveAI application.")
             else:
                 val = input(
-                    "\n Any recommendation was received. Try again!\n Press 'Enter' once you have made your choice in CAB application.")
+                    "\n Any recommendation was received. Try again!\n Press 'Enter' once you have made your choice in InteractiveAI application.")
             url = self.outputsConfig['Inputs']['Act']['url']
             payload = {}
             headers = {}
@@ -669,7 +669,7 @@ class Communicate:
                 time.sleep(1)
                 break
             elif bool(act_dict) :
-                logging.info("\n CAB' s recommendation received! \n")
+                logging.info("\n InteractiveAI' s recommendation received! \n")
             get_act_counter += 1
         # print(act_dict)
         return act_dict
@@ -940,7 +940,7 @@ def run_simulator():
     # Communications module
     com = Communicate()
 
-    # Connexion with CAB management
+    # Connexion with InteractiveAI management
     if com.CAB_API_on is True:
         server_choosen = com.choose_a_CAB_application()
         if server_choosen is True:
@@ -1031,7 +1031,7 @@ def run_simulator():
 
     event_resolved_trigger = False
 
-    # Choose the first step concern by context sending to CAB
+    # Choose the first step concern by context sending to InteractiveAI
     try:
         com.push_step = config['scenario_first_step']
     except Exception as e:
@@ -1056,7 +1056,7 @@ def run_simulator():
         # By default
         act = env.action_space({})
 
-        # To handle between "silent mode" and "stream simulation" (with or withough CAB)
+        # To handle between "silent mode" and "stream simulation" (with or without InteractiveAI)
         # (The stream simulation starts at step config['scenario_first_step'])
         if obs.current_step >= config['scenario_first_step']:
             if com.CAB_API_on is True:
@@ -1068,12 +1068,12 @@ def run_simulator():
 
         elif obs.current_step == config['scenario_first_step'] - 1:
             print("\n")
-            logging.info(f"The simulator is now connected to CAB\n")
+            logging.info(f"The simulator is now connected to InteractiveAI\n")
             silent_mode_msg_trigger = False
         else:
             if silent_mode_msg_trigger:
                 logging.info(f'''Status: The scenario unfolds in silent mode.\n
-                             The simulator will reconnect to CAB from the step 
+                             The simulator will reconnect to InteractiveAI from the step 
                              {config['scenario_first_step']} 
                              (see configuration file) \n''')
                 silent_mode_msg_trigger = False
@@ -1146,7 +1146,7 @@ def run_simulator():
                         logging.info(f"Parade : {act}")
 
                 else:
-                    # Récuperer les parades de CAB
+                    # Récuperer les parades de InteractiveAI
                     act_dict = com.get_act_from_api()
                     act = expand_act_from_cab(env, act_dict)
                     logging.info(f"Parade : {act}")
