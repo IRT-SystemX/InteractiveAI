@@ -1,0 +1,136 @@
+name: Test Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test-cab_common:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          cd backend/cab_common
+          export PYTHONPATH=.
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          cd backend/cab_common
+          pytest tests --cov --cov-report term --cov-report html --cov-report xml:coverage.xml --junitxml=report.xml
+    env:
+      COV_CONTEXT: "backend/cab_common"
+
+  test-event-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install backend/cab_common
+          cd backend/event-service
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          cd backend/event-service
+          export PYTHONPATH=.
+          export FLASK_APP=web
+          pytest tests --cov --cov-report term --cov-report html --cov-report xml:coverage.xml --junitxml=report.xml
+    env:
+      COV_CONTEXT: "backend/event-service"
+
+  test-context-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install backend/cab_common
+          cd backend/context-service
+          pip install -r requirements.txt
+          pip install pytest-cov==4.1.0 pytest-mock==3.12.0 pytest-runner==6.0.1
+      - name: Run tests
+        run: |
+          cd backend/context-service
+          export PYTHONPATH=.
+          export FLASK_APP=web
+          pytest tests --cov --cov-report term --cov-report html --cov-report xml:coverage.xml --junitxml=report.xml
+    env:
+      COV_CONTEXT: "backend/context-service"
+
+  test-recommendation-service:
+    runs-on: ubuntu-latest
+    container: python:3.11.6-slim
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up dependencies
+        run: |
+          mkdir -p /usr/share/man/man1
+          apt update && apt install -y --no-install-recommends default-jre
+          pip install backend/cab_common
+      - name: Set up recommendation service
+        run: |
+          cd backend/recommendation-service
+          pip install -r requirements.txt
+          pip install pytest-cov==4.1.0 pytest-mock==3.12.0 pytest-runner==6.0.1
+      - name: Run tests
+        run: |
+          cd backend/recommendation-service
+          export PYTHONPATH=.
+          export FLASK_APP=web
+          pytest tests --cov --cov-report term --cov-report html --cov-report xml:coverage.xml --junitxml=report.xml
+    env:
+      COV_CONTEXT: "backend/recommendation-service"
+
+  test-frontend-service:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+      - name: Lint code
+        run: |
+          cd frontend
+          npm run lint
+      - name: Type-check code
+        run: |
+          cd frontend
+          npm run type-check
+      - name: Build project
+        run: |
+          cd frontend
+          npm run build-only
+      - name: Run tests
+        run: |
+          cd frontend
+          npm run test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-coverage
+          path: frontend/coverage
+    env:
+      COV_CONTEXT: "frontend"

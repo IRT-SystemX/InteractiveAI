@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:": "vite --mode",
+    "dev:mode": "vite --mode",
     "build": "run-p type-check \"build-only {@}\" --",
-    "build:": "vite build --mode",
+    "build:mode": "vite build --mode",
     "preview": "vite preview",
     "test": "run-p 'test:unit -- run' test:e2e",
     "test:coverage": "run-p test:unit:coverage test:e2e:coverage",
