@@ -6,9 +6,9 @@
         {
           "entitiesGroups": [
             {
-              "name": "DA",
+              "name": "ATM",
               "entities": [
-                "DA"
+                "ATM"
               ],
               "groups": [
                 "Dispatcher",

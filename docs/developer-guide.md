@@ -65,7 +65,7 @@ pip install -r requirements.txt
          FLASK_APP="app:create_app('test')"
          FLASK_ENV="development"
          AUTH_DISABLED="True"
-         DEFAULT_USE_CASE=YOUR_USE_CASE ("SNCF", "PowerGrid", "DA")
+         DEFAULT_USE_CASE=YOUR_USE_CASE ("Railway", "PowerGrid", "ATM")
       then start service using command:
 ```sh
 python -m flask run --host=0.0.0.0 --reload

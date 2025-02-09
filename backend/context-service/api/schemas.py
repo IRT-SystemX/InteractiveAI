@@ -14,7 +14,7 @@ class MetadataSchema(Schema):
 
 class ContextIn(Schema):
     use_case = String(
-        required=True, validate=OneOf(["PowerGrid", "SNCF", "DA", "ORANGE"])
+        required=True, validate=OneOf(["PowerGrid", "Railway", "ATM"])
     )
     date = DateTime(format="iso")
     data = Dict()

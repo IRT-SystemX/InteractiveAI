@@ -10,7 +10,7 @@ operatorfabric.users.default:
   users:
     - login: admin
       groups: ["ADMIN"]
-      entities: ["SNCF","ORANGE", "DA", "PowerGrid"]
+      entities: ["SNCF","ORANGE", "ATM", "PowerGrid"]
     - login: ilyes
       firstname : Ilyes
       lastname : KAANICH
@@ -22,10 +22,10 @@ operatorfabric.users.default:
     - login: orange_user
       groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "ORANGE" ]
-    - login: da_user
+    - login: atm_user
       groups: ["ReadOnly","Dispatcher"]
-      entities: ["DA"]
-    - login: PowerGrid_user
+      entities: ["ATM"]
+    - login: powergrid_user
       groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "PowerGrid" ]
   groups:
@@ -65,9 +65,9 @@ operatorfabric.users.default:
      name: Orange
      description: Orange
      parents : ["IRT_MAIN"]
-   - id: DA
-     name: Dassault Aviation
-     description: Dassault Aviation
+   - id: ATM
+     name: ATM usecase
+     description: ATM usecase
      parents : ["IRT_MAIN"]
    - id: PowerGrid
      name: Electricity Transmission Network

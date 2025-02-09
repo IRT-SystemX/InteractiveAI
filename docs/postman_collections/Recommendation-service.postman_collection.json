@@ -128,7 +128,7 @@
 					"body": null
 				},
 				{
-					"name": "Get recommendation DA",
+					"name": "Get recommendation ATM",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -200,7 +200,7 @@
 					"body": "{\n    \"da_recommendation\": {\n        \"Procedure\": [\n            {\n                \"TaskIndex\": 1,\n                \"TaskText\": \"Engine 1 power lever\"\n            },\n            {\n                \"TaskIndex\": 2,\n                \"TaskText\": \"GALLEY MASTER & CABIN MASTER\"\n            },\n            {\n                \"TaskIndex\": 3,\n                \"TaskText\": \"ENGINE 1 SHUT OFF\"\n            },\n            {\n                \"TaskIndex\": 4,\n                \"TaskText\": \"TA Only\"\n            },\n            {\n                \"TaskIndex\": 5,\n                \"TaskText\": \"A/I: ENG 1\"\n            },\n            {\n                \"TaskIndex\": 6,\n                \"TaskText\": \"Two engines out?\"\n            },\n            {\n                \"TaskIndex\": 7,\n                \"TaskText\": \"WINDSHIELD HEAT LH or RH\"\n            },\n            {\n                \"TaskIndex\": 8,\n                \"TaskText\": \"Airbrakes auto retraction function is lost\"\n            },\n            {\n                \"TaskIndex\": 9,\n                \"TaskText\": \"NOTE: Do not complete the procedure for FUEL: ENG 1 LO PRESS and ENG 1: OUT\"\n            },\n            {\n                \"TaskIndex\": 10,\n                \"TaskText\": \"DO NOT ATTEMPT TO RELIGHT ENGINE 1\"\n            },\n            {\n                \"TaskIndex\": 11,\n                \"TaskText\": \"BUS TIE\"\n            },\n            {\n                \"TaskIndex\": 12,\n                \"TaskText\": \"Engine 1 FUEL switch\"\n            },\n            {\n                \"TaskIndex\": 13,\n                \"TaskText\": \"BOOST 1\"\n            },\n            {\n                \"TaskIndex\": 14,\n                \"TaskText\": \"BLEED 1\"\n            },\n            {\n                \"TaskIndex\": 15,\n                \"TaskText\": \"XBLEED 1 2\"\n            },\n            {\n                \"TaskIndex\": 16,\n                \"TaskText\": \"GEN 1\"\n            }\n        ],\n        \"maxSpeed\": 260,\n        \"minSpeed\": 180\n    }\n}"
 				},
 				{
-					"name": "Get recommendation DA",
+					"name": "Get recommendation ATM",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -645,7 +645,7 @@
 			},
 			"response": [
 				{
-					"name": "Get procedure DA",
+					"name": "Get procedure ATM",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
