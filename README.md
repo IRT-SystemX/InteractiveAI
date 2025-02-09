@@ -44,13 +44,16 @@ The platform uses the project **OperatorFabric** for notification management.
 
 ### Prerequisites
 
-* Docker
+- [Git (version 2.40.1)](https://git-scm.com/)
+- [Docker (version 24.0.2)](https://www.docker.com/)
+- [Docker Compose (version 1.25.0 or later)](https://www.docker.com/) 
+
 
 ### Setting Up the Environment
 
 Clone the repo of the assistant
 ```sh
-git clone https://github.com/IRT-SystemX/InteractiveAI.git
+git clone https://github.com/AI4REALNET/InteractiveAI.git
 ```
 
 ## Usage
@@ -130,7 +133,7 @@ Some examples of credentials:
 | username         | password |
 | ---------------- | -------- |
 | `admin`          | `test`   |
-| `PowerGrid_user`       | `test`   |
+| `powergrid_user`       | `test`   |
 
 
 By default, the system allows the user to be connected only from a single machine. Which means if you try to connect using the same credentials from another machine, you will be disconnected on the first machine. 
