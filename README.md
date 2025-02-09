@@ -66,7 +66,7 @@ Below are the steps to start all services. For other methods, please consult the
 1. Set-up environement variables
    
 
-`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_POWERGRID_SIMU` are the simulators endpoints.
+`VITE_POWERGRID_SIMU` is the simulator's endpoint.
 Put for each UC the corresponding IP address.
 
 Examples: 
