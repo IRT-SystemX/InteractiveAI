@@ -1,0 +1,5 @@
+{
+    "name": "ATM",
+    "context_manager_class": "ATMContextManager",
+    "metadata_schema_class": "MetadataSchemaATM"
+}
