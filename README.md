@@ -101,6 +101,11 @@ cd config/dev/cab-standalone
       - After adding the frontend URL, save the changes to update the client settings.
 
 4. Load resources
+**WARINING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
+```sh
+docker restart frontend
+```
+
 ```sh
 cd resources
 ./loadTestConf.sh
