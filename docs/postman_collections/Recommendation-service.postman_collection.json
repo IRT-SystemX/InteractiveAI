@@ -13,7 +13,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "da_user",
+							"value": "atm_user",
 							"type": "string"
 						},
 						{
@@ -197,7 +197,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"da_recommendation\": {\n        \"Procedure\": [\n            {\n                \"TaskIndex\": 1,\n                \"TaskText\": \"Engine 1 power lever\"\n            },\n            {\n                \"TaskIndex\": 2,\n                \"TaskText\": \"GALLEY MASTER & CABIN MASTER\"\n            },\n            {\n                \"TaskIndex\": 3,\n                \"TaskText\": \"ENGINE 1 SHUT OFF\"\n            },\n            {\n                \"TaskIndex\": 4,\n                \"TaskText\": \"TA Only\"\n            },\n            {\n                \"TaskIndex\": 5,\n                \"TaskText\": \"A/I: ENG 1\"\n            },\n            {\n                \"TaskIndex\": 6,\n                \"TaskText\": \"Two engines out?\"\n            },\n            {\n                \"TaskIndex\": 7,\n                \"TaskText\": \"WINDSHIELD HEAT LH or RH\"\n            },\n            {\n                \"TaskIndex\": 8,\n                \"TaskText\": \"Airbrakes auto retraction function is lost\"\n            },\n            {\n                \"TaskIndex\": 9,\n                \"TaskText\": \"NOTE: Do not complete the procedure for FUEL: ENG 1 LO PRESS and ENG 1: OUT\"\n            },\n            {\n                \"TaskIndex\": 10,\n                \"TaskText\": \"DO NOT ATTEMPT TO RELIGHT ENGINE 1\"\n            },\n            {\n                \"TaskIndex\": 11,\n                \"TaskText\": \"BUS TIE\"\n            },\n            {\n                \"TaskIndex\": 12,\n                \"TaskText\": \"Engine 1 FUEL switch\"\n            },\n            {\n                \"TaskIndex\": 13,\n                \"TaskText\": \"BOOST 1\"\n            },\n            {\n                \"TaskIndex\": 14,\n                \"TaskText\": \"BLEED 1\"\n            },\n            {\n                \"TaskIndex\": 15,\n                \"TaskText\": \"XBLEED 1 2\"\n            },\n            {\n                \"TaskIndex\": 16,\n                \"TaskText\": \"GEN 1\"\n            }\n        ],\n        \"maxSpeed\": 260,\n        \"minSpeed\": 180\n    }\n}"
+					"body": "{\n    \"atm_recommendation\": {\n        \"Procedure\": [\n            {\n                \"TaskIndex\": 1,\n                \"TaskText\": \"Engine 1 power lever\"\n            },\n            {\n                \"TaskIndex\": 2,\n                \"TaskText\": \"GALLEY MASTER & CABIN MASTER\"\n            },\n            {\n                \"TaskIndex\": 3,\n                \"TaskText\": \"ENGINE 1 SHUT OFF\"\n            },\n            {\n                \"TaskIndex\": 4,\n                \"TaskText\": \"TA Only\"\n            },\n            {\n                \"TaskIndex\": 5,\n                \"TaskText\": \"A/I: ENG 1\"\n            },\n            {\n                \"TaskIndex\": 6,\n                \"TaskText\": \"Two engines out?\"\n            },\n            {\n                \"TaskIndex\": 7,\n                \"TaskText\": \"WINDSHIELD HEAT LH or RH\"\n            },\n            {\n                \"TaskIndex\": 8,\n                \"TaskText\": \"Airbrakes auto retraction function is lost\"\n            },\n            {\n                \"TaskIndex\": 9,\n                \"TaskText\": \"NOTE: Do not complete the procedure for FUEL: ENG 1 LO PRESS and ENG 1: OUT\"\n            },\n            {\n                \"TaskIndex\": 10,\n                \"TaskText\": \"DO NOT ATTEMPT TO RELIGHT ENGINE 1\"\n            },\n            {\n                \"TaskIndex\": 11,\n                \"TaskText\": \"BUS TIE\"\n            },\n            {\n                \"TaskIndex\": 12,\n                \"TaskText\": \"Engine 1 FUEL switch\"\n            },\n            {\n                \"TaskIndex\": 13,\n                \"TaskText\": \"BOOST 1\"\n            },\n            {\n                \"TaskIndex\": 14,\n                \"TaskText\": \"BLEED 1\"\n            },\n            {\n                \"TaskIndex\": 15,\n                \"TaskText\": \"XBLEED 1 2\"\n            },\n            {\n                \"TaskIndex\": 16,\n                \"TaskText\": \"GEN 1\"\n            }\n        ],\n        \"maxSpeed\": 260,\n        \"minSpeed\": 180\n    }\n}"
 				},
 				{
 					"name": "Get recommendation ATM",
@@ -305,7 +305,7 @@
 					"body": "{\n    \"ia_recommendation\": [\n        {\n            \"LTTD\": \"5 min\",\n            \"SousTitre\": \" Assigner le bus 2 à line (extremity) id 36,  Assigner le bus 2 à line (extremity) id 37,  Assigner le bus 2 à line (extremity) id 38,  Assigner le bus 1 à line (extremity) id 39,  Assigner le bus 2 à line (origin) id 40,  Assigner le bus 2 à line (origin) id 41,  Assigner le bus 1 à line (extremity) id 56,  Assigner le bus 1 à generator id 14,  Assigner le bus 1 à load id 27\",\n            \"Titre\": \"Parade topologique: prise de schéma au poste 26\"\n        },\n        {\n            \"LTTD\": \"5 min\",\n            \"SousTitre\": \" Assigner le bus 2 à line (extremity) id 17,  Assigner le bus 1 à line (extremity) id 18,  Assigner le bus 1 à line (extremity) id 19,  Assigner le bus 2 à line (extremity) id 20,  Assigner le bus 2 à line (extremity) id 21,  Assigner le bus 2 à line (origin) id 22,  Assigner le bus 2 à line (origin) id 23,  Assigner le bus 1 à line (origin) id 27,  Assigner le bus 1 à line (origin) id 28,  Assigner le bus 2 à line (origin) id 48,  Assigner le bus 2 à line (origin) id 49,  Assigner le bus 1 à line (origin) id 54,  Assigner le bus 1 à generator id 5,  Assigner le bus 2 à generator id 6,  Assigner le bus 2 à generator id 7,  Assigner le bus 1 à generator id 8,  Assigner le bus 2 à load id 17\",\n            \"Titre\": \"Parade topologique: prise de schéma au poste 16\"\n        },\n        {\n            \"LTTD\": \"5 min\",\n            \"SousTitre\": \" Assigner le bus 2 à line (extremity) id 41,  Assigner le bus 1 à line (extremity) id 42,  Assigner le bus 1 à line (origin) id 44,  Assigner le bus 1 à line (extremity) id 57,  Assigner le bus 2 à generator id 16\",\n            \"Titre\": \"Parade topologique: prise de schéma au poste 28\"\n        }\n    ],\n    \"onto_recommendation\": \"Changer le bus\"\n}"
 				},
 				{
-					"name": "Get recommendation SNCF",
+					"name": "Get recommendation Railway",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -377,7 +377,7 @@
 					"body": "{\n    \"recommendation\": [\n        \"Trains impactés : TGV 8404, TGV 7652 et TGV 5440.\",\n        \"La prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 7652 devait être la gare de Bordeaux, sera maintenant la gare de Angoulême.\",\n        \"La prochaine desserte du train TGV 5440 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Poitiers.\"\n    ]\n}"
 				},
 				{
-					"name": "Get recommendation SNCF v2.1",
+					"name": "Get recommendation Railway v2.1",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -482,7 +482,7 @@
 					"body": null
 				},
 				{
-					"name": "Get recommendation SNCF v3",
+					"name": "Get recommendation Railway v3",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
@@ -551,7 +551,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"actions\": [\n            {\n                \"transportation_plan\": [\n                    [\n                        [\n                            204,\n                            7\n                        ]\n                    ],\n                    [\n                        [\n                            204,\n                            7\n                        ],\n                        [\n                            176,\n                            2\n                        ],\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            94,\n                            2\n                        ],\n                        [\n                            8,\n                            7\n                        ]\n                    ],\n                    [\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            176,\n                            2\n                        ],\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            94,\n                            2\n                        ],\n                        [\n                            8,\n                            7\n                        ]\n                    ]\n                ]\n            }\n        ],\n        \"agent_type\": \"IA\",\n        \"description\": \"Trains impactés : TGV 8404 et TGV 5440.\\nLa prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\\nLa prochaine desserte du train TGV 7652 reste la gare de Angoulême.\\nLa prochaine desserte du train TGV 5440 devait être la gare de Angoulême, sera maintenant la gare de Poitiers.\\n\",\n        \"title\": \"Modification de plan de transport\",\n        \"use_case\": \"SNCF\"\n    }\n]"
+					"body": "[\n    {\n        \"actions\": [\n            {\n                \"transportation_plan\": [\n                    [\n                        [\n                            204,\n                            7\n                        ]\n                    ],\n                    [\n                        [\n                            204,\n                            7\n                        ],\n                        [\n                            176,\n                            2\n                        ],\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            94,\n                            2\n                        ],\n                        [\n                            8,\n                            7\n                        ]\n                    ],\n                    [\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            176,\n                            2\n                        ],\n                        [\n                            100,\n                            6\n                        ],\n                        [\n                            94,\n                            2\n                        ],\n                        [\n                            8,\n                            7\n                        ]\n                    ]\n                ]\n            }\n        ],\n        \"agent_type\": \"IA\",\n        \"description\": \"Trains impactés : TGV 8404 et TGV 5440.\\nLa prochaine desserte du train TGV 8404 devait être la gare de St-Pierre-des-Corps, sera maintenant la gare de Angoulême.\\nLa prochaine desserte du train TGV 7652 reste la gare de Angoulême.\\nLa prochaine desserte du train TGV 5440 devait être la gare de Angoulême, sera maintenant la gare de Poitiers.\\n\",\n        \"title\": \"Modification de plan de transport\",\n        \"use_case\": \"Railway\"\n    }\n]"
 				}
 			]
 		},
@@ -563,7 +563,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "sncf_user",
+							"value": "railway_user",
 							"type": "string"
 						},
 						{
@@ -678,7 +678,7 @@
 					"body": null
 				},
 				{
-					"name": "Get procedure SNCF",
+					"name": "Get procedure Railway",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],

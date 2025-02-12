@@ -10,15 +10,15 @@ operatorfabric.users.default:
   users:
     - login: admin
       groups: ["ADMIN"]
-      entities: ["SNCF","ORANGE", "ATM", "PowerGrid"]
+      entities: ["Railway", "ATM", "PowerGrid"]
     - login: ilyes
       firstname : Ilyes
       lastname : KAANICH
       groups: ["Dispatcher","ReadOnly"]
       entities: ["IRT_MAIN"]
-    - login: sncf_user
+    - login: railway_user
       groups: ["Planner", "ReadOnly"]
-      entities: ["SNCF"]
+      entities: ["Railway"]
     - login: orange_user
       groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "ORANGE" ]
@@ -57,7 +57,7 @@ operatorfabric.users.default:
       description: ReadOnly Group
       realtime: false
   entities:
-   - id: SNCF
+   - id: Railway
      name: National society of French railroads
      description: National society of French railroads
      parents : ["IRT_MAIN"]

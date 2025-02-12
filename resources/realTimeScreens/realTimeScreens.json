@@ -39,9 +39,9 @@
               ]
             },
             {
-              "name": "SNCF",
+              "name": "Railway",
               "entities": [
-                "SNCF"
+                "Railway"
               ],
               "groups": [
                 "Dispatcher",

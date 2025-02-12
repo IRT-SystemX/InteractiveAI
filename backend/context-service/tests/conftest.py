@@ -137,7 +137,7 @@ def create_contexts(client, publisher_test_auth_mocker):
                     }
                 ]
             },
-            "use_case": "SNCF",
+            "use_case": "Railway",
         }
 
         client.post("/api/v1/contexts", headers=headers, json=context_data)

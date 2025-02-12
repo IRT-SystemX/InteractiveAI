@@ -106,12 +106,12 @@
     {
       "id": "34869ff3-7ee4-4d0c-9e33-c08f2319744b",
       "createdTimestamp": 1557499482370,
-      "username": "sncf_user",
+      "username": "railway_user",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["SNCF"],
+        "entitiesId": ["Railway"],
         "groups": []
       },
       "credentials": [
