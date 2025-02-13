@@ -77,7 +77,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88210\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\",\r\n        \"agent_id\": \"TGV 88210\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"use_case\": \"Railway\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88210\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\",\r\n        \"agent_id\": \"TGV 88210\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -188,13 +188,13 @@
 					"body": null
 				},
 				{
-					"name": "event SNCF",
+					"name": "event Railway",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"SNCF\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"Railway\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -257,7 +257,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"criticality\": \"MEDIUM\",\n    \"data\": {\n        \"delay\": 17.3,\n        \"event_type\": \"VOYAGEUR\",\n        \"id_train\": \"57000\",\n        \"num_name\": \"abc\",\n        \"tmp_name\": \"def\"\n    },\n    \"date\": \"2023-01-30T15:21:04.118300\",\n    \"description\": \"Soyez vigilant sur la zone Est\",\n    \"id_event\": \"91b2cf99-9325-4776-b323-e95e23c7dbb8\",\n    \"is_active\": null,\n    \"use_case\": \"SNCF\"\n}"
+					"body": "{\n    \"criticality\": \"MEDIUM\",\n    \"data\": {\n        \"delay\": 17.3,\n        \"event_type\": \"VOYAGEUR\",\n        \"id_train\": \"57000\",\n        \"num_name\": \"abc\",\n        \"tmp_name\": \"def\"\n    },\n    \"date\": \"2023-01-30T15:21:04.118300\",\n    \"description\": \"Soyez vigilant sur la zone Est\",\n    \"id_event\": \"91b2cf99-9325-4776-b323-e95e23c7dbb8\",\n    \"is_active\": null,\n    \"use_case\": \"Railway\"\n}"
 				},
 				{
 					"name": "event",
@@ -266,7 +266,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"SNCF\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"Railway\",\r\n    \"data\": {\r\n        \"event_type\" : \"VOYAGEUR\",\r\n        \"id_train\" : \"57000\",\r\n        \"num_name\" : \"abc\",\r\n        \"tmp_name\": \"def\",\r\n        \"delay\": 17.3\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"DA\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"flux\": 456,\r\n        \"line\": \"123\",\r\n        \"zone\": \"Est\"\r\n    }\r\n}\r\n\r\n",
+							"raw": "{\r\n    \"criticality\": \"MEDIUM\",\r\n    \"title\": \"Excé VOYAGEUR\",\r\n    \"description\": \"Soyez vigilant sur la ligne TGV\",\r\n    \"use_case\": \"ATM\",\r\n    \"data\": {\r\n        \"event_type\": \"KPI\",\r\n        \"flux\": 456,\r\n        \"line\": \"123\",\r\n        \"zone\": \"Est\"\r\n    }\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -326,13 +326,13 @@
 					"body": null
 				},
 				{
-					"name": "event SNCF",
+					"name": "event Railway",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"use_case\": \"SNCF\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88212\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"use_case\": \"Railway\",\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Signal alarm\",\r\n    \"description\": \"this is a description\",\r\n    \"data\": {\r\n        \"event_type\": \"VOYAGEUR\",\r\n        \"id_train\": \"TGV 88212\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": \"15\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -398,13 +398,13 @@
 					"body": "{\n    \"detail\": {},\n    \"message\": \"Unauthorized\"\n}"
 				},
 				{
-					"name": "DA event",
+					"name": "ATM event",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"DA\"\r\n}",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"ATM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,16 +467,16 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"criticality\": \"HIGH\",\n    \"data\": {\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\",\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\"\n    },\n    \"date\": \"2023-04-04T13:11:52.224848\",\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\n    \"id_event\": \"11302c21-2504-4ad1-9e5d-22c0affb5f2e\",\n    \"use_case\": \"DA\"\n}"
+					"body": "{\n    \"criticality\": \"HIGH\",\n    \"data\": {\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\",\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\"\n    },\n    \"date\": \"2023-04-04T13:11:52.224848\",\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\n    \"id_event\": \"11302c21-2504-4ad1-9e5d-22c0affb5f2e\",\n    \"use_case\": \"ATM\"\n}"
 				},
 				{
-					"name": "event SNCF",
+					"name": "event Railway",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Malaise voyageur - TGV 8404\",\r\n    \"description\": \"0 is having                                      PASSENGER                                      malfunction\",\r\n    \"data\": {\r\n        \"event_type\": \"PASSENGER\",\r\n        \"id_train\": \"8404\",\r\n        \"agent_id\": \"0\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": 382\r\n    },\r\n    \"date\": \"2023-04-11T07:00:10.000000\",\r\n    \"agent_position\": [\r\n        294,\r\n        2\r\n    ],\r\n    \"malfunction_stop_position\": [\r\n        94,\r\n        2\r\n    ],\r\n    \"use_case\": \"SNCF\"\r\n}",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"Malaise voyageur - TGV 8404\",\r\n    \"description\": \"0 is having                                      PASSENGER                                      malfunction\",\r\n    \"data\": {\r\n        \"event_type\": \"PASSENGER\",\r\n        \"id_train\": \"8404\",\r\n        \"agent_id\": \"0\",\r\n        \"num_rame\": \"18\",\r\n        \"tmp_rame\": \"27\",\r\n        \"delay\": 382\r\n    },\r\n    \"date\": \"2023-04-11T07:00:10.000000\",\r\n    \"agent_position\": [\r\n        294,\r\n        2\r\n    ],\r\n    \"malfunction_stop_position\": [\r\n        94,\r\n        2\r\n    ],\r\n    \"use_case\": \"Railway\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -503,13 +503,13 @@
 					"body": null
 				},
 				{
-					"name": "event DA",
+					"name": "event ATM",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"DA\"\r\n}",
+							"raw": "{\r\n    \"criticality\": \"HIGH\",\r\n    \"title\": \"90 PRESS: CABIN ALT TOO HI\",\r\n    \"description\": \"Cabin altitude exceeding: 8,300 ft, OR 14,200 ft when high airfield operation is active.\",\r\n    \"data\": {\r\n        \"system\": \"AIR CONDITIONING AND PRESSURIZATION\",\r\n        \"event_type\": \"90 PRESS: CABIN ALT TOO HI\"\r\n    },\r\n    \"use_case\": \"ATM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -744,7 +744,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "sncf_user",
+							"value": "railway_user",
 							"type": "string"
 						},
 						{
@@ -1172,7 +1172,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "sncf_user",
+							"value": "railway_user",
 							"type": "string"
 						},
 						{
@@ -1254,7 +1254,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "sncf_user",
+							"value": "railway_user",
 							"type": "string"
 						},
 						{

@@ -66,7 +66,7 @@ Below are the steps to start all services. For other methods, please consult the
 1. Set-up environement variables
    
 
-`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_POWERGRID_SIMU` are the simulators endpoints.
+`VITE_POWERGRID_SIMU` is the simulator's endpoint.
 Put for each UC the corresponding IP address.
 
 Examples: 
@@ -101,6 +101,11 @@ cd config/dev/cab-standalone
       - After adding the frontend URL, save the changes to update the client settings.
 
 4. Load resources
+**WARINING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
+```sh
+docker restart frontend
+```
+
 ```sh
 cd resources
 ./loadTestConf.sh

@@ -101,7 +101,7 @@ def publisher_test_auth_mocker(client, mocker):
             "scope": "email profile",
             "sid": "c8f122de-77aa-46e5-8e0f-37516e0f2933",
             "groups": "Dispatcher;ReadOnly;Supervisor",
-            "entitiesId": "SNCF;ORANGE;DA;PowerGrid",
+            "entitiesId": "Railway;ATM;PowerGrid",
             "client_id": "opfab-client",
             "username": "publisher_test",
             "active": True,
@@ -137,7 +137,7 @@ def create_contexts(client, publisher_test_auth_mocker):
                     }
                 ]
             },
-            "use_case": "SNCF",
+            "use_case": "Railway",
         }
 
         client.post("/api/v1/contexts", headers=headers, json=context_data)

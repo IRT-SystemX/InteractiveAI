@@ -147,7 +147,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "[\n    {\n        \"data\": {},\n        \"date\": \"2023-01-26T10:54:49.036399\",\n        \"id_context\": \"75385c73-0dbf-46e3-b22b-21808eb1e327\",\n        \"use_case\": \"DA/FW\"\n    }\n]"
+					"body": "[\n    {\n        \"data\": {},\n        \"date\": \"2023-01-26T10:54:49.036399\",\n        \"id_context\": \"75385c73-0dbf-46e3-b22b-21808eb1e327\",\n        \"use_case\": \"ATM/FW\"\n    }\n]"
 				},
 				{
 					"name": "Get all contexts",
@@ -480,7 +480,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {},\n    \"use_case\": \"DA/FW\"\n}",
+							"raw": "{\n    \"data\": {},\n    \"use_case\": \"ATM/FW\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -543,7 +543,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"data\": {},\n    \"date\": \"2023-01-26T10:54:49.036399\",\n    \"id_context\": \"75385c73-0dbf-46e3-b22b-21808eb1e327\",\n    \"use_case\": \"DA/FW\"\n}"
+					"body": "{\n    \"data\": {},\n    \"date\": \"2023-01-26T10:54:49.036399\",\n    \"id_context\": \"75385c73-0dbf-46e3-b22b-21808eb1e327\",\n    \"use_case\": \"ATM/FW\"\n}"
 				}
 			]
 		}
