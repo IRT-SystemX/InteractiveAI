@@ -10,10 +10,6 @@ class RailwayEventManager(BaseEventManager):
     
     # Optional: Customize Event Uniqueness
     def get_unique_fields(self, data):
-        """
-        Override to specify unique fields for event uniqueness.
-        
-        This method specifies the fields on which InteractiveAI will ensure event uniqueness.
-        """
-        input_line = data["data"].get("line")
-        return {"line": input_line}
+        id_train = data["data"].get("id_train")
+        event_type = data["data"].get("event_type")
+        return {"id_train": id_train, "event_type": event_type}

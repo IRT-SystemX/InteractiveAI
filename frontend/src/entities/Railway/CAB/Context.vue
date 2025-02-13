@@ -4,11 +4,12 @@
       $t('cab.tab.map')
     ]">
     <Map
-      v-if="appStore.tab.context === 3"
+      v-if="appStore.tab.context === 0"
       :tile-layers="[
-        'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png'
-      ]" />
+  'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+  'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png'
+]"
+ />
   </Context>
 </template>
 <script setup lang="ts">
