@@ -66,13 +66,15 @@ Below are the steps to start all services. For other methods, please consult the
 1. Set-up environement variables
    
 
-`VITE_POWERGRID_SIMU` is the simulator's endpoint.
+`VITE_POWERGRID_SIMU`, `VITE_RAILWAY_SIMU` , `VITE_ATM_SIMU` are the simulators' endpoints.
 Put for each UC the corresponding IP address.
 
 Examples: 
 
 ```sh
 export VITE_POWERGRID_SIMU=http://[Service url]:[Service port]
+export VITE_RAILWAY_SIMU=http://[Service url]:[Service port]
+export VITE_ATM_SIMU=http://[Service url]:[Service port]
 ```
 > **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/PowerGrid/ then set the VITE_POWERGRID_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
 >
@@ -101,6 +103,11 @@ cd config/dev/cab-standalone
       - After adding the frontend URL, save the changes to update the client settings.
 
 4. Load resources
+**WARINING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
+```sh
+docker restart frontend
+```
+
 ```sh
 cd resources
 ./loadTestConf.sh
@@ -133,7 +140,9 @@ Some examples of credentials:
 | username         | password |
 | ---------------- | -------- |
 | `admin`          | `test`   |
-| `powergrid_user`       | `test`   |
+| `powergrid_user` | `test`   |
+| `railway_user`   | `test`   |
+| `atm_user`       | `test`   |
 
 
 By default, the system allows the user to be connected only from a single machine. Which means if you try to connect using the same credentials from another machine, you will be disconnected on the first machine. 
