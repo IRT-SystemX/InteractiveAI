@@ -6,9 +6,9 @@
         {
           "entitiesGroups": [
             {
-              "name": "DA",
+              "name": "ATM",
               "entities": [
-                "DA"
+                "ATM"
               ],
               "groups": [
                 "Dispatcher",
@@ -39,9 +39,9 @@
               ]
             },
             {
-              "name": "SNCF",
+              "name": "Railway",
               "entities": [
-                "SNCF"
+                "Railway"
               ],
               "groups": [
                 "Dispatcher",

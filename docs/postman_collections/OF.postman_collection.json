@@ -338,7 +338,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"userData\": {\n        \"login\": \"admin\",\n        \"firstName\": null,\n        \"lastName\": null,\n        \"entities\": [\n            \"PowerGrid\",\n            \"IRT_MAIN\",\n            \"SNCF\",\n            \"DA\",\n            \"ORANGE\"\n        ],\n        \"authorizedIPAddresses\": [],\n        \"groups\": [\n            \"ADMIN\"\n        ]\n    },\n    \"computedPerimeters\": [],\n    \"processesStatesNotNotified\": {}\n}"
+					"body": "{\n    \"userData\": {\n        \"login\": \"admin\",\n        \"firstName\": null,\n        \"lastName\": null,\n        \"entities\": [\n            \"PowerGrid\",\n            \"IRT_MAIN\",\n            \"Railway\",\n            \"ATM\",\n            \"ORANGE\"\n        ],\n        \"authorizedIPAddresses\": [],\n        \"groups\": [\n            \"ADMIN\"\n        ]\n    },\n    \"computedPerimeters\": [],\n    \"processesStatesNotNotified\": {}\n}"
 				}
 			]
 		},

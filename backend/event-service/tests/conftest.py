@@ -112,7 +112,7 @@ def create_events(client, create_usecases, PowerGrid_auth_mocker):
         )
         event2 = EventModel(
             id_event="456",
-            use_case="DA",
+            use_case="ATM",
             title="Test Event 2",
             description="This is another test event",
             start_date=datetime.now(),
