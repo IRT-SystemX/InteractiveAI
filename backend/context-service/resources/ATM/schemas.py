@@ -1,8 +1,11 @@
 # backend/context-service/resources/ATM/schemas.py
 
 from api.schemas import MetadataSchema
-from apiflask.fields import Dict, String
-
+from apiflask.fields import Dict, String, Float, List, Integer
 class MetadataSchemaATM(MetadataSchema):
-    topology = String(allow_none=False)
-    observation = Dict(allow_none=False)
+    ApDest = Dict()
+    Current_airspeed = Float()
+    Latitude = Float()
+    Longitude = Float()
+    wpList = List(Dict())
+    id_plane = Integer()

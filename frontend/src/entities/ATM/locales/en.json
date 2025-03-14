@@ -1,8 +1,7 @@
 {
   "assistant.plan": "Recommend new flight plans",
-  "cab.assistant.procedure": "Checklist",
-  "cab.notifications.main": "Failures",
-  "cab.notifications.sub": "Notifications",
+  "cab.notifications.main": "Alerts",
+  "cab.notifications.sub": "Information",
   "map.context": "Plane",
   "recommendations.button1": "Cockpit maintenance",
   "recommendations.button2": "Cost",

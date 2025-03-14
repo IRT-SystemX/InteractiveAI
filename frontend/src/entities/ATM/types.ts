@@ -33,28 +33,11 @@ export type ATM = {
       wpid: Uppercase<string>
     }[]
   }
-  TaskTypes:
-    | 'task'
-    | 'monitor'
-    | 'choice'
-    | 'caution'
-    | 'note'
-    | 'flightpathAction'
-    | 'operatingProcedure'
-    | 'noActionRequired'
 }
 
 export const SYSTEMS = [
-  'STAT',
-  'ENG',
-  'ELEC',
-  'FUEL',
-  'HYD',
-  'ECS',
-  'FCS',
-  'BLD',
-  'MISC',
-  'TEST'
+  'ENGINE',
+  'ELECTRIC',
 ] as const
 Object.freeze(SYSTEMS)
 export type System = (typeof SYSTEMS)[number]
