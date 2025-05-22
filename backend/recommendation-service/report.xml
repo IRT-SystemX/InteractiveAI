@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="0.578" timestamp="2024-06-21T11:40:47.676419" hostname="E840-5CG812289J"><testcase classname="tests.test_views" name="test_rte_get_recommendation" time="0.020"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="0.578" timestamp="2024-06-21T11:40:47.676419" hostname="E840-5CG812289J"><testcase classname="tests.test_views" name="test_PowerGrid_get_recommendation" time="0.020"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
     def app():
 &gt;       app = create_app("test")
 
@@ -92,7 +92,7 @@ app = &lt;APIFlask 'recommendation-service'&gt;
             )
 E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
 
-../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_sncf_get_recommendation" time="0.015"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_railway_get_recommendation" time="0.015"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
     def app():
 &gt;       app = create_app("test")
 
@@ -186,7 +186,7 @@ app = &lt;APIFlask 'recommendation-service'&gt;
             )
 E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
 
-../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_da_get_recommendation_1" time="0.016"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_atm_get_recommendation_1" time="0.016"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
     def app():
 &gt;       app = create_app("test")
 
@@ -280,7 +280,7 @@ app = &lt;APIFlask 'recommendation-service'&gt;
             )
 E           RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.
 
-../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_da_get_recommendation_2" time="0.014"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
+../../cab_venv_312/lib/python3.12/site-packages/flask_sqlalchemy/extension.py:310: RuntimeError</error></testcase><testcase classname="tests.test_views" name="test_atm_get_recommendation_2" time="0.014"><error message="failed on setup with &quot;RuntimeError: Either 'SQLALCHEMY_DATABASE_URI' or 'SQLALCHEMY_BINDS' must be set.&quot;">@pytest.fixture(scope="function")
     def app():
 &gt;       app = create_app("test")
 

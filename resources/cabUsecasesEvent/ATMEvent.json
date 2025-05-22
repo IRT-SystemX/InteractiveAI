@@ -1,0 +1,5 @@
+{
+    "name": "ATM",
+    "event_manager_class": "ATMEventManager",
+    "metadata_schema_class": "MetadataSchemaATM"
+}

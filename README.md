@@ -34,7 +34,7 @@
 InteractiveAI platform provides support in augmented decision-making for complex steering systems.
 It is a prototype of a bi-directional virtual assistant, open in terms of industrial applications, in which it will be possible to evaluate the forms of exchange between the expert and an AI that learns continuously, both from the information flows received and the decisions made by the human. The platform will help and assist the operator of a complex operation to resolve incidents/faults in his industrial environment.
 
-As it is designed, the platform is generic, it can be used for different use cases. As an example, the use case of managing **power line** overloads at **RTE** (Réseau de Transport d'Electricité français) is provided. To install and run the RTE simulator, please refer to the detailed guide available in the file RTE simulator's [README](/usecases_examples/rte/README.md). This guide provides specific instructions for setting up and running the RTE use case.
+As it is designed, the platform is generic, it can be used for different use cases. As an example, the use case of managing **power line** overloads at **PowerGrid** (Réseau de Transport d'Electricité français) is provided. To install and run the PowerGrid simulator, please refer to the detailed guide available in the file PowerGrid simulator's [README](/usecases_examples/PowerGrid/README.md). This guide provides specific instructions for setting up and running the PowerGrid use case.
 
 The platform uses the project **OperatorFabric** for notification management.
 
@@ -44,13 +44,16 @@ The platform uses the project **OperatorFabric** for notification management.
 
 ### Prerequisites
 
-* Docker
+- [Git (version 2.40.1)](https://git-scm.com/)
+- [Docker (version 24.0.2)](https://www.docker.com/)
+- [Docker Compose (version 1.25.0 or later)](https://www.docker.com/) 
+
 
 ### Setting Up the Environment
 
 Clone the repo of the assistant
 ```sh
-git clone https://git.irt-systemx.fr/cab/cab-assistant-platform.git
+git clone https://github.com/AI4REALNET/InteractiveAI.git
 ```
 
 ## Usage
@@ -63,22 +66,25 @@ Below are the steps to start all services. For other methods, please consult the
 1. Set-up environement variables
    
 
-`VITE_DA_SIMU`, `VITE_SNCF_SIMU` & `VITE_RTE_SIMU` are the simulators endpoints.
+`VITE_POWERGRID_SIMU`, `VITE_RAILWAY_SIMU` , `VITE_ATM_SIMU` are the simulators' endpoints.
 Put for each UC the corresponding IP address.
 
 Examples: 
 
 ```sh
-export VITE_RTE_SIMU=http://[Service url]:[Service port]
+export VITE_POWERGRID_SIMU=http://[Service url]:[Service port]
+export VITE_RAILWAY_SIMU=http://[Service url]:[Service port]
+export VITE_ATM_SIMU=http://[Service url]:[Service port]
 ```
-> **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/rte/ then set the VITE_RTE_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
+> **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/PowerGrid/ then set the VITE_POWERGRID_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
 >
 > 
-2. Run Cab-assistant
+2. Run InteractiveAI assistant
 ```sh
 cd config/dev/cab-standalone
 ./docker-compose.sh
 ```
+> **_NOTE:_** You will see the word cab (Cockpit Assistant Bidirectionnel) on most files in the project. Note that it was the initial project name of InteractiveAI. Might be updated later. 
 
 3. Setting up Keycloak `Frontend URL`  
     * **Access Keycloak Interface**: 
@@ -97,6 +103,11 @@ cd config/dev/cab-standalone
       - After adding the frontend URL, save the changes to update the client settings.
 
 4. Load resources
+**WARINING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
+```sh
+docker restart frontend
+```
+
 ```sh
 cd resources
 ./loadTestConf.sh
@@ -129,7 +140,9 @@ Some examples of credentials:
 | username         | password |
 | ---------------- | -------- |
 | `admin`          | `test`   |
-| `rte_user`       | `test`   |
+| `powergrid_user` | `test`   |
+| `railway_user`   | `test`   |
+| `atm_user`       | `test`   |
 
 
 By default, the system allows the user to be connected only from a single machine. Which means if you try to connect using the same credentials from another machine, you will be disconnected on the first machine. 

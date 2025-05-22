@@ -1,5 +1,0 @@
-{
-    "name": "RTE",
-    "context_manager_class": "RTEContextManager",
-    "metadata_schema_class": "MetadataSchemaRTE"
-}

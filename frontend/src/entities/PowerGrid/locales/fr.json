@@ -1,0 +1,21 @@
+{
+  "cab.assistant": "Recommandations",
+  "cab.notifications.main": "Alertes",
+  "cab.notifications.sub": "Tâches",
+  "event.button.primary": "Consulter les recommendations",
+  "event.button.secondary": "Utiliser l'outil d'étude",
+  "event.text": "{event} détectée. Souhaitez-vous de l'aide pour traiter l'événement ?",
+  "recommendations.button.secondary": "Utiliser l'outil d'étude",
+  "recommendations.button1": "Charge maximale",
+  "recommendations.button2": "LTTD > 2h",
+  "recommendations.description": "Description parade",
+  "recommendations.modal": "Vous êtes sur le point d’appliquer la parade {recommendation}. Souhaitez-vous continuer ?",
+  "PowerGrid.kpis.efficiency_of_the_reco": "Charge maximale",
+  "PowerGrid.kpis.max_overload": "Charge maximale des lignes",
+  "PowerGrid.kpis.renewable_energy_share": "Proportion de renouvelable",
+  "PowerGrid.kpis.total_consumption": "Consommation totale",
+  "PowerGrid.kpis.distance_from_reference_topology": "Distance à la topologie de référence",
+  "PowerGrid.kpis.curtailment_volume": "Volume de curtailment",
+  "PowerGrid.kpis.redispatching_volume": "Volume de redispatching",
+  "PowerGrid.kpis.type_of_the_reco": "Type de la parade"
+}

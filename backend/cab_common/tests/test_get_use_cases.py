@@ -14,7 +14,7 @@ def test_get_use_cases_valid_token(app, mock_keycloak_introspect, valid_token):
         use_cases = get_use_cases()
 
     # Assert the expected result
-    assert use_cases == ["SNCF"]
+    assert use_cases == ["Railway"]
 
 
 def test_get_use_cases_invalid_token(app, mock_keycloak_introspect):

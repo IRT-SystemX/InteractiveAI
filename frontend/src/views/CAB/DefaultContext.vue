@@ -1,6 +1,6 @@
 <template>
   <Context :tabs="[$t('cab.tab.context')]">
-    {{ servicesStore.context('RTE') }}
+    {{ servicesStore.context('PowerGrid') }}
   </Context>
 </template>
 <script setup lang="ts">

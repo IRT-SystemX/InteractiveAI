@@ -1,7 +1,7 @@
 <template>
   <section class="cab-panel">
     <h1>{{ $t('cab.timeline') }}</h1>
-    <Timeline v-slot="{ card }" :start="-120" :end="120" entity="RTE">
+    <Timeline v-slot="{ card }" :start="-120" :end="120" entity="PowerGrid">
       <SVG
         src="/img/icons/warning_hex.svg"
         :fill="`var(--color-${criticalityToColor(card.data.criticality)})`"

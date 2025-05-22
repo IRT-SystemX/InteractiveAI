@@ -1,6 +1,6 @@
-# Development Guide - Cab Assistant Platform
+# Development Guide - InteractiveAI Assistant Platform
 
-Welcome to the development guide for the Cab Assistant Platform. This guide provides an overview of the development process, including setting up the environment, running the application, and contributing to the project.
+Welcome to the development guide for the InteractiveAI Assistant Platform. This guide provides an overview of the development process, including setting up the environment, running the application, and contributing to the project.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ Before getting started with the development process, ensure that you have the fo
 
 ## 3. Running the Application<a name="running-the-application"></a>
 
-The Cab Assistant Platform can be run in different modes, depending on your development needs. The initial setup mentioned in the README file remains mandatory anyway. If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
+The InteractiveAI Assistant Platform can be run in different modes, depending on your development needs. The initial setup mentioned in the README file remains mandatory anyway. If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
 ### Running Recommendation Service (Dev Mode using docker)
 
@@ -65,7 +65,7 @@ pip install -r requirements.txt
          FLASK_APP="app:create_app('test')"
          FLASK_ENV="development"
          AUTH_DISABLED="True"
-         DEFAULT_USE_CASE=YOUR_USE_CASE ("SNCF", "RTE", "DA")
+         DEFAULT_USE_CASE=YOUR_USE_CASE ("Railway", "PowerGrid", "ATM")
       then start service using command:
 ```sh
 python -m flask run --host=0.0.0.0 --reload
@@ -74,13 +74,13 @@ python -m flask run --host=0.0.0.0 --reload
    * Option 2:
       Update start_service.bash and use it to run service
 
-### Specific Configuration for the RTE Use Case
+### Specific Configuration for the PowerGrid Use Case
 
-For the RTE use case, the recommendation service utilizes the resources `XD_silly_repo` and `env_icaps_input_data_test`. 
+For the PowerGrid use case, the recommendation service utilizes the resources `XD_silly_repo` and `env_icaps_input_data_test`. 
 - `env_icaps_input_data_test` is a grid2op compliant scenarios' collection package.
 - `XD_silly_repo` is a compliant a grid2op compliant RL agent package.
 
-If you wish to modify these, you must add your replacement folders in [`backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator`](../backend/recommendation-service/resources/RTE/rtegrid2op_poc_simulator) and update there in the file `CONFIG_RTE.toml` the followings parameter to match your new folders:
+If you wish to modify these, you must add your replacement folders in [`backend/recommendation-service/resources/PowerGrid/PowerGridgrid2op_poc_simulator`](../backend/recommendation-service/resources/PowerGrid/PowerGridgrid2op_poc_simulator) and update there in the file `CONFIG_POWERGRID.toml` the followings parameter to match your new folders:
 
 For the scenario collection integration:
 - `env_name`: Name of the scenario folder. By default, it is set to `"env_icaps_input_data_test"` at the moment.
@@ -99,7 +99,7 @@ To run all services on the dev server you can check the steps in the main README
 
 ## Contributing
 
-Contributions to the Cab Assistant Platform are welcome! To contribute please make sure to use [developer guide](docs/developer-guide.md)
+Contributions to the InteractiveAI Assistant Platform are welcome! To contribute please make sure to use [developer guide](docs/developer-guide.md)
 
 1. Create a gitlab issue and use it to create your branch from develop branch
 2. Fetch new created branch `git fetch`.

@@ -1,0 +1,5 @@
+{
+    "name": "Railway",
+    "context_manager_class": "RailwayContextManager",
+    "metadata_schema_class": "MetadataSchemaRailway"
+}

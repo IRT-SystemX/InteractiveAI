@@ -27,7 +27,7 @@ def client(app):
 
 
 @pytest.fixture
-def rte_auth_mocker(client, mocker):
+def PowerGrid_auth_mocker(client, mocker):
     # Mock the keycloak.introspect method to return a valid response
     mocker.patch(
         "cab_common_auth.decorators.keycloak.introspect",
@@ -37,13 +37,13 @@ def rte_auth_mocker(client, mocker):
             "jti": "716b02d4-29ba-41bd-85b2-8004cec1a033",
             "iss": "http://192.168.211.95:3200/realms/dev",
             "aud": "account",
-            "sub": "rte_user",
+            "sub": "PowerGrid_user",
             "typ": "Bearer",
             "azp": "opfab-client",
             "session_state": "8976b125-39a8-4bdf-b523-7e0dcbcdd3b4",
             "given_name": "",
             "family_name": "",
-            "preferred_username": "rte_user",
+            "preferred_username": "PowerGrid_user",
             "email_verified": False,
             "acr": "1",
             "realm_access": {"roles": ["offline_access", "uma_authorization"]},
@@ -59,9 +59,9 @@ def rte_auth_mocker(client, mocker):
             "scope": "email profile",
             "sid": "8976b125-39a8-4bdf-b523-7e0dcbcdd3b4",
             "groups": "Dispatcher;ReadOnly;Supervisor",
-            "entitiesId": "RTE",
+            "entitiesId": "PowerGrid",
             "client_id": "opfab-client",
-            "username": "rte_user",
+            "username": "PowerGrid_user",
             "active": True,
         },
     )
@@ -82,13 +82,13 @@ def create_usecases(client):
 
         db.create_all()
 
-        rte_use_case = UseCaseModel(
-            name="RTE",
-            event_manager_class="RTEEventManager",
-            metadata_schema_class="MetadataSchemaRTE",
+        PowerGrid_use_case = UseCaseModel(
+            name="PowerGrid",
+            event_manager_class="PowerGridEventManager",
+            metadata_schema_class="MetadataSchemaPowerGrid",
         )
 
-        db.session.add(rte_use_case)
+        db.session.add(PowerGrid_use_case)
         db.session.commit()
         # add use_case_factory
         use_case_factory = current_app.use_case_factory
@@ -98,12 +98,12 @@ def create_usecases(client):
 
 
 @pytest.fixture(scope="function")
-def create_events(client, create_usecases, rte_auth_mocker):
+def create_events(client, create_usecases, PowerGrid_auth_mocker):
     with client.application.app_context():
         db.create_all()
         event1 = EventModel(
             id_event="123",
-            use_case="RTE",
+            use_case="PowerGrid",
             title="Test Event 1",
             description="This is a test event",
             start_date=datetime.now(),
@@ -112,7 +112,7 @@ def create_events(client, create_usecases, rte_auth_mocker):
         )
         event2 = EventModel(
             id_event="456",
-            use_case="DA",
+            use_case="ATM",
             title="Test Event 2",
             description="This is another test event",
             start_date=datetime.now(),

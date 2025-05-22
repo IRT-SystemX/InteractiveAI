@@ -10,29 +10,29 @@ operatorfabric.users.default:
   users:
     - login: admin
       groups: ["ADMIN"]
-      entities: ["SNCF","ORANGE", "DA", "RTE"]
+      entities: ["Railway", "ATM", "PowerGrid"]
     - login: ilyes
       firstname : Ilyes
       lastname : KAANICH
       groups: ["Dispatcher","ReadOnly"]
       entities: ["IRT_MAIN"]
-    - login: sncf_user
+    - login: railway_user
       groups: ["Planner", "ReadOnly"]
-      entities: ["SNCF"]
+      entities: ["Railway"]
     - login: orange_user
-      groups: [ "RTE","ADMIN","ReadOnly","Dispatcher"]
+      groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
       entities: [ "ORANGE" ]
-    - login: da_user
+    - login: atm_user
       groups: ["ReadOnly","Dispatcher"]
-      entities: ["DA"]
-    - login: rte_user
-      groups: [ "RTE","ADMIN","ReadOnly","Dispatcher"]
-      entities: [ "RTE" ]
+      entities: ["ATM"]
+    - login: PowerGrid_user
+      groups: [ "PowerGrid","ADMIN","ReadOnly","Dispatcher"]
+      entities: [ "PowerGrid" ]
   groups:
     - id: ADMIN
       name: ADMINISTRATORS
       description: The admin group
-    - id: RTE
+    - id: PowerGrid
       name: RTE France
       description: RTE TSO Group
       realtime: false
@@ -57,7 +57,7 @@ operatorfabric.users.default:
       description: ReadOnly Group
       realtime: false
   entities:
-   - id: SNCF
+   - id: Railway
      name: National society of French railroads
      description: National society of French railroads
      parents : ["IRT_MAIN"]
@@ -65,11 +65,11 @@ operatorfabric.users.default:
      name: Orange
      description: Orange
      parents : ["IRT_MAIN"]
-   - id: DA
-     name: Dassault Aviation
-     description: Dassault Aviation
+   - id: ATM
+     name: ATM usecase
+     description: ATM usecase
      parents : ["IRT_MAIN"]
-   - id: RTE
+   - id: PowerGrid
      name: Electricity Transmission Network
      description: Electricity Transmission Network
      parents : ["IRT_MAIN"]

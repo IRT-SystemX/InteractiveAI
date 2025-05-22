@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    image: powergrid-simulator-app
+    container_name: PowerGrid-simulator-app
+    restart: always
+    ports:
+      - "5100:5000"
+    volumes:
+      - .:/code
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: powergrid-simulator-api
+    container_name: PowerGrid-simulator-api
+    restart: always
+    ports:
+      - "5100:5000"
+    volumes:
+      - .:/code

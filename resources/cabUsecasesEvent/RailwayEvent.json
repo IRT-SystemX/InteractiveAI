@@ -1,0 +1,5 @@
+{
+    "name": "Railway",
+    "event_manager_class": "RailwayEventManager",
+    "metadata_schema_class": "MetadataSchemaRailway"
+}

@@ -1,5 +1,0 @@
-{
-    "name": "RTE",
-    "event_manager_class": "RTEEventManager",
-    "metadata_schema_class": "MetadataSchemaRTE"
-}

@@ -53,7 +53,7 @@
 					"oauth2": [
 						{
 							"key": "username",
-							"value": "rte_user",
+							"value": "PowerGrid_user",
 							"type": "string"
 						},
 						{
@@ -117,7 +117,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"event_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"context_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"recommandation\": {\n        \"s1\": \"abd\"\n    },\n    \"feedback\": true,\n    \"feedback_date\": \"2023-12-03T17:02:59.005266\",\n    \"use_case\": \"RTE\"\n}",
+					"raw": "{\n    \"event_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"context_id\": \"767eac21-9910-4297-a69d-2bdd2b8934d7\",\n    \"recommandation\": {\n        \"s1\": \"abd\"\n    },\n    \"feedback\": true,\n    \"feedback_date\": \"2023-12-03T17:02:59.005266\",\n    \"use_case\": \"PowerGrid\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

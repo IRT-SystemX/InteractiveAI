@@ -9,7 +9,7 @@
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["SNCF;ORANGE;DA;RTE"], 
+        "entitiesId": ["Railway;ATM;PowerGrid"], 
         "groups": ["ADMIN"]
       },
       "credentials": [
@@ -44,7 +44,7 @@
       "emailVerified": false,
       "attributes": {
         "entitiesId": ["ORANGE"],
-        "groups": ["RTE;ADMIN;ReadOnly"]
+        "groups": ["PowerGrid;ADMIN;ReadOnly"]
       },
       "credentials": [
         {
@@ -72,13 +72,13 @@
     {
       "id": "555a469f-8d21-4308-8229-3532fe6e52f5",
       "createdTimestamp": 1557499482370,
-      "username": "da_user",
+      "username": "atm_user",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["DA"],
-        "groups": ["RTE;ADMIN;ReadOnly"]
+        "entitiesId": ["ATM"],
+        "groups": ["PowerGrid;ADMIN;ReadOnly"]
       },
       "credentials": [
         {
@@ -106,12 +106,12 @@
     {
       "id": "34869ff3-7ee4-4d0c-9e33-c08f2319744b",
       "createdTimestamp": 1557499482370,
-      "username": "sncf_user",
+      "username": "railway_user",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
       "attributes": {
-        "entitiesId": ["SNCF"],
+        "entitiesId": ["Railway"],
         "groups": []
       },
       "credentials": [
@@ -160,14 +160,14 @@
     {
       "id": "793c4666-1162-44a0-b372-42fbaa348e78",
       "createdTimestamp": 1557499736343,
-      "username": "rte_user",
+      "username": "PowerGrid_user",
       "enabled": true,
       "totp": false,
       "emailVerified": false,
       "firstName": "",
       "lastName": "",
       "attributes": {
-        "entitiesId": ["RTE"],
+        "entitiesId": ["PowerGrid"],
         "groups": ["Dispatcher;ReadOnly;Supervisor"]
       },
       "credentials": [
@@ -239,7 +239,7 @@
       "firstName": "",
       "lastName": "",
       "attributes": {
-        "entitiesId": ["SNCF;ORANGE;DA;RTE"],
+        "entitiesId": ["Railway;ATM;PowerGrid"],
         "groups": ["Dispatcher;ReadOnly;Supervisor"]
       },
       "credentials": [
