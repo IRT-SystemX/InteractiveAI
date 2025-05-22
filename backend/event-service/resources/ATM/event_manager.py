@@ -15,5 +15,6 @@ class ATMEventManager(BaseEventManager):
         
         This method specifies the fields on which InteractiveAI will ensure event uniqueness.
         """
-        input_line = data["data"].get("line")
-        return {"line": input_line}
+        id_plane = data["data"].get("id_plane")
+        event_type = data["data"].get("event_type")
+        return {"id_plane": id_plane, "event_type": event_type}

@@ -8,11 +8,11 @@ class ATMManager(BaseRecommendationManager):
 
     def get_recommendation(self, request_data):
         """
-        Override to provide recommendations specific to the RTE use case.
+        Override to provide recommendations specific to the ATM use case.
         
-        This method generates and returns recommendations tailored for RTE.
+        This method generates and returns recommendations tailored for ATM.
         """
-        action_dict = {}
+        action_dict = {"action 1": "do something", "action 2": "do nothing"}
 
         output_json = {
             "title": "recommendation",
