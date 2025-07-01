@@ -2,6 +2,9 @@ import numpy as np
 from config.config import logging
 from lightsim2grid import SecurityAnalysis
 
+from app.models.utils import get_formatted_name_line
+
+
 class Listener:
     """This class has all the simulator's functions 
     that will stream and diagnose any Grid2Op selected data and events."""
@@ -104,12 +107,12 @@ class Listener:
 
         for i, c_value in enumerate(contingency_line_ids):
             flow = np.array(res_a[i])
-            impacted_lines = [(obs.name_line[j], value / thermal_limit[j])
+            impacted_lines = [(get_formatted_name_line(obs,j), value / thermal_limit[j])
                             for j, value in enumerate(flow)
                             if value / thermal_limit[j] >= 1.0]
             
             if impacted_lines:
-                line_name = obs.name_line[c_value]
+                line_name = get_formatted_name_line(obs,c_value)
                 anticipation.append((line_name, *zip(*impacted_lines)))
 
         self._anticipation = anticipation if anticipation else None
