@@ -360,7 +360,6 @@ class Simulator:
 
                 if "Anticipation N-1" in self.listen.current_issues:
                     if self.obs.current_step >= self.config['scenario_first_step']:
-
                         com.push_step = self.obs.current_step + send_tempo
                         if com.cab_api_on is True and context_just_sent is False:
                             if not img_b64_current:
@@ -390,9 +389,11 @@ class Simulator:
                                 f"\"description\": \"{x}\"}} }}\n\n"
                             )
 
-                            if not img_b64_forecast:
-                                img_b64_forecast = create_observation_image(obs_forecast._obs_env,
-                                                                            obs_forecast)
+                            n_1_line_name = x[0].split(":")[-1]
+                            n_1_line_id = self.obs.name_line.tolist().index(n_1_line_name)
+                            obs_forecast_n_1, *_ = self.obs.simulate(self.env.action_space({"set_line_status":[(n_1_line_id,-1)]}), self.config['time_step_forecast'])
+                            img_b64_forecast = create_observation_image(obs_forecast_n_1._obs_env,
+                                                                        obs_forecast_n_1)
                             com.send_event_online(context_date,
                                                   self.config['scenario_first_step'],
                                                   self.listen.trigger_kpis(
