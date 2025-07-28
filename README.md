@@ -45,8 +45,8 @@ The platform uses the project **OperatorFabric** for notification management.
 ### Prerequisites
 
 - [Git (version 2.40.1)](https://git-scm.com/)
-- [Docker (version 24.0.2)](https://www.docker.com/)
-- [Docker Compose (version 1.25.0 or later)](https://www.docker.com/) 
+- [Docker Engine (version 27)](https://www.docker.com/)
+- [Docker Compose V2](https://www.docker.com/) 
 
 
 ### Setting Up the Environment
@@ -63,7 +63,7 @@ Below are the steps to start all services. For other methods, please consult the
 
 ### Running All Services (Dev Mode)
 
-1. Set-up environement variables
+1. **Set-up environement variables**
    
 
 `VITE_POWERGRID_SIMU`, `VITE_RAILWAY_SIMU` , `VITE_ATM_SIMU` are the simulators' endpoints.
@@ -79,31 +79,34 @@ export VITE_ATM_SIMU=http://[Service url]:[Service port]
 > **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/PowerGrid/ then set the VITE_POWERGRID_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
 >
 > 
-2. Run InteractiveAI assistant
+2. **Run InteractiveAI assistant**
 ```sh
 cd config/dev/cab-standalone
 ./docker-compose.sh
 ```
 > **_NOTE:_** You will see the word cab (Cockpit Assistant Bidirectionnel) on most files in the project. Note that it was the initial project name of InteractiveAI. Might be updated later. 
 
-3. Setting up Keycloak `Frontend URL`  
-    * **Access Keycloak Interface**: 
+3. **Setting up Keycloak `Frontend URL`**  
+    * Access Keycloak Interface: 
       - Ensure that your Keycloak instance is running and accessible.
       - Open a web browser and navigate to the Keycloak admin console, typically available at `http://localhost:89/auth/admin`.  
-    * **Login to Keycloak Admin Console**: 
+    * Login to Keycloak Admin Console: 
       - Log in to the Keycloak admin console using your administrator credentials (`admin:admin` by default)
-    * **Navigate to Client Settings**:
+    * Configure frontendUrl:
+      - On the Keycloak admin console, locate and click on the "Realm Settings" section.
+      - In the Frontend URL setting, add the URL of your Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
+      - After adding the frontend URL, save the changes to update the client settings.
+    * Configure Valid Redirect URIs:
       - On the Keycloak admin console, locate and click on the "Clients" section.
       - Select the client representing your Assistant Platform application.  
-    * **Configure FrontendUrl**:
       - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
-      - Add the URL of your Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
-      - Ensure that the frontend URL you specify matches the actual URL where your frontend application is accessible.
-    * **Save Changes**:
-      - After adding the frontend URL, save the changes to update the client settings.
+      - Add the URL of your Assistant Platform frontend, it should match the one used in the frontendUrl setting.
+      - After adding the Valid Redirect URIs, save the changes to update the client settings.
 
-4. Load resources
-**WARINING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
+
+4. **Load resources**
+
+**WARNING:** You need to restart the frontend after updating the URL on keycloak do it before loading the resources. 
 ```sh
 docker restart frontend
 ```
