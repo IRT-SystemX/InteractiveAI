@@ -69,7 +69,7 @@ pip install -r requirements-consol.txt
 2. Launch the InteractiveAI event listener server, compatible with the console simulator.
 
 ```commandline
-docker-compose up -d --build api
+docker compose up -d --build api
 ```
 
 The launched API might be accessible at this address: 
@@ -89,7 +89,7 @@ pip install -r requirements-app.txt
 **2. Launch the whole all in one web app simulator through docker on a computer (BEST APPROACH):** 
 
 ```commandline
-docker-compose up -d --build app
+docker compose up -d --build app
 ```
 
 The launched app might be accessible at this address: 

@@ -51,6 +51,6 @@ The .env should contain:
 HOST_IP=<IP_Address>
 ```
 
-If the IP_Address is not your network IP address, please set it manually and run the system using native docker-compose commands.
+If the IP_Address is not your network IP address, please set it manually and run the system using native docker compose commands.
 
 > **_NOTE:_** You are welcome to contribute with any issue that you encounter during setup.
