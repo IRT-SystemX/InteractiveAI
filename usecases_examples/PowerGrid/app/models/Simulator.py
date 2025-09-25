@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.use('agg')
 from app.models.Listener import Listener
 from config.config import logging, set_pause, get_pause_status
-from app.models.utils import (create_observation_image, search_chronic_num_from_name,
+from app.models.utils import (create_observation_image, get_alert_lines, search_chronic_num_from_name,
                    get_curent_lines_in_bad_kpi, get_curent_lines_lost,
                    get_zone_where_alarm_occured, expand_act_from_cab,
                    load_assistant, local_xd_silly, targeted_scenario_act_fixed, generate_graph_html)
@@ -294,8 +294,8 @@ class Simulator:
                                               line_name=get_curent_lines_in_bad_kpi(
                                                   self.obs),
                                               case_overload=True)
-                    if (self.obs.current_step < self.config['scenario_first_step']) or \
-                            (com.cab_api_on is False):
+                        
+                    if (self.obs.current_step < self.config['scenario_first_step']) or (com.cab_api_on is False):
                         # Utiliser XD_Silly en cache (en local)
                         act = local_xd_silly(self.obs, self.local_assistant)
                         if com.cab_api_on is False:
@@ -336,6 +336,42 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
+                        logging.info("Status: Il y a une alarme de l'agent IA")
+                        yield (
+                            "data: {\"div\": \"events-div\", \"content\": "
+                            "{ \"title\": \"Status: Il y a une alerte de l'agent IA\", "
+                            "\"description\": \"\" } }\n\n"
+                        )
+
+                        if not img_b64_current:
+                            img_b64_current = create_observation_image(self.env,
+                                                                       self.obs)
+                        com.send_event_online(context_date,
+                                              self.config['scenario_first_step'],
+                                              self.listen.trigger_kpis(self.obs, act),
+                                              self.obs,
+                                              self.listen.current_issues,
+                                              img_b64_current,
+                                              zone=get_zone_where_alarm_occured(
+                                                  self.obs),
+                                              case_assist_alarm=True)
+                        event_resolved_trigger = True
+
+                if "Assistant raised an alert" in self.listen.current_issues:
+                    if self.obs.current_step >= self.config['scenario_first_step']:
+
+                        com.push_step = self.obs.current_step + send_tempo
+                        if com.cab_api_on is True and context_just_sent is False:
+                            if not img_b64_current:
+                                img_b64_current = create_observation_image(self.env,
+                                                                           self.obs)
+                            if img_b64_current:
+                                com.send_context_online(self.obs,
+                                                        self.config['scenario_first_step'],
+                                                        context_date,
+                                                        img_b64_current)
+                                context_just_sent = True
+
                         logging.info("Status: Il y a une alerte de l'agent IA")
                         yield (
                             "data: {\"div\": \"events-div\", \"content\": "
@@ -348,14 +384,12 @@ class Simulator:
                                                                        self.obs)
                         com.send_event_online(context_date,
                                               self.config['scenario_first_step'],
-                                              self.listen.trigger_kpis(
-                                                  self.obs, act),
+                                              self.listen.trigger_kpis(self.obs, act),
                                               self.obs,
                                               self.listen.current_issues,
                                               img_b64_current,
-                                              zone=get_zone_where_alarm_occured(
-                                                  self.obs),
-                                              case_assist_alarm=True)
+                                              line=get_alert_lines(self.obs),
+                                              case_assist_alert=True)
                         event_resolved_trigger = True
 
                 if "Anticipation N-1" in self.listen.current_issues:
@@ -440,7 +474,7 @@ class Simulator:
                                      get_curent_lines_lost(self.obs))
                         
                         logging.info(
-                            "Status: Il y a un événement de type 'anticipation N-1' ")
+                            "Status: Il y a un événement de type 'perte de ligne' ")
                         message = {
                             "div": "message-container",
                             "content": "Status: Il y a une perte de ligne ' "
