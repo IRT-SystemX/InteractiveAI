@@ -5,7 +5,7 @@ from apiflask.fields import Dict, String, Float, List, Integer
 from apiflask import Schema, fields
 from marshmallow import pre_load
 class PlaneMetadataSchemaATM(MetadataSchema):
-    id_plane = Integer()
+    id_plane = String()
     ApDest = Dict()
     Current_airspeed = Float()
     Latitude = Float()
@@ -31,6 +31,6 @@ class MetadataSchemaATM(MetadataSchema):
                 if field in data:
                     airplane[field] = data[field]
             # Provide a default id_plane if not present.
-            airplane.setdefault('id_plane', 1)
+            airplane.setdefault('id_plane', "X")
             data['airplanes'] = [airplane]
         return data
