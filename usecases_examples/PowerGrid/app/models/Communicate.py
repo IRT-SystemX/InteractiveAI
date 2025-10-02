@@ -334,6 +334,7 @@ class Communicate:
                           duration=None,
                           case_overload=False,
                           case_assist_alarm=False,
+                          case_assist_alert=False,
                           case_anticip=False,
                           case_line_lost=False):
         """
@@ -396,7 +397,7 @@ class Communicate:
                 payload_dict = {}
                 payload_dict = {
                     "criticality": "MEDIUM",
-                    "title": "Alerte Agent IA",
+                    "title": "Alarme Agent IA",
                     "description": f"Soyez vigilant sur la zone {zone}",
                     "start_date": f"{context_date}",
                     "end_date": f"{context_date + timedelta(minutes=float(5))}",
@@ -404,6 +405,32 @@ class Communicate:
                         "event_type": "agent",
                         "zone": zone,
                         "line": "",
+                        "kpis": kpis,
+                        "event_context": img_b64
+                    },
+                    "use_case": "PowerGrid",
+                    "is_active": False
+                }
+
+                payload = json.dumps(payload_dict)
+                # print(f"Assistant alarm description: {payload}")
+                self.send_payload_and_store_it(payload, obs, scn_first_step)
+            except Exception as e:
+                logging.error(e)
+
+        if ("Assistant raised an alert" in current_issues) and case_assist_alert:
+            try:
+                self.payload = {}
+                payload_dict = {}
+                payload_dict = {
+                    "criticality": "MEDIUM",
+                    "title": "Alerte Agent IA",
+                    "description": f"Risque sur les lignes : {line}",
+                    "start_date": f"{context_date}",
+                    "end_date": f"{context_date + timedelta(minutes=float(5))}",
+                    "data": {
+                        "event_type": "agent",
+                        "line": line,
                         "kpis": kpis,
                         "event_context": img_b64
                     },
