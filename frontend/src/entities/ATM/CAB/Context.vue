@@ -26,6 +26,9 @@ onBeforeMount(async () => {
   locale.value = `en-ATM`
   contextPID.value = await servicesStore.getContext('ATM', (context: { data: ContextType }) => {
     // New context data: iterate over the airplanes array
+    // 1-  Clear last tick's markers and ROUTE waypoints
+    mapStore.removeCategoryWaypoint('ROUTE')
+    // 2- add new markers and ROUTE waypoints
     if ('airplanes' in context.data) {
       context.data.airplanes.forEach((airplane: AirplaneContext) => {
         mapStore.addContextWaypoint({
@@ -33,7 +36,7 @@ onBeforeMount(async () => {
           lng: airplane.Longitude,
           id: `plane-${airplane.id_plane}`
         })
-
+        // build the route waypoints
         const waypoints = [
           ...(airplane.wpList
             ? airplane.wpList.map(({ wplat, wplon, wpid }) => ({
@@ -53,11 +56,12 @@ onBeforeMount(async () => {
               ]
             : [])
         ]
+        // draw polyline for the plane
         mapStore.addPolyline({
           id: `current_route_plane-${airplane.id_plane}`,
           waypoints
         })
-        mapStore.removeCategoryWaypoint('ROUTE')
+        // add each wp a ROUTE waypoint
         for (const waypoint of waypoints) {
           mapStore.addWaypoint({ ...waypoint, category: 'ROUTE' })
         }
@@ -93,7 +97,7 @@ onBeforeMount(async () => {
         id: 'current_route',
         waypoints
       })
-      mapStore.removeCategoryWaypoint('ROUTE')
+      //mapStore.removeCategoryWaypoint('ROUTE')
       for (const waypoint of waypoints) {
         mapStore.addWaypoint({ ...waypoint, category: 'ROUTE' })
       }
