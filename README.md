@@ -56,8 +56,9 @@ The platform uses the project **OperatorFabric** for notification management.
 ### Setting Up the Environment
 
 Clone the repo of the assistant
+
 ```sh
-git clone https://github.com/AI4REALNET/InteractiveAI.git
+git clone https://github.com/IRT-SystemX/InteractiveAI.git
 ```
 
 ## Usage
