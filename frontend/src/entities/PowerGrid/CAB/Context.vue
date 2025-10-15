@@ -2,7 +2,7 @@
   <Context :tabs="[$t('cab.tab.context')]">
     <template v-if="appStore.tab.context === 0">
       <img v-if="context" :src="`data:image/png;base64, ${context}`" class="cab-context-topology" />
-      <h1 v-else>Pas de contexte</h1>
+      <h1 v-else>{{  $t('cab.tab.nocontext') }}</h1>
     </template>
     <Notification
       :card="appStore.card('PowerGrid')"

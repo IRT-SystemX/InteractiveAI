@@ -25,4 +25,4 @@ fi
 
 echo "HOST_IP=${HOST_IP}" > .env
 
-docker-compose -f "docker-compose-recommendation-service.yml" up --build
+docker compose -f "docker-compose-recommendation-service.yml" up --build

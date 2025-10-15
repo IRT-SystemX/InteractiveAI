@@ -82,7 +82,7 @@ pip install -r requirements-app.txt
 3. For the Docker environment, use the provided docker-compose.yml and Dockerfile.
 ```
 cd PowerGrid
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 # 2 Run the simulator

@@ -196,7 +196,7 @@ class AgentManager:
                 "Redispatch"  # pour renvoyer le kpi type_of_the_reco
             )
             title.append(
-                "Parade injection: redispatch de source de production"
+                "Injection recommendation: production source redispatch"
             )
             cpt = 0
             for gen_idx in range(act.n_gen):
@@ -213,9 +213,9 @@ class AgentManager:
         # storage
         if act._modif_storage:
             kpis["type_of_the_reco"] = (
-                "Stockage"  # pour renvoyer le kpi type_of_the_reco
+                "Storage"  # pour renvoyer le kpi type_of_the_reco
             )
-            title.append("Parade stockage")
+            title.append("Storage recommendation")
             cpt = 0
             for stor_idx in range(act.n_storage):
                 amount_ = act._storage_power[stor_idx]
@@ -225,8 +225,8 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        f'Demande à l\'unité "{name_}" de '
-                        f'{"charger" if amount_ > 0.0 else "decharger"} '
+                        f'Ask unit "{name_}" to '
+                        f'{"charge" if amount_ > 0.0 else "discharge"} '
                         f'{abs(amount_):.2f} MW (setpoint: {amount_:.2f} MW)'
                     )
 
@@ -235,7 +235,7 @@ class AgentManager:
             kpis["type_of_the_reco"] = (
                 "Injection"  # pour renvoyer le kpi type_of_the_reco
             )
-            title.append("Parade injection")
+            title.append("Injection recommendation")
             cpt = 0
             for gen_idx in range(act.n_gen):
                 amount_ = act._curtail[gen_idx]
@@ -245,8 +245,8 @@ class AgentManager:
                         description.append(", ")
                     cpt = 1
                     description.append(
-                        f'Limiter l\'unité "{name_}" à '
-                        f'{100.0 * amount_:.1f}% de sa capacité max '
+                        f'Limit unit "{name_}" to '
+                        f'{100.0 * amount_:.1f}% of its maximum capacity '
                         f'(setpoint: {amount_:.3f})'
                     )
 
@@ -254,22 +254,22 @@ class AgentManager:
         force_line_impact = impact["force_line"]
         if force_line_impact["changed"]:
             kpis["type_of_the_reco"] = (
-                "Topologique"  # pour renvoyer le kpi type_of_the_reco
+                "Topological"  # pour renvoyer le kpi type_of_the_reco
             )
             title.append(
-                "Parade topologique: connection/deconnection de ligne"
+                "Topological recommendation: connection/disconnection of line"
             )
             reconnections = force_line_impact["reconnections"]
             if reconnections["count"] > 0:
                 description.append(
-                    f"Reconnection de {reconnections['count']} lignes "
+                    f"Reconnection of {reconnections['count']} lines "
                     f"({reconnections['powerlines']})"
                 )
 
             disconnections = force_line_impact["disconnections"]
             if disconnections["count"] > 0:
                 description.append(
-                    f"Déconnection de {disconnections['count']} lignes "
+                    f"Disconnection of {disconnections['count']} lines "
                     f"({disconnections['powerlines']})"
                 )
 
@@ -277,11 +277,11 @@ class AgentManager:
         swith_line_impact = impact["switch_line"]
         if swith_line_impact["changed"]:
             kpis["type_of_the_reco"] = (
-                "Topologique"  # pour renvoyer le kpi type_of_the_reco
+                "Topological"  # pour renvoyer le kpi type_of_the_reco
             )
-            title.append("Parade topologique: changer l'état d'une ligne")
+            title.append("Topological: change a line state")
             description.append(
-                f"Changer le statut de {swith_line_impact['count']} lignes "
+                f"Change the state of {swith_line_impact['count']} lines "
                 f"({swith_line_impact['powerlines']})"
             )
 
@@ -289,27 +289,27 @@ class AgentManager:
         bus_switch_impact = impact["topology"]["bus_switch"]
         if len(bus_switch_impact) > 0:
             kpis["type_of_the_reco"] = (
-                "Topologique"  # pour renvoyer le kpi type_of_the_reco
+                "Topological"  # pour renvoyer le kpi type_of_the_reco
             )
             title.append(
-                "Parade topologique: prise de schéma au poste "
+                "Topological recommendation: Schematic acquisition at substation "
                 + str(bus_switch_impact["substation"])
             )
-            description.append("Changement de bus:")
+            description.append("Busbar change:")
             for switch in bus_switch_impact:
                 description.append(
-                    f"\t \t - Switch bus de {switch['object_type']} id "
-                    f"{switch['object_id']} [au poste {switch['substation']}]"
+                    f"\t \t - Switch bus of {switch['object_type']} id "
+                    f"{switch['object_id']} [at station {switch['substation']}]"
                 )
 
         assigned_bus_impact = impact["topology"]["assigned_bus"]
         disconnect_bus_impact = impact["topology"]["disconnect_bus"]
         if len(assigned_bus_impact) > 0 or len(disconnect_bus_impact) > 0:
             kpis["type_of_the_reco"] = (
-                "Topologique"  # pour renvoyer le kpi type_of_the_reco
+                "Topological"  # pour renvoyer le kpi type_of_the_reco
             )
             title.append(
-                "Parade topologique: prise de schéma au poste "
+                "Topological recommendation: Schematic acquisition at substation "
                 + str(assigned_bus_impact[0]["substation"])
             )
             if assigned_bus_impact:
@@ -320,7 +320,7 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    f" Assigner le bus {assigned['bus']} à "
+                    f" Assign bus {assigned['bus']} to "
                     f"{assigned['object_type']} id {assigned['object_id']}"
                 )
             if disconnect_bus_impact:
@@ -331,8 +331,8 @@ class AgentManager:
                     description.append(", ")
                 cpt = 1
                 description.append(
-                    f"Déconnecter {disconnected['object_type']} avec l'id "
-                    f"{disconnected['object_id']} [au niveau du poste "
+                    f"Disconnect {disconnected['object_type']} with id "
+                    f"{disconnected['object_id']} [at the substation level "
                     f"{disconnected['substation']}]"
                 )
 
@@ -340,11 +340,11 @@ class AgentManager:
         # then the recommendation is most likely "Do nothing"
         if not title and act == self.action_do_nothing:
             kpis["type_of_the_reco"] = (
-                "Ne rien faire"  # pour renvoyer le kpi type_of_the_reco
+                "Do nothing"  # pour renvoyer le kpi type_of_the_reco
             )
             title.append("Poursuivre")
             description.append(
-                "Poursuite du scénario sans intervention extérieur"
+                "Continuation of the scenario without operator action"
             )
 
         title = "".join(title)

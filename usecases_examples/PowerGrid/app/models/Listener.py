@@ -2,6 +2,9 @@ import numpy as np
 from config.config import logging
 from lightsim2grid import SecurityAnalysis
 
+from app.models.utils import get_formatted_name_line
+
+
 class Listener:
     """This class has all the simulator's functions 
     that will stream and diagnose any Grid2Op selected data and events."""
@@ -65,7 +68,7 @@ class Listener:
             return True
         return False
 
-    def _stop_if_alarm(self, obs):
+    def _stop_if_alarm(self, obs, otherwise__=""):
         """
         Checks if an alarm has been triggered by the assistant.
 
@@ -75,11 +78,24 @@ class Listener:
         Returns:
             bool: True if an alarm has been triggered, False otherwise.
         """
-        do_stop_if_alarm = True
-        if do_stop_if_alarm:
-            if np.any(obs.time_since_last_alarm == 0):
-                logging.info("Assistant raised an alarm")
-                return True
+        if np.any(obs.time_since_last_alarm == 0):
+            logging.info("Assistant raised an alarm")
+            return True
+        return False
+
+    def _stop_if_alert(self, obs, otherwise__=""):
+        """
+        Checks if an alert has been triggered by the assistant.
+
+        Args:
+            obs: The current observation of the network.
+
+        Returns:
+            bool: True if an alert has been triggered, False otherwise.
+        """
+        if np.any(obs.time_since_last_alert == 0):
+            logging.info("Assistant raised an alert")
+            return True
         return False
 
     def _stop_if_anticipation_security_analysis(self, obs, env, contingency_line_ids):
@@ -104,12 +120,12 @@ class Listener:
 
         for i, c_value in enumerate(contingency_line_ids):
             flow = np.array(res_a[i])
-            impacted_lines = [(obs.name_line[j], value / thermal_limit[j])
+            impacted_lines = [(get_formatted_name_line(obs,j), value / thermal_limit[j])
                             for j, value in enumerate(flow)
                             if value / thermal_limit[j] >= 1.0]
             
             if impacted_lines:
-                line_name = obs.name_line[c_value]
+                line_name = get_formatted_name_line(obs,c_value)
                 anticipation.append((line_name, *zip(*impacted_lines)))
 
         self._anticipation = anticipation if anticipation else None
@@ -132,6 +148,9 @@ class Listener:
         self._current_issues = []
         if self._stop_if_alarm(obs):
             issues.append("Assistant raised an alarm")
+
+        if self._stop_if_alert(obs):
+            issues.append("Assistant raised an alert")
 
         if self._stop_if_bad_kpi(obs):
             issues.append("Overload")

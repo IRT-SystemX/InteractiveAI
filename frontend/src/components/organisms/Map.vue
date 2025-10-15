@@ -83,11 +83,12 @@ import { useMapStore } from '@/stores/components/map'
 import type { Waypoint } from '@/types/components/map'
 import { criticalityToColor, maxCriticality } from '@/utils/utils'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     tileLayers?: string[]
     contextClick?: (waypoint: Waypoint) => void
     waypointClick?: (waypoint: Waypoint) => void
+    autoFit?: boolean
   }>(),
   {
     tileLayers: () => ['http://{s}.tile.osm.org/{z}/{x}/{y}.png'],
@@ -103,9 +104,17 @@ const lockView = ref(true)
 const zoom = ref(6)
 const map = ref()
 
-watch(mapStore.contextWaypoints, () => {
-  toggleLockView()
-})
+watch(
+  () => mapStore.contextWaypoints, 
+  () => {
+    if (props.autoFit) {
+      toggleLockView()
+    }
+  
+}
+)
+
+
 watch(appStore.panels, () => {
   map.value.leafletObject.invalidateSize()
 })

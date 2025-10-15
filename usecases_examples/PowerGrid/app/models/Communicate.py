@@ -334,6 +334,7 @@ class Communicate:
                           duration=None,
                           case_overload=False,
                           case_assist_alarm=False,
+                          case_assist_alert=False,
                           case_anticip=False,
                           case_line_lost=False):
         """
@@ -366,9 +367,9 @@ class Communicate:
                 payload_dict = {}
                 payload_dict = {
                     "criticality": "HIGH",
-                    "title": f"Surcharge sur ligne {line_name}",
+                    "title": f"Overload in line {line_name}",
                     "description": (
-                        f"Attention la ligne {line_name} est en surcharge de "
+                        f"Warning: the {line_name} line is overloaded by "
                         f"{np.round(np.float64(obs.rho.max() * 100),decimals=1,out=None)}%"
                     ),
                     "start_date": f"{context_date}",
@@ -396,14 +397,40 @@ class Communicate:
                 payload_dict = {}
                 payload_dict = {
                     "criticality": "MEDIUM",
-                    "title": "Alerte Agent IA",
-                    "description": f"Soyez vigilant sur la zone {zone}",
+                    "title": "AI agent Alarm",
+                    "description": f"Be vigilant in zone {zone}",
                     "start_date": f"{context_date}",
                     "end_date": f"{context_date + timedelta(minutes=float(5))}",
                     "data": {
                         "event_type": "agent",
                         "zone": zone,
                         "line": "",
+                        "kpis": kpis,
+                        "event_context": img_b64
+                    },
+                    "use_case": "PowerGrid",
+                    "is_active": False
+                }
+
+                payload = json.dumps(payload_dict)
+                # print(f"Assistant alarm description: {payload}")
+                self.send_payload_and_store_it(payload, obs, scn_first_step)
+            except Exception as e:
+                logging.error(e)
+
+        if ("Assistant raised an alert" in current_issues) and case_assist_alert:
+            try:
+                self.payload = {}
+                payload_dict = {}
+                payload_dict = {
+                    "criticality": "MEDIUM",
+                    "title": "AI agent Warning",
+                    "description": f"Risk on lines: {line}",
+                    "start_date": f"{context_date}",
+                    "end_date": f"{context_date + timedelta(minutes=float(5))}",
+                    "data": {
+                        "event_type": "agent",
+                        "line": line,
                         "kpis": kpis,
                         "event_context": img_b64
                     },
@@ -424,10 +451,10 @@ class Communicate:
                 payload_dict = {}
                 payload_dict = {
                     "criticality": "MEDIUM",
-                    "title": f"Risque sur aléa N-1 sur la ligne {line[0]}",
+                    "title": f"Risk of N-1 contingency on line {line[0]}",
                     "description": (
-                        f"Lignes impactées {line[1]}, "
-                        f"charge max {np.round(max(line[2]) * 100, decimals=1, out=None)}%"
+                        f"Impacted lines {line[1]}, "
+                        f"Maximum charge {np.round(max(line[2]) * 100, decimals=1, out=None)}%"
                     ),
                     "start_date": f"{anticip_date}",
                     "end_date": f"{anticip_date + timedelta(minutes=float(5*duration))}",
@@ -455,8 +482,8 @@ class Communicate:
                 payload_dict = {}
                 payload_dict = {
                     "criticality": "ROUTINE",
-                    "title": f"Ligne {line_name} déconnectée",
-                    "description": f"La ligne {line_name} est déconnectée",
+                    "title": f"Line {line_name} disconnected",
+                    "description": f"Line {line_name} is disconnected",
                     "start_date": f"{context_date}",
                     "end_date": f"{context_date + timedelta(minutes=float(5))}",
                     "data": {
@@ -541,13 +568,13 @@ class Communicate:
                 if get_act_counter == 0:
                     message = {
                         "div": "message-container",
-                        "content": "La simulation est en pause. Veillez consulter les recommendations de InteractiveAI avant de faire une nouvelle action ici!"
+                        "content": "The simulation is paused. Please consult the recommendations from InteractiveAI before taking any further action here!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Cliquez sur 'Continuer' après avoir fait votre choix dans InteractiveAI\"}\n\n"
+                        "\"Click 'Continuer' after making your selection in InteractiveAI\"}\n\n"
                     )
                     time.sleep(1)
                     set_pause(True)
@@ -556,13 +583,13 @@ class Communicate:
                 else:
                     message = {
                         "div": "message-container",
-                        "content": "Aucune recommendation n'a été reçu de InteractiveAI!"
+                        "content": "No recommendation has been received from InteractiveAI!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Réitérez votre choix dans InteractiveAI puis cliquez à nouveau sur "
+                        "\"Repeat your selection in InteractiveAI, then click again on "
                         "'Continuer'\"}\n\n"
                     )
                     time.sleep(1)
@@ -581,12 +608,12 @@ class Communicate:
                 self.act_dict = response.json()
                 if bool(self.act_dict) is False and get_act_counter >= 1:
                     logging.info(
-                        "\n Aucune recommendation n'a été reçu ! \n"
-                        " La siumation se prousuivra avec la recommendation NULL par défaut."
+                        "\n No recommendation has been received! \n"
+                        " The simulation will continue with the default Do Nothing recommendation."
                     )
                     message = {
                         "div": "message-container",
-                        "content": "Aucune recommendation n'a été reçu ! La siumation se prousuivra avec la recommendation NULL par défaut."
+                        "content": "No recommendation has been received! The simulation will continue with the default Do Nothing recommendation."
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)
@@ -595,7 +622,7 @@ class Communicate:
                     logging.info("\n InteractiveAI' s recommendation received! \n")
                     message = {
                         "div": "message-container",
-                        "content": "La recommendation de InteractiveAI vient dêtre reçu !"
+                        "content": "The recommendation from InteractiveAI has just been received!"
                     }
                     yield f"data: {json.dumps(message)}\n\n"
                     time.sleep(1)

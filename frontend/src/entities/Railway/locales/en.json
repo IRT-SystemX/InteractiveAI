@@ -5,7 +5,7 @@
   "card.event_type.INFRASTRUCTURE": "Infrastructure",
   "card.event_type.PASSENGER": "Passenger",
   "card.event_type.RAIL": "Rail",
-  "event.button.primary": "Recalculate transport plans",
+  "event.button.primary": "Get recommendation from maze",
   "event.button.primary.passenger": "Show procedure",
   "event.button.secondary": "Continue the procedure follow-up",
   "event.button.secondary.passenger": "Put on hold",

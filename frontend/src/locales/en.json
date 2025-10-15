@@ -34,6 +34,7 @@
   "cab.status.notifications": "Notifications",
   "cab.status.requests": "Requests",
   "cab.tab.context": "Context",
+  "cab.tab.nocontext": "No context available",
   "cab.tab.dependencies": "Dependencies",
   "cab.tab.graph": "Graph",
   "cab.tab.map": "Map",
