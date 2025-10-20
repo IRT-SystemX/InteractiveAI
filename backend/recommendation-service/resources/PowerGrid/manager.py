@@ -61,16 +61,16 @@ class PowerGridManager(BaseRecommendationManager):
         """
         # Default output
         output_json = {
-            "title": "Parade ontologique par defaut",
+            "title": "Default ontological recommendation",
             "description": (
-                "Aucune recommandation n’a pu être générée car cette surcharge "
-                "n’a jamais été observée dans le passé"
+                "No recommendation could be generated because this overload "
+                "has never been observed in the past"
             ),
             "use_case": "PowerGrid",
             "agent_type": AgentType.onto.name,
             "actions": [{}],
             "kpis": {
-                "type_of_the_reco": "Null",
+                "type_of_the_reco": "Ontological",
                 "efficiency_of_the_reco": 1.99999,
             },
         }
@@ -198,7 +198,7 @@ class PowerGridManager(BaseRecommendationManager):
                         )[0][0]
                         output_json = {
                             "title": recommendation,
-                            "description": f"Cette parade a été rencontrée {nb_similar_situations} fois dans le passé.",
+                            "description": f"This recommendation has been encountered {nb_similar_situations} times in the past.",
                             "use_case": "PowerGrid",
                             "agent_type": AgentType.onto.name,
                             "actions": [action_dict],
