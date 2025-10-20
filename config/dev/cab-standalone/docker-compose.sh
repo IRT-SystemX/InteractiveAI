@@ -44,4 +44,4 @@ fi
 echo "HOST_IP=${HOST_IP}" >> .env
 
 cat .env
-docker-compose up -d
+docker compose up -d
