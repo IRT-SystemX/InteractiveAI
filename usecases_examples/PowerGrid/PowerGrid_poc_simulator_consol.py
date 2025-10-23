@@ -92,10 +92,10 @@ class Listener():
             rho = []
             for j, value in enumerate(flow):
                 if value / thermal_limit[j] >= 1.0:
-                    impacted_lines = obs.name_line[j]
+                    impacted_lines = get_formatted_name_line(obs,j)
                     rho.append(value / thermal_limit[j])
             if len(impacted_lines) > 0:
-                line_name = obs.name_line[c_value]
+                line_name = get_formatted_name_line(obs,c_value)
                 anticipation.append((line_name, impacted_lines, rho))
 
         self._anticipation = None
@@ -688,17 +688,19 @@ def search_chronic_num_from_name(scenario_name,
 
 
 def get_curent_lines_in_bad_KPI(obs):
-    """Identify the line with the worst KPI in the grid."""
-    res = np.where(obs.rho == obs.rho.max())
-    name = obs.name_line[res[0]]
-    return name[0]
+    """Identify the line with the worst KPI in the grid in the following format: {line_or_to_subid}:{line_ex_to_subid}:{name_line}."""
+    res = (obs.rho == obs.rho.max()).tolist().index(True)
+    return get_formatted_name_line(obs, res)
 
 
 def get_curent_lines_lost(obs):
-    """Identify disconnected lines in the grid."""
-    res = np.where(obs.line_status is False)
-    name = obs.name_line[res[0]]
-    return name[0]
+    """Identify disconnected lines in the grid in the following format: {line_or_to_subid}:{line_ex_to_subid}:{name_line}."""
+    res = (obs.line_status is False).tolist().index(True)
+    return get_formatted_name_line(obs, res)
+
+def get_formatted_name_line(obs, idx):
+    """Format line name to {line_or_to_subid}:{line_ex_to_subid}:{name_line}"""
+    return f"{obs.line_or_to_subid[idx]}:{obs.line_ex_to_subid[idx]}:{obs.name_line[idx]}"
 
 
 def get_zone_where_alarm_occured(obs):

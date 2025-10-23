@@ -19,7 +19,7 @@
         appStore._card = card.severity === 'INFORMATION' ? undefined : card
       }
     ">
-    <template #severity>Sûreté</template>
+    <template #severity>Safety</template>
     <template #icon="{ card }">
       <Zap
         v-if="card.severity === 'ALARM'"

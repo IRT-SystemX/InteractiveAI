@@ -43,14 +43,19 @@ Follow this section in case you are working on localhost, and without Docker.
 
 ### Create a virtual environment 
 ```commandline
-cd InteractiveAI/usecases_examples/PowerGrid
-pip3 install -U virtualenv
-python3 -m virtualenv venv_grid2op
+cd usecases_examples/PowerGrid
+python3 -m venv venv_grid2op
 ```
 
 ### Enter the virtual environment
+- On Linux based systems:
 ```commandline
 source venv_grid2op/bin/activate
+```
+
+- On Windows based systems:
+```commandline
+source venv_grid2op/scripts/activate
 ```
 
 ## 1.3 Installation of the simulator layer
@@ -69,7 +74,7 @@ pip install -r requirements-consol.txt
 2. Launch the InteractiveAI event listener server, compatible with the console simulator.
 
 ```commandline
-docker-compose up -d --build api
+docker compose up -d --build api
 ```
 
 The launched API might be accessible at this address: 
@@ -89,7 +94,7 @@ pip install -r requirements-app.txt
 **2. Launch the whole all in one web app simulator through docker on a computer (BEST APPROACH):** 
 
 ```commandline
-docker-compose up -d --build app
+docker compose up -d --build app
 ```
 
 The launched app might be accessible at this address: 

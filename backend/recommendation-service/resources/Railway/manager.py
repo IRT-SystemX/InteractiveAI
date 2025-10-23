@@ -1,4 +1,4 @@
-# backend/recommendation-service/resources/RTE/manager.py
+# backend/recommendation-service/resources/Railway/manager.py
 
 from api.manager.base_manager import BaseRecommendationManager
 

@@ -67,11 +67,10 @@ def get_curent_lines_in_bad_kpi(obs):
         obs: The current observation.
 
     Returns:
-        str: Name of the line with the worst KPI.
+        str: Name of the line with the worst KPI in the following format: {line_or_to_subid}:{line_ex_to_subid}:{name_line}
     """
-    res = np.where(obs.rho == obs.rho.max())
-    name = obs.name_line[res[0]]
-    return name[0]
+    res = (obs.rho == obs.rho.max()).tolist().index(True)
+    return get_formatted_name_line(obs, res)
 
 
 def get_curent_lines_lost(obs):
@@ -82,11 +81,28 @@ def get_curent_lines_lost(obs):
         obs: The current observation.
 
     Returns:
-        str: Name of the first lost line.
+        str: Name of the first lost line in the following format: {line_or_to_subid}:{line_ex_to_subid}:{name_line}.
     """
-    res = np.where(obs.line_status is False)
-    name = obs.name_line[res[0]]
-    return name[0]
+    res = (obs.line_status is False).tolist().index(True)
+    return get_formatted_name_line(obs, res)
+
+
+def get_alert_lines(obs):
+    """
+    Identifies the lines where an alert occured.
+
+    Args:
+        obs: The current observation.
+
+    Returns:
+        str: Name of the first lost line in the following format: {line_or_to_subid}:{line_ex_to_subid}:{name_line}.
+    """
+    idx_list = np.where(obs.active_alert)[0]
+    return [get_formatted_name_line(obs, idx) for idx in idx_list]
+
+
+def get_formatted_name_line(obs, idx):
+    return f"{obs.line_or_to_subid[idx]}:{obs.line_ex_to_subid[idx]}:{obs.name_line[idx]}"
 
 
 def get_zone_where_alarm_occured(obs):
