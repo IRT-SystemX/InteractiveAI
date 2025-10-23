@@ -58,7 +58,7 @@ The platform uses the project **OperatorFabric** for notification management.
 Clone the repo of the assistant
 
 ```sh
-git clone https://github.com/IRT-SystemX/InteractiveAI.git
+git clone [repo-url]
 ```
 
 ## Usage
