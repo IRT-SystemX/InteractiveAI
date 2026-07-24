@@ -6,6 +6,10 @@ from apiflask.validators import Length
 class RecommendationAsk(Schema):
     context = Dict()
     event = Dict()
+    # Optional operator cognitive/stress snapshot, sent alongside event/context
+    # only when the operator has consented. Declared so it survives schema
+    # validation and is forwarded verbatim to the RL agent.
+    cognitive_snapshot = Dict()
 
 
 class RecommendationOut(Schema):

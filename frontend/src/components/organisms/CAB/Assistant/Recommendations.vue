@@ -71,6 +71,7 @@ import Card from '@/components/atoms/Card.vue'
 import Modal from '@/components/atoms/Modal.vue'
 import type { Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
+import { recordTraceForSession } from '@/utils/traceSessionExport'
 
 const props = withDefaults(
   defineProps<{ buttons: string[]; recommendations: Recommendation<E>[]; collapsed?: boolean }>(),
@@ -93,6 +94,15 @@ onBeforeMount(() => {
 
 async function close(success: boolean) {
   if (success) {
+    recordTraceForSession({
+      use_case: selected.value!.use_case,
+      step: 'FEEDBACK',
+      date: new Date().toISOString(),
+      data: {
+        action: 'confirm_recommendation',
+        recommendation: selected.value!.title
+      }
+    })
     await sendFeedback(selected.value!, true)
     emit('selected', selected.value!)
   }
@@ -100,10 +110,31 @@ async function close(success: boolean) {
 }
 
 function closeKpi(kpi: (typeof props)['buttons'][number]) {
+  const useCase = selected.value?.use_case ?? props.recommendations[0]?.use_case
+  if (useCase)
+    recordTraceForSession({
+      use_case: useCase,
+      step: 'FEEDBACK',
+      date: new Date().toISOString(),
+      data: {
+        action: 'dismiss_kpi',
+        kpi,
+        selected_recommendation: selected.value?.title
+      }
+    })
   buttons.value?.splice(buttons.value.indexOf(kpi), 1)
 }
 
 async function downvote(recommendation: Recommendation<E>) {
+  recordTraceForSession({
+    use_case: recommendation.use_case,
+    step: 'FEEDBACK',
+    date: new Date().toISOString(),
+    data: {
+      action: 'downvote_recommendation',
+      recommendation: recommendation.title
+    }
+  })
   await sendFeedback(recommendation)
   emit(
     'update:recommendations',

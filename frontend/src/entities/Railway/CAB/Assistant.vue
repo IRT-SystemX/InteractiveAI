@@ -5,19 +5,12 @@
         <template v-if="appStore.tab.assistant === 2">
           {{ $t('cab.assistant.recommendations') }}
         </template>
-        <template v-if="appStore.tab.assistant === 3">{{ $t('cab.assistant.procedure') }}</template>
+        <template v-if="appStore.tab.assistant === 3">{{ $t('cab.assistant.recommendations') }}</template>
       </template>
       <Event
         v-if="appStore.tab.assistant === 1 && appStore.card('Railway')"
         :card="appStore.card('Railway')!"
-        :primary-action="
-          appStore.card('Railway')?.data.metadata.event_type === 'INFRASTRUCTURE' &&
-          !cardsStore
-            .cards('Railway')
-            .find((card) => card.data.parent_event_id === appStore.card('Railway')?.processInstanceId)
-            ? null
-            : primaryAction
-        ">
+        :primary-action="primaryAction">
         <template #event>
           <i18n-t
             scope="global"
@@ -54,7 +47,7 @@
         </template>
       </Event>
       <Recommendations
-        v-if="appStore.tab.assistant === 2 && appStore.card('Railway')"
+        v-if="(appStore.tab.assistant === 2 || appStore.tab.assistant === 3) && appStore.card('Railway')"
         v-model:recommendations="recommendations"
         :buttons="[
           $t('recommendations.button1'),
@@ -63,10 +56,10 @@
           $t('recommendations.button4')
         ]"
         @selected="onSelection">
-        <template #default="{ recommendation }">
+        <template #default="{ recommendation, index }">
           <div class="flex">
             <main>
-              <h2>{{ recommendation.title }}</h2>
+              <h2>R{{ index }}: {{ recommendation.title }}</h2>
             </main>
           </div>
         </template>
@@ -82,6 +75,38 @@
         <template #button>
           <Button color="secondary">{{ $t('recommendations.button.secondary') }}</Button>
         </template>
+          <template #footer="{ selected }">
+            <div style="flex: none; overflow: auto">
+              <table v-if="recommendations.length">
+                <thead>
+                  <tr>
+                    <th>KPI</th>
+                    <th
+                      v-for="(recommendation, index) of recommendations"
+                      :key="recommendation.title"
+                      :class="{ active: selected?.title === recommendation.title }">
+                      R{{ index }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="key of ['cost', 'nb_impacted_passengers', 'total_cost', 'delay']" :key="key">
+                    <td>{{ $t(`Railway.kpis.${key}`) }}</td>
+                    <td
+                      v-for="recommendation of recommendations"
+                      :key="recommendation.title"
+                      :class="{ active: selected?.title === recommendation.title }">
+                      {{
+                        isFinite(Number(recommendation.kpis?.[key]))
+                          ? Number(recommendation.kpis?.[key])
+                          : recommendation.kpis?.[key]
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
       </Recommendations>
       <Procedure
         v-if="appStore.tab.assistant === 3 && procedure && appStore.card('Railway')"
@@ -132,8 +157,10 @@ watch(
         recommendations.value = servicesStore.recommendations('Railway')
         break
       case 3:
-        procedure.value = (await getProcedure('PASSENGER')).data.procedure
-        procedure.value[0].tasks[0].state = 'doing'
+        // procedure.value = (await getProcedure('PASSENGER')).data.procedure
+        // procedure.value[0].tasks[0].state = 'doing'
+        await servicesStore.getRecommendation(appStore.card('Railway')!)
+        recommendations.value = servicesStore.recommendations('Railway')
     }
   }
 )
@@ -148,6 +175,8 @@ function onSelection(recommendation: any) {
     ...recommendation.actions[0],
     event_id: getRootCard(appStore.card('Railway')!).processInstanceId
   })
+  const activeCard = appStore.card('Railway')
+  if (activeCard) cardsStore.resolveCriticality(activeCard)
   appStore.tab.assistant = 0
 }
 
@@ -157,8 +186,6 @@ function primaryAction() {
     use_case: route.params.entity as Entity,
     step: 'ASKFORHELP'
   })
-  if (appStore.card('Railway')?.data.metadata.event_type === 'PASSENGER') {
-    appStore.tab.assistant = 3
-  } else appStore.tab.assistant = 2
+  appStore.tab.assistant = 3
 }
 </script>

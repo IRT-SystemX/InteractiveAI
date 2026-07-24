@@ -54,6 +54,7 @@
   "map.lockview": "Verrouiller la vue aux objets dans le contexte",
   "map.no_lockview": "Vue libre",
   "minute": "{n} minute | {n} minutes",
+  "modal.consent.cognitive": "Consentez-vous à ce que la plateforme collecte et utilise vos données cognitives et de stress ? ",
   "modal.default": "Message de modale par défaut",
   "modal.error.CONTEXT_FAILED": "Impossible de récupérer le contexte, réessayer ?",
   "modal.error.DISCONNECTED": "Votre session a expiré",

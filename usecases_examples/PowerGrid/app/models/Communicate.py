@@ -6,6 +6,7 @@ import time
 from datetime import datetime, timedelta
 import numpy as np
 from config.config import logging, set_pause, get_pause_status
+from app.models.recommendation_store import store as recommendation_store
 
 class Communicate:
     """
@@ -25,7 +26,7 @@ class Communicate:
         self.act_dict = {}
         self.payload = {}
 
-        # Charger les paramètres depuis le fichier de configuration
+        # Load parameters from configuration file
         self.load_config()
 
     def load_config(self):
@@ -44,11 +45,11 @@ class Communicate:
                     "differently."
                 )
         except FileNotFoundError:
-            logging.error("Le fichier 'config/API_POWERGRID_CAB.toml' n'a pas été trouvé.")
+            logging.error("File 'config/API_POWERGRID_CAB.toml' not found.")
         except toml.TomlDecodeError:
-            logging.error("Erreur de décodage du fichier 'config/API_POWERGRID_CAB.toml'.")
+            logging.error("Failed to decode 'config/API_POWERGRID_CAB.toml'.")
         except Exception as e:
-            logging.error("Une erreur inattendue est survenue: %s", str(e))
+            logging.error("An unexpected error occurred: %s", str(e))
 
     def edit_parameters(self, parameter_name, new_value):
         """
@@ -58,10 +59,10 @@ class Communicate:
             parameter_name: Name of the parameter to modify.
             new_value: New value of the parameter.
         """
-        # Recharger la configuration au cas où elle aurait été modifiée
+        # Reload config in case it was modified
         self.load_config()
 
-        # Modifier les paramètres dans self.outputs_config
+        # Update parameters in self.outputs_config
         keys = parameter_name.split('.')
         current_param = self.outputs_config
         for key in keys[:-1]:
@@ -69,11 +70,11 @@ class Communicate:
                 current_param = current_param[key]
             else:
                 logging.error(
-                    "Le paramètre %s n'existe pas dans les paramètres.", parameter_name)
+                    "Parameter %s does not exist in the configuration.", parameter_name)
                 return
         current_param[keys[-1]] = new_value
 
-        # Enregistrer les modifications dans le fichier de configuration
+        # Save changes to configuration file
         with open("config/API_POWERGRID_CAB.toml", "w", encoding="utf-8") as file:
             toml.dump(self.outputs_config, file)
 
@@ -92,7 +93,7 @@ class Communicate:
             if 'Connexion' not in config:
                 config['Connexion'] = {}
             
-            # Trouver le prochain numéro disponible pour le serveur
+            # Find next available server number
             server_count = sum(1 for key in config['Connexion'] if key.startswith('cab_server_url_'))
             new_key = f'cab_server_url_{server_count + 1}'
             
@@ -103,7 +104,7 @@ class Communicate:
             
             return True
         except Exception as e:
-            print(f"Une erreur est survenue lors de l'ajout du serveur: {e}")
+            print(f"An error occurred while adding the server: {e}")
             return False
 
     def delete_cab_server_url(self, url):
@@ -125,15 +126,15 @@ class Communicate:
                         del config['Connexion'][key]
                         with open(config_file, "w") as configfile:
                             toml.dump(config, configfile)
-                        print(f"Serveur supprimé : clé={key}, url={url}")
+                        print(f"Server removed: key={key}, url={url}")
                         return True, url
-                print(f"URL non trouvée : {url}")
+                print(f"URL not found: {url}")
                 return False, ""
             else:
-                print("Section 'Connexion' non trouvée dans le fichier de configuration")
+                print("Section 'Connexion' not found in configuration file")
                 return False, ""
         except Exception as e:
-            print(f"Une erreur est survenue lors de la suppression du serveur: {e}")
+            print(f"An error occurred while deleting the server: {e}")
             return False, ""
 
     def get_cab_server_urls(self):
@@ -145,7 +146,7 @@ class Communicate:
         """
         try:
             config = toml.load("config/API_POWERGRID_CAB.toml")
-            # Accéder à la section [Connexion] et récupérer toutes les URLs
+            # Access [Connexion] section and retrieve all URLs
             urls = {
                 key: value
                 for key, value in config['Connexion'].items()
@@ -154,14 +155,14 @@ class Communicate:
             return urls
         except KeyError:
             print(
-                "La section 'Connexion' est manquante dans le fichier de configuration.")
+                "Section 'Connexion' is missing from the configuration file.")
             return {}
         except FileNotFoundError:
-            print("Le fichier de configuration n'a pas été trouvé.")
+            print("Configuration file not found.")
             return {}
         except Exception as e:
             print(
-                f"Erreur lors de la lecture du fichier de configuration: {e}")
+                f"Error reading configuration file: {e}")
         return {}
 
     def choose_a_cab_application(self, server_choice):
@@ -178,16 +179,16 @@ class Communicate:
             server_url = server_choice
             if server_url:
                 self.cab_url = server_url
-                return server_url  # Retourne l'URL du serveur choisi
+                return server_url
             return None
         except KeyError:
-            print("Le choix du serveur n'est pas valide.")
+            print("Invalid server choice.")
             return None
         except FileNotFoundError:
-            print("Le fichier de configuration n'a pas été trouvé.")
+            print("Configuration file not found.")
             return None
         except Exception as e:
-            print(f"Une erreur inattendue est survenue: {e}")
+            print(f"An unexpected error occurred: {e}")
             return None
 
     def login(self, username, password):
@@ -257,11 +258,11 @@ class Communicate:
             response = requests.request(
                 "POST", url, headers=headers, data=payload, timeout=15)
             response.raise_for_status()
-            logging.info("Contexte envoyé avec succès.")
+            logging.info("Context sent successfully.")
         except Exception as e:
             logging.error(e)
             logging.info(
-                "L'envoi du contexte a échoué : la connexion avec InteractiveAI a échoué.")
+                "Failed to send context: connection with InteractiveAI failed.")
 
     def send_payload_and_store_it(self, payload, obs, scn_first_step):
         """
@@ -574,12 +575,15 @@ class Communicate:
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Click 'Continuer' after making your selection in InteractiveAI\"}\n\n"
+                        "\"Click 'Resume' after making your selection in InteractiveAI\"}\n\n"
                     )
                     time.sleep(1)
+                    yield f"data: {json.dumps({'div': 'simulation-state', 'content': 'paused'})}\n\n"
                     set_pause(True)
                     while get_pause_status():
+                        yield ": keepalive\n\n"
                         time.sleep(1)
+                    yield f"data: {json.dumps({'div': 'simulation-state', 'content': 'running'})}\n\n"
                 else:
                     message = {
                         "div": "message-container",
@@ -589,23 +593,25 @@ class Communicate:
                     time.sleep(1)
                     yield (
                         "data: {\"div\": \"status-div\", \"content\": "
-                        "\"Repeat your selection in InteractiveAI, then click again on "
-                        "'Continuer'\"}\n\n"
+                        "\"Repeat your selection in InteractiveAI, then click 'Resume' again\"}\n\n"
                     )
                     time.sleep(1)
+                    yield f"data: {json.dumps({'div': 'simulation-state', 'content': 'paused'})}\n\n"
                     set_pause(True)
                     while get_pause_status():
+                        yield ": keepalive\n\n"
                         time.sleep(1)
-                url = self.outputs_config['Inputs']['Act']['url']
-                payload = {}
-                headers = {}
-                response = requests.request(
-                    "GET", url, headers=headers, data=payload, timeout=15)
-                print(response.text)
-                response.raise_for_status()
-                # print(response.text)
-                # print(response.json())
-                self.act_dict = response.json()
+                    yield f"data: {json.dumps({'div': 'simulation-state', 'content': 'running'})}\n\n"
+                # The recommendation is delivered to this same process via the
+                # POST /api/v1/recommendations endpoint and held in a shared
+                # in-memory store. Read it directly instead of issuing an HTTP
+                # request back to ourselves (which is fragile behind a reverse
+                # proxy / loopback and was returning 404).
+                self.act_dict = recommendation_store.pop()
+                if bool(self.act_dict) is True:
+                    logging.info(
+                        "Recommendation payload received from InteractiveAI: %s",
+                        json.dumps(self.act_dict))
                 if bool(self.act_dict) is False and get_act_counter >= 1:
                     logging.info(
                         "\n No recommendation has been received! \n"

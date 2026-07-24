@@ -29,7 +29,7 @@ def create_observation_image(env, obs):
         fig = plot_helper.plot_obs(
             obs, line_info="rho", load_info=None, gen_info=None)
         img = io.BytesIO()
-        plt.savefig(img, format="png", bbox_inches="tight")
+        plt.savefig(img, format="svg", bbox_inches="tight")
         img.seek(0)
         img_b64 = base64.b64encode(img.read()).decode('utf-8')
         plt.close(fig)
@@ -140,12 +140,139 @@ def expand_act_from_cab(env, act_dict):
         Action: An action compliant with the environment.
     """
     act = env.action_space()
-    logging.info("act_dict {act_dict}")
+    logging.info("Expanding action received from InteractiveAI: %s", act_dict)
     act.from_json(act_dict)
     act_vect = act.to_vect()
     actnew = env.action_space()
     actnew.from_vect(act_vect)
     return actnew
+
+
+def summarize_action(act):
+    """
+    Build a log/UI friendly summary of the concrete impact of a grid2op action.
+
+    Args:
+        act: A grid2op BaseAction.
+
+    Returns:
+        dict: 'is_do_nothing' flag, the readable 'text' description and a
+              best-effort structured 'impact' (set_bus / set_line_status / ...).
+    """
+    summary = {"is_do_nothing": True, "text": str(act), "impact": {}}
+    try:
+        summary["is_do_nothing"] = not act.can_affect_something()
+    except Exception as e:
+        logging.error(e)
+    try:
+        summary["impact"] = act.impact_on_objects()
+    except Exception as e:
+        logging.error(e)
+    return summary
+
+
+def verify_action_applied(pending, topo_before, line_status_before,
+                          obs_after, info, overwritten=False):
+    """
+    Determine whether a recommendation was effectively applied to the grid.
+
+    A grid2op action that is illegal or ambiguous is silently ignored by
+    ``env.step``: nothing changes on the grid. This compares the grid state
+    before and after the step and inspects the ``info`` returned by the step to
+    produce an honest verdict.
+
+    Args:
+        pending: dict describing the action that was supposed to be applied
+                 (keys: 'step_issued', 'summary').
+        topo_before: obs.topo_vect captured just before env.step.
+        line_status_before: obs.line_status captured just before env.step.
+        obs_after: observation returned by env.step.
+        info: the info dict returned by env.step.
+        overwritten: True if a scripted scenario action overrode the recommendation.
+
+    Returns:
+        dict: structured verification result, ready to log and to display.
+    """
+    is_illegal = bool(info.get("is_illegal", False))
+    is_ambiguous = bool(info.get("is_ambiguous", False))
+    exceptions = [str(e) for e in info.get("exception", []) if e is not None]
+
+    changes = {"changed": False, "bus_changes": [], "line_status_changes": []}
+    try:
+        diff_idx = np.where(topo_before != obs_after.topo_vect)[0]
+        for i in diff_idx.tolist():
+            changes["bus_changes"].append({
+                "topo_vect_id": int(i),
+                "from_bus": int(topo_before[i]),
+                "to_bus": int(obs_after.topo_vect[i]),
+            })
+        ls_idx = np.where(line_status_before != obs_after.line_status)[0]
+        for i in ls_idx.tolist():
+            changes["line_status_changes"].append({
+                "line_id": int(i),
+                "line_name": str(obs_after.name_line[i]),
+                "connected": bool(obs_after.line_status[i]),
+            })
+        changes["changed"] = bool(len(diff_idx) or len(ls_idx))
+    except Exception as e:
+        logging.error(e)
+
+    is_do_nothing = bool(pending.get("summary", {}).get("is_do_nothing", False))
+
+    if overwritten:
+        status = "OVERRIDDEN"
+    elif is_illegal or is_ambiguous:
+        status = "REJECTED"
+    elif changes["changed"]:
+        status = "APPLIED"
+    elif is_do_nothing:
+        status = "NO_OP"
+    else:
+        status = "NO_EFFECT"
+
+    return {
+        "status": status,
+        "step_issued": pending.get("step_issued"),
+        "step_applied": int(obs_after.current_step),
+        "is_illegal": is_illegal,
+        "is_ambiguous": is_ambiguous,
+        "exceptions": exceptions,
+        "changes": changes,
+    }
+
+
+def format_verdict_description(verdict):
+    """
+    Build a short human-readable description of an action verification verdict.
+
+    Args:
+        verdict: dict produced by :func:`verify_action_applied`.
+
+    Returns:
+        str: one-line description suitable for the dashboard and the logs.
+    """
+    parts = []
+    bus = verdict["changes"]["bus_changes"]
+    lines = verdict["changes"]["line_status_changes"]
+    if bus:
+        parts.append(f"{len(bus)} bus assignment(s) changed")
+    if lines:
+        flips = ", ".join(
+            f"{c['line_name']} "
+            f"{'reconnected' if c['connected'] else 'disconnected'}"
+            for c in lines)
+        parts.append(f"line status: {flips}")
+    if verdict["is_illegal"]:
+        parts.append("action was illegal")
+    if verdict["is_ambiguous"]:
+        parts.append("action was ambiguous")
+    if verdict["exceptions"]:
+        parts.append("; ".join(verdict["exceptions"]))
+    if not parts:
+        parts.append("no observable change on the grid")
+    return (f"Issued at step {verdict['step_issued']}, "
+            f"checked at step {verdict['step_applied']}: "
+            + "; ".join(parts))
 
 
 def load_assistant(assistant_path, assistant_seed, env):

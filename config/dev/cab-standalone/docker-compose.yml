@@ -138,6 +138,7 @@ services:
         VITE_POWERGRID_SIMU: ${VITE_POWERGRID_SIMU}
         VITE_ATM_SIMU: ${VITE_ATM_SIMU}
         VITE_RAILWAY_SIMU: ${VITE_RAILWAY_SIMU}
+        VITE_COGNITIVE_TOKEN: ${VITE_COGNITIVE_TOKEN}
     restart: unless-stopped
     environment:
       - VITE_POWERGRID_SIMU=${VITE_POWERGRID_SIMU}
@@ -174,6 +175,8 @@ services:
       - KEYCLOAK_SERVER_URL=http://frontend:80/auth/
       - OPFAB_CLIENT_SECRET=opfab-keycloak-secret
       - TZ=UTC   # Set timezone to UTC
+      - RL_AGENT_API_URL=${RL_AGENT_API_URL}
+      - RL_AGENT_API_TOKEN=${RL_AGENT_API_TOKEN}
     command: sh -c "./entrypoint.sh"
     ports:
       - 5400:5000

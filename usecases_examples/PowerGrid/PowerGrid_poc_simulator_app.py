@@ -1,27 +1,36 @@
+import json
 import urllib.parse
 from flask import Flask, jsonify, request
 from flask import render_template, redirect
 from flask import url_for, session, g
 from flask import Response, stream_with_context, flash
 from flask_socketio import SocketIO
+from werkzeug.middleware.proxy_fix import ProxyFix
 from app.models.Communicate import Communicate
 from app.models.Simulator import Simulator
-from config.config import set_pause
+from app.models.recommendation_store import store as recommendation_store
+from config.config import logging, set_pause
 
-
-class Recommendation:
-    """Class to manage recommendations."""
-
-    def __init__(self):
-        """Initialize a new Recommendation instance."""
-        self.data = {}
-
-
-Recommend = Recommendation()
 
 app = Flask(__name__, template_folder='app/templates')
 app.secret_key = 'votre_clé_secrète_ici'
-socketio = SocketIO(app)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+socketio = SocketIO(app, cors_allowed_origins='*')
+
+@app.after_request
+def add_cors_headers(response):
+    """Allow the CAB frontend to POST applied recommendations cross-origin.
+
+    Runs for every response, including the automatic preflight OPTIONS — without
+    these headers the browser blocks the apply POST with a CORS error.
+    NB: prefer routing the apply through the frontend's nginx same-origin proxy
+    (/powergrid-simu/), which avoids CORS entirely; these headers only matter when
+    the frontend calls this simulator directly over plain HTTP.
+    """
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 
 com = Communicate()
 simu = Simulator(socketio)
@@ -37,10 +46,10 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     """Display the dashboard."""
-    # Récupérer le nom d'utilisateur
+    # Get username
     username = session.get('username', 'Invité')
     server = session.get('server', 'Null')
-    # Récupérer tous les messages
+    # Get all messages
     messages = session.pop('message', [])
     return render_template('dashboard.html',
                            username=username,
@@ -58,7 +67,7 @@ def load_simulation():
         simu.initialize_simulation(com, session)
         if 'message' not in session or isinstance(session['message'], str):
             session['message'] = []
-        session['message'].append("La simulation est chargée.")
+        session['message'].append("Simulation loaded.")
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
@@ -72,7 +81,7 @@ def add_server():
     """
     new_server_url = request.json.get('url')
     if new_server_url:
-        # Ajouter le nouveau serveur à la configuration
+        # Add the new server to the configuration
         success = com.add_cab_server_url(new_server_url)
         
         if success:
@@ -111,13 +120,13 @@ def login():
                     session['server'] = server
                     return redirect(url_for('load_simulation'))
                 else:
-                    flash("Échec de la connexion. Veuillez réessayer.")
+                    flash("Login failed. Please try again.")
             else:
-                flash("Serveur non disponible. Veuillez choisir un autre serveur.")
+                flash("Server unavailable. Please choose a different server.")
         except ConnectionRefusedError:
-            flash("Le serveur a refusé la connexion. Veuillez réessayer plus tard.")
+            flash("Server refused the connection. Please try again later.")
         except Exception as e:
-            flash("Une erreur s'est produite. La connexion n'a pas pu s'établir avec le serveur.")
+            flash("An error occurred. Could not establish a connection to the server.")
         
     return redirect(url_for('index'))
 
@@ -135,7 +144,7 @@ def edit_config():
     simu.initialize_simulation(com, session)
     if 'message' not in session or isinstance(session['message'], str):
         session['message'] = []
-    session['message'].append("La simulation est chargée.")
+    session['message'].append("Simulation loaded.")
     return redirect(url_for('dashboard'))
 
 
@@ -157,7 +166,7 @@ def edit_simulation_settings():
     simu.initialize_simulation(com, session)
     if 'message' not in session or isinstance(session['message'], str):
         session['message'] = []
-    session['message'].append("La simulation est chargée.")
+    session['message'].append("Simulation loaded.")
     return redirect(url_for('dashboard'))
 
 
@@ -173,8 +182,16 @@ def start_simulation():
                                 mimetype='text/event-stream')
             response.headers['Cache-Control'] = 'no-cache'
             response.headers['Connection'] = 'keep-alive'
-        return response
+            response.headers['X-Accel-Buffering'] = 'no'
+            return response
     return redirect(url_for('dashboard'))
+
+
+@app.route('/pause_simulation', methods=['POST'])
+def pause_simulation():
+    """Pause the simulation."""
+    set_pause(True)
+    return "Paused", 200
 
 
 @app.route('/continue_simulation', methods=['POST'])
@@ -187,12 +204,12 @@ def continue_simulation():
 @app.route('/logout')
 def logout():
     """Log out the user."""
-    # Effacer les données de session
+    # Clear session data
     session.pop('username', None)
     session.pop('config', None)
     session.pop('act', None)
     session.pop('message', None)
-    # Rediriger vers la page de connexion
+    # Redirect to login page
     return redirect(url_for('index'))
 
 
@@ -211,9 +228,15 @@ def get_last_payloads():
 
 @app.route('/api/v1/recommendations', methods=['POST'])
 def receive_act():
-    """Receive recommendations."""
-    Recommend.data = request.get_json()
-    print(Recommend.data)
+    """Receive a recommendation from InteractiveAI and store it in memory.
+
+    The simulation loop reads it back directly from the shared store, so this
+    endpoint is the single entry point for recommendations.
+    """
+    data = request.get_json()
+    recommendation_store.set(data)
+    logging.info("Recommendation received via POST from InteractiveAI: %s",
+                 json.dumps(data))
     return jsonify({
         "message": "OK"
     })
@@ -221,11 +244,13 @@ def receive_act():
 
 @app.route('/api/v1/recommendations', methods=['GET'])
 def send_act():
-    """Send recommendations."""
-    act_dict = {}
-    act_dict = Recommend.data
-    Recommend.data = {}
-    print(act_dict)
+    """Return and clear the stored recommendation.
+
+    Kept for external callers; the simulation loop no longer relies on this
+    endpoint and reads the shared store directly instead.
+    """
+    act_dict = recommendation_store.pop()
+    logging.info("Recommendation served via GET: %s", json.dumps(act_dict))
     return jsonify(act_dict)
 
 

@@ -8,6 +8,7 @@ cab_server_url_3 = "http://192.168.209.192:3200/"
 cab_server_url_4 = "http://192.168.209.192:3200/"
 cab_server_url_5 = "http://192.168.209.192:3200/"
 cab_server_url_6 = "http://192.168.208.118:3200/"
+cab_server_url_7 = "https://demo.interactiveai.irt-systemx.fr/"
 
 [Outputs]
 activate = "yes"
@@ -20,4 +21,4 @@ context_port = "cabcontext/api/v1/contexts"
 tempo = 30
 
 [Inputs.Act]
-url = "http://192.168.210.160:5100/api/v1/recommendations"
+url = "http://127.0.0.1:5000/api/v1/recommendations"

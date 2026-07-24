@@ -15,7 +15,8 @@ from config.config import logging, set_pause, get_pause_status
 from app.models.utils import (create_observation_image, get_alert_lines, search_chronic_num_from_name,
                    get_curent_lines_in_bad_kpi, get_curent_lines_lost,
                    get_zone_where_alarm_occured, expand_act_from_cab,
-                   load_assistant, local_xd_silly, targeted_scenario_act_fixed, generate_graph_html)
+                   load_assistant, local_xd_silly, targeted_scenario_act_fixed, generate_graph_html,
+                   summarize_action, verify_action_applied, format_verdict_description)
 
 BkClass = LightSimBackend
 
@@ -50,7 +51,7 @@ class Simulator:
         config_path = "config/CONFIG.toml"
         self.config = toml.load(config_path)
         if params:
-            # Mettre à jour le fichier de configuration avec les nouveaux paramètres
+            # Update the configuration file with new parameters
             self.config.update(params)
             with open(config_path, 'w', encoding='utf-8') as config_file:
                 toml.dump(self.config, config_file)
@@ -90,9 +91,9 @@ class Simulator:
             self.config['scenario_name'], self.env)
         self.env.set_id(id_scenario)  # Scenario choice
         self.obs = self.env.reset()
-        logging.info("Le scénario chargé est : %s \n",
+        logging.info("Loaded scenario: %s \n",
                     self.env.chronics_handler.get_name())
-        session['message'].append(f"Le scénario chargé est : {self.env.chronics_handler.get_name()}")
+        session['message'].append(f"Loaded scenario: {self.env.chronics_handler.get_name()}")
 
         assistant_path = self.config['assistant_path']
         assistant_seed = int(self.config['assistant_seed'])
@@ -110,8 +111,8 @@ class Simulator:
         except Exception as e:
             logging.error(e)
 
-        logging.info("Le scénario est chargé.\n")
-        session['message'].append("Le scénario est chargé.")
+        logging.info("Scenario loaded.\n")
+        session['message'].append("Scenario loaded.")
         self.listen = Listener(self.obs)
         return act
 
@@ -128,6 +129,7 @@ class Simulator:
         Yields:
             str: Status updates and messages for the simulation interface.
         """
+        set_pause(False)
         paris_timezone = timezone(timedelta(hours=2))
         date = datetime.now(paris_timezone)
         # date = datetime.now(timezone.utc)
@@ -138,22 +140,63 @@ class Simulator:
         silent_mode_msg_trigger = True
         step_counter = 0
         clear_parade_flag = False
+        # Holds a recommendation received from InteractiveAI that is awaiting
+        # confirmation that it was actually applied on the next env.step.
+        pending_cab_act = None
+
+        # Human-readable titles for each possible application verdict.
+        verdict_titles = {
+            "APPLIED": "Recommendation applied to the grid ✓",
+            "NO_OP": "Recommendation was a do-nothing action",
+            "NO_EFFECT": "Recommendation applied but grid unchanged",
+            "REJECTED": "Recommendation rejected by the grid ✗",
+            "OVERRIDDEN": "Recommendation overridden by scenario script ✗",
+        }
 
         while not done:
             context_date = date + timedelta(minutes=float(5))*step_counter
             img_b64_current = None
             img_b64_forecast = None
 
-            # Pour corriger la valeur de act à certain pas précis
-            # en vue d'avoir notre scénario cible
+            # Correct act value at specific steps
+            # to reach the target scenario
             act_fixed, _ = targeted_scenario_act_fixed(self.env, self.obs)
+            cab_act_overwritten = False
             if act_fixed is not None:
+                # A scripted scenario action takes precedence: if a recommendation
+                # was pending, it is being discarded before reaching the grid.
+                cab_act_overwritten = pending_cab_act is not None
                 act = act_fixed
 
-            # Begining of steps : Observation updates
-            self.obs, _, done, _ = self.env.step(act)
+            # Snapshot the grid state so we can confirm whether the action that
+            # is about to be applied actually takes effect.
+            topo_before = self.obs.topo_vect.copy()
+            line_status_before = self.obs.line_status.copy()
 
-            # Vider le div des parades
+            # Beginning of step: observation update
+            self.obs, _, done, info = self.env.step(act)
+
+            # Confirm whether a recommendation received from InteractiveAI was
+            # actually applied to the simulation on this step.
+            if pending_cab_act is not None:
+                verdict = verify_action_applied(pending_cab_act,
+                                                topo_before,
+                                                line_status_before,
+                                                self.obs,
+                                                info,
+                                                overwritten=cab_act_overwritten)
+                logging.info("InteractiveAI action application check: %s",
+                             json.dumps(verdict, default=str))
+                verdict_msg = {
+                    "title": verdict_titles.get(verdict["status"],
+                                                "Recommendation status"),
+                    "description": format_verdict_description(verdict),
+                }
+                yield (f"data: {{\"div\": \"events-div\", \"content\": "
+                       f"{json.dumps(verdict_msg)}}}\n\n")
+                pending_cab_act = None
+
+            # Clear the actions panel
             if self.obs.current_step >= self.config['scenario_first_step'] and clear_parade_flag:
                 empty_message = {
                     "title": "",
@@ -163,7 +206,7 @@ class Simulator:
                 clear_parade_flag = False
 
             if self.obs.current_step >= self.config['scenario_first_step']:
-                # Pour l'affichage du graphique dans le simulateur
+                # Update the interactive graph
                 graph_html = generate_graph_html(self.env,
                                     self.obs)
                 # print("Contenu du graphique:", graph_html[:200]) 
@@ -174,30 +217,30 @@ class Simulator:
             # To handle between "silent mode" and "stream simulation" (with or without InteractiveAI)
             # (The stream simulation starts at step scenario_first_step)
             if self.obs.current_step >= self.config['scenario_first_step']:
-                logging.info("Pas de simulation : %s",
+                logging.info("Simulation step: %s",
                              self.obs.current_step)
                 yield (
                     f"data: {{\"div\": \"status-div\", \"content\": "
-                    f"\"Pas de simulation : {self.obs.current_step}\"}}\n\n"
+                    f"\"Simulation step: {self.obs.current_step}\"}}\n\n"
                 )
             elif self.obs.current_step == self.config['scenario_first_step'] - 1:
                 print("\n")
-                logging.info("Le simulateur est à présent connecté à InteractiveAI.\n")
+                logging.info("The simulator is now connected to InteractiveAI.\n")
                 message = {
                     "div": "message-container",
-                    "content": "Le simulateur est à présent connecté à InteractiveAI."
+                    "content": "The simulator is now connected to InteractiveAI."
                 }
                 yield f"data: {json.dumps(message)}\n\n"
                 silent_mode_msg_trigger = False
             else:
                 if silent_mode_msg_trigger:
-                    logging.info('Status: Le scénario se déroule en arrière plan.\n'
-                                 'Le simulateur va se connecter à InteractiveAI à partir du pas : %s',
+                    logging.info('Status: Scenario running in background.\n'
+                                 'The simulator will connect to InteractiveAI from step: %s',
                                  self.config['scenario_first_step'])
                     message = (
-                        f"Status: Le scénario se déroule en arrière plan.\n"
-                        f"Le simulateur va se connecter à InteractiveAI à partir du pas : "
-                        f"{self.config['scenario_first_step']} (Voir les paramètres de configuration)"
+                        f"Status: Scenario running in background.\n"
+                        f"The simulator will connect to InteractiveAI from step: "
+                        f"{self.config['scenario_first_step']} (See configuration parameters)"
                     )
                     yield f"data: {{ \"div\": \"status-div\", \"content\": {json.dumps(message)} }}\n\n"
                     silent_mode_msg_trigger = False
@@ -267,17 +310,17 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: Il y a une surcharge sur le réseau")
+                        logging.info("Status: Overload detected on the network")
                         message = {
                             "div": "message-container",
-                            "content": "Status: Il y a une surcharge sur le réseau"
+                            "content": "Status: Overload detected on the network"
                         }
                         yield f"data: {json.dumps(message)}\n\n"
                         yield (
                             f"data: {{\"div\": \"events-div\", \"content\": {{ \"title\": "
-                            f"\"Status: Il y a une surcharge sur la ligne "
+                            f"\"Status: Overload on line "
                             f"{get_curent_lines_in_bad_kpi(self.obs)}\" , "
-                            f"\"description\": \"La surcharge est de "
+                            f"\"description\": \"Overload at "
                             f"{np.round(np.float64(self.obs.rho.max()*100),decimals=1,out=None)}%\""
                             f" }}}}\n\n"
                         )
@@ -296,24 +339,32 @@ class Simulator:
                                               case_overload=True)
                         
                     if (self.obs.current_step < self.config['scenario_first_step']) or (com.cab_api_on is False):
-                        # Utiliser XD_Silly en cache (en local)
+                        # Use cached XD_Silly (local)
                         act = local_xd_silly(self.obs, self.local_assistant)
                         if com.cab_api_on is False:
-                            logging.info("Parade : %s", act)
+                            logging.info("Action: %s", act)
                             parade_message = {
-                                "title": "Parade",
+                                "title": "Action",
                                 "description": f"{str(act)}"
                             }
                             yield f"data: {{\"div\": \"actions-div\", \"content\": {json.dumps(parade_message)}}}\n\n"
                             clear_parade_flag = True
 
                     else:
-                        # Récuperer les parades de InteractiveAI
+                        # Retrieve actions from InteractiveAI
                         yield from com.get_act_from_api()
                         act = expand_act_from_cab(self.env, com.act_dict)
-                        logging.info("Parade : %s", act)
+                        act_summary = summarize_action(act)
+                        logging.info("Action received from InteractiveAI: %s",
+                                     json.dumps(act_summary, default=str))
+                        # Flag this action so the next env.step can confirm it
+                        # was actually applied to the grid.
+                        pending_cab_act = {
+                            "step_issued": int(self.obs.current_step),
+                            "summary": act_summary,
+                        }
                         parade_message = {
-                                "title": "Parade",
+                                "title": "Action",
                                 "description": f"{str(act)}"
                             }
                         yield f"data: {{\"div\": \"actions-div\", \"content\": {json.dumps(parade_message)}}}\n\n"
@@ -336,10 +387,10 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: Il y a une alarme de l'agent IA")
+                        logging.info("Status: AI agent raised an alarm")
                         yield (
                             "data: {\"div\": \"events-div\", \"content\": "
-                            "{ \"title\": \"Status: Il y a une alerte de l'agent IA\", "
+                            "{ \"title\": \"Status: AI agent raised an alert\", "
                             "\"description\": \"\" } }\n\n"
                         )
 
@@ -372,10 +423,10 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: Il y a une alerte de l'agent IA")
+                        logging.info("Status: AI agent raised an alert")
                         yield (
                             "data: {\"div\": \"events-div\", \"content\": "
-                            "{ \"title\": \"Status: Il y a une alerte de l'agent IA\", "
+                            "{ \"title\": \"Status: AI agent raised an alert\", "
                             "\"description\": \"\" } }\n\n"
                         )
 
@@ -407,19 +458,19 @@ class Simulator:
                                 context_just_sent = True
 
                         logging.info(
-                            "Status: Il y a un événement de type 'anticipation N-1' ")
+                            "Status: N-1 anticipation event detected")
                         message = {
                             "div": "message-container",
-                            "content": "Status: Il y a un événement de type 'anticipation N-1' "
+                            "content": "Status: N-1 anticipation event detected"
                         }
                         yield f"data: {json.dumps(message)}\n\n"
 
                         for x in self.listen.anticipation:
                             logging.info(
-                                "Il y a un événement d'anticipation de perte de ligne %s", x)
+                                "N-1 anticipation event for line loss: %s", x)
                             yield (
                                 f"data: {{\"div\": \"events-div\", \"content\": "
-                                f"{{ \"title\": \"Il y a un événement d'anticipation de perte de ligne\", "
+                                f"{{ \"title\": \"N-1 anticipation event: risk of line loss\", "
                                 f"\"description\": \"{x}\"}} }}\n\n"
                             )
 
@@ -441,19 +492,6 @@ class Simulator:
                                                   case_anticip=True)
                         event_resolved_trigger = True
                         obs_forecast = None
-                        if self.obs.current_step >= self.config['scenario_first_step']:
-                            message = {
-                                "div": "message-container",
-                                "content": "La simulation est en pause."
-                            }
-                            yield f"data: {json.dumps(message)}\n\n"
-                            yield (
-                                "data: {\"div\": \"status-div\", \"content\": "
-                                "\"Cliquez sur 'Continuer' pour poursuivre la simulation.\"}\n\n"
-                            )
-                            set_pause(True)
-                            while get_pause_status():
-                                time.sleep(1)
 
                 if "Line lost" in self.listen.current_issues:
                     if self.obs.current_step >= self.config['scenario_first_step']:
@@ -470,19 +508,19 @@ class Simulator:
                                                         img_b64_current)
                                 context_just_sent = True
 
-                        logging.info("Status: Il y a une perte de ligne %s",
+                        logging.info("Status: Line loss detected: %s",
                                      get_curent_lines_lost(self.obs))
-                        
+
                         logging.info(
-                            "Status: Il y a un événement de type 'perte de ligne' ")
+                            "Status: Line lost event detected")
                         message = {
                             "div": "message-container",
-                            "content": "Status: Il y a une perte de ligne ' "
+                            "content": "Status: Line loss detected"
                         }
                         yield f"data: {json.dumps(message)}\n\n"
                         yield (
                             f"data: {{\"div\": \"events-div\", \"content\": "
-                            f"{{ \"title\": \"Status: Il y a une perte de ligne \" , "
+                            f"{{ \"title\": \"Status: Line loss detected\" , "
                             f"\"description\": \"{get_curent_lines_lost(self.obs)}\" }}}}\n\n"
                         )
 
@@ -500,19 +538,6 @@ class Simulator:
                                                   self.obs),
                                               case_line_lost=True)
                         event_resolved_trigger = True
-                        if self.obs.current_step >= self.config['scenario_first_step']:
-                            message = {
-                                "div": "message-container",
-                                "content": "La simulation est en pause."
-                            }
-                            yield f"data: {json.dumps(message)}\n\n"
-                            yield (
-                                "data: {\"div\": \"status-div\", \"content\": "
-                                "\"Cliquez sur 'Continuer' pour poursuivre la simulation.\"}\n\n"
-                            )
-                            set_pause(True)
-                            while get_pause_status():
-                                time.sleep(1)
                 # --------------------------------------------------------------------
 
             # To reconnect lines in the grid any time this agent detect a line disconnection.
@@ -525,3 +550,6 @@ class Simulator:
             if self.obs.current_step >= self.config['scenario_first_step']:
                 step_counter = step_counter + 1
                 time.sleep(self.config['stepDuration_s'])
+                while get_pause_status():
+                    yield ": keepalive\n\n"
+                    time.sleep(1)

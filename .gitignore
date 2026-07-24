@@ -166,6 +166,7 @@ cython_debug/
 .DS_Store
 .env
 .flaskenv
+.secrets
 *.pyc
 *.pyo
 env/

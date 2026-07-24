@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { fetchCognitiveSnapshot } from '@/api/cognitive'
+import type { CognitiveSnapshot } from '@/api/cognitive'
 import * as servicesApi from '@/api/services'
 import i18n from '@/plugins/i18n'
 import type { Card } from '@/types/cards'
-import type { Entity } from '@/types/entities'
+import type { Context, Entity } from '@/types/entities'
 import type { FullContext, Recommendation } from '@/types/services'
+import { hasCognitiveConsent } from '@/utils/consent'
 import { getRootCard } from '@/utils/utils'
 
 import { useAppStore } from './app'
@@ -94,10 +97,33 @@ export const useServicesStore = defineStore('services', () => {
       appStore.tab.assistant = 0
       return
     }
-    const { data } = await servicesApi.getRecommendation<E>({
+    // Send the structured grid data to the RL agent, not the rendered image.
+    // `context.observation` already holds the full state (topo_vect, line_status,
+    // rho, load/gen, …); `context.topology` is only a ~288 KB base64 PNG used for
+    // UI display. Strip it from the agent payload (a shallow copy keeps the store
+    // — and therefore the UI, which reads `context.topology` — untouched).
+    const contextForAgent = { ...context.data }
+    if ('topology' in contextForAgent) {
+      delete (contextForAgent as Record<string, unknown>).topology
+    }
+
+    // Send the latest cognitive/stress snapshot alongside event/context so the
+    // RL agent can factor operator state into its recommendation — but only
+    // when the operator has consented. Without consent, nothing is fetched or
+    // sent to the agent. Sent as-is even on failure (snapshot may contain nulls
+    // or an `error` field) so a cognitive-API outage never blocks the request.
+    const payload: {
+      event: Card<E>['data']['metadata']
+      context: Context<E>
+      cognitive_snapshot?: CognitiveSnapshot
+    } = {
       event: getRootCard(event).data.metadata,
-      context: context.data
-    })
+      context: contextForAgent
+    }
+    if (hasCognitiveConsent()) {
+      payload.cognitive_snapshot = await fetchCognitiveSnapshot()
+    }
+    const { data } = await servicesApi.getRecommendation<E>(payload)
     _recommendations.value = data
   }
 

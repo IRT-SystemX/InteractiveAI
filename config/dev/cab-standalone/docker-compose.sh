@@ -43,5 +43,15 @@ fi
 
 echo "HOST_IP=${HOST_IP}" >> .env
 
+# Secrets — sourced from .secrets if present (gitignored), otherwise from shell env
+# In CI these are injected by GitHub Actions as environment variables.
+if [[ -f .secrets ]]; then
+  source .secrets
+fi
+echo "RL_AGENT_API_URL=${RL_AGENT_API_URL:-https://interactiveagent.passerelle.irt-systemx.fr/api/v1/recommendation}" >> .env
+echo "RL_AGENT_API_TOKEN=${RL_AGENT_API_TOKEN:-}" >> .env
+echo "VITE_POWERGRID_SIMU=${VITE_POWERGRID_SIMU:-/powergrid-simu}" >> .env
+echo "VITE_COGNITIVE_TOKEN=${VITE_COGNITIVE_TOKEN:-}" >> .env
+
 cat .env
 docker compose up -d

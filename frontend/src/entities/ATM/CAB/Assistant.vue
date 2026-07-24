@@ -34,6 +34,7 @@ import { ref, watch } from 'vue'
 import { update } from '@/api/cards'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
 import { useAppStore } from '@/stores/app'
+import { useCardsStore } from '@/stores/cards'
 import { useMapStore } from '@/stores/components/map'
 import { useServicesStore } from '@/stores/services'
 import type { Recommendation } from '@/types/services'
@@ -42,6 +43,7 @@ import { applyRecommendation } from '../api'
 const servicesStore = useServicesStore()
 const mapStore = useMapStore()
 const appStore = useAppStore()
+const cardsStore = useCardsStore()
 
 const recommendations = ref<Recommendation<'ATM'>[]>([])
 
@@ -133,6 +135,8 @@ function onHover(hovered: Recommendation<'ATM'>) {
 
 function onSelection(recommendation: Recommendation<'ATM'>) {
   applyRecommendation(recommendation.actions[0])
+  const activeCard = appStore.card('ATM')
+  if (activeCard) cardsStore.resolveCriticality(activeCard)
   mapStore.resetPolylines()
   mapStore.resetWaypoints()
   // Optionally, change the tab value to close the assistant.

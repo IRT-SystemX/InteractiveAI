@@ -1,15 +1,27 @@
 <template>
   <Context :tabs="[$t('cab.tab.context')]">
     <template v-if="appStore.tab.context === 0">
-      <img v-if="context" :src="`data:image/png;base64, ${context}`" class="cab-context-topology" />
-      <h1 v-else>{{  $t('cab.tab.nocontext') }}</h1>
+      <ZoomImg
+        v-if="context"
+        class="cab-context-topology"
+        zoom-type="drag"
+        :src="`data:image/svg+xml;base64, ${context}`"
+        :show-zoom-btns="true"
+        :persist="true"
+        :zoom-scale="5"
+        :step="0.5" />
+      <h1 v-else>{{ $t('cab.tab.nocontext') }}</h1>
     </template>
     <Notification
       :card="appStore.card('PowerGrid')"
       :shown="!!appStore.card('PowerGrid')"
       :top="1"
       :right="1"></Notification>
-    <Notification :card="appStore.card('PowerGrid')" :shown="!!appStore.card('PowerGrid')" :top="1" :left="1">
+    <Notification
+      :card="appStore.card('PowerGrid')"
+      :shown="!!appStore.card('PowerGrid')"
+      :top="1"
+      :left="1">
       <template #title>KPIs</template>
       <b></b>
       <div v-for="(value, key) of appStore.card('PowerGrid')!.data.metadata.kpis" :key="key">
@@ -29,6 +41,7 @@
 <script setup lang="ts">
 import { TimerReset } from 'lucide-vue-next'
 import { computed, onBeforeMount, onUnmounted, ref } from 'vue'
+import { ZoomImg } from 'vue3-zoomer'
 
 import Button from '@/components/atoms/Button.vue'
 import Context from '@/components/organisms/CAB/Context.vue'
@@ -43,7 +56,8 @@ const contextPID = ref(0)
 
 const context = computed(
   () =>
-    appStore.card('PowerGrid')?.data.metadata.event_context || servicesStore.context('PowerGrid')?.data.topology
+    appStore.card('PowerGrid')?.data.metadata.event_context ||
+    servicesStore.context('PowerGrid')?.data.topology
 )
 
 onBeforeMount(async () => {
@@ -56,7 +70,13 @@ onUnmounted(() => {
 </script>
 <style lang="scss">
 .cab-context-topology {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: calc(100% - 30px);
+  max-height: calc(100% - 30px);
+  width: 100%;
+  height: 100%;
+}
+.cab-context-topology .vz-zoomimg-img {
+  width: inherit;
+  height: inherit;
 }
 </style>

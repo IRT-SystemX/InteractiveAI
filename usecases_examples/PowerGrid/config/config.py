@@ -2,7 +2,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
-IS_PAUSED = True
+IS_PAUSED = False
 
 def set_pause(state: bool):
     """

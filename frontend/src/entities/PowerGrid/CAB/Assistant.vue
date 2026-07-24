@@ -75,6 +75,7 @@ import Event from '@/components/organisms/CAB/Assistant/Event.vue'
 import Recommendations from '@/components/organisms/CAB/Assistant/Recommendations.vue'
 import { applyRecommendation } from '@/entities/PowerGrid/api'
 import { useAppStore } from '@/stores/app'
+import { useCardsStore } from '@/stores/cards'
 import { useServicesStore } from '@/stores/services'
 import type { Entity } from '@/types/entities'
 import type { Recommendation } from '@/types/services'
@@ -82,6 +83,7 @@ import type { Recommendation } from '@/types/services'
 const route = useRoute()
 const servicesStore = useServicesStore()
 const appStore = useAppStore()
+const cardsStore = useCardsStore()
 
 const recommendations = ref<Recommendation<'PowerGrid'>[]>([])
 
@@ -104,14 +106,32 @@ watch(
   }
 )
 
-function onSelection(selected: any) {
+async function onSelection(selected: any) {
+  console.info(
+    '[PowerGrid][apply] Apply pressed — recommendation:',
+    selected?.title,
+    '| agent_type:',
+    selected?.agent_type
+  )
+  console.info('[PowerGrid][apply] action to send (selected.actions[0]):', selected?.actions?.[0])
+  console.info('[PowerGrid][apply] active card id:', appStore.card('PowerGrid')?.id)
   sendTrace({
     data: selected,
     use_case: route.params.entity as Entity,
     step: 'AWARD'
   })
-  applyRecommendation(selected.actions[0])
-  appStore.tab.assistant = 0
+  try {
+    await applyRecommendation(selected.actions[0])
+    console.info(
+      '[PowerGrid][apply] success — marking card resolved (criticality → ND) and closing assistant'
+    )
+    const activeCard = appStore.card('PowerGrid')
+    if (activeCard) cardsStore.resolveCriticality(activeCard)
+    appStore.tab.assistant = 0
+  } catch {
+    console.error('[PowerGrid][apply] failed — leaving card open for retry (error modal shown by http plugin)')
+    // http plugin already shows an error modal — leave the card open so the user can retry
+  }
 }
 
 function primaryAction() {

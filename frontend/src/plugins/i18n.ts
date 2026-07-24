@@ -8,7 +8,7 @@ import { ENTITIES } from '@/types/entities'
 export const SUPPORT_LOCALES = ['en', 'fr'] as const
 Object.freeze(SUPPORT_LOCALES)
 
-export default createI18n({
+const i18n = createI18n({
   locale: window.navigator.language.split('-')[0] || import.meta.env.VITE_DEFAULT_LOCALE || 'en',
   fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE || 'en',
   legacy: false,
@@ -20,10 +20,12 @@ export default createI18n({
   }
 })
 
-export async function setupEntitiesLocales(i18n: ReturnType<typeof createI18n>) {
+export default i18n
+
+export async function setupEntitiesLocales(instance: typeof i18n = i18n) {
   for (const entity of ENTITIES)
     for (const locale of SUPPORT_LOCALES) {
-      i18n.global.setLocaleMessage(
+      instance.global.setLocaleMessage(
         `${locale}-${entity}`,
         (await import(`../entities/${entity}/locales/${locale}.json`)).default
       )

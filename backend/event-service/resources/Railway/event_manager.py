@@ -10,6 +10,7 @@ class RailwayEventManager(BaseEventManager):
     
     # Optional: Customize Event Uniqueness
     def get_unique_fields(self, data):
+        id_event = data["data"].get("id_event")
         id_train = data["data"].get("id_train")
         event_type = data["data"].get("event_type")
-        return {"id_train": id_train, "event_type": event_type}
+        return {"id_event": id_event, "id_train": id_train, "event_type": event_type}

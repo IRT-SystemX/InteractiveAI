@@ -342,7 +342,7 @@ class AgentManager:
             kpis["type_of_the_reco"] = (
                 "Do nothing"  # pour renvoyer le kpi type_of_the_reco
             )
-            title.append("Poursuivre")
+            title.append("Continue")
             description.append(
                 "Continuation of the scenario without operator action"
             )

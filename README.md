@@ -89,7 +89,7 @@ export VITE_ATM_SIMU=http://[Service url]:[Service port]
 cd config/dev/cab-standalone
 ./docker-compose.sh
 ```
-> **_NOTE:_** You will see the word cab (Cockpit Assistant Bidirectionnel) on most files in the project. Note that it was the initial project name of InteractiveAI. Might be updated later. 
+> **_NOTE:_** You will see the word cab on most files in the project. Note that it was the initial project name of InteractiveAI. Might be updated later. 
 
 3. **Setting up Keycloak `Frontend URL`**  
     * Access Keycloak Interface: 
@@ -99,13 +99,13 @@ cd config/dev/cab-standalone
       - Log in to the Keycloak admin console using your administrator credentials (`admin:admin` by default)
     * Configure frontendUrl:
       - On the Keycloak admin console, locate and click on the "Realm Settings" section.
-      - In the Frontend URL setting, add the URL of your Assistant Platform frontend as a valid redirect URI. This URL is typically where your frontend application is hosted. For example, if your frontend is hosted locally for development purposes, you might add `http://localhost:3200/*`.
-      - After adding the frontend URL, save the changes to update the client settings.
+      - In the Frontend URL field, add the URL of InteractiveAI frontend. If your frontend is hosted locally for development purposes, you might add `http://localhost:3200/`.
+      - After adding the frontend URL, save the changes.
     * Configure Valid Redirect URIs:
       - On the Keycloak admin console, locate and click on the "Clients" section.
-      - Select the client representing your Assistant Platform application.  
-      - Within the client settings, look for the "Valid Redirect URIs" or similar configuration field.
-      - Add the URL of your Assistant Platform frontend, it should match the one used in the frontendUrl setting.
+      - Select the client (opfab-client).  
+      - Within the client settings, look for the "Valid Redirect URIs" field.
+      - Add the URL of the frontend with /*, if it's local deployment: `http://localhost:3200/*`.
       - After adding the Valid Redirect URIs, save the changes to update the client settings.
 
 
@@ -121,7 +121,7 @@ cd resources
 ./loadTestConf.sh
 ```
 
-5. If you encounter CORS errors (which can happen if you start tha platform in a non-HTTPS environment), you can start your browser with security mode disabled.
+5. If you encounter CORS errors (which can happen if you start the platform in a non-HTTPS environment), you can start your browser with security mode disabled.
 
 ```sh
 your-chromium-browser --disable-web-security --user-data-dir="[some directory here]" # replace your-chromium-browser with your browser
@@ -131,7 +131,7 @@ your-chromium-browser --disable-web-security --user-data-dir="[some directory he
 
 ### Default ports
 
-This project is based on a microservice architecture. Every service run on a specific port. Some of th default ports are as fellow:
+This project is based on a microservice architecture. Every service run on a specific port. Some of the default ports are as fellow:
 * Frontend: 3200
 * Context Service: 5100
 * Event Service: 5000

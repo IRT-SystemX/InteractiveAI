@@ -7,6 +7,7 @@ from api.schemas import MetadataSchema
 class MetadataSchemaRailway(MetadataSchema):
     agent_id = String(allow_none=True, required=True)
     event_type = String(required=True)
+    id_event = String(allow_none=True, required=True)
     agent_position = List(
         Integer(allow_none=True), allow_none=True, default=None
     )
