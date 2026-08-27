@@ -52,6 +52,13 @@ sed -i "s/$(echo $nginx_conf_path_default | sed 's/\//\\\//g')\/conf\.d/$(echo $
 echo "The conf.d path in the personal nginx.conf file:"
 grep "conf.d" $nginx_conf_path_personal/nginx.conf
 
+# PowerGrid simulator upstream — environment-specific, injected here so one nginx
+# config serves every environment. Defaults to the local-dev host container.
+# No-op for configs that don't contain the placeholder (e.g. kubernetes).
+powergrid_simu_upstream="${POWERGRID_SIMU_UPSTREAM:-http://host.docker.internal:5122/}"
+echo "PowerGrid simulator upstream: $powergrid_simu_upstream"
+sed -i "s#__POWERGRID_SIMU_UPSTREAM__#${powergrid_simu_upstream}#g" $defaultconf_personal
+
 /usr/sbin/crond
 
 nginx -c /personal-conf/nginx.conf -g "daemon off;"

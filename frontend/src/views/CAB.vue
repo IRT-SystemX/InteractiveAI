@@ -168,7 +168,9 @@ function reset(panel: 'left' | 'right' | 'bottom') {
 setup(route.params.entity as Entity)
 
 function setup(entity: Entity) {
-  cardsStore.subscribe(entity)
+  // Failures are already reported by the http interceptor (or handled as a
+  // session expiry); swallow the rejection so it does not leak to the console.
+  cardsStore.subscribe(entity).catch(() => {})
   locale.value = `${locale.value.slice(0, 2)}-${entity}`
   toggleMode(entity)
 

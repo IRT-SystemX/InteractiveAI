@@ -68,20 +68,40 @@ Below are the steps to start all services. For other methods, please consult the
 
 ### Running All Services (Dev Mode)
 
-1. **Set-up environement variables**
-   
+1. **Set-up environment variables**
 
-`VITE_POWERGRID_SIMU`, `VITE_RAILWAY_SIMU` , `VITE_ATM_SIMU` are the simulators' endpoints.
-Put for each UC the corresponding IP address.
-
-Examples: 
+Configuration is read from a gitignored `.secrets` file that `docker-compose.sh` sources.
+Copy the template and fill in your values:
 
 ```sh
-export VITE_POWERGRID_SIMU=http://[Service url]:[Service port]
-export VITE_RAILWAY_SIMU=http://[Service url]:[Service port]
-export VITE_ATM_SIMU=http://[Service url]:[Service port]
+cd config/dev/cab-standalone
+cp .secrets.example .secrets
+# then edit .secrets
 ```
-> **_NOTE:_** For this step, you should already have a running simulator. If not, you can use the simulator we provided as an example. For this, please follow the tutorial provided in InteractiveAI/usecases_examples/PowerGrid/ then set the VITE_POWERGRID_SIMU variable to http://YOUR_SERVER_ADDRESS:5100/
+
+Key variables (see `.secrets.example` for all options and per-environment values):
+
+- `VITE_POWERGRID_SIMU` — the frontend's simulator endpoint. Use the same-origin proxy
+  value `/powergrid-simu` (avoids CORS); set it to `false` to disable the PowerGrid UI.
+  `VITE_RAILWAY_SIMU` / `VITE_ATM_SIMU` are the equivalents for the other use cases.
+- `POWERGRID_SIMU_UPSTREAM` — where nginx actually forwards `/powergrid-simu/`. This is the
+  only value that changes per environment:
+  - Local dev : `http://host.docker.internal:5122/` (simulator container on the host)
+  - LAN       : `http://192.168.208.61:5100/`
+  - Public/k8s: handled by `nginx-kubernetes.conf` via the helm chart (not this variable)
+- `RL_AGENT_API_URL` / `RL_AGENT_API_TOKEN` — the deep expert agent that powers PowerGrid
+  recommendations (see [The PowerGrid expert agent API](#the-powergrid-expert-agent-api) below to
+  install it). A token is required in every mode:
+  - Local dev : `http://host.docker.internal:5123/api/v1/recommendation` (agent on the host)
+  - Server    : `http://192.168.208.61:5000/api/v1/recommendation`
+  - Public    : `https://interactiveagent.passerelle.irt-systemx.fr/api/v1/recommendation`
+
+> **_NOTE:_** `host.docker.internal` lets the containers reach services (simulator, expert agent)
+> running on the host — this is how local dev connects to them. Make sure those host services
+> listen on `0.0.0.0` (not only `127.0.0.1`) so the containers can reach them.
+>
+> **_NOTE:_** For the simulator itself, you can use the example we provide — follow the tutorial
+> in [InteractiveAI/usecases_examples/PowerGrid/](/usecases_examples/PowerGrid/README.md).
 >
 > 
 2. **Run InteractiveAI assistant**
@@ -129,6 +149,38 @@ your-chromium-browser --disable-web-security --user-data-dir="[some directory he
 
 > **_NOTE:_** If you encounter any issues, please refer to our [troubleshooting guide](docs/troubleshooting.md).
 
+### The PowerGrid expert agent API
+
+PowerGrid recommendations are produced by a separate service — the **deep expert agent**. The
+`cab_recommendation` service calls it at `RL_AGENT_API_URL`, so it must be running (and reachable)
+for recommendations to appear in InteractiveAI.
+
+1. Clone the agent repository and check out the API branch:
+
+```sh
+git clone https://github.com/ainetus/T2.1_deep_expert.git
+cd T2.1_deep_expert
+git checkout feat/api-auth-compose
+```
+
+2. Start it by following that repository's README (the `feat/api-auth-compose` branch ships a
+   Docker Compose and adds token authentication). For local development:
+   - expose it on port **5123**, and
+   - make it listen on `0.0.0.0` (not only `127.0.0.1`) so the InteractiveAI containers can reach
+     it through `host.docker.internal`.
+
+3. Point InteractiveAI at it in `config/dev/cab-standalone/.secrets`, with a token that matches
+   the one the agent expects:
+
+```sh
+export RL_AGENT_API_URL=http://host.docker.internal:5123/api/v1/recommendation
+export RL_AGENT_API_TOKEN=<token configured in the expert agent>
+```
+
+Then (re)run `./docker-compose.sh` so `cab_recommendation` picks up the values. For the LAN and
+public deployments, use the corresponding `RL_AGENT_API_URL` from step 1 of
+[Running All Services](#running-all-services-dev-mode) instead.
+
 ### Default ports
 
 This project is based on a microservice architecture. Every service run on a specific port. Some of the default ports are as fellow:
@@ -137,6 +189,11 @@ This project is based on a microservice architecture. Every service run on a spe
 * Event Service: 5000
 * Historic Service: 5200
 * Keycloak: 89
+
+Companion services for the PowerGrid use case run on the host (local dev) and are reached by the
+containers via `host.docker.internal`:
+* PowerGrid simulator (provided example): 5122
+* PowerGrid expert agent API: 5123
 
 ### Authentication data
 

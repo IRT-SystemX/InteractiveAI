@@ -1,0 +1,25 @@
+# Local development deployment
+# -----------------------------
+# Simulator UI:        http://localhost:5122
+# InteractiveAI:       running on THIS host (e.g. http://host.docker.internal:3200/)
+#                      -> reachable from the container via the host-gateway mapping below.
+# Live code/templates: bind-mounted, so edits show on browser refresh (no rebuild).
+#
+# Run:  docker compose -f docker-compose.local.yml up -d --build
+#       (docker-compose.yml is the LOCAL config, so -f is required here)
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    image: powergrid-simulator-app
+    container_name: PowerGrid-simulator-app
+    restart: unless-stopped
+    ports:
+      - "5122:5000"
+    extra_hosts:
+      # Lets the container reach InteractiveAI published on the host.
+      # In the login UI, select http://host.docker.internal:3200/ (NOT localhost).
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/code

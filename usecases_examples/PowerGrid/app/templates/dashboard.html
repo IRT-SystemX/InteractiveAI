@@ -2,72 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Dashboard</title>
+    <title>Dashboard · PowerGrid Simulator</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://mpld3.github.io/js/mpld3.v0.5.2.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <style>
+        :root {
+            --header-h: 56px;
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --surface-muted: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #dbeafe;
+            --success: #16a34a;
+            --success-hover: #15803d;
+            --warning: #d97706;
+            --warning-hover: #b45309;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
         #message-container {
             display: none;
             width: 100%;
-            background-color: rgb(0, 247, 255);
-            color: black;
-            font-weight: bold;
+            background: linear-gradient(90deg, #06b6d4, #2563eb);
+            color: #fff;
+            font-weight: 600;
             text-align: center;
-            padding: 10px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1000;
-            font-size: 24px;
+            font-size: 18px;
+            letter-spacing: 0.01em;
         }
+
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
-            margin: 0;
-            display: flex;
             width: 100%;
             box-sizing: border-box;
-            padding-top: 29px;
         }
+        body {
+            display: flex;
+            padding-top: var(--header-h);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
         #header {
             width: 100%;
+            height: var(--header-h);
             position: fixed;
             top: 0;
-            background-color: #f0f0f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            left: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            background: linear-gradient(120deg, #0f172a 0%, #1e293b 100%);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.25);
+            z-index: 900;
         }
+        #header .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 18px;
+        }
+        #header h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        #header .header-sub {
+            color: rgba(226, 232, 240, 0.6);
+            font-size: 13px;
+            font-weight: 400;
+        }
+        .center-text { text-align: center; }
+
         #sidebar {
             width: 440px;
-            background-color: #f0f0f0;
+            flex-shrink: 0;
+            background: var(--bg);
             padding: 20px;
-            height: calc(100vh - 5%);
+            height: calc(100vh - var(--header-h));
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             box-sizing: border-box;
             overflow-y: auto;
-            font-size: 22px;
+            font-size: 15px;
         }
+        #sidebar h3 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin: 4px 0 14px;
+        }
+        .panel-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         #user-info {
-            border: 2px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            padding: 18px;
+            margin-bottom: 16px;
+            background: var(--surface);
+            border-radius: var(--radius);
             box-sizing: border-box;
             overflow: hidden;
         }
         #user-info span {
-            display: block;
+            display: inline;
             white-space: nowrap;
+            font-weight: 600;
+        }
+        #user-info > span#username,
+        #user-info > span#server {
+            color: var(--primary);
         }
         #user-info span:hover {
             overflow: visible;
-            background-color: #f9f9f9;
             position: relative;
             z-index: 10;
             width: auto;
@@ -76,39 +163,106 @@
         #user-info form {
             display: flex;
             flex-direction: column;
+            gap: 4px;
+        }
+        #user-info label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+        #user-info input {
+            padding: 9px 12px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            margin-bottom: 4px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        #user-info input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
         }
         #user-info button {
             width: auto;
-            padding: 10px 20px;
-            font-weight: 630;
+            align-self: flex-start;
+            margin-top: 12px;
+            padding: 9px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            border-radius: 9px;
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.15s;
         }
+        #user-info button:hover { background: var(--primary-hover); }
+
         #logout-button {
             display: flex;
             justify-content: center;
-            font-weight: 630;
+            align-items: center;
+            width: 100%;
+            margin-top: 4px;
+            font-weight: 600;
+            font-size: 14px;
             padding: 10px 20px;
-            background-color: #d9534f;
-            color: white;
+            background: var(--danger);
+            color: #fff;
             border: none;
+            border-radius: 9px;
             cursor: pointer;
+            transition: background-color 0.15s;
         }
+        #logout-button:hover { background: var(--danger-hover); }
+
+        #user-info .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        #user-info .info-row:last-of-type { border-bottom: none; margin-bottom: 8px; }
+
         #main-content {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 5%);
-            width: calc(100% - 20%);
-            margin-left: 1%;
+            height: calc(100vh - var(--header-h));
+            flex: 1;
+            min-width: 0;
+            padding: 20px 20px 20px 0;
+            gap: 16px;
             overflow: hidden;
         }
+
         #graph-container {
             flex: 1;
-            min-height: 500px;
+            min-height: 400px;
             overflow: auto;
-            background-color: #FFFFFF;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
             display: flex;
-            flex-direction: column; 
+            flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            padding: 8px;
+        }
+        #graph-title {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 500;
+            margin: auto;
         }
         #graph-content {
             width: 100%;
@@ -124,128 +278,189 @@
             max-width: none !important;
             max-height: none !important;
         }
-        svg {
-            width: 100% !important;
-            height: 100% !important;
-        }
-        .sub-div-graph {
-            flex: 1;
-            padding: 10px;
-            box-sizing: border-box;
-        }
+        svg { width: 100% !important; height: 100% !important; }
+
         #sub-div-container {
             display: flex;
+            gap: 16px;
             height: 35vh;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            margin-left: 0;
         }
         .sub-div {
             flex: 1;
             display: flex;
-            background-color: #ccc;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 18px;
             box-sizing: border-box;
-            height: 33vh;
             overflow: auto;
         }
-        .sub-div:last-child {
-            margin-right: 10;
-        }
-        .btn-grey {
-            background-color: #f0f0f0;
-            color: black;
-        }
-        .sub-div {
-            padding: 20px;
-            margin: 10px;
-            
-        }
-        .status-div {
-            margin-bottom: 50px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .status-button {
-            margin-bottom: 30px;
-            width: 200px;
-            font-weight: 630;
-        }
-        #actions-div {
+
+        #events-div {
+            width: 300px;
+            flex: none;
             overflow-y: auto;
         }
+        #events-div::before {
+            content: "Events";
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .status-div {
+            margin-bottom: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text);
+            padding: 10px 14px;
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+        }
+        .sub-div:nth-child(2) {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-button {
+            margin-bottom: 14px;
+            width: 220px;
+            max-width: 100%;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: background-color 0.15s, opacity 0.15s;
+        }
+        .btn-grey { background: var(--surface); color: var(--text); }
+
+        #startButton {
+            background: var(--success);
+            color: #fff;
+            border-color: transparent;
+        }
+        #startButton:hover:not(:disabled) { background: var(--success-hover); }
+
+        #pauseResumeButton {
+            background: var(--warning);
+            color: #fff;
+            border-color: transparent;
+        }
+        #pauseResumeButton:hover:not(:disabled) { background: var(--warning-hover); }
+
+        #stopResetButton {
+            background: var(--surface);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        #stopResetButton:hover:not(:disabled) { background: #fef2f2; }
+
+        .status-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #actions-div { overflow-y: auto; }
+        #actions-div::before {
+            content: "AI recommendations";
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
         .action-card {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
+            background: var(--primary-soft);
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
         .action-card h4 {
             margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e3a8a;
         }
-        #events-div{
-            width: 300px;
-            overflow-y: auto;
-        }
+        .action-card p { margin: 0; font-size: 14px; color: var(--text); }
+
         .event-card {
-            margin: 10px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border-radius: 5px;
+            margin: 0 0 12px;
+            padding: 14px;
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            border-left: 4px solid #06b6d4;
+            box-shadow: var(--shadow-sm);
+            border-radius: 10px;
         }
-        .center-text {
-            text-align: center;
+        .event-card h4 {
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #0e7490;
         }
+        .event-card p { margin: 0; font-size: 14px; color: var(--text); }
     </style>
 </head>
 <body>
     <div id="header">
-        <h2 class="center-text">PowerGrid Simulator based on Grid2Op platform</h1>
+        <span class="brand-icon">⚡</span>
+        <h2>PowerGrid Simulator <span class="header-sub">· based on the Grid2Op platform</span></h2>
     </div>
     <div id="sidebar">
         <div>
             <h3>Simulator configuration</h3>
             <div id="user-info">
-                User: <span id="username">{{ username }}</span><br>
-                Connected server: <span id="server">{{ server }}</span><br>
-                <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                    <button id="logout-button" onclick="logout()">Logout</button>
-                </div>
+                <div class="info-row">User <span id="username">{{ username }}</span></div>
+                <div class="info-row">Connected server <span id="server">{{ server }}</span></div>
+                <button id="logout-button" onclick="logout()">Logout</button>
             </div>
             <div id="user-info">
+                <div class="panel-title">🧩 Scenario</div>
                 <form action="{{ url_for('edit_config') }}" method="post">
-                    Grid2Op environement's seed: <input type="text" name="env_seed" value="{{ config['env_seed'] }}"><br>
-                    Scenario name: <input type="text" name="scenario_name" value="{{ config['scenario_name'] }}"><br>
-                    Assistant seed: <input type="text" name="assistant_seed" value="{{ config['assistant_seed'] }}"><br>
+                    <label>Grid2Op environment's seed</label>
+                    <input type="text" name="env_seed" value="{{ config['env_seed'] }}">
+                    <label>Scenario name</label>
+                    <input type="text" name="scenario_name" value="{{ config['scenario_name'] }}">
+                    <label>Assistant seed</label>
+                    <input type="text" name="assistant_seed" value="{{ config['assistant_seed'] }}">
                     <button type="submit">Update</button>
                 </form>
             </div>
             <div id="user-info">
+                <div class="panel-title">⚙️ Simulation settings</div>
                 <form action="{{ url_for('edit_simulation_settings') }}" method="post">
-                    <form action="{{ url_for('edit_simulation_settings') }}" method="post">
-                        <label for="scenario_first_step">Scenario first step [step]:</label>
-                        <input type="number" id="scenario_first_step" name="scenario_first_step" value="{{ config['scenario_first_step'] }}" required><br>
-                        <label for="stepDuration_s">Time step duration [second]:</label>
-                        <input type="number" id="stepDuration_s" name="stepDuration_s" value="{{ config['stepDuration_s'] }}" required><br>
-                        <label for="tempo">Context sending frequency to InteractiveAI [step]:</label>
-                        <input type="number" id="tempo" name="tempo" value="{{ com.outputs_config['Outputs']['Context']['tempo'] }}" required><br>
-                        <label for="refresh_frequency_step">Anticipation risk analysis refresh frequency [step]:</label>
-                        <input type="number" id="refresh_frequency_step" name="refresh_frequency_step" value="{{ config['refresh_frequency_step'] }}" required><br>
-                        <label for="time_step_forecast">Anticipation risk analysis range [step]:</label>
-                        <input type="number" id="time_step_forecast" name="time_step_forecast" value="{{ config['time_step_forecast'] }}" required><br>
-                        <label for="duration_step_forecast">Risk analysis duration [step]:</label>
-                        <input type="number" id="duration_step_forecast" name="duration_step_forecast" value="{{ config['duration_step_forecast'] }}" required><br>
-                        <label for="step_start_security_analysis">Security analysis start [step]:</label>
-                        <input type="number" id="step_start_security_analysis" name="step_start_security_analysis" value="{{ config['step_start_security_analysis'] }}" required><br>
-                        <button type="submit">Update</button>
-                    </form>
-                    
+                    <label for="scenario_first_step">Scenario first step [step]</label>
+                    <input type="number" id="scenario_first_step" name="scenario_first_step" value="{{ config['scenario_first_step'] }}" required>
+                    <label for="stepDuration_s">Time step duration [second]</label>
+                    <input type="number" id="stepDuration_s" name="stepDuration_s" value="{{ config['stepDuration_s'] }}" required>
+                    <label for="tempo">Context sending frequency to InteractiveAI [step]</label>
+                    <input type="number" id="tempo" name="tempo" value="{{ com.outputs_config['Outputs']['Context']['tempo'] }}" required>
+                    <label for="refresh_frequency_step">Anticipation risk analysis refresh frequency [step]</label>
+                    <input type="number" id="refresh_frequency_step" name="refresh_frequency_step" value="{{ config['refresh_frequency_step'] }}" required>
+                    <label for="time_step_forecast">Anticipation risk analysis range [step]</label>
+                    <input type="number" id="time_step_forecast" name="time_step_forecast" value="{{ config['time_step_forecast'] }}" required>
+                    <label for="duration_step_forecast">Risk analysis duration [step]</label>
+                    <input type="number" id="duration_step_forecast" name="duration_step_forecast" value="{{ config['duration_step_forecast'] }}" required>
+                    <label for="step_start_security_analysis">Security analysis start [step]</label>
+                    <input type="number" id="step_start_security_analysis" name="step_start_security_analysis" value="{{ config['step_start_security_analysis'] }}" required>
+                    <button type="submit">Update</button>
                 </form>
             </div>
         </div>
@@ -280,7 +495,7 @@
         }
     </script>
 
-    
+
     <script>
         var socket = io();
         socket.on('connect', function() {
@@ -292,13 +507,13 @@
             if (receivedData && receivedData.data) {
                 var graphContainer = document.getElementById('graph-content');
                 graphContainer.innerHTML = receivedData.data;
-                
+
                 // Exécuter les scripts injectés
                 var scripts = graphContainer.getElementsByTagName('script');
                 for (var i = 0; i < scripts.length; i++) {
                     eval(scripts[i].text);
                 }
-                
+
                 // Hide the graph title
                 graphTitle.style.display = 'none';
 
@@ -312,14 +527,14 @@
     <script>
         var eventSource = null;
         const startButton = document.getElementById('startButton');
-    
+
         startButton.addEventListener('click', function() {
             if (!eventSource) {
                 eventSource = new EventSource('/start_simulation');
-    
+
                 eventSource.onmessage = function(event) {
                     const data = JSON.parse(event.data);
-                    console.log(data);  
+                    console.log(data);
                     if (data.div === 'events-div') {
                         addEventCard(data.content);
                     } else if (data.div === 'message-container') {
@@ -331,6 +546,12 @@
                         if (data.content === 'paused') {
                             isPaused = true;
                             btn.textContent = 'Resume';
+                            // The server only sends 'paused' when it needs the
+                            // user to act on an InteractiveAI recommendation and
+                            // click Resume. Guarantee the button is clickable at
+                            // that moment, regardless of any prior disabled state
+                            // (page refresh, SSE reconnect, etc.).
+                            btn.disabled = false;
                         } else if (data.content === 'running') {
                             isPaused = false;
                             btn.textContent = 'Pause';
@@ -340,13 +561,13 @@
                         outDiv.innerHTML = data.content;
                     }
                 };
-    
+
                 eventSource.onerror = function(err) {
                     console.error('EventSource failed:', err);
                     eventSource.close();
                     eventSource = null;
                 };
-    
+
                 startButton.disabled = true; // Disable the button after starting
                 document.getElementById('pauseResumeButton').disabled = false;
             }
@@ -355,7 +576,7 @@
         document.getElementById('startButton').addEventListener('click', function() {
             disableSidebar();
         });
-    
+
         function addEventCard(content) {
             const eventsDiv = document.getElementById('events-div');
             const card = document.createElement('div');
@@ -370,7 +591,7 @@
             console.log(content);
             messageContainer.style.display = 'block'; // Show the div
             messageContainer.innerHTML = content; // Replace existing content with the new message
-            
+
             // Hide message after 10 seconds
             setTimeout(() => {
                 messageContainer.style.display = 'none';
@@ -387,9 +608,9 @@
         //         sessionStorage.setItem('message', message);
         //     }
         // });
-        
+
         document.addEventListener('DOMContentLoaded', function(event) {
-            const messagesData = {{ messages | tojson | safe }}; 
+            const messagesData = {{ messages | tojson | safe }};
             if (messagesData.length > 0) {
                 messagesData.forEach(message => addMessage(message));
                 // Store messages in sessionStorage
@@ -411,7 +632,7 @@
         function postAction(content) {
             const actionContainer = document.getElementById('action-container');
             console.log(content);
-            
+
             if (typeof content === 'string') {
                 // If content is a string, display it directly
                 actionContainer.innerHTML = content;

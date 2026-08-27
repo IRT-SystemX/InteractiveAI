@@ -1,12 +1,21 @@
 import axios, { AxiosError } from 'axios'
 
-import router from '@/router'
 import { useAppStore } from '@/stores/app'
 import { useAuthStore } from '@/stores/auth'
+import { handleSessionExpired, isHandlingSessionExpiry } from '@/utils/session'
 
 import i18n from './i18n'
 
 const { t } = i18n.global
+
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    /** Internal: this request was already replayed after a token refresh. */
+    _retried?: boolean
+    /** Suppress the generic error modal - the caller handles failures itself. */
+    _silent?: boolean
+  }
+}
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -43,32 +52,41 @@ http.interceptors.response.use(
   async function (error: AxiosError<any, any>) {
     const authStore = useAuthStore()
     const appStore = useAppStore()
-    // TODO: TEMP HACK (eval-demo) — MUST BE REMOVED before next release
-    // Auto-logout on token expiry is fully disabled. Users stay logged in even when the token expires.
-    // This was done to avoid interruptions during the demo. Re-enable the block below when done.
-    // [DISABLED] Auto-logout on expired token — commented out to stay logged in despite failed requests
-    // If request failed, check if token is expired
-    // if (error.config?.url !== '/auth/check_token' && authStore.token?.access_token) {
-    //   const res = await authStore.checkToken()
-    //   if (!res) {
-    //     appStore._modals = []
-    //     appStore.addModal({
-    //       data: t('modal.error.DISCONNECTED'),
-    //       type: 'info',
-    //       callback: () => {
-    //         appStore.status.requests = []
-    //       }
-    //     })
-    //     authStore.logout()
-    //     router.push({ name: 'login' })
-    //     return
-    //   }
-    // } else {
-    //   // If the request that failed was the token check,
-    //   // then it is probably a network error and simply log out the user
-    //   authStore.logout()
-    //   router.push({ name: 'login' })
-    // }
+
+    // The access token is short-lived (5 min on the demo realm). A 401 usually
+    // just means it aged out mid-scenario, so renew it and replay the request
+    // once. Only when the refresh token is gone too is the session really over,
+    // and then we collapse the whole 401 burst into a single "log in again"
+    // modal rather than one raw error popup per failed request.
+    const isAuthRequest = ['/auth/token', '/auth/check_token'].includes(error.config?.url ?? '')
+    if (error.response?.status === 401 && !isAuthRequest) {
+      const config = error.config
+      if (config && !config._retried && authStore.canRefresh) {
+        config._retried = true
+        if (await authStore.refresh()) {
+          // Drop this attempt's LOADING entry; the replay pushes its own
+          appStore.status.requests.splice(
+            appStore.status.requests.findIndex((el) => el.data.url),
+            1
+          )
+          return http(config)
+        }
+      }
+      // Session is unrecoverable. Announce it once; stay silent afterwards
+      // (token already cleared) so trailing 401s produce no popups at all.
+      if (authStore.token?.access_token) handleSessionExpired()
+      return Promise.reject(error)
+    }
+    // Trailing failures of requests started before the expiry was detected, and
+    // calls that handle their own errors (the refresh grant), raise no popup.
+    if (isHandlingSessionExpiry() || error.config?._silent) {
+      appStore.status.requests.splice(
+        appStore.status.requests.findIndex((el) => el.data.url),
+        1
+      )
+      return Promise.reject(error)
+    }
+
     appStore.status.requests[appStore.status.requests.findIndex((el) => el.data.url)] = {
       state: 'ERROR',
       data: error

@@ -1,3 +1,13 @@
+# Server / production deployment
+# -------------------------------
+# Simulator UI:  http://<server-host>:5100
+# InteractiveAI: a remote/public instance selected in the login UI
+#                (e.g. https://demo.interactiveai.irt-systemx.fr/).
+#                No host-gateway mapping is needed for a public URL.
+# Code:          bind-mounted from the host, so edits to code/templates take effect
+#                after a container restart (or browser refresh) without a rebuild.
+#
+# Run:  docker compose up -d --build
 services:
   app:
     build:
@@ -11,14 +21,5 @@ services:
     volumes:
       - .:/code
 
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile.api
-    image: powergrid-simulator-api
-    container_name: PowerGrid-simulator-api
-    restart: always
-    ports:
-      - "5100:5000"
-    volumes:
-      - .:/code
+
+

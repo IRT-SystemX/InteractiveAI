@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import { TimerReset } from 'lucide-vue-next'
-import { computed, onBeforeMount, onUnmounted, ref } from 'vue'
+import { computed, onBeforeMount, onUnmounted } from 'vue'
 import { ZoomImg } from 'vue3-zoomer'
 
 import Button from '@/components/atoms/Button.vue'
@@ -52,7 +52,6 @@ import { useServicesStore } from '@/stores/services'
 const servicesStore = useServicesStore()
 const appStore = useAppStore()
 
-const contextPID = ref(0)
 
 const context = computed(
   () =>
@@ -61,11 +60,11 @@ const context = computed(
 )
 
 onBeforeMount(async () => {
-  contextPID.value = await servicesStore.getContext('PowerGrid')
+  await servicesStore.getContext('PowerGrid')
 })
 
 onUnmounted(() => {
-  clearInterval(contextPID.value)
+  servicesStore.stopContext()
 })
 </script>
 <style lang="scss">

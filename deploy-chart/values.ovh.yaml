@@ -2,25 +2,25 @@ cabcontext:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-context
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
 
 cabevent:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-event
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
 
 cabhistoric:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-historic
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
 
 cabrecommendation:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-recommendation
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
   extraEnv:
     - name: RL_AGENT_API_URL
       value: "https://interactiveagent.passerelle.irt-systemx.fr/api/v1/recommendation"
@@ -29,15 +29,25 @@ cabrecommendation:
         secretKeyRef:
           name: cab-recommendation
           key: rl-agent-api-token
-
+          
 cabcapitalization:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-capitalization
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
 
 frontend:
   image:
     repository: harbor.irtsysx.fr/docker-proxy-cache/irtsystemx/interactiveai-cab-standalone-frontend
     pullPolicy: Always
-    tag: "1.3.3"
+    tag: "1.3.7"
+  extraEnv:
+    - name: VITE_POWERGRID_SIMU
+      value: "/powergrid-simu"
+    - name: POWERGRID_SIMU_UPSTREAM
+      value: "https://interactivepowergrid.passerelle.irt-systemx.fr/"
+    - name: VITE_COGNITIVE_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: cab-frontend
+          key: vite-cognitive-token

@@ -4,20 +4,19 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onUnmounted, ref } from 'vue'
+import { onBeforeMount, onUnmounted } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
 import { useServicesStore } from '@/stores/services'
 
 const servicesStore = useServicesStore()
 
-const contextPID = ref(0)
 
 onBeforeMount(async () => {
-  contextPID.value = await servicesStore.getContext()
+  await servicesStore.getContext()
 })
 
 onUnmounted(() => {
-  clearInterval(contextPID.value)
+  servicesStore.stopContext()
 })
 </script>

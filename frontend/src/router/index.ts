@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
 import { ENTITIES, type Entity } from '@/types/entities'
+import { handleSessionExpired } from '@/utils/session'
 import CAB from '@/views/CAB.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
@@ -36,8 +37,18 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore()
+
+  // The auth store is persisted, so reopening the app restores a token that
+  // may already have aged out. Renew it here rather than letting every request
+  // 401; only a dead refresh token actually ends the session.
+  if (to.meta.auth && authStore.user && authStore.isTokenExpired) {
+    if (!(await authStore.refresh())) {
+      handleSessionExpired({ redirect: false })
+      return { name: 'login' }
+    }
+  }
 
   if (to.meta.auth && !authStore.user) return { name: 'login' }
   if (!to.meta.auth && authStore.user) return { name: 'home' }

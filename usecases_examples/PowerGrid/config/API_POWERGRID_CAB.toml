@@ -2,13 +2,13 @@ titre = "API PowerGrid - InteractiveAI"
 
 [Connexion]
 login_port = "auth/token"
-cab_server_url_1 = "http://192.168.210.100:3200/"
-cab_server_url_2 = "http://192.168.211.95:3200/"
-cab_server_url_3 = "http://192.168.209.192:3200/"
-cab_server_url_4 = "http://192.168.209.192:3200/"
-cab_server_url_5 = "http://192.168.209.192:3200/"
-cab_server_url_6 = "http://192.168.208.118:3200/"
-cab_server_url_7 = "https://demo.interactiveai.irt-systemx.fr/"
+cab_server_url_1 = "https://demo.interactiveai.irt-systemx.fr/"
+cab_server_url_2 = "http://localhost:3200/"
+cab_server_url_3 = "http://host.docker.internal:3200/"
+cab_server_url_4 = "http://172.19.0.1:3200/"
+cab_server_url_5 = "https://demo.interactiveai.irt-systemx.fr/"
+cab_server_url_6 = "http://127.0.0.1/"
+cab_server_url_7 = "http://192.168.208.118:3200/"
 
 [Outputs]
 activate = "yes"

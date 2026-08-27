@@ -262,6 +262,19 @@ data:
             proxy_set_header X-Forwarded-For $remote_addr;
         }
 
+        # PowerGrid (grid2op) simulator "apply action" proxy. Keeps the browser POST
+        # same-origin (no CORS) — the frontend is built with
+        # VITE_POWERGRID_SIMU=/powergrid-simu and posts to /powergrid-simu/api/v1/recommendations.
+        # Host must be the upstream vhost, not $http_host: the passerelle routes by hostname.
+        location /powergrid-simu/ {
+            add_header Cache-Control "no-cache";
+            proxy_set_header Host interactivepowergrid.passerelle.irt-systemx.fr;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_ssl_server_name on;
+            proxy_ssl_verify off;
+            proxy_pass https://interactivepowergrid.passerelle.irt-systemx.fr/;
+        }
+
         error_page 500 502 503 504 /50x.html;
         location = /50x.html {
             root /usr/share/nginx/html;

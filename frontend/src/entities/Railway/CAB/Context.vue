@@ -13,7 +13,7 @@
   </Context>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onUnmounted, ref, watchEffect } from 'vue'
+import { onBeforeMount, onUnmounted, watchEffect } from 'vue'
 
 import Context from '@/components/organisms/CAB/Context.vue'
 import Map from '@/components/organisms/Map.vue'
@@ -29,7 +29,6 @@ const mapStore = useMapStore()
 const cardsStore = useCardsStore()
 const appStore = useAppStore()
 
-const contextPID = ref(0)
 
 watchEffect(() => {
   for (const train of cardsStore.cards('Railway'))
@@ -51,7 +50,7 @@ watchEffect(() => {
 })
 
 onBeforeMount(async () => {
-  contextPID.value = await servicesStore.getContext('Railway', (context) => {
+  await servicesStore.getContext('Railway', (context) => {
     for (const train of context.data.trains)
       mapStore.addContextWaypoint({
         lat: train.latitude,
@@ -66,6 +65,6 @@ onBeforeMount(async () => {
 })
 
 onUnmounted(() => {
-  clearInterval(contextPID.value)
+  servicesStore.stopContext()
 })
 </script>

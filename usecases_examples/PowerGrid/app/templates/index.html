@@ -1,160 +1,310 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PowerGrid Simulator</title>
     <style>
-        .login-container {
-            width: 100%;
-            max-width: 500px; /* Largeur maximale du formulaire ajustée */
-            margin: 50px auto; /* Centrage vertical et horizontal */
-            padding: 30px; /* Padding du conteneur ajusté */
-            box-shadow: 0 0 15px rgba(0,0,0,0.15); /* Ombre légèrement plus prononcée */
-            background-color: #f9f9f9; /* Couleur de fond */
-        }
-    
-        form {
-            display: flex;
-            flex-direction: column; /* Organise les éléments du formulaire en colonne */
-        }
-    
-        label {
-            margin-bottom: 10px; /* Espacement entre les labels et les champs ajusté */
-            font-size: 20px; /* Taille de la police des labels */
-        }
-    
-        input {
-            margin-bottom: 40px; /* Espacement entre les éléments du formulaire ajusté */
-            padding: 12px 20px; /* Padding des éléments de formulaire ajusté */
-            font-size: 20px; /* Taille de la police des éléments de formulaire */
-            height: 30px; /* Hauteur des champs de saisie et du bouton */
+        :root {
+            --bg: #0f172a;
+            --bg-accent: #1e293b;
+            --surface: #ffffff;
+            --surface-muted: #f1f5f9;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-soft: #dbeafe;
+            --danger: #dc2626;
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.12);
         }
 
-        select, button {
-            margin-bottom: 40px; /* Espacement entre les éléments du formulaire ajusté */
-            padding: 12px 20px; /* Padding des éléments de formulaire ajusté */
-            font-size: 20px; /* Taille de la police des éléments de formulaire */
-            height: 50px; /* Hauteur des champs de saisie et du bouton */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 600px at 15% -10%, rgba(37, 99, 235, 0.35), transparent 60%),
+                radial-gradient(900px 500px at 100% 0%, rgba(14, 165, 233, 0.25), transparent 55%),
+                linear-gradient(160deg, var(--bg) 0%, var(--bg-accent) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
         }
-    
+
+        .brand {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        .brand .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 30px;
+            margin-bottom: 14px;
+        }
+        .brand h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .brand p {
+            margin: 6px 0 0;
+            color: rgba(226, 232, 240, 0.75);
+            font-size: 14px;
+        }
+
+        .flash-stack {
+            width: 100%;
+            max-width: 460px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            background: #fff;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .alert-error, .alert-danger { border-left-color: var(--danger); color: #991b1b; }
+        .alert-success { border-left-color: #16a34a; color: #166534; }
+        .alert-warning { border-left-color: #d97706; color: #92400e; }
+
+        .login-container {
+            width: 100%;
+            max-width: 460px;
+            padding: 32px;
+            background: var(--surface);
+            border-radius: 18px;
+            box-shadow: var(--shadow-md);
+        }
+        .login-container h2 {
+            margin: 0 0 4px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .login-subtitle {
+            margin: 0 0 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .center-text { text-align: center; }
+
+        form { display: flex; flex-direction: column; }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            font-size: 15px;
+            height: 46px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            color: var(--text);
+            transition: border-color 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+        }
+        input::placeholder { color: #94a3b8; }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
         button {
-            background-color: #4CAF50; /* Couleur de fond du bouton */
-            color: white; /* Couleur du texte du bouton */
-            border: none; /* Retire la bordure du bouton */
-            cursor: pointer; /* Curseur pointeur pour le bouton */
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: background-color 0.15s, transform 0.05s;
         }
-    
-        button:hover {
-            background-color: #45a049; /* Couleur de fond du bouton au survol */
+        button[type="submit"] {
+            height: 48px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 16px;
+            margin-top: 4px;
         }
-        .center-text {
-        text-align: center;
-        }
+        button[type="submit"]:hover { background: var(--primary-hover); }
+        button[type="submit"]:active { transform: translateY(1px); }
+
         .server-selection-container {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            gap: 10px;
+            align-items: flex-end;
             margin-bottom: 20px;
         }
-        .server-list-container {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
-        .custom-select {
-            position: relative;
-            width: 100%;
-        }
-        .select-selected {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
-        .select-items {
-            position: absolute;
-            background-color: #fff;
-            top: 100%;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            border-top: none;
-        }
-        .select-hide {
-            display: none;
-        }
-        .select-items div {
-            padding: 8px 16px;
-            cursor: pointer;
-        }
-        .select-items div:hover {
-            background-color: #f1f1f1;
-        }
-        .delete-server {
-            float: right;
-            color: red;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        #edit_servers_btn {
-            height: 44px;
-            margin-top: 28px;
-            padding: 0 20px;
-            font-size: 16px;
-            line-height: 44px;
-        }
-        .select-items {
-            position: absolute;
-            background-color: #fff;
-            top: 100%;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            border-top: none;
-        }
-        .select-selected {
-            height: 44px; 
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            background-color: #f8f8f8;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            font-size: 16px;
-        }
+        .server-list-container { flex-grow: 1; min-width: 0; }
+
         label[for="server_url"] {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
-        .hidden {
-            display: none;
+
+        .custom-select { position: relative; width: 100%; }
+
+        .select-selected {
+            height: 46px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .select-selected:hover { border-color: #cbd5e1; }
+        .select-selected.select-arrow-active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+        .select-selected::after {
+            content: "";
+            margin-left: auto;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .select-items {
+            position: absolute;
+            background: var(--surface);
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 99;
+            max-height: 220px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            padding: 4px;
+        }
+        .select-hide { display: none; }
+        .select-items div {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .select-items div:hover { background: var(--surface-muted); }
+
+        .delete-server {
+            color: var(--danger);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 1;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
+        .delete-server:hover { opacity: 0.7; }
+
+        #edit_servers_btn {
+            height: 46px;
+            padding: 0 18px;
+            font-size: 14px;
+            background: var(--surface-muted);
+            color: var(--text);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        #edit_servers_btn:hover { background: #e2e8f0; }
+
+        #add_server_form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #add_server_form input { margin-bottom: 0; flex-grow: 1; }
+        #add_server_btn {
+            height: 46px;
+            padding: 0 18px;
+            background: var(--primary);
+            color: #fff;
+            flex-shrink: 0;
+        }
+        #add_server_btn:hover { background: var(--primary-hover); }
+
+        .hidden { display: none; }
+
+        .login-footer {
+            margin-top: 20px;
+            text-align: center;
+            color: rgba(226, 232, 240, 0.6);
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
+    <div class="brand">
+        <div class="logo">⚡</div>
+        <h1>PowerGrid Simulator</h1>
+        <p>Based on the Grid2Op platform</p>
+    </div>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
+        <div class="flash-stack">
         {% for category, message in messages %}
           <div class="alert alert-{{ category }}">{{ message }}</div>
         {% endfor %}
+        </div>
       {% endif %}
     {% endwith %}
-    
-    <h1 class="center-text">Welcom to PowerGrid Simulator based on Grid2Op platform !</h1>
+
     <!-- Début du formulaire de connexion -->
     <div class="login-container">
-        <h2 class="center-text">Connexion</h2>
+        <h2>Connect</h2>
+        <p class="login-subtitle">Sign in to your InteractiveAI instance to start a simulation.</p>
         <form action="/login" method="post" id="login_form">
             <div class="server-selection-container">
                 <div class="server-list-container">
-                    <label for="server_url">Choisir un serveur:</label>
+                    <label for="server_url">InteractiveAI server</label>
                     <div class="custom-select">
-                        <div class="select-selected" id="selected_server">Sélectionnez un serveur</div>
+                        <div class="select-selected" id="selected_server">Select a server</div>
                         <div class="select-items select-hide" id="server_list">
                             {% for key, url in urls.items() %}
                                 <div data-value="{{ url }}" data-key="{{ key }}" data-preexisting="true">
@@ -168,24 +318,26 @@
                     </div>
                     <input type="hidden" id="server_url" name="server_url" required>
                 </div>
-                <button type="button" id="edit_servers_btn">Autre</button>
+                <button type="button" id="edit_servers_btn">Other</button>
             </div>
-            
+
             <div id="add_server_form" class="hidden">
-                <input type="url" id="new_server_url" name="new_server_url" placeholder="Nouvelle adresse de serveur">
-                <button type="button" id="add_server_btn">Ajouter</button>
+                <input type="url" id="new_server_url" name="new_server_url" placeholder="New server address">
+                <button type="button" id="add_server_btn">Add</button>
             </div>
-            
-            <label for="username">Nom d'utilisateur:</label>
-            <input type="text" id="username" name="username" required>
-            
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Connexion</button>
+
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Connect</button>
         </form>
     </div>
     <!-- Fin du formulaire de connexion -->
+
+    <div class="login-footer">InteractiveAI · PowerGrid use case</div>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -200,14 +352,14 @@
                 deleteServer(event, url, key);
             });
         });
-    
+
         selectSelected.addEventListener('click', function(e) {
             e.stopPropagation();
             closeAllSelect(this);
             selectItems.classList.toggle('select-hide');
             this.classList.toggle('select-arrow-active');
         });
-    
+
         selectItems.addEventListener('click', function(e) {
             if (e.target.tagName === 'DIV') {
                 selectSelected.innerHTML = e.target.innerHTML.split('<')[0].trim();
@@ -215,13 +367,13 @@
                 selectItems.classList.add('select-hide');
             }
         });
-    
+
         document.addEventListener('click', closeAllSelect);
-    
+
         document.getElementById('edit_servers_btn').addEventListener('click', function() {
             document.getElementById('add_server_form').classList.toggle('hidden');
         });
-    
+
         document.getElementById('add_server_btn').addEventListener('click', function() {
             var newServerUrl = document.getElementById('new_server_url').value;
             if (newServerUrl) {
@@ -243,13 +395,13 @@
                         selectItems.appendChild(newOption);
                         document.getElementById('new_server_url').value = '';
                     } else {
-                        alert('Erreur lors de l\'ajout du serveur');
+                        alert('Error while adding the server');
                     }
                 });
             }
         });
     });
-    
+
     function deleteServer(event, url, key) {
         event.preventDefault();
         event.stopPropagation();
@@ -265,19 +417,19 @@
             if (data.success) {
                 event.target.closest('div').remove();
                 if (document.querySelector('.select-selected').textContent.trim() === data.deletedUrl) {
-                    document.querySelector('.select-selected').textContent = 'Sélectionnez un serveur';
+                    document.querySelector('.select-selected').textContent = 'Select a server';
                     document.getElementById('server_url').value = '';
                 }
             } else {
-                alert('Erreur lors de la suppression du serveur');
+                alert('Error while deleting the server');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Erreur lors de la suppression du serveur');
+            alert('Error while deleting the server');
         });
     }
-    
+
     function closeAllSelect(elmnt) {
         var selectItems = document.getElementsByClassName('select-items');
         var selectSelected = document.getElementsByClassName('select-selected');
@@ -293,6 +445,6 @@
         }
     }
     </script>
-    
+
 </body>
 </html>
